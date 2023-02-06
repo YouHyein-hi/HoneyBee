@@ -17,15 +17,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.example.receiptcareapp.MainActivity
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
+import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 
 class CameraFragment : Fragment() {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
+
+    private val viewModel : FragmentViewModel by viewModels()
 
     private val binding : FragmentCameraBinding by lazy {
         FragmentCameraBinding.inflate(layoutInflater)
@@ -36,14 +41,14 @@ class CameraFragment : Fragment() {
 
         Log.e("TAG", "onCreate: CameraFragment", )
         CallCamera()
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_camera, container, false)
+        return binding.root
     }
 
     fun CallCamera() {  // 카메라 실행 함수
@@ -59,14 +64,13 @@ class CameraFragment : Fragment() {
 
     @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {   // startActivityForResult에서 불림, (but! startActivityForResult() + onActivityResult() 는 이제 사용 안한다고 함. 수정하자!
-        Log.e("TAG", "onActivityResult 실행",)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 CAMERA_CODE -> {
                     if (data?.extras?.get("data") != null) {
                         val img = data?.extras?.get("data") as Bitmap
-                        Log.e("TAG", "img : ${img}", )
-                        //binding.imageView.setImageBitmap(img)
+                        viewModel.takePicture(img)
+                        NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_successFragment)
                     }
                 }
             }
@@ -105,6 +109,4 @@ class CameraFragment : Fragment() {
             }
         }
     }
-
-
 }

@@ -27,8 +27,8 @@
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" >
         <action
-            android:id="@+id/action_cameraFragment_to_successFragment"
-            app:destination="@id/successFragment" />
+            android:id="@+id/action_cameraFragment_to_showFragment"
+            app:destination="@id/showFragment" />
         <action
             android:id="@+id/action_cameraFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
@@ -39,15 +39,15 @@
         android:label="fragment_gallery"
         tools:layout="@layout/fragment_gallery" >
         <action
-            android:id="@+id/action_galleryFragment_to_successFragment"
-            app:destination="@id/successFragment" />
+            android:id="@+id/action_galleryFragment_to_showFragment"
+            app:destination="@id/showFragment" />
         <action
             android:id="@+id/action_galleryFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/recyclerFragment"
-        android:name="com.example.receiptcareapp.fragment.RecyclerFragment"
+        android:name="com.example.receiptcareapp.fragment.recyclerFragment.RecyclerFragment"
         android:label="fragment_recycler"
         tools:layout="@layout/fragment_recycler" >
         <action
@@ -59,7 +59,7 @@
     </fragment>
     <fragment
         android:id="@+id/recyclerShowFragment"
-        android:name="com.example.receiptcareapp.fragment.RecyclerShowFragment"
+        android:name="com.example.receiptcareapp.fragment.recyclerFragment.RecyclerShowFragment"
         android:label="fragment_recycler_show"
         tools:layout="@layout/fragment_recycler_show" >
         <action
@@ -70,18 +70,18 @@
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/successFragment"
-        android:name="com.example.receiptcareapp.fragment.SuccessFragment"
+        android:id="@+id/showFragment"
+        android:name="com.example.receiptcareapp.fragment.ShowPictureFragment"
         android:label="fragment_success"
-        tools:layout="@layout/fragment_success" >
+        tools:layout="@layout/fragment_show_picture" >
         <action
-            android:id="@+id/action_successFragment_to_homeFragment"
+            android:id="@+id/action_showFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
-            android:id="@+id/action_successFragment_to_cameraFragment"
+            android:id="@+id/action_showFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
         <action
-            android:id="@+id/action_successFragment_to_galleryFragment"
+            android:id="@+id/action_showFragment_to_galleryFragment"
             app:destination="@id/galleryFragment" />
     </fragment>
 </navigation>

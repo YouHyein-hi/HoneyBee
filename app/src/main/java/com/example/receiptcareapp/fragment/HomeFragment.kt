@@ -31,7 +31,6 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         checkPermission()
 
         binding.camaraBtn.setOnClickListener{ Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_cameraFragment) }
@@ -45,6 +44,8 @@ class HomeFragment : Fragment() {
     ): View? {
         return binding.root
     }
+
+
 
     /*** 권한 관련 코드 ***/
     fun checkPermission() : Boolean{         // 실제 권한을 확인하는 곳

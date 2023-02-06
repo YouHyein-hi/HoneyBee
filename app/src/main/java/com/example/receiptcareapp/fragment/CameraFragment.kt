@@ -30,7 +30,7 @@ class CameraFragment : Fragment() {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
 
-    private val viewModel : FragmentViewModel by viewModels()
+    private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
 
     private val binding : FragmentCameraBinding by lazy {
         FragmentCameraBinding.inflate(layoutInflater)
@@ -38,7 +38,6 @@ class CameraFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         Log.e("TAG", "onCreate: CameraFragment", )
         CallCamera()
 
@@ -70,7 +69,7 @@ class CameraFragment : Fragment() {
                     if (data?.extras?.get("data") != null) {
                         val img = data?.extras?.get("data") as Bitmap
                         viewModel.takePicture(img)
-                        NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_successFragment)
+                        NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
                     }
                 }
             }

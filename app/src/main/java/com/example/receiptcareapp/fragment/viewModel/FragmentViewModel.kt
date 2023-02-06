@@ -12,9 +12,13 @@ import androidx.lifecycle.ViewModel
  * 2023-01-31
  * pureum
  */
+
 class FragmentViewModel(
     application: Application
 ) : AndroidViewModel(Application()){
+    init {
+        Log.e("TAG", ": viewMoodel start", )
+    }
 
     private val _picture = MutableLiveData<Bitmap>()
     val picture : LiveData<Bitmap>

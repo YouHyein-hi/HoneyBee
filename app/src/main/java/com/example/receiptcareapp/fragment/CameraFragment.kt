@@ -17,13 +17,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
+import com.example.receiptcareapp.MainActivity
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
-import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 
 class CameraFragment : Fragment() {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
@@ -33,6 +31,10 @@ class CameraFragment : Fragment() {
     }
 
     private val viewModel : FragmentViewModel by viewModels()
+
+    private val binding : FragmentCameraBinding by lazy {
+        FragmentCameraBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,12 +64,27 @@ class CameraFragment : Fragment() {
         }
     }
 
+    @SuppressLint("MissingSuperCall")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {   // startActivityForResult에서 불림, (but! startActivityForResult() + onActivityResult() 는 이제 사용 안한다고 함. 수정하자!
+        Log.e("TAG", "onActivityResult 실행",)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                CAMERA_CODE -> {
+                    if (data?.extras?.get("data") != null) {
+                        val img = data?.extras?.get("data") as Bitmap
+                        Log.e("TAG", "img : ${img}", )
+                        //binding.imageView.setImageBitmap(img)
+                    }
+                }
+            }
+        }
+        else{
+            Log.e("TAG", "onActivityResult: else 집입", )
+        }
+    }
+
+    /*** 권한 관련 코드 ***/
     fun checkPermission(permissions : Array<out String>) : Boolean{         // 실제 권한을 확인하는 곳
-        /* .
-        인수로 필요한 권한을 배열로 전달하도록 함
-        이 배열을 순회하면서 각각의 권한이 있는지 확인함
-        권한이 없으면 ActivityCompat.requestPermissions 호출하여 사용자에게 권한 요청!
-         */
         Log.e("TAG", "checkPermission 실행", )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -90,21 +107,6 @@ class CameraFragment : Fragment() {
                 for (grant in grantResults) {
                     if (grant != PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(getActivity(), "카메라 권한을 승인해 주세요.", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-    }
-
-    @SuppressLint("MissingSuperCall")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {   // startActivityForResult에서 불림, (but! startActivityForResult() + onActivityResult() 는 이제 사용 안한다고 함. 수정하자!
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                CAMERA_CODE -> {
-                    if (data?.extras?.get("data") != null) {
-                        val img = data?.extras?.get("data") as Bitmap
-                        viewModel.takePicture(img)
-                        NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_successFragment)
                     }
                 }
             }

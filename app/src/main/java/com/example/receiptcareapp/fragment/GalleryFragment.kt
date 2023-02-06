@@ -68,7 +68,6 @@ class GalleryFragment : Fragment() {
 
 
 
-
     /*** 권한 관련 코드 ***/
     fun checkPermission(permissions : Array<out String>) : Boolean{         // 실제 권한을 확인하는 곳
         Log.e("TAG", "checkPermission 실행", )

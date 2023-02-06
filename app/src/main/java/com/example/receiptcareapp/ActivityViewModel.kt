@@ -21,14 +21,15 @@ class ActivityViewModel @Inject constructor(
     private val sendUseCase : SendUseCase
 ): ViewModel() {
 
-    private val _sendResult = MutableLiveData<DomainSendData>()
-    val sendResult : LiveData<DomainSendData>
+    private val _sendResult = MutableLiveData<List<DomainSendData>>()
+    val sendResult : LiveData<List<DomainSendData>>
         get() = _sendResult
 
     fun sendData(){
         viewModelScope.launch {
-            Log.e("TAG", "sendData: ${sendUseCase.invoke()} ")
-//            _sendResult.value = sendUseCase.invoke()
+            var data = sendUseCase.invoke()
+            Log.e("TAG", "sendData: ${data} ")
+            _sendResult.value = data
         }
     }
 }

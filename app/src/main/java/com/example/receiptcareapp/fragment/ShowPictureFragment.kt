@@ -10,12 +10,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.databinding.FragmentSuccessBinding
+import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import java.util.*
 
 class ShowPictureFragment : Fragment() {
-    private val binding : FragmentSuccessBinding by lazy { FragmentSuccessBinding.inflate(layoutInflater) }
+    private val binding : FragmentShowPictureBinding by lazy { FragmentShowPictureBinding.inflate(layoutInflater) }
     private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,7 @@ class ShowPictureFragment : Fragment() {
         }
 
         binding.button.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_cameraFragment) }
-        binding.button2.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_successFragement) }
+        binding.button2.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment) }
         return binding.root
     }
 }

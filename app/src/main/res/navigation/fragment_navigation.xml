@@ -47,7 +47,7 @@
     </fragment>
     <fragment
         android:id="@+id/recyclerFragment"
-        android:name="com.example.receiptcareapp.fragment.RecyclerFragment"
+        android:name="com.example.receiptcareapp.fragment.recyclerFragment.RecyclerFragment"
         android:label="fragment_recycler"
         tools:layout="@layout/fragment_recycler" >
         <action
@@ -59,7 +59,7 @@
     </fragment>
     <fragment
         android:id="@+id/recyclerShowFragment"
-        android:name="com.example.receiptcareapp.fragment.RecyclerShowFragment"
+        android:name="com.example.receiptcareapp.fragment.recyclerFragment.RecyclerShowFragment"
         android:label="fragment_recycler_show"
         tools:layout="@layout/fragment_recycler_show" >
         <action
@@ -73,9 +73,9 @@
         android:id="@+id/showFragment"
         android:name="com.example.receiptcareapp.fragment.ShowPictureFragment"
         android:label="fragment_success"
-        tools:layout="@layout/fragment_success" >
+        tools:layout="@layout/fragment_show_picture" >
         <action
-            android:id="@+id/action_successFragment_to_homeFragment"
+            android:id="@+id/action_showFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
             android:id="@+id/action_showFragment_to_cameraFragment"
@@ -83,17 +83,5 @@
         <action
             android:id="@+id/action_showFragment_to_galleryFragment"
             app:destination="@id/galleryFragment" />
-        <action
-            android:id="@+id/action_showFragment_to_successFragement"
-            app:destination="@id/successFragement" />
-    </fragment>
-    <fragment
-        android:id="@+id/successFragement"
-        android:name="com.example.receiptcareapp.fragment.SuccessFragment"
-        android:label="fragment_show_picture"
-        tools:layout="@layout/fragment_show_picture" >
-        <action
-            android:id="@+id/action_successFragement_to_homeFragment"
-            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

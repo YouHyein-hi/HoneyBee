@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment
+package com.example.receiptcareapp.fragment.recyclerFragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.receiptcareapp.R
 
-class RecyclerShowFragment : Fragment() {
+class RecyclerFragment : Fragment() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +20,7 @@ class RecyclerShowFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recycler_show, container, false)
+        return inflater.inflate(R.layout.fragment_recycler, container, false)
     }
 
 }

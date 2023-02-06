@@ -26,6 +26,11 @@ import com.example.receiptcareapp.databinding.FragmentHomeBinding
 class CameraFragment : Fragment() {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
+    private val binding : FragmentCameraBinding by lazy {
+        FragmentCameraBinding.inflate(layoutInflater)
+    }
+
+    private val viewModel : FragmentViewModel by viewModels()
 
     private val binding : FragmentCameraBinding by lazy {
         FragmentCameraBinding.inflate(layoutInflater)
@@ -36,14 +41,16 @@ class CameraFragment : Fragment() {
 
         Log.e("TAG", "onCreate: CameraFragment", )
         CallCamera()
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_camera, container, false)
+        //NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_successFragment)
+        //Navigation.findNavController(binding.root).navigate(R.id.action_cameraFragment_to_successFragment)
+        return binding.root
     }
 
     fun CallCamera() {  // 카메라 실행 함수
@@ -105,6 +112,4 @@ class CameraFragment : Fragment() {
             }
         }
     }
-
-
 }

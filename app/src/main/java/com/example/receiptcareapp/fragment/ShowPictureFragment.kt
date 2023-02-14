@@ -33,7 +33,7 @@ class ShowPictureFragment : Fragment() {
             DatePickerDialog(requireContext(),data,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
         }
 
-        binding.button.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_cameraFragment) }
+        binding.button.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment) }
         binding.button2.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment) }
         return binding.root
     }

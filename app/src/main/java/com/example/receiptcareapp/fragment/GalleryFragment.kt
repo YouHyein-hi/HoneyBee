@@ -72,6 +72,7 @@ class GalleryFragment : Fragment() {
                             Log.e("TAG", "onActivityResult: imageUri NULL이 아님!", )
 
                             viewModel.takeImage(imageUri)
+                            viewModel.takePage(2)
                             NavHostFragment.findNavController(this).navigate(R.id.action_galleryFragment_to_showFragment)
                         }
                     }

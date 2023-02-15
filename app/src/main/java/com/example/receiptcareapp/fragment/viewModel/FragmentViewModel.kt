@@ -24,7 +24,6 @@ class FragmentViewModel(
     private val _picture = MutableLiveData<Bitmap>()
     val picture : LiveData<Bitmap>
         get() = _picture
-
     fun takePicture(pic:Bitmap){
         Log.e("TAG", "takePicture : ${picture.value}", )
         _picture.value = pic
@@ -34,11 +33,21 @@ class FragmentViewModel(
     private val _image = MutableLiveData<Uri>()
     val image : LiveData<Uri>
         get() = _image
-
     fun takeImage(img: Uri){
         Log.e("TAG", "takeImage: ${image.value}", )
         _image.value = img
         Log.e("TAG", "takeImage: ${image.value}", )
+    }
+
+    /**
+     1 : CameraFragment
+     2 : GalleryFragment
+     **/
+    private val _pageNum = MutableLiveData<Int>()
+    val pageNum : LiveData<Int>
+        get() = _pageNum
+    fun takePage(pageNum: Int){
+        _pageNum.value = pageNum
     }
 
 

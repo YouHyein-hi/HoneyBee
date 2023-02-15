@@ -25,7 +25,8 @@ class ShowPictureFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.pictureView.setImageBitmap(viewModel.picture.value)
+        //binding.pictureView.setImageBitmap(viewModel.picture.value)
+        binding.pictureView.setImageURI(viewModel.image.value)
 
         binding.date.setOnClickListener{
             val cal = Calendar.getInstance()

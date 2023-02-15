@@ -2,6 +2,7 @@ package com.example.receiptcareapp.fragment.viewModel
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -29,5 +30,16 @@ class FragmentViewModel(
         _picture.value = pic
         Log.e("TAG", "takePicture : ${picture.value}", )
     }
+
+    private val _image = MutableLiveData<Uri>()
+    val image : LiveData<Uri>
+        get() = _image
+
+    fun takeImage(img: Uri){
+        Log.e("TAG", "takeImage: ${image.value}", )
+        _image.value = img
+        Log.e("TAG", "takeImage: ${image.value}", )
+    }
+
 
 }

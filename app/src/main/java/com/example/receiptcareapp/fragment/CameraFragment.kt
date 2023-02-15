@@ -64,18 +64,21 @@ class CameraFragment : Fragment() {
     @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {   // startActivityForResult에서 불림, (but! startActivityForResult() + onActivityResult() 는 이제 사용 안한다고 함. 수정하자!
         if (resultCode == Activity.RESULT_OK) {
+            Log.e("TAG", "onActivityResult: if 진입", )
             when (requestCode) {
                 CAMERA_CODE -> {
                     if (data?.extras?.get("data") != null) {
                         val img = data?.extras?.get("data") as Bitmap
+
                         viewModel.takePicture(img)
+                        viewModel.takePage(1)
                         NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
                     }
                 }
             }
         }
         else{
-            Log.e("TAG", "onActivityResult: else 집입", )
+            Log.e("TAG", "onActivityResult: else 진입", )
         }
     }
 

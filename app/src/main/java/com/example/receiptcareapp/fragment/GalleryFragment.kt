@@ -2,9 +2,11 @@ package com.example.receiptcareapp.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,12 +18,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.example.receiptcareapp.R
+import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
+import java.io.File
+import kotlin.math.log
 
 class GalleryFragment : Fragment() {
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
     private val GALLERY_CODE = 101
+
+    private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,17 +63,25 @@ class GalleryFragment : Fragment() {
     @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {   // startActivityForResult에서 불림, (but! startActivityForResult() + onActivityResult() 는 이제 사용 안한다고 함. 수정하자!
         if (resultCode == Activity.RESULT_OK) {
+            Log.e("TAG", "onActivityResult: if 진입",)
             when (requestCode) {
                 GALLERY_CODE -> {
+                    data?.data?.let { uri ->
+                        val imageUri: Uri? = data?.data
+                        if(imageUri != null){
+                            Log.e("TAG", "onActivityResult: imageUri NULL이 아님!", )
 
+                            viewModel.takeImage(imageUri)
+                            viewModel.takePage(2)
+                            NavHostFragment.findNavController(this).navigate(R.id.action_galleryFragment_to_showFragment)
+                        }
+                    }
                 }
             }
-        }
-        else{
-            Log.e("TAG", "onActivityResult: else 집입", )
+        } else {
+            Log.e("TAG", "onActivityResult: else 진입",)
         }
     }
-
 
 
     /*** 권한 관련 코드 ***/
@@ -97,5 +113,4 @@ class GalleryFragment : Fragment() {
             }
         }
     }
-
-}
+    }

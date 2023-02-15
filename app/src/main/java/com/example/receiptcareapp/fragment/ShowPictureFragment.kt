@@ -25,7 +25,17 @@ class ShowPictureFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.pictureView.setImageBitmap(viewModel.picture.value)
+        val pageNum = viewModel.pageNum.value
+        when(pageNum){
+            1 -> {
+                Log.e("TAG", "onCreateView: pageNum(1 : CameraFragment) 넘어옴", )
+                binding.pictureView.setImageBitmap(viewModel.picture.value)
+            }
+            2 -> {
+                Log.e("TAG", "onCreateView: pageNum(2: GalleryFragment) 넘어옴", )
+                binding.pictureView.setImageURI(viewModel.image.value)
+            }
+        }
 
         binding.date.setOnClickListener{
             val cal = Calendar.getInstance()

@@ -1,9 +1,9 @@
 package com.example.data.module
 
-import com.example.domain.repo.ReceiveRepo
-import com.example.domain.repo.SendRepo
-import com.example.domain.usecase.ReceiveUseCase
-import com.example.domain.usecase.SendUseCase
+import com.example.domain.repo.RetrofitRepo
+import com.example.domain.repo.RoomRepo
+import com.example.domain.usecase.RetrofitUseCase
+import com.example.domain.usecase.RoomUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,12 +19,13 @@ import javax.inject.Singleton
 object UseCaseModule {
     @Provides
     @Singleton
-    fun provideUseCaseSendData(repo : SendRepo) : SendUseCase{
-        return SendUseCase(repo)
+    fun provideUseCaseReceiveData(repo : RetrofitRepo) : RetrofitUseCase{
+        return RetrofitUseCase(repo)
     }
+
     @Provides
     @Singleton
-    fun provideUseCaseReceiveData(repo : ReceiveRepo) : ReceiveUseCase{
-        return ReceiveUseCase(repo)
+    fun provideUseCaseRoomData(repo : RoomRepo) : RoomUseCase{
+        return RoomUseCase(repo)
     }
 }

@@ -17,9 +17,6 @@ import java.util.*
 class ShowPictureFragment : Fragment() {
     private val binding : FragmentShowPictureBinding by lazy { FragmentShowPictureBinding.inflate(layoutInflater) }
     private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

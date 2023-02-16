@@ -6,6 +6,7 @@ import android.app.appsearch.AppSearchResult
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,6 +16,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -31,7 +34,6 @@ class CameraFragment : Fragment() {
     private val CAMERA_CODE = 98
 
     private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
-
     private val binding : FragmentCameraBinding by lazy {
         FragmentCameraBinding.inflate(layoutInflater)
     }
@@ -43,42 +45,41 @@ class CameraFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return binding.root
     }
 
+    /** 카메라 관련 코드 **/
+    /* 카메라 호출 */
     fun CallCamera() {  // 카메라 실행 함수
         Log.e("TAG", "CallCamera 실행", )
 
         if (checkPermission(CAMERA)) {  // 카메라 권한 있을 시 카메라 실행함
             Log.e("TAG", "카메라 권한 있음", )
 
-            val itt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(itt, CAMERA_CODE)                        // startActivityForResult() + onActivityResult() 는 이제 사용 안한다고 함. 수정하자!
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            activityResult.launch(intent)
         }
     }
-
-    @SuppressLint("MissingSuperCall")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {   // startActivityForResult에서 불림, (but! startActivityForResult() + onActivityResult() 는 이제 사용 안한다고 함. 수정하자!
-        if (resultCode == Activity.RESULT_OK) {
+    /* 찍은 사진 관련 함수 */
+    private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()){
+        if (it.resultCode == Activity.RESULT_OK){
             Log.e("TAG", "onActivityResult: if 진입", )
-            when (requestCode) {
-                CAMERA_CODE -> {
-                    if (data?.extras?.get("data") != null) {
-                        val img = data?.extras?.get("data") as Bitmap
+            if (it.data?.extras?.get("data") != null) {
+                Log.e("TAG", "data 있음", )
+                val img = it.data?.extras?.get("data") as Bitmap
 
-                        viewModel.takePicture(img)
-                        viewModel.takePage(1)
-                        NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
-                    }
-                }
+                viewModel.takePicture(img)
+                viewModel.takePage(1)
+                NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
+            }
+            else{
+                Log.e("TAG", "data 없음", )
             }
         }
         else{
-            Log.e("TAG", "onActivityResult: else 진입", )
+            Log.e("TAG", "RESULT_OK if: else 진입", )
         }
     }
 
@@ -96,7 +97,6 @@ class CameraFragment : Fragment() {
         }
         return true
     }
-
     @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {  // 권한 확인 직후 바로 호출됨
         Log.e("TAG", "onRequestPermissionsResult 실행", )
@@ -112,3 +112,4 @@ class CameraFragment : Fragment() {
         }
     }
 }
+

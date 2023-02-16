@@ -7,7 +7,7 @@ package com.example.domain.model
 data class DomainRoomData(
     val time:String,
     val card:String,
-    val picture:ByteArray
+    val picture:String
 )
 
 //fun DomainRoomData.toMyEntity(): = DomainRoomData(time, card, picture)

@@ -18,7 +18,7 @@ data class MyEntity(
     @ColumnInfo
     val card: String,
     @ColumnInfo
-    val picture: ByteArray,
+    val picture: String,
 )
 
 fun MyEntity.toDomainEntity():DomainRoomData = DomainRoomData(time,card,picture)

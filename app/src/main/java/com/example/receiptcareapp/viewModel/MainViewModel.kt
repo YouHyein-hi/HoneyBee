@@ -11,6 +11,7 @@ import com.example.domain.usecase.RetrofitUseCase
 import com.example.domain.usecase.RoomUseCase
 import com.example.receiptcareapp.viewModel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -47,7 +48,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun receiveData(){
-        viewModelScope.launch(exceptionHandler) {
+        CoroutineScope(exceptionHandler).launch {
             val result = retrofitUseCase.receiveDataUseCase()
             Log.e("TAG", "sendData: $result ")
             _receiveResult.value = result
@@ -55,19 +56,19 @@ class MainViewModel @Inject constructor(
     }
 
     fun insertData(list: DomainRoomData){
-        viewModelScope.launch(exceptionHandler) {
+        CoroutineScope(exceptionHandler).launch {
             roomUseCase.insertData(list)
         }
     }
 
     fun getAllData(){
-        viewModelScope.launch(exceptionHandler) {
+        CoroutineScope(exceptionHandler).launch {
             _getRoomData.postValue(roomUseCase.getAllData())
         }
     }
 
     fun deleteData(date:String){
-        viewModelScope.launch(exceptionHandler){
+        CoroutineScope(exceptionHandler).launch{
             roomUseCase.deleteData(date)
         }
     }

@@ -1,9 +1,7 @@
 package com.example.data.module
 
-import com.example.data.remote.dataSource.ReceiveSource
-import com.example.data.remote.dataSource.SendSource
-import com.example.data.remote.dataSourceImpl.ReceiveSourceImpl
-import com.example.data.remote.dataSourceImpl.SendSourceImpl
+import com.example.data.remote.dataSource.RetrofitSource
+import com.example.data.remote.dataSourceImpl.RetrofitSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,13 +20,8 @@ object DataSourceModule {
 
     @Provides
     @Singleton
-    fun provideDataSourceSendData(retrofit: Retrofit):SendSource{
-        return SendSourceImpl(retrofit)
+    fun provideDataSourceReceiveData(retrofit: Retrofit):RetrofitSource{
+        return RetrofitSourceImpl(retrofit)
     }
 
-    @Provides
-    @Singleton
-    fun provideDataSourceReceiveData(retrofit: Retrofit):ReceiveSource{
-        return ReceiveSourceImpl(retrofit)
-    }
 }

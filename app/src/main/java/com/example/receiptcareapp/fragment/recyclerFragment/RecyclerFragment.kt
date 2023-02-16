@@ -5,22 +5,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.example.receiptcareapp.R
+import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
+import com.example.receiptcareapp.fragment.base.BaseFragment
+import com.example.receiptcareapp.viewModel.MainViewModel
 
-class RecyclerFragment : Fragment() {
+class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
 
+    private val activityViewModel:MainViewModel by activityViewModels()
+    private val adapter:Adapter = Adapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recycler, container, false)
+        activityViewModel.getRoomData.observe(viewLifecycleOwner){
+            adapter.dataList = it
+        }
     }
 
 }

@@ -1,11 +1,12 @@
 package com.example.data.module
 
-import com.example.data.remote.dataSource.ReceiveSource
-import com.example.data.remote.dataSource.SendSource
-import com.example.data.repoImpl.ReceiveRepoImpl
-import com.example.data.repoImpl.SendRepoImpl
-import com.example.domain.repo.ReceiveRepo
-import com.example.domain.repo.SendRepo
+import com.example.data.local.LocalDatabase
+import com.example.data.local.dao.MyDao
+import com.example.data.remote.dataSource.RetrofitSource
+import com.example.data.repoImpl.RetrofitRepoImpl
+import com.example.data.repoImpl.RoomRepoImpl
+import com.example.domain.repo.RetrofitRepo
+import com.example.domain.repo.RoomRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,13 +22,14 @@ import javax.inject.Singleton
 object RepoModule {
     @Provides
     @Singleton
-    fun provideRepoSendData(source : SendSource): SendRepo {
-        return SendRepoImpl(source)
+    fun provideRepoReceiveData(source : RetrofitSource): RetrofitRepo {
+        return RetrofitRepoImpl(source)
     }
 
     @Provides
     @Singleton
-    fun provideRepoReceiveData(source : ReceiveSource): ReceiveRepo {
-        return ReceiveRepoImpl(source)
+    fun provideRepoRoom(source : LocalDatabase): RoomRepo {
+        return RoomRepoImpl(source.myDatabase())
     }
+
 }

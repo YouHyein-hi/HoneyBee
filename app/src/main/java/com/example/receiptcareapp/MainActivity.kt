@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.example.receiptcareapp.databinding.ActivityMainBinding
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.viewModel.base.FetchState

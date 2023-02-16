@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.DomainRoomData
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
+import com.example.receiptcareapp.databinding.ListBinding
 import kotlinx.coroutines.NonDisposableHandle.parent
 
 /**
@@ -17,7 +18,9 @@ class Adapter(
 
 ) :RecyclerView.Adapter<Adapter.MyAdapter>(){
 
-    private lateinit var binding:FragmentRecyclerBinding
+    lateinit var onSaveClic : (DomainRoomData)->Unit
+
+    private lateinit var binding:ListBinding
     var dataList = listOf<DomainRoomData>()
     set(value){
         field = value
@@ -26,21 +29,27 @@ class Adapter(
     }
 
 
-    inner class MyAdapter():RecyclerView.ViewHolder(binding.root){
+    inner class MyAdapter(private val binding: ListBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:DomainRoomData){
+            binding.card.text = list.card
+            binding.date.text = list.card
 
+            binding.pictureLayout.setOnClickListener{
+                onSaveClic(list)
+            }
         }
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter {
-        TODO("Not yet implemented")
+        binding = ListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyAdapter(binding)
     }
 
     override fun onBindViewHolder(holder: MyAdapter, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(dataList[position])
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount(): Int = dataList.size
 }

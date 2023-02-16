@@ -72,4 +72,5 @@ class MainViewModel @Inject constructor(
             roomUseCase.deleteData(date)
         }
     }
+
 }

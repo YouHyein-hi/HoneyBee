@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.domain.model.DomainRoomData
 
 /**
  * 2023-01-31
@@ -50,5 +51,11 @@ class FragmentViewModel(
         _pageNum.value = pageNum
     }
 
-
+    private val _showData = MutableLiveData<DomainRoomData>()
+    val showData : LiveData<DomainRoomData>
+        get() = _showData
+    fun myShowData(list:DomainRoomData){
+        _showData.value = list
+        Log.e("TAG", "myShowData: $showData", )
+    }
 }

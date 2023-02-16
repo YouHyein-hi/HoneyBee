@@ -9,31 +9,54 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.createBitmap
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.DomainRoomData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
+import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
 
     private val activityViewModel:MainViewModel by activityViewModels()
+    private val fragmentViewModel:FragmentViewModel by viewModels()
     private val adapter:Adapter = Adapter()
+
+    private val testData = listOf<String>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initRecyclerView()
 
         activityViewModel.getRoomData.observe(viewLifecycleOwner){
             adapter.dataList = it
         }
 
-        binding.button3.setOnClickListener{
-            activityViewModel.insertData(DomainRoomData("pureum","pureum", "pureum"))
-            activityViewModel.getAllData()
-        }
         activityViewModel.getRoomData.observe(viewLifecycleOwner){
             Log.e("TAG", "onViewCreated: $it", )
         }
+
+        adapter.onSaveClic = {
+            fragmentViewModel.myShowData(it)
+        }
     }
 
+    fun initRecyclerView(){
+        binding.mainRecycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.mainRecycler.adapter = adapter
+        adapter.dataList = listOf(
+            DomainRoomData("pureum", "hello", "hello"),
+            DomainRoomData("pureum", "hello", "hello"),
+            DomainRoomData("pureum", "hello", "hello"),
+            DomainRoomData("pureum", "hello", "hello"),
+            DomainRoomData("pureum", "hello", "hello"),
+            DomainRoomData("pureum", "hello", "hello"),
+            DomainRoomData("pureum", "hello", "hello"),
+            DomainRoomData("pureum", "hello", "hello"),
+            DomainRoomData("pureum", "hello", "hello"),
+        )
+    }
 }

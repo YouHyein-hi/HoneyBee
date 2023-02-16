@@ -16,6 +16,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -56,30 +58,28 @@ class GalleryFragment : Fragment() {
             val intent = Intent(Intent.ACTION_PICK)
             intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             intent.type = "image/*"
-            startActivityForResult(intent, GALLERY_CODE)
+            activityResult.launch(intent)
         }
     }
 
-    @SuppressLint("MissingSuperCall")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {   // startActivityForResult에서 불림, (but! startActivityForResult() + onActivityResult() 는 이제 사용 안한다고 함. 수정하자!
-        if (resultCode == Activity.RESULT_OK) {
-            Log.e("TAG", "onActivityResult: if 진입",)
-            when (requestCode) {
-                GALLERY_CODE -> {
-                    data?.data?.let { uri ->
-                        val imageUri: Uri? = data?.data
-                        if(imageUri != null){
-                            Log.e("TAG", "onActivityResult: imageUri NULL이 아님!", )
+    private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()){
+        if (it.resultCode == Activity.RESULT_OK){
+            Log.e("TAG", "onActivityResult: if 진입", )
+            val imageUri: Uri? = it.data?.data
+            if (imageUri != null) {
+                Log.e("TAG", "data 있음", )
 
-                            viewModel.takeImage(imageUri)
-                            viewModel.takePage(2)
-                            NavHostFragment.findNavController(this).navigate(R.id.action_galleryFragment_to_showFragment)
-                        }
-                    }
-                }
+                viewModel.takeImage(imageUri)
+                viewModel.takePage(2)
+                NavHostFragment.findNavController(this).navigate(R.id.action_galleryFragment_to_showFragment)
             }
-        } else {
-            Log.e("TAG", "onActivityResult: else 진입",)
+            else{
+                Log.e("TAG", "data 없음", )
+            }
+        }
+        else{
+            Log.e("TAG", "RESULT_OK if: else 진입", )
         }
     }
 

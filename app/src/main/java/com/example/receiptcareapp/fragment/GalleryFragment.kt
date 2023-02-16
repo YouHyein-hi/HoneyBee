@@ -23,6 +23,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.example.receiptcareapp.R
+import com.example.receiptcareapp.databinding.FragmentCameraBinding
+import com.example.receiptcareapp.databinding.FragmentGalleryBinding
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import java.io.File
 import kotlin.math.log
@@ -32,6 +34,9 @@ class GalleryFragment : Fragment() {
     private val GALLERY_CODE = 101
 
     private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
+    private val binding : FragmentGalleryBinding by lazy {
+        FragmentGalleryBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,15 +45,12 @@ class GalleryFragment : Fragment() {
         CallGallery()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gallery, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return binding.root
     }
 
-
+    /** 갤러리 관련 코드 **/
+    /* 갤러리 호출 */
     fun CallGallery() {
         Log.e("TAG", "CallGallery 실행", )
 
@@ -61,7 +63,7 @@ class GalleryFragment : Fragment() {
             activityResult.launch(intent)
         }
     }
-
+    /* 갤러리 사진 관련 함수 */
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK){
@@ -98,7 +100,6 @@ class GalleryFragment : Fragment() {
         }
         return true
     }
-
     @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {  // 권한 확인 직후 바로 호출됨
         Log.e("TAG", "onRequestPermissionsResult 실행", )

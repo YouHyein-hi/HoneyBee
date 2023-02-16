@@ -32,10 +32,8 @@ import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 class CameraFragment : Fragment() {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
-    private lateinit var resultLauncher : ActivityResultLauncher<Intent>
 
     private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
-
     private val binding : FragmentCameraBinding by lazy {
         FragmentCameraBinding.inflate(layoutInflater)
     }
@@ -47,13 +45,12 @@ class CameraFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return binding.root
     }
 
+    /** 카메라 관련 코드 **/
+    /* 카메라 호출 */
     fun CallCamera() {  // 카메라 실행 함수
         Log.e("TAG", "CallCamera 실행", )
 
@@ -64,7 +61,7 @@ class CameraFragment : Fragment() {
             activityResult.launch(intent)
         }
     }
-
+    /* 찍은 사진 관련 함수 */
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK){
@@ -100,7 +97,6 @@ class CameraFragment : Fragment() {
         }
         return true
     }
-
     @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {  // 권한 확인 직후 바로 호출됨
         Log.e("TAG", "onRequestPermissionsResult 실행", )

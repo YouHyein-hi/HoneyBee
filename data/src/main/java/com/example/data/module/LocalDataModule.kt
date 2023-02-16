@@ -3,14 +3,19 @@ package com.example.data.module
 import android.content.Context
 import androidx.room.Room
 import com.example.data.local.LocalDatabase
+import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
  * 2023-02-15
  * pureum
  */
+@Module
+@InstallIn(SingletonComponent::class)
 object LocalDataModule {
     @Provides
     @Singleton

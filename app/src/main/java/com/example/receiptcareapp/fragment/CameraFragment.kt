@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.MainActivity
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
@@ -43,6 +44,11 @@ class CameraFragment : Fragment() {
         Log.e("TAG", "onCreate: CameraFragment", )
         CallCamera()
 
+    }
+
+    override fun onResume() {
+        Log.e("TAG", "onResume: ", )
+        super.onResume()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -80,6 +86,7 @@ class CameraFragment : Fragment() {
         }
         else{
             Log.e("TAG", "RESULT_OK if: else 진입", )
+            findNavController().navigate(R.id.action_cameraFragment_to_homeFragment)
         }
     }
 

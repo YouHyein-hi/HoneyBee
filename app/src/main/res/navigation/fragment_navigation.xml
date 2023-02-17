@@ -13,13 +13,18 @@
         >
         <action
             android:id="@+id/action_homeFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
+            app:destination="@id/cameraFragment"
+            app:popUpTo="@id/homeFragment"
+            />
         <action
             android:id="@+id/action_homeFragment_to_galleryFragment"
-            app:destination="@id/galleryFragment" />
+            app:destination="@id/galleryFragment"
+            app:popUpTo="@id/homeFragment"
+            />
         <action
             android:id="@+id/action_homeFragment_to_recyclerFragment"
-            app:destination="@id/recyclerFragment" />
+            app:destination="@id/recyclerFragment"
+            app:popUpTo="@id/homeFragment"/>
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
@@ -28,10 +33,14 @@
         tools:layout="@layout/fragment_camera" >
         <action
             android:id="@+id/action_cameraFragment_to_showFragment"
-            app:destination="@id/showFragment" />
+            app:destination="@id/showFragment"
+            app:popUpTo="@id/homeFragment"
+            />
         <action
             android:id="@+id/action_cameraFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/galleryFragment"
@@ -40,10 +49,14 @@
         tools:layout="@layout/fragment_gallery" >
         <action
             android:id="@+id/action_galleryFragment_to_showFragment"
-            app:destination="@id/showFragment" />
+            app:destination="@id/showFragment"
+            app:popUpTo="@id/homeFragment"
+            />
         <action
             android:id="@+id/action_galleryFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/recyclerFragment"
@@ -52,10 +65,14 @@
         tools:layout="@layout/fragment_recycler" >
         <action
             android:id="@+id/action_recyclerFragment_to_recyclerShowFragment"
-            app:destination="@id/recyclerShowFragment" />
+            app:destination="@id/recyclerShowFragment"
+            app:popUpTo="@id/homeFragment"
+            />
         <action
             android:id="@+id/action_recyclerFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/recyclerShowFragment"
@@ -64,10 +81,14 @@
         tools:layout="@layout/fragment_recycler_show" >
         <action
             android:id="@+id/action_recyclerShowFragment_to_recyclerFragment"
-            app:destination="@id/recyclerFragment" />
+            app:destination="@id/recyclerFragment"
+            app:popUpTo="@id/homeFragment"
+            />
         <action
             android:id="@+id/action_recyclerShowFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/showFragment"
@@ -76,12 +97,18 @@
         tools:layout="@layout/fragment_show_picture" >
         <action
             android:id="@+id/action_showFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            />
         <action
             android:id="@+id/action_showFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
+            app:destination="@id/cameraFragment"
+            app:popUpTo="@id/homeFragment"
+            />
         <action
             android:id="@+id/action_showFragment_to_galleryFragment"
-            app:destination="@id/galleryFragment" />
+            app:destination="@id/galleryFragment"
+            app:popUpTo="@id/homeFragment"
+            />
     </fragment>
 </navigation>

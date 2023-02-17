@@ -44,4 +44,6 @@ class ShowPictureFragment : Fragment() {
         binding.button2.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment) }
         return binding.root
     }
+
+
 }

@@ -7,9 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.graphics.createBitmap
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.DomainRoomData
 import com.example.receiptcareapp.R
@@ -24,10 +26,10 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     private val fragmentViewModel:FragmentViewModel by viewModels()
     private val adapter:Adapter = Adapter()
 
-    private val testData = listOf<String>()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
 
         initRecyclerView()
 
@@ -41,8 +43,11 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         adapter.onSaveClic = {
             fragmentViewModel.myShowData(it)
+            findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
     }
+
+
 
     fun initRecyclerView(){
         binding.mainRecycler.layoutManager = LinearLayoutManager(requireContext())

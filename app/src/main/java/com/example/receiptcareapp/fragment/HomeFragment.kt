@@ -24,6 +24,7 @@ import com.example.receiptcareapp.fragment.base.BaseFragment
 //class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 class HomeFragment : Fragment() {
 
+    private lateinit var callback: OnBackPressedCallback
     private val binding : FragmentHomeBinding by lazy {
         FragmentHomeBinding.inflate(layoutInflater)
     }
@@ -32,7 +33,6 @@ class HomeFragment : Fragment() {
     private val ALBUM = android.Manifest.permission.READ_EXTERNAL_STORAGE
     private val ALBUM_CODE = 101
 
-    private lateinit var callback: OnBackPressedCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +50,6 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-
-
     /*** 권한 관련 코드 ***/
     fun checkPermission() : Boolean{         // 실제 권한을 확인하는 곳
         Log.e("TAG", "MainActivity: checkPermission 실행", )
@@ -65,7 +63,6 @@ class HomeFragment : Fragment() {
         }
         return true
     }
-
     @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {  // 권한 확인 직후 바로 호출됨
         Log.e("TAG", "MainActivity: onRequestPermissionsResult 실행", )
@@ -88,19 +85,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    /*override fun onBackPressed() {
-        AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-            .setTitle("종료")
-            .setMessage("꿀을 그만 빠시겠어요?")
-            .setPositiveButton("그만 빤다"){dialog, id->
-                requireActivity().finish()
-            }
-            .setNegativeButton("더 빤다"){dialog, id->
-
-            }.show()
-    }*/
-
-
+    /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
@@ -118,7 +103,6 @@ class HomeFragment : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
-
     override fun onDetach() {
         super.onDetach()
         callback.remove()

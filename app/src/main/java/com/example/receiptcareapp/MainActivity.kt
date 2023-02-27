@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        //supportActionBar?.hide()
+        supportActionBar?.hide()
 
         activityViewModel.fetchState.observe(this) {
             val message = when (it.second) {
@@ -34,6 +34,4 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
-
-
 }

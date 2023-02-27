@@ -2,6 +2,7 @@ package com.example.receiptcareapp.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.appsearch.AppSearchResult
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -30,18 +31,15 @@ import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
-import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.log
 
 
 class CameraFragment : Fragment() {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
     private var photoURI : Uri? = null
-
     private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
     private val binding : FragmentCameraBinding by lazy {
         FragmentCameraBinding.inflate(layoutInflater)
@@ -49,7 +47,6 @@ class CameraFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("TAG", "onCreate: CameraFragment", )
         CallCamera()
     }
 
@@ -125,6 +122,24 @@ class CameraFragment : Fragment() {
         }
         return image
     }
+
+    fun loadBitmapFromMediaStoreBy(photoUri: Uri) : Bitmap?{
+        var image: Bitmap? = null
+        try {
+            image = if(Build.VERSION.SDK_INT > 27) {
+                val source: ImageDecoder.Source =
+                    ImageDecoder.createSource(requireActivity().contentResolver, photoUri)
+                ImageDecoder.decodeBitmap(source)
+            }
+            else{
+                MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, photoUri)
+            }
+        } catch(e: IOException) {
+            e.printStackTrace()
+        }
+        return image
+    }
+
 
     /*** 권한 관련 코드 ***/
     fun checkPermission(permissions : Array<out String>) : Boolean{         // 실제 권한을 확인하는 곳

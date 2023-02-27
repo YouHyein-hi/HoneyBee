@@ -29,8 +29,6 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         initRecyclerView()
 
         activityViewModel.getRoomData.observe(viewLifecycleOwner){

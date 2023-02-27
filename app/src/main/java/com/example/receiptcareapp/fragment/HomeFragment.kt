@@ -32,6 +32,8 @@ class HomeFragment : Fragment() {
     private val CAMERA_CODE = 98
     private val ALBUM = android.Manifest.permission.READ_EXTERNAL_STORAGE
     private val ALBUM_CODE = 101
+    private lateinit var callback: OnBackPressedCallback
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +42,7 @@ class HomeFragment : Fragment() {
 
         binding.camaraBtn.setOnClickListener{ Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_cameraFragment) }
         binding.galleryBtn.setOnClickListener{ Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_galleryFragment) }
-        binding.historyBtn.setOnClickListener{ Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_recyclerFragment) }
+        binding.storage.setOnClickListener{ Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_recyclerFragment) }
     }
 
     override fun onCreateView(
@@ -103,10 +105,10 @@ class HomeFragment : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
+
     override fun onDetach() {
         super.onDetach()
         callback.remove()
     }
-
 
 }

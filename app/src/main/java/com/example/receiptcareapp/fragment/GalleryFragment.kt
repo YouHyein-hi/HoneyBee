@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.databinding.FragmentGalleryBinding
@@ -82,6 +83,7 @@ class GalleryFragment : Fragment() {
         }
         else{
             Log.e("TAG", "RESULT_OK if: else 진입", )
+            findNavController().navigate(R.id.action_galleryFragment_to_homeFragment)
         }
     }
 

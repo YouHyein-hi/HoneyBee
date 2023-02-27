@@ -6,62 +6,100 @@
     android:layout_height="match_parent"
     tools:context=".fragment.ShowPictureFragment">
 
+
     <ImageView
         android:id="@+id/pictureView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="130dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/oragne"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/pictureView"
+        app:layout_constraintTop_toBottomOf="@+id/pictureView" />
+
+    <LinearLayout
+
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pictureView">
 
+
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal">
+
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
+
                 <RadioButton
-                    android:text="card1"
                     android:id="@+id/radioButton_card1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    />
+                    android:fontFamily="@font/murukmuruk"
+                    android:text="card1" />
+
                 <RadioButton
-                    android:text="card2"
                     android:id="@+id/radioButton_card2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    />
+                    android:fontFamily="@font/murukmuruk"
+                    android:text="card2" />
+
                 <RadioButton
-                    android:text="card3"
                     android:id="@+id/radioButton_card3"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    />
+                    android:fontFamily="@font/murukmuruk"
+                    android:text="card3" />
 
             </RadioGroup>
 
-            <Button
-                android:layout_margin="5dp"
-                android:text="date"
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/show_picture_btn"
+                android:fontFamily="@font/murukmuruk"
+                android:text="날짜"
+                android:textColor="@color/black"
+                android:textSize="17dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/show_picture_btn"
+                android:fontFamily="@font/murukmuruk"
+                android:text="금액"
+                android:textColor="@color/black"
+                android:textSize="17dp" />
 
 
         </LinearLayout>
@@ -71,21 +109,29 @@
             android:layout_height="70dp"
             android:orientation="horizontal">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="1dp"
                 android:layout_weight="1"
-                android:text="취소" />
+                android:background="@drawable/main_btn"
+                android:fontFamily="@font/murukmuruk"
+                android:text="취소"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="1dp"
                 android:layout_weight="1"
-                android:text="전송" />
+                android:background="@drawable/main_btn"
+                android:fontFamily="@font/murukmuruk"
+                android:text="전송"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
         </LinearLayout>
 
     </LinearLayout>

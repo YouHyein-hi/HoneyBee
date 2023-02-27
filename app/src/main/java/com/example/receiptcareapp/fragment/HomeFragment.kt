@@ -18,7 +18,7 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 
-//메인 프레그먼트
+//메인 프레그먼트/
 //class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 class HomeFragment : Fragment() {
 

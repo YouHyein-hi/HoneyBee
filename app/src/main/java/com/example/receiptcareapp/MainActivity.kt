@@ -34,16 +34,4 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
-
-//    override fun onBackPressed() {
-//        AlertDialog.Builder(this, R.style.AppCompatAlertDialog)
-//            .setTitle("종료")
-//            .setMessage("꿀을 그만 빠시겠어요?")
-//            .setPositiveButton("그만 빤다"){dialog, id->
-//                finish()
-//            }
-//            .setNegativeButton("더 빤다"){dialog, id->
-//
-//            }.show()
-//    }
 }

@@ -11,9 +11,10 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.telecom.Call
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,17 +23,18 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.example.receiptcareapp.MainActivity
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class CameraFragment : Fragment() {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
@@ -61,7 +63,6 @@ class CameraFragment : Fragment() {
     /* 카메라 호출 */
     fun CallCamera() {
         Log.e("TAG", "CallCamera 실행", )
-
         if (checkPermission(CAMERA)) {  // 카메라 권한 있을 시 카메라 실행함
             Log.e("TAG", "카메라 권한 있음", )
             dispatchTakePictureIntentEx()
@@ -87,7 +88,6 @@ class CameraFragment : Fragment() {
         activityResult.launch(takePictureIntent)
     }
 
-    /* 찍은 사진 관련 함수 */
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK){
@@ -96,18 +96,31 @@ class CameraFragment : Fragment() {
                 Log.e("TAG", "REQUEST_CREATE_EX if 진입", )
                 val bitmap = loadBitmapFromMediaStoreBy(photoURI!!)
                 bitmap?.let { viewModel.takePicture(it) }
+
                 viewModel.takePage(1)
                 photoURI = null
                 NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
             }
-            else{
-                Log.e("TAG", "data 없음", )
+            else Log.e("TAG", "data 없음", )
+        }
+        else Log.e("TAG", "RESULT_OK if: else 진입", )
+    }
+
+    fun loadBitmapFromMediaStoreBy(photoUri: Uri) : Bitmap?{
+        var image: Bitmap? = null
+        try {
+            image = if(Build.VERSION.SDK_INT > 27) {
+                val source: ImageDecoder.Source =
+                    ImageDecoder.createSource(requireActivity().contentResolver, photoUri)
+                ImageDecoder.decodeBitmap(source)
             }
+            else{
+                MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, photoUri)
+            }
+        } catch(e:IOException){
+            e.printStackTrace()
         }
-        else{
-            Log.e("TAG", "RESULT_OK if: else 진입", )
-            findNavController().navigate(R.id.action_cameraFragment_to_homeFragment)
-        }
+        return image
     }
 
     fun loadBitmapFromMediaStoreBy(photoUri: Uri) : Bitmap?{
@@ -157,4 +170,3 @@ class CameraFragment : Fragment() {
         }
     }
 }
-

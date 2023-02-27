@@ -2,7 +2,6 @@ package com.example.receiptcareapp.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.appsearch.AppSearchResult
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,9 +10,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.telecom.Call
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +20,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -80,7 +76,6 @@ class CameraFragment : Fragment() {
     private fun dispatchTakePictureIntentEx() {
         Log.e("TAG", "dispatchTakePictureIntentEx: 진입", )
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        //val storageDir: File? = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val uri : Uri? = createImageUri("JPEG_${timeStamp}_", "image/jpeg")
         photoURI = uri
@@ -96,31 +91,12 @@ class CameraFragment : Fragment() {
                 Log.e("TAG", "REQUEST_CREATE_EX if 진입", )
                 val bitmap = loadBitmapFromMediaStoreBy(photoURI!!)
                 bitmap?.let { viewModel.takePicture(it) }
-
                 viewModel.takePage(1)
                 photoURI = null
                 NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
             }
-            else Log.e("TAG", "data 없음", )
         }
         else Log.e("TAG", "RESULT_OK if: else 진입", )
-    }
-
-    fun loadBitmapFromMediaStoreBy(photoUri: Uri) : Bitmap?{
-        var image: Bitmap? = null
-        try {
-            image = if(Build.VERSION.SDK_INT > 27) {
-                val source: ImageDecoder.Source =
-                    ImageDecoder.createSource(requireActivity().contentResolver, photoUri)
-                ImageDecoder.decodeBitmap(source)
-            }
-            else{
-                MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, photoUri)
-            }
-        } catch(e:IOException){
-            e.printStackTrace()
-        }
-        return image
     }
 
     fun loadBitmapFromMediaStoreBy(photoUri: Uri) : Bitmap?{

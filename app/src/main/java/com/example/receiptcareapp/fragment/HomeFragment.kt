@@ -24,7 +24,6 @@ import com.example.receiptcareapp.fragment.base.BaseFragment
 //class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 class HomeFragment : Fragment() {
 
-    private lateinit var callback: OnBackPressedCallback
     private val binding : FragmentHomeBinding by lazy {
         FragmentHomeBinding.inflate(layoutInflater)
     }

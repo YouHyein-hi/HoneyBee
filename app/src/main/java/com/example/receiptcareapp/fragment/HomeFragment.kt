@@ -16,17 +16,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 
 //메인 프레그먼트/
-//class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
-    private val binding : FragmentHomeBinding by lazy {
-        FragmentHomeBinding.inflate(layoutInflater)
-    }
     private val CAMERA = android.Manifest.permission.CAMERA
     private val CAMERA_CODE = 98
     private val ALBUM = android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -34,21 +31,12 @@ class HomeFragment : Fragment() {
     private lateinit var callback: OnBackPressedCallback
 
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         checkPermission()
-
-        binding.camaraBtn.setOnClickListener{ Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_cameraFragment) }
-        binding.galleryBtn.setOnClickListener{ Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_galleryFragment) }
-        binding.storage.setOnClickListener{ Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_recyclerFragment) }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return binding.root
+        binding.camaraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
+        binding.galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
+        binding.storage.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
     }
 
     /*** 권한 관련 코드 ***/

@@ -26,33 +26,30 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
+import com.example.receiptcareapp.databinding.FragmentHomeBinding
+import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class CameraFragment : Fragment() {
+class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding::inflate) {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
     private var photoURI : Uri? = null
     private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
-    private val binding : FragmentCameraBinding by lazy {
-        FragmentCameraBinding.inflate(layoutInflater)
-    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         CallCamera()
     }
+
 
     override fun onResume() {
         Log.e("TAG", "onResume: ", )
         super.onResume()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return binding.root
     }
 
     /** 카메라 관련 코드 **/
@@ -96,7 +93,10 @@ class CameraFragment : Fragment() {
                 NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
             }
         }
-        else Log.e("TAG", "RESULT_OK if: else 진입", )
+        else {
+            Log.e("TAG", "RESULT_OK if: else 진입", )
+            findNavController().navigate(R.id.action_cameraFragment_to_homeFragment)
+        }
     }
 
     fun loadBitmapFromMediaStoreBy(photoUri: Uri) : Bitmap?{

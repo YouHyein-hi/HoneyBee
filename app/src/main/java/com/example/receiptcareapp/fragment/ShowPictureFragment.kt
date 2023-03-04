@@ -61,7 +61,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
 //                }
 //            }
 //            activityViewModel.insertData()
-//            NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
+            NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
         }
         binding.cancleBtn.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment) }
     }

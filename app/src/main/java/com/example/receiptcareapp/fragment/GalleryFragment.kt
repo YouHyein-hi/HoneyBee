@@ -22,21 +22,25 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.databinding.FragmentGalleryBinding
+import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
+import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import java.io.File
 import kotlin.math.log
 
+//class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 class GalleryFragment : Fragment() {
+
+    private val binding by lazy { FragmentGalleryBinding.inflate(layoutInflater) }
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
     private val GALLERY_CODE = 101
 
     private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
-    private val binding : FragmentGalleryBinding by lazy {
-        FragmentGalleryBinding.inflate(layoutInflater)
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +86,7 @@ class GalleryFragment : Fragment() {
         }
         else{
             Log.e("TAG", "RESULT_OK if: else 진입", )
+            findNavController().navigate(R.id.action_galleryFragment_to_homeFragment)
         }
     }
 

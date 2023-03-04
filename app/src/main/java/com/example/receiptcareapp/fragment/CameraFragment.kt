@@ -10,9 +10,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.telecom.Call
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,44 +20,36 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
+import com.example.receiptcareapp.databinding.FragmentHomeBinding
+import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
-import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.log
 
 
-class CameraFragment : Fragment() {
+class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding::inflate) {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
     private var photoURI : Uri? = null
-
     private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
-    private val binding : FragmentCameraBinding by lazy {
-        FragmentCameraBinding.inflate(layoutInflater)
-    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.e("TAG", "onCreate: CameraFragment", )
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         CallCamera()
     }
+
 
     override fun onResume() {
         Log.e("TAG", "onResume: ", )
         super.onResume()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return binding.root
     }
 
     /** 카메라 관련 코드 **/
@@ -83,7 +73,6 @@ class CameraFragment : Fragment() {
     private fun dispatchTakePictureIntentEx() {
         Log.e("TAG", "dispatchTakePictureIntentEx: 진입", )
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        //val storageDir: File? = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val uri : Uri? = createImageUri("JPEG_${timeStamp}_", "image/jpeg")
         photoURI = uri
@@ -99,14 +88,15 @@ class CameraFragment : Fragment() {
                 Log.e("TAG", "REQUEST_CREATE_EX if 진입", )
                 val bitmap = loadBitmapFromMediaStoreBy(photoURI!!)
                 bitmap?.let { viewModel.takePicture(it) }
-
                 viewModel.takePage(1)
                 photoURI = null
                 NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
             }
-            else Log.e("TAG", "data 없음", )
         }
-        else Log.e("TAG", "RESULT_OK if: else 진입", )
+        else {
+            Log.e("TAG", "RESULT_OK if: else 진입", )
+            findNavController().navigate(R.id.action_cameraFragment_to_homeFragment)
+        }
     }
 
     fun loadBitmapFromMediaStoreBy(photoUri: Uri) : Bitmap?{
@@ -120,11 +110,12 @@ class CameraFragment : Fragment() {
             else{
                 MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, photoUri)
             }
-        } catch(e:IOException){
+        } catch(e: IOException) {
             e.printStackTrace()
         }
         return image
     }
+
 
     /*** 권한 관련 코드 ***/
     fun checkPermission(permissions : Array<out String>) : Boolean{         // 실제 권한을 확인하는 곳

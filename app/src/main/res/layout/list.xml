@@ -29,12 +29,14 @@
             android:orientation="vertical">
 
             <TextView
+                android:fontFamily="@font/murukmuruk"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="카드" />
 
             <TextView
+                android:fontFamily="@font/murukmuruk"
                 android:gravity="center"
                 android:id="@+id/card"
                 android:layout_width="match_parent"
@@ -43,6 +45,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:fontFamily="@font/murukmuruk"
             android:gravity="center"
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -50,12 +53,14 @@
             android:orientation="vertical">
 
             <TextView
+                android:fontFamily="@font/murukmuruk"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="날짜" />
 
             <TextView
+                android:fontFamily="@font/murukmuruk"
                 android:gravity="center"
                 android:id="@+id/date"
                 android:layout_width="match_parent"
@@ -71,6 +76,8 @@
             android:orientation="vertical">
 
             <ImageView
+
+
                 android:src="@drawable/ic_launcher_foreground"
                 android:id="@+id/imageView2"
                 android:layout_width="match_parent"

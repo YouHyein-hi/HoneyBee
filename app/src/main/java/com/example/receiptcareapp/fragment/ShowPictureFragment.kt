@@ -7,21 +7,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
+import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
+import com.example.receiptcareapp.viewModel.MainViewModel
 import java.util.*
 
-class ShowPictureFragment : Fragment() {
-    private val binding : FragmentShowPictureBinding by lazy { FragmentShowPictureBinding.inflate(layoutInflater) }
+class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
     private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
+    private val activityViewModel : MainViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val pageNum = viewModel.pageNum.value
         when(pageNum){
             1 -> {
@@ -36,14 +38,34 @@ class ShowPictureFragment : Fragment() {
 
         binding.date.setOnClickListener{
             val cal = Calendar.getInstance()
-            val data = DatePickerDialog.OnDateSetListener { view, year, month, day -> binding.date.text = "${year}/${month}/${day}" }
+            val data = DatePickerDialog.OnDateSetListener { view, year, month, day -> binding.date.text = "${year}/${month+1}/${day}" }
             DatePickerDialog(requireContext(),data,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
         }
 
-        binding.button.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment) }
-        binding.button2.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment) }
-        return binding.root
+        binding.sendBtn.setOnClickListener{
+
+            println(binding.radioGroup.clearCheck())
+//            if(binding.radioGroup.is) {
+//                println()
+//                //라디오버튼 입력 권유 메시지
+//            }else if(binding.date.text == "날짜") {
+//                //날짜 입력 권유 메시지
+//            }
+
+//            binding.radioGroup.setOnCheckedChangeListener{ _, checkedId ->
+//                when(checkedId){
+//                    R.id.radioButton_card1 -> {}
+//                    R.id.radioButton_card2 -> {}
+//                    R.id.radioButton_card3 -> {}
+//                    else -> {}
+//                }
+//            }
+//            activityViewModel.insertData()
+//            NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
+        }
+        binding.cancleBtn.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment) }
     }
+
 
 
 }

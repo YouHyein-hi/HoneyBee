@@ -1,6 +1,7 @@
 package com.example.receiptcareapp.fragment.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,12 @@ typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 abstract class BaseFragment<VB: ViewBinding>(
     private val inflate:Inflate<VB>
 ) : Fragment() {
+
+    init {
+        Log.e("TAG", "Basefragment : start", )
+        Log.e("TAG", "Basefragment : $inflate: ", )
+    }
+
     private var _binding: VB? = null
     val binding get() = _binding!!
 
@@ -26,6 +33,7 @@ abstract class BaseFragment<VB: ViewBinding>(
         savedInstanceState: Bundle?
     ): View? {
         _binding = inflate.invoke(inflater, container, false)
+        Log.e("TAG", "Basefragment : $_binding: ", )
         return binding.root
     }
 

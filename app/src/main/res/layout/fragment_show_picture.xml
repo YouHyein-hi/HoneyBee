@@ -44,12 +44,12 @@
 
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal">
 
             <RadioGroup
-                android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
@@ -89,10 +89,7 @@
                 android:textColor="@color/black"
                 android:textSize="17dp" />
 
-
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:inputType="number"
-                android:gravity="center"
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -100,10 +97,9 @@
                 android:layout_weight="1"
                 android:background="@drawable/show_picture_btn"
                 android:fontFamily="@font/murukmuruk"
+                android:text="금액"
                 android:textColor="@color/black"
-                android:textSize="14dp"
-                android:hint="금액"
-                />
+                android:textSize="17dp" />
 
 
         </LinearLayout>
@@ -114,7 +110,7 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/cancleBtn"
+                android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="1dp"
@@ -126,7 +122,7 @@
                 android:textSize="20dp" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/sendBtn"
+                android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="1dp"

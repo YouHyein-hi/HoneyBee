@@ -40,11 +40,13 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             }
         }
 
-        binding.date.setOnClickListener{
+        binding.btnDate.setOnClickListener{
             val cal = Calendar.getInstance()
-            val data = DatePickerDialog.OnDateSetListener { view, year, month, day -> binding.date.text = "${year}/${month+1}/${day}" }
+            val data = DatePickerDialog.OnDateSetListener { view, year, month, day -> binding.btnDate.text = "${year}/${month+1}/${day}" }
             DatePickerDialog(requireContext(),data,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
         }
+
+
 
 
         binding.radioGroup.setOnCheckedChangeListener{ _, checkedId ->
@@ -61,6 +63,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                 else -> {}
             }
         }
+
 
         binding.price.addTextChangedListener(object:TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

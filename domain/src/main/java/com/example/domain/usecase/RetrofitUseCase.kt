@@ -11,8 +11,8 @@ import com.example.domain.repo.RetrofitRepo
 class RetrofitUseCase(
     private val retrofitRepo: RetrofitRepo,
 ) {
-    suspend fun sendDataUseCase(card: String, date: String, picture: ByteArray): DomainSendData {
-        return retrofitRepo.sendDataRepo(card, date, picture)
+    suspend fun sendDataUseCase(date:String, amount : Int, card:String, picture:ByteArray): DomainSendData {
+        return retrofitRepo.sendDataRepo(date,amount, card, picture)
     }
 
     suspend fun receiveDataUseCase(): DomainReceiveData {

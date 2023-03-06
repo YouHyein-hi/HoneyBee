@@ -5,6 +5,9 @@ package com.example.domain.model
  * pureum
  */
 data class DomainSendData(
-    val idontknow:String
+    val date:String,
+    val amount:Int,
+    val card:String,
+    val picture:ByteArray
 )
 

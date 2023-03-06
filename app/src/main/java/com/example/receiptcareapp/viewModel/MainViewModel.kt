@@ -39,9 +39,10 @@ class MainViewModel @Inject constructor(
         get() = _getRoomData
 
 
-    fun sendData(card:String, date:String, picture:ByteArray){
+    fun sendData(date:String, amount : String ? = "0", card:String, picture:ByteArray){
         viewModelScope.launch(exceptionHandler) {
-            val result = retrofitUseCase.sendDataUseCase(card, date, picture)
+            Log.e("TAG", "보내는 데이터 : $date, $amount, $card, $picture", )
+            val result = retrofitUseCase.sendDataUseCase(date, amount?.toInt() ?: 0, card, picture)
             Log.e("TAG", "sendData: $result ")
             _sendResult.value = result
         }

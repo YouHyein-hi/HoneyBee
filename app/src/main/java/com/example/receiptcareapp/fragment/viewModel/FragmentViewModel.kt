@@ -7,8 +7,8 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.domain.model.DomainRoomData
+import java.io.ByteArrayOutputStream
 
 /**
  * 2023-01-31
@@ -25,10 +25,19 @@ class FragmentViewModel(
     private val _picture = MutableLiveData<Bitmap>()
     val picture : LiveData<Bitmap>
         get() = _picture
-    fun takePicture(pic:Bitmap){
-        Log.e("TAG", "takePicture : ${picture.value}", )
-        _picture.value = pic
-        Log.e("TAG", "takePicture : ${picture.value}", )
+
+    private val _bytePicture = MutableLiveData<ByteArray>()
+    val bytePicture : LiveData<ByteArray>
+        get() = _bytePicture
+    fun takePicture(bitmap:Bitmap){
+
+        //bytearray 변환시키기
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+
+        _bytePicture.value = outputStream.toByteArray()
+        Log.e("TAG", "takePicture: ${_bytePicture.value}", )
+        _picture.value = bitmap
     }
 
     private val _image = MutableLiveData<Uri>()
@@ -39,6 +48,9 @@ class FragmentViewModel(
         _image.value = img
         Log.e("TAG", "takeImage: ${image.value}", )
     }
+
+
+
 
     /**
      1 : CameraFragment
@@ -58,4 +70,13 @@ class FragmentViewModel(
         _showData.value = list
         Log.e("TAG", "myShowData: $showData", )
     }
+
+
+//    private val _bitMap = MutableLiveData<Bitmap>()
+//    val bitMap : LiveData<Bitmap>
+//        get() = _bitMap
+//    fun myBitMap(bitmap: Bitmap) {
+//        _bitMap.value = bitmap
+//        Log.e("TAG", "myBitMap: $bitMap", )
+//    }
 }

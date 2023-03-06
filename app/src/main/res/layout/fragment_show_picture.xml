@@ -89,7 +89,10 @@
                 android:textColor="@color/black"
                 android:textSize="17dp" />
 
-            <androidx.appcompat.widget.AppCompatButton
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:inputType="number"
+                android:gravity="center"
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -97,9 +100,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/show_picture_btn"
                 android:fontFamily="@font/murukmuruk"
-                android:text="금액"
                 android:textColor="@color/black"
-                android:textSize="17dp" />
+                android:textSize="14dp"
+                android:hint="금액"
+                />
 
 
         </LinearLayout>

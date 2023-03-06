@@ -16,8 +16,8 @@ class RetrofitRepoImpl @Inject constructor(
     private val retrofitSource: RetrofitSource,
 ):RetrofitRepo{
 
-    override suspend fun sendDataRepo(card:String, date:String, picture:ByteArray): DomainSendData {
-        return retrofitSource.sendDataSource(card, date, picture).toDomainSendData()
+    override suspend fun sendDataRepo(date:String, amount : Int, card:String, picture:ByteArray): DomainSendData {
+        return retrofitSource.sendDataSource(date,amount, card, picture).toDomainSendData()
     }
 
     override suspend fun receiveDataRepo(): DomainReceiveData {

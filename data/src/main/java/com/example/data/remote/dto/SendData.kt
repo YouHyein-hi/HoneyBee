@@ -9,10 +9,11 @@ import com.example.domain.model.DomainSendData
  */
 
 data class SendData(
-    val card:String,
     val date:String,
+    val amount:Int,
+    val card:String,
     val picture:ByteArray
 )
 
 
-fun SendData.toDomainSendData(): DomainSendData = DomainSendData("?")
+fun SendData.toDomainSendData(): DomainSendData = DomainSendData(date, amount, card, picture)

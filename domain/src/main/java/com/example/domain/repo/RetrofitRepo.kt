@@ -8,7 +8,7 @@ import com.example.domain.model.DomainSendData
  * pureum
  */
 interface RetrofitRepo {
-    suspend fun sendDataRepo(card:String, date:String, picture:ByteArray): DomainSendData
+    suspend fun sendDataRepo(date:String, amount : Int, card:String, picture:ByteArray): DomainSendData
 
     suspend fun receiveDataRepo():DomainReceiveData
 }

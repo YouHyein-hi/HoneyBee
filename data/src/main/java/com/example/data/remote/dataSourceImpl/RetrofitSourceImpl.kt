@@ -14,8 +14,8 @@ class RetrofitSourceImpl @Inject constructor(
     private val retrofit: Retrofit,
 ):RetrofitSource{
 
-    override suspend fun sendDataSource(card:String, date:String, picture:ByteArray): SendData {
-        return retrofit.create(RetrofitSource::class.java).sendDataSource(card, date, picture)
+    override suspend fun sendDataSource(date:String, amount : Int, card:String, picture:ByteArray): SendData {
+        return retrofit.create(RetrofitSource::class.java).sendDataSource(date,amount, card, picture)
     }
 
     override suspend fun receiveDataSource(): ReceiveData {

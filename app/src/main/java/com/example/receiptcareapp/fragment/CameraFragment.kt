@@ -88,6 +88,11 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
                 Log.e("TAG", "REQUEST_CREATE_EX if 진입", )
                 val bitmap = loadBitmapFromMediaStoreBy(photoURI!!)
                 bitmap?.let { viewModel.takePicture(it) }
+//                println("@@@@@@ bitmap : $bitmap")
+//                println("@@@@@@ bitmap : ${bitmap?.javaClass}")
+//                if (bitmap != null) {
+//                    viewModel.myBitMap(bitmap)
+//                }
                 viewModel.takePage(1)
                 photoURI = null
                 NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)

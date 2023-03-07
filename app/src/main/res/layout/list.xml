@@ -19,6 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:elevation="10dp"
         >
 
         <LinearLayout
@@ -29,48 +30,38 @@
             android:orientation="vertical">
 
             <TextView
-                android:fontFamily="@font/murukmuruk"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="카드" />
-
-            <TextView
-                android:fontFamily="@font/murukmuruk"
-                android:gravity="center"
-                android:id="@+id/card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:fontFamily="@font/murukmuruk"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:fontFamily="@font/murukmuruk"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="날짜" />
-
-            <TextView
-                android:fontFamily="@font/murukmuruk"
-                android:gravity="center"
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:fontFamily="@font/murukmuruk"
+                android:gravity="center"
+                android:text="날짜" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:fontFamily="@font/murukmuruk"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="카드 : " />
+
+                <TextView
+                    android:fontFamily="@font/murukmuruk"
+                    android:gravity="center"
+                    android:id="@+id/card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1,000원" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/pictureLayout"
-            android:layout_weight="1"
+            android:layout_weight="2.5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">

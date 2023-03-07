@@ -21,6 +21,4 @@ class RetrofitSourceImpl @Inject constructor(
     override suspend fun receiveDataSource(): ReceiveData {
         return retrofit.create(RetrofitSource::class.java).receiveDataSource()
     }
-
-
 }

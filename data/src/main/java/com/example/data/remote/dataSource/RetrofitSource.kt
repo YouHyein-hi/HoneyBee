@@ -13,7 +13,7 @@ interface RetrofitSource {
 
     @POST("uplaod/")
     suspend fun sendDataSource(
-        date:String, amount : Int, card:String, picture:ByteArray
+        date:String, amount : Int, card:String, picture:ByteArray //사진
     ): SendData
 
     @GET("")

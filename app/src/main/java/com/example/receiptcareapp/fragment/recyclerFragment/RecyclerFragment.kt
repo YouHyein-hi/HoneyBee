@@ -29,10 +29,6 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             adapter.dataList = it
         }
 
-        activityViewModel.getRoomData.observe(viewLifecycleOwner){
-            Log.e("TAG", "onViewCreated: $it", )
-        }
-
         adapter.onSaveClic = {
             fragmentViewModel.myShowData(it)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)

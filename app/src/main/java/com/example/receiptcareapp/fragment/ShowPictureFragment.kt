@@ -84,7 +84,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
         binding.sendBtn.setOnClickListener{
             if(checked=="") {
                 Toast.makeText(requireContext(), "카드를 입력하세요", Toast.LENGTH_SHORT).show()
-            } else if(binding.date.text == "날짜"){
+            } else if(binding.btnDate.text == "날짜"){
                 Toast.makeText(requireContext(), "날짜를 입력하세요", Toast.LENGTH_SHORT).show()
             } else if(binding.price.text.toString() == "금액"){
                 Toast.makeText(requireContext(), "금액을 입력하세요", Toast.LENGTH_SHORT).show()
@@ -93,7 +93,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                 NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             } else{
                 activityViewModel.sendData(
-                    binding.date.text.toString(),
+                    binding.btnDate.text.toString(),
                     binding.price.text.toString(),
                     checked,
                     viewModel.bytePicture.value!!

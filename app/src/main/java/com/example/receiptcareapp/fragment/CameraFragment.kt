@@ -62,6 +62,22 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         }
     }
 
+    private fun dispatchTakePictureIntentEx() {
+        Log.e("TAG", "dispatchTakePictureIntentEx: 진입", )
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+
+        //카메라 불러오기
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        //해당 경로에 사진이 저장될거임
+        val uri : Uri? = createImageUri("JPEG_${timeStamp}_", "image/jpeg")
+        println("my uri : $uri")
+
+        photoURI = uri
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+        activityResult.launch(takePictureIntent)
+    }
+
     fun createImageUri(filename:String, mimeType:String):Uri? {
         Log.e("TAG", "createImageUri: 진입", )
         var values = ContentValues()
@@ -70,16 +86,8 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         return getActivity()?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
     }
 
-    private fun dispatchTakePictureIntentEx() {
-        Log.e("TAG", "dispatchTakePictureIntentEx: 진입", )
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val uri : Uri? = createImageUri("JPEG_${timeStamp}_", "image/jpeg")
-        photoURI = uri
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-        activityResult.launch(takePictureIntent)
-    }
 
+    //카메라 촬영 후 확인 시
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK){
@@ -88,11 +96,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
                 Log.e("TAG", "REQUEST_CREATE_EX if 진입", )
                 val bitmap = loadBitmapFromMediaStoreBy(photoURI!!)
                 bitmap?.let { viewModel.takePicture(it) }
-//                println("@@@@@@ bitmap : $bitmap")
-//                println("@@@@@@ bitmap : ${bitmap?.javaClass}")
-//                if (bitmap != null) {
-//                    viewModel.myBitMap(bitmap)
-//                }
                 viewModel.takePage(1)
                 photoURI = null
                 NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
@@ -100,6 +103,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         }
         else {
             Log.e("TAG", "RESULT_OK if: else 진입", )
+            //CallCamera()
             findNavController().navigate(R.id.action_cameraFragment_to_homeFragment)
         }
     }
@@ -125,7 +129,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     /*** 권한 관련 코드 ***/
     fun checkPermission(permissions : Array<out String>) : Boolean{         // 실제 권한을 확인하는 곳
         Log.e("TAG", "checkPermission 실행", )
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             for (permission in permissions) {
                 if (ContextCompat.checkSelfPermission(requireActivity(), permission) != PackageManager.PERMISSION_GRANTED) {

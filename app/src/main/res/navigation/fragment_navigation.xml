@@ -83,6 +83,7 @@
             android:id="@+id/action_recyclerShowFragment_to_recyclerFragment"
             app:destination="@id/recyclerFragment"
             app:popUpTo="@id/recyclerFragment"
+            app:popUpToInclusive="false"
             />
     </fragment>
     <fragment

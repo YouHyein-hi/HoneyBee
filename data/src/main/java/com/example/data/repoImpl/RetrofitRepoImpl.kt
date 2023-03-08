@@ -6,6 +6,8 @@ import com.example.data.remote.dto.toDomainSendData
 import com.example.domain.model.DomainReceiveData
 import com.example.domain.model.DomainSendData
 import com.example.domain.repo.RetrofitRepo
+import okhttp3.MultipartBody
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 /**
@@ -16,7 +18,7 @@ class RetrofitRepoImpl @Inject constructor(
     private val retrofitSource: RetrofitSource,
 ):RetrofitRepo{
 
-    override suspend fun sendDataRepo(date:String, amount : Int, card:String, picture:ByteArray): DomainSendData {
+    override suspend fun sendDataRepo(date: LocalDateTime, amount : Int, card:String, picture: MultipartBody.Part): DomainSendData {
         return retrofitSource.sendDataSource(date,amount, card, picture).toDomainSendData()
     }
 

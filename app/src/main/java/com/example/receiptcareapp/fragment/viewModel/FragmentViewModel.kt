@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.DomainRoomData
+import okhttp3.MultipartBody
 import java.io.ByteArrayOutputStream
 
 /**
@@ -22,22 +23,21 @@ class FragmentViewModel(
         Log.e("TAG", ": viewMoodel start", )
     }
 
-    private val _picture = MutableLiveData<Bitmap>()
-    val picture : LiveData<Bitmap>
+    private val _picture = MutableLiveData<MultipartBody.Part>()
+    val picture : LiveData<MultipartBody.Part>
         get() = _picture
 
-    private val _bytePicture = MutableLiveData<ByteArray>()
-    val bytePicture : LiveData<ByteArray>
+    private val _bytePicture = MutableLiveData<MultipartBody.Part>()
+    val bytePicture : LiveData<MultipartBody.Part>
         get() = _bytePicture
-    fun takePicture(bitmap:Bitmap){
-
+    fun takePicture(gap:MultipartBody.Part){
         //bytearray 변환시키기
-        val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+//        val outputStream = ByteArrayOutputStream()
+//        gap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
 
-        _bytePicture.value = outputStream.toByteArray()
+        _bytePicture.value = gap
         Log.e("TAG", "takePicture: ${_bytePicture.value}", )
-        _picture.value = bitmap
+        _picture.value = gap
     }
 
     private val _image = MutableLiveData<Uri>()
@@ -51,7 +51,7 @@ class FragmentViewModel(
 
 
 
-
+/*
     /**
      1 : CameraFragment
      2 : GalleryFragment
@@ -63,6 +63,8 @@ class FragmentViewModel(
         _pageNum.value = pageNum
     }
 
+ */
+
     private val _showData = MutableLiveData<DomainRoomData>()
     val showData : LiveData<DomainRoomData>
         get() = _showData
@@ -72,11 +74,5 @@ class FragmentViewModel(
     }
 
 
-//    private val _bitMap = MutableLiveData<Bitmap>()
-//    val bitMap : LiveData<Bitmap>
-//        get() = _bitMap
-//    fun myBitMap(bitmap: Bitmap) {
-//        _bitMap.value = bitmap
-//        Log.e("TAG", "myBitMap: $bitMap", )
-//    }
+
 }

@@ -1,6 +1,8 @@
 package com.example.data.remote.dto
 
 import com.example.domain.model.DomainSendData
+import okhttp3.MultipartBody
+import java.time.LocalDateTime
 
 
 /**
@@ -9,10 +11,10 @@ import com.example.domain.model.DomainSendData
  */
 
 data class SendData(
-    val date:String,
+    val date:LocalDateTime,
     val amount:Int,
     val card:String,
-    val picture:ByteArray
+    val picture:MultipartBody.Part
 )
 
 

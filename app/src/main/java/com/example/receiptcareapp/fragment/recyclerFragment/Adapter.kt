@@ -47,9 +47,7 @@ class Adapter(
         return MyAdapter(binding)
     }
 
-    override fun onBindViewHolder(holder: MyAdapter, position: Int) {
-        holder.bind(dataList[position])
-    }
+    override fun onBindViewHolder(holder: MyAdapter, position: Int) { holder.bind(dataList[position]) }
 
     override fun getItemCount(): Int = dataList.size
 }

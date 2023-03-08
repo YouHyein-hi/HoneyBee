@@ -13,6 +13,8 @@ import com.example.receiptcareapp.viewModel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 /**
@@ -39,10 +41,12 @@ class MainViewModel @Inject constructor(
         get() = _getRoomData
 
 
-    fun sendData(date:String, amount : String ? = "0", card:String, picture:ByteArray){
+    fun sendData(date: LocalDateTime, amount : String, card:String, picture: MultipartBody.Part){
         viewModelScope.launch(exceptionHandler) {
             Log.e("TAG", "보내는 데이터 : $date, $amount, $card, $picture", )
-            val result = retrofitUseCase.sendDataUseCase(date, amount?.toInt() ?: 0, card, picture)
+            val myAmount = amount
+            if(myAmount.contains(",")) myAmount.replace(",", "")
+            val result = retrofitUseCase.sendDataUseCase(date, myAmount.toInt(), card, picture)
             Log.e("TAG", "sendData: $result ")
             _sendResult.value = result
         }

@@ -39,27 +39,8 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 .setNegativeButton("삭제"){dialog, id->
                     activityViewModel.deleteData(binding.date.text.toString())
                     findNavController().popBackStack()
-                    //findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
-                    //onAttach(requireContext())
-                        //requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
-                    //findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
                 }.show()
         }
     }
-
-//    /** Fragment 뒤로가기 **/
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        callback = object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
-//            }
-//        }
-//        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-//    }
-//    override fun onDetach() {
-//        super.onDetach()
-//        callback.remove()
-//    }
 
 }

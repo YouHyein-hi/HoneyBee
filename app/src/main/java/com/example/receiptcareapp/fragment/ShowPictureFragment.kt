@@ -19,30 +19,32 @@ import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
+import java.text.DecimalFormat
+import java.time.LocalDateTime
 import java.util.*
 
 class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
     private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
     private val activityViewModel : MainViewModel by activityViewModels()
     private var checked = ""
+    private var myYear = 0
+    private var myMonth = 0
+    private var myDay = 0
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val pageNum = viewModel.pageNum.value
-        when(pageNum){
-            1 -> {
-                Log.e("TAG", "onCreateView: pageNum(1 : CameraFragment) 넘어옴", )
-                binding.pictureView.setImageBitmap(viewModel.picture.value)
-            }
-            2 -> {
-                Log.e("TAG", "onCreateView: pageNum(2: GalleryFragment) 넘어옴", )
-                binding.pictureView.setImageURI(viewModel.image.value)
-            }
-        }
+
+        binding.pictureView.setImageURI(viewModel.image.value)
 
         binding.btnDate.setOnClickListener{
             val cal = Calendar.getInstance()
-            val data = DatePickerDialog.OnDateSetListener { view, year, month, day -> binding.btnDate.text = "${year}/${month+1}/${day}" }
+            val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                myYear = year
+                myMonth = month
+                myDay = day
+                binding.btnDate.text = "${myYear}/${myMonth}/${myDay}"
+            }
             DatePickerDialog(requireContext(),data,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
         }
 
@@ -64,23 +66,31 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             }
         }
 
-
-        binding.price.addTextChangedListener(object:TextWatcher{
+        binding.price.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                Log.e("TAG", "beforeTextChanged: 전", )
+
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.e("TAG", "beforeTextChanged: 중", )
+
             }
 
             override fun afterTextChanged(s: Editable?) {
-                Log.e("TAG", "beforeTextChanged: 후", )
+                var myS = s
+                if (myS != null) {
+                    if(myS.contains(",")) myS.toString().replace(",","")
+                    if(myS.length % 3 == 0){
+                        val gap = DecimalFormat("#,###")
+                        //Log.e("TAG", "onTextChanged:$myS")
+                        Log.e("TAG", "onTextChanged: ${gap.format(myS.toString().toInt())}", )
+                        //binding.price.text = gap.format(myS.toString().toInt())
+                    }
+                }
             }
 
         })
 
-        //
+
         binding.sendBtn.setOnClickListener{
             if(checked=="") {
                 Toast.makeText(requireContext(), "카드를 입력하세요", Toast.LENGTH_SHORT).show()
@@ -92,11 +102,12 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                 Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT).show()
                 NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             } else{
+                val myLocalDateTime = LocalDateTime.of(myYear, myMonth, myDay, LocalDateTime.now().hour, LocalDateTime.now().minute)
                 activityViewModel.sendData(
-                    binding.btnDate.text.toString(),
-                    binding.price.text.toString(),
-                    checked,
-                    viewModel.bytePicture.value!!
+                    date = myLocalDateTime,
+                    amount = binding.price.text.toString(),
+                    card = checked,
+                    picture = viewModel.bytePicture.value!!
                 )
 //                activityViewModel.insertData()
                 NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)

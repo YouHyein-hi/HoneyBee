@@ -112,6 +112,7 @@
                 android:textColor="@color/black"
                 android:textSize="14dp"
                 android:hint="금액"
+                android:inputType="number"
                 />
 
 

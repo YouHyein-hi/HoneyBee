@@ -15,14 +15,14 @@ interface RetrofitSource {
 
     //multipart에 쓰이는 모든 요소들은 @Part를 붙여줘야 함
     @Multipart
-    @POST("/uplaod")
+    @POST("upload")
     suspend fun sendDataSource(
 //        @PartMap data:HashMap<String, RequestBody>,
-        @Part("cardName") card : String,
-        @Part("amount") amount : Int,
-        @Part("pictureName") pictureName:String,
-        @Part("timestmap") date:LocalDateTime,
-        @Part bill:MultipartBody.Part,
+        @Part cardName : MultipartBody.Part,
+        @Part amount : MultipartBody.Part,
+        @Part pictureName : MultipartBody.Part,
+        @Part timestmap : MultipartBody.Part,
+        @Part bill : MultipartBody.Part,
     ): SendData
 
     @GET("")

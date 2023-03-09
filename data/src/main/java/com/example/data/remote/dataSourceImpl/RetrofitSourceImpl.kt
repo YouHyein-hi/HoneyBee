@@ -17,20 +17,32 @@ import javax.inject.Inject
  */
 class RetrofitSourceImpl @Inject constructor(
     private val retrofit: Retrofit,
-):RetrofitSource{
+) : RetrofitSource {
 
 
-    override suspend fun sendDataSource(card:String, amount:Int, pictureName:String, date:LocalDateTime, bill:MultipartBody.Part): SendData {
-
+    //    override suspend fun sendDataSource(card:String, amount:Int, pictureName:String, date:LocalDateTime, bill:MultipartBody.Part): SendData {
+    override suspend fun sendDataSource(
+        card: MultipartBody.Part,
+        amount: MultipartBody.Part,
+        pictureName: MultipartBody.Part,
+        date: MultipartBody.Part,
+        bill: MultipartBody.Part
+    ): SendData {
 //        return retrofit.create(RetrofitSource::class.java).sendDataSource(card = card, date = date, amount = amount, pictureName = "hello")
-        return retrofit.create(RetrofitSource::class.java).sendDataSource(card = card, amount = amount, pictureName="ㄹㅇㄴㄹㄴㅇㄹㄴㅁ", date = date, bill = bill)
+        return retrofit.create(RetrofitSource::class.java).sendDataSource(
+            cardName = card,
+            amount = amount,
+            pictureName = pictureName,
+            timestmap = date,
+            bill = bill
+        )
     }
 
     override suspend fun receiveDataSource(): ReceiveData {
         return retrofit.create(RetrofitSource::class.java).receiveDataSource()
     }
 
-    override suspend fun test(a:String):String {
+    override suspend fun test(a: String): String {
         return retrofit.create(RetrofitSource::class.java).test("a")
     }
 }

@@ -75,7 +75,6 @@ class GalleryFragment : Fragment() {
             val imageUri: Uri? = it.data?.data
             if (imageUri != null) {
                 Log.e("TAG", "data 있음", )
-
                 viewModel.takeImage(imageUri)
                 NavHostFragment.findNavController(this).navigate(R.id.action_galleryFragment_to_showFragment)
             }

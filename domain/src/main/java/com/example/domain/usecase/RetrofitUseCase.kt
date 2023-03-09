@@ -4,6 +4,7 @@ import com.example.domain.model.DomainReceiveData
 import com.example.domain.model.DomainSendData
 import com.example.domain.repo.RetrofitRepo
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.time.LocalDateTime
 
 /**
@@ -13,11 +14,15 @@ import java.time.LocalDateTime
 class RetrofitUseCase(
     private val retrofitRepo: RetrofitRepo,
 ) {
-    suspend fun sendDataUseCase(date: LocalDateTime, amount : Int, card:String, picture: MultipartBody.Part): DomainSendData {
-        return retrofitRepo.sendDataRepo(date,amount, card, picture)
+    suspend fun sendDataUseCase(card:String, amount:Int, pictureName:String, date:LocalDateTime, bill:MultipartBody.Part): DomainSendData {
+        return retrofitRepo.sendDataRepo(card = card, amount = amount, pictureName="ㄹㅇㄴㄹㄴㅇㄹㄴㅁ", date = date, bill = bill)
     }
 
     suspend fun receiveDataUseCase(): DomainReceiveData {
         return retrofitRepo.receiveDataRepo()
+    }
+
+    suspend fun test(): String {
+        return retrofitRepo.test()
     }
 }

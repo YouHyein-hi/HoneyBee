@@ -26,7 +26,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
         fragmentViewModel.showData.observe(viewLifecycleOwner){
             //binding.imageView.setImageURI("it.picture")
-            binding.cardAmount.text = "${it.card} : ${it.time}"
+            binding.cardAmount.text = "${it.card} : ${it.amount}"
         }
 
         binding.removeBtn.setOnClickListener{

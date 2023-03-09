@@ -19,6 +19,7 @@ object RetrofitModule {
     @Singleton
     fun provideSendRetrofit():Retrofit{
         return Retrofit.Builder()
+//            .baseUrl("http://10.9.136.242:8080/bills/")
             .baseUrl("http://10.9.136.242:8080/bills/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()

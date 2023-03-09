@@ -15,11 +15,15 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
+import com.example.receiptcareapp.viewModel.MainViewModel
+import java.time.LocalDateTime
 
 //메인 프레그먼트/
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -29,6 +33,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val ALBUM = android.Manifest.permission.READ_EXTERNAL_STORAGE
     private val ALBUM_CODE = 101
     private lateinit var callback: OnBackPressedCallback
+    private val activityViewModel:MainViewModel by activityViewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,6 +42,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.camaraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
         binding.galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
         binding.storage.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
+
+        //activityViewModel.sendData(date = LocalDateTime.now(), card = "hh", amount = 11111.toString(), picture = "dd".toUri())
     }
 
     /*** 권한 관련 코드 ***/

@@ -13,6 +13,7 @@ import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
+import java.time.LocalDateTime
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
 
@@ -41,15 +42,8 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         binding.mainRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.mainRecycler.adapter = adapter
         adapter.dataList = listOf(
-            DomainRoomData("pureum", "hello", "hello"),
-            DomainRoomData("pureum", "hello", "hello"),
-            DomainRoomData("pureum", "hello", "hello"),
-            DomainRoomData("pureum", "hello", "hello"),
-            DomainRoomData("pureum", "hello", "hello"),
-            DomainRoomData("pureum", "hello", "hello"),
-            DomainRoomData("pureum", "hello", "hello"),
-            DomainRoomData("pureum", "hello", "hello"),
-            DomainRoomData("pureum", "hello", "hello"),
+            DomainRoomData(LocalDateTime.now(), 99999, "나라사랑", null),
+
         )
     }
 }

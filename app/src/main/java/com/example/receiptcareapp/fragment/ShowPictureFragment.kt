@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
@@ -41,7 +42,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             val cal = Calendar.getInstance()
             val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
                 myYear = year
-                myMonth = month
+                myMonth = month+1
                 myDay = day
                 binding.btnDate.text = "${myYear}/${myMonth}/${myDay}"
             }
@@ -66,39 +67,29 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             }
         }
 
-        binding.price.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
+        binding.price.setOnClickListener{
+            if(binding.price.text.contains(",")){
+                binding.price.setText(binding.price.text.toString().replace(",",""))
             }
+        }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
+        binding.price.setOnEditorActionListener { v, actionId, event ->
+            var handled = false
+            if(actionId==EditorInfo.IME_ACTION_DONE){
+                val gap = DecimalFormat("#,###")
+                binding.price.setText(gap.format(binding.price.text.toString().toInt()))
             }
-
-            override fun afterTextChanged(s: Editable?) {
-                var myS = s
-                if (myS != null) {
-                    if(myS.contains(",")) myS.toString().replace(",","")
-                    if(myS.length % 3 == 0){
-                        val gap = DecimalFormat("#,###")
-                        //Log.e("TAG", "onTextChanged:$myS")
-                        Log.e("TAG", "onTextChanged: ${gap.format(myS.toString().toInt())}", )
-                        //binding.price.text = gap.format(myS.toString().toInt())
-                    }
-                }
-            }
-
-        })
-
+            handled
+        }
 
         binding.sendBtn.setOnClickListener{
             if(checked=="") {
                 Toast.makeText(requireContext(), "카드를 입력하세요", Toast.LENGTH_SHORT).show()
             } else if(binding.btnDate.text == "날짜"){
                 Toast.makeText(requireContext(), "날짜를 입력하세요", Toast.LENGTH_SHORT).show()
-            } else if(binding.price.text.toString() == "금액"){
+            } else if(binding.price.text.toString() == "금액" || binding.price.text.toString() == ""){
                 Toast.makeText(requireContext(), "금액을 입력하세요", Toast.LENGTH_SHORT).show()
-            } else if(viewModel.picture.value==null){
+            } else if(viewModel.image.value==null){
                 Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT).show()
                 NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             } else{
@@ -107,9 +98,14 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                     date = myLocalDateTime,
                     amount = binding.price.text.toString(),
                     card = checked,
-                    picture = viewModel.bytePicture.value!!
+                    picture = viewModel.image.value!!
                 )
-//                activityViewModel.insertData()
+                activityViewModel.insertData(
+                    date = myLocalDateTime,
+                    amount = binding.price.text.toString(),
+                    card = checked,
+                    picture = viewModel.image.value!!
+                )
                 NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             }
         }

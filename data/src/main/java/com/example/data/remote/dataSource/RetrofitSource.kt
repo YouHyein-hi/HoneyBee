@@ -3,9 +3,8 @@ package com.example.data.remote.dataSource
 import com.example.data.remote.dto.ReceiveData
 import com.example.data.remote.dto.SendData
 import okhttp3.MultipartBody
-import retrofit2.http.GET
-import retrofit2.http.Multipart
-import retrofit2.http.POST
+import okhttp3.RequestBody
+import retrofit2.http.*
 import java.time.LocalDateTime
 
 /**
@@ -14,14 +13,25 @@ import java.time.LocalDateTime
  */
 interface RetrofitSource {
 
+    //multipart에 쓰이는 모든 요소들은 @Part를 붙여줘야 함
     @Multipart
-    @POST("uplaod/")
+    @POST("/uplaod")
     suspend fun sendDataSource(
-        date:LocalDateTime, amount : Int, card:String, picture:MultipartBody.Part //사진
+//        @PartMap data:HashMap<String, RequestBody>,
+        @Part("cardName") card : String,
+        @Part("amount") amount : Int,
+        @Part("pictureName") pictureName:String,
+        @Part("timestmap") date:LocalDateTime,
+        @Part bill:MultipartBody.Part,
     ): SendData
 
     @GET("")
     suspend fun receiveDataSource():ReceiveData
+
+    @GET("test")
+    suspend fun test(
+        @Query("a") a:String
+    ):String
 
 
 }

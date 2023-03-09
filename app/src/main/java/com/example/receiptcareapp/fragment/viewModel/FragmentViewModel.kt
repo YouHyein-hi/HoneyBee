@@ -23,22 +23,21 @@ class FragmentViewModel(
         Log.e("TAG", ": viewMoodel start", )
     }
 
-    private val _picture = MutableLiveData<MultipartBody.Part>()
-    val picture : LiveData<MultipartBody.Part>
-        get() = _picture
-
-    private val _bytePicture = MutableLiveData<MultipartBody.Part>()
-    val bytePicture : LiveData<MultipartBody.Part>
-        get() = _bytePicture
-    fun takePicture(gap:MultipartBody.Part){
+//    private val _picture = MutableLiveData<MultipartBody.Part>()
+//    val picture : LiveData<MultipartBody.Part>
+//        get() = _picture
+//
+//    private val _bytePicture = MutableLiveData<MultipartBody.Part>()
+//    val bytePicture : LiveData<MultipartBody.Part>
+//        get() = _bytePicture
+//    fun takePicture(gap:MultipartBody.Part){
         //bytearray 변환시키기
 //        val outputStream = ByteArrayOutputStream()
 //        gap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-
-        _bytePicture.value = gap
-        Log.e("TAG", "takePicture: ${_bytePicture.value}", )
-        _picture.value = gap
-    }
+//        _bytePicture.value = gap
+//        Log.e("TAG", "takePicture: ${_bytePicture.value}", )
+//        _picture.value = gap
+//    }
 
     private val _image = MutableLiveData<Uri>()
     val image : LiveData<Uri>

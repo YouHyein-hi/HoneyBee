@@ -76,6 +76,11 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         photoURI = uri
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
         activityResult.launch(takePictureIntent)
+
+
+//        val file = File(absolutelyPath(viewModel.image.value, requireActivity()))
+//        val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
+//        val body = MultipartBody.Part.createFormData("imagefile", file.name, requestFile)
     }
 
     fun createImageUri(filename:String, mimeType:String):Uri? {

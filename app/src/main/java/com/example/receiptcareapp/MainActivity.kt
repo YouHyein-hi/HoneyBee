@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        activityViewModel.myCotext = this
+
         supportActionBar?.hide()
 
         activityViewModel.fetchState.observe(this) {
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
                     else -> "${it.first.message} 오류"
                 }
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            Log.e("TAG", "onCreate: $message", )
         }
     }
 }

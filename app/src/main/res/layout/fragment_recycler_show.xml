@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.recyclerFragment.RecyclerShowFragment">
+    tools:context=".fragment.recyclerFragment.RecyclerShowFragment"
+    android:background="@color/back_yellow">
+
+    <ImageView
+        android:id="@+id/image_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/leftarrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -24,8 +35,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text="날짜"
+        android:fontFamily="@font/pretendardbold"
+        android:text="2022.xx.xx."
         android:textSize="25dp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,25 +48,25 @@
         android:id="@+id/card_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="3dp"
         android:layout_marginBottom="20dp"
+        android:fontFamily="@font/pretendardbold"
         android:text="카드 이름 : 56,000원"
         android:textSize="25dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date" />
 
-    <Button
-        android:id="@+id/removeBtn"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:text="삭제"
-        android:textSize="10dp"
-        android:textColor="@color/black"
+    <ImageView
+        android:id="@+id/image_remove"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/trash"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

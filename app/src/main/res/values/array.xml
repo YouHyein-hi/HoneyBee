@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="card_array">
+        <item>카드1</item>
+        <item>카드2</item>
+        <item>카드3</item>
+        <item>카드4</item>
+    </string-array>
+</resources>

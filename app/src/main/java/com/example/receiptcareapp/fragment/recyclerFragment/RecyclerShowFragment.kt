@@ -29,7 +29,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             binding.cardAmount.text = "${it.card} : ${it.amount}"
         }
 
-        binding.removeBtn.setOnClickListener{
+        binding.imageRemove.setOnClickListener{
             AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
                 .setTitle("")
                 .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")

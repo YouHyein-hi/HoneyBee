@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.CameraFragment"
-    android:background="@color/base_light_orange"
+    android:background="@color/back_yellow"
     >
 
 
@@ -14,7 +14,7 @@
         android:fontFamily="@font/murukmuruk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="카메라 로딩중!!"
+        android:text="카메라 로딩중···"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

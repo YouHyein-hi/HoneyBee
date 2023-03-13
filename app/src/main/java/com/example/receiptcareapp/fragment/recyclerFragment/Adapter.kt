@@ -34,7 +34,7 @@ class Adapter(
             binding.card.text = list.card
             binding.date.text = list.card
 
-            binding.pictureLayout.setOnClickListener{
+            binding.listLayout.setOnClickListener{
                 onSaveClic(list)
             }
         }

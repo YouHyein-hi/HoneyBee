@@ -39,9 +39,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         checkPermission()
-        binding.camaraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
+        binding.cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
         binding.galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
-        binding.storage.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
+        binding.storageBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
 
         //activityViewModel.sendData(date = LocalDateTime.now(), card = "hh", amount = 11111.toString(), picture = "dd".toUri())
     }

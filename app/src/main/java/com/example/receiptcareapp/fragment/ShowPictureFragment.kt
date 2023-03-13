@@ -2,13 +2,8 @@ package com.example.receiptcareapp.fragment
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
@@ -37,6 +32,8 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
 
         binding.pictureView.setImageURI(viewModel.image.value)
 
+        activityViewModel.isConnected("false")
+
         binding.btnDate.setOnClickListener{
             val cal = Calendar.getInstance()
             val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
@@ -46,6 +43,19 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                 binding.btnDate.text = "${myYear}/${myMonth}/${myDay}"
             }
             DatePickerDialog(requireContext(),data,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
+        }
+
+        //프로그래스 바 컨트롤
+        activityViewModel.isConnected.observe(viewLifecycleOwner) {
+            if(it == "true") {
+                binding.waitingView.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.VISIBLE
+            }else if(it== "pass"){
+                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
+            }else{
+                binding.waitingView.visibility = View.INVISIBLE
+                binding.progressBar.visibility = View.INVISIBLE
+            }
         }
 
         /*** Spinner 관련 코드 ***/
@@ -96,7 +106,11 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             handled
         }
 
+
         binding.sendBtn.setOnClickListener{
+
+            activityViewModel.isConnected("true")
+
             if(checked=="") {
                 Toast.makeText(requireContext(), "카드를 입력하세요", Toast.LENGTH_SHORT).show()
             } else if(binding.btnDate.text == "날짜"){
@@ -108,13 +122,14 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                 NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             } else{
                 val myLocalDateTime = LocalDateTime.of(myYear, myMonth, myDay, LocalDateTime.now().hour, LocalDateTime.now().minute)
+
+
                 activityViewModel.sendData(
                     date = myLocalDateTime,
                     amount = binding.btnPrice.text.toString(),
                     card = checked,
                     picture = viewModel.image .value!!
                 )
-                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             }
         }
         binding.cancleBtn.setOnClickListener{ NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment) }

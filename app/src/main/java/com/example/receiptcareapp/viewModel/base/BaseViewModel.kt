@@ -20,6 +20,7 @@ abstract class BaseViewModel  : ViewModel(){
     val fetchState : LiveData<Pair<Throwable, FetchState>>
         get() = _fetchState
 
+
     protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
         when(throwable){

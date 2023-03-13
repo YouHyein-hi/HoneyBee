@@ -2,13 +2,8 @@ package com.example.receiptcareapp.fragment
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
@@ -84,6 +79,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
         binding.btnPrice.setOnClickListener{
             if(binding.btnPrice.text.contains(",")){
                 binding.btnPrice.setText(binding.btnPrice.text.toString().replace(",",""))
+                binding.btnPrice.setSelection(binding.btnPrice.text.length)
             }
         }
 

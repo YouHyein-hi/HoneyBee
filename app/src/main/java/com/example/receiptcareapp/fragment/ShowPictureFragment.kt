@@ -10,9 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -50,27 +48,38 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             DatePickerDialog(requireContext(),data,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
         }
 
+        /*** Spinner 관련 코드 ***/
         ArrayAdapter.createFromResource(
             requireContext(), R.array.card_array, android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.spinner.adapter = adapter
         }
-
-        /*binding.radioGroup.setOnCheckedChangeListener{ _, checkedId ->
-            when(checkedId){
-                R.id.radioButton_card1 -> {
-                    Log.e("TAG", "onViewCreated: 1", )
-                    checked = binding.radioButtonCard1.text.toString()}
-                R.id.radioButton_card2 -> {
-                    Log.e("TAG", "onViewCreated: 2", )
-                    checked = binding.radioButtonCard2.text.toString()}
-                R.id.radioButton_card3 -> {
-                    Log.e("TAG", "onViewCreated: 3", )
-                    checked = binding.radioButtonCard3.text.toString()}
-                else -> {}
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
             }
-        }*/
+
+            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                when(position){
+                    0 ->{
+                        Log.e("TAG", "onItemSelected: 카드1 선택", )
+                        checked = "카드1"
+                    }
+                    1 ->{
+                        Log.e("TAG", "onItemSelected: 카드2 선택", )
+                        checked = "카드2"
+                    }
+                    2 ->{
+                        Log.e("TAG", "onItemSelected: 카드3 선택", )
+                        checked = "카드3"
+                    }
+                    3 ->{
+                        Log.e("TAG", "onItemSelected: 카드4 선택", )
+                        checked = "카드4"
+                    }
+                }
+            }
+        }
 
         binding.btnPrice.setOnClickListener{
             if(binding.btnPrice.text.contains(",")){

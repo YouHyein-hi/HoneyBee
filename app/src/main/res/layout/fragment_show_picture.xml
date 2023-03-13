@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:text="해당 카드와 날짜를 금액을 입력해주세요."
             android:textSize="14sp"
+            android:fontFamily="@font/pretendardbold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,44 +45,24 @@
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-        <!--<RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/spinner_custom"
+            android:elevation="3dp"
+            android:fontFamily="@font/pretendardsemibold"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
-
-            <RadioButton
-                android:id="@+id/radioButton_card1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="card1" />
-
-            <RadioButton
-                android:id="@+id/radioButton_card2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="card2" />
-
-            <RadioButton
-                android:id="@+id/radioButton_card3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="card3" />
-
-        </RadioGroup>-->
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:paddingTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner"
@@ -94,8 +75,11 @@
                 android:layout_height="40dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/basic_btn"
+                android:background="@drawable/choice_btn"
+                android:fontFamily="@font/pretendardsemibold"
+                android:elevation="3dp"
                 android:text="날짜"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textView13" />
 
@@ -109,16 +93,18 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:gravity="center"
                 android:id="@+id/btn_price"
-                android:layout_weight="1"
                 android:layout_width="150dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/basic_btn"
+                android:layout_weight="1"
+                android:background="@drawable/choice_btn"
                 android:elevation="3dp"
+                android:fontFamily="@font/pretendardsemibold"
+                android:gravity="center"
                 android:text="금액"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView13" />
 
@@ -139,7 +125,9 @@
             android:layout_height="40dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/roundsquare"
+            android:background="@drawable/yellow_btn"
+            android:elevation="3dp"
+            android:fontFamily="@font/pretendardsemibold"
             android:text="취소"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView10" />
@@ -159,7 +147,9 @@
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/roundsquare"
+            android:background="@drawable/yellow_btn"
+            android:elevation="3dp"
+            android:fontFamily="@font/pretendardsemibold"
             android:text="완료"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView10" />

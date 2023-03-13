@@ -14,6 +14,7 @@
         android:layout_height="15px"
         android:layout_marginTop="-15dp"
         android:background="@color/emphasis_yellow"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -26,6 +27,7 @@
         android:fontFamily="@font/murukmuruk"
         android:text="영수증 목록"
         android:textSize="42sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

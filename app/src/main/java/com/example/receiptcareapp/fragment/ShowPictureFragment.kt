@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
@@ -49,10 +50,14 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             DatePickerDialog(requireContext(),data,cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH)).show()
         }
 
+        ArrayAdapter.createFromResource(
+            requireContext(), R.array.card_array, android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinner.adapter = adapter
+        }
 
-
-
-        binding.radioGroup.setOnCheckedChangeListener{ _, checkedId ->
+        /*binding.radioGroup.setOnCheckedChangeListener{ _, checkedId ->
             when(checkedId){
                 R.id.radioButton_card1 -> {
                     Log.e("TAG", "onViewCreated: 1", )
@@ -65,19 +70,19 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                     checked = binding.radioButtonCard3.text.toString()}
                 else -> {}
             }
-        }
+        }*/
 
-        binding.price.setOnClickListener{
-            if(binding.price.text.contains(",")){
-                binding.price.setText(binding.price.text.toString().replace(",",""))
+        binding.btnPrice.setOnClickListener{
+            if(binding.btnPrice.text.contains(",")){
+                binding.btnPrice.setText(binding.btnPrice.text.toString().replace(",",""))
             }
         }
 
-        binding.price.setOnEditorActionListener { v, actionId, event ->
+        binding.btnPrice.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if(actionId==EditorInfo.IME_ACTION_DONE){
                 val gap = DecimalFormat("#,###")
-                binding.price.setText(gap.format(binding.price.text.toString().toInt()))
+                binding.btnPrice.setText(gap.format(binding.btnPrice.text.toString().toInt()))
             }
             handled
         }
@@ -87,7 +92,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                 Toast.makeText(requireContext(), "카드를 입력하세요", Toast.LENGTH_SHORT).show()
             } else if(binding.btnDate.text == "날짜"){
                 Toast.makeText(requireContext(), "날짜를 입력하세요", Toast.LENGTH_SHORT).show()
-            } else if(binding.price.text.toString() == "금액" || binding.price.text.toString() == ""){
+            } else if(binding.btnPrice.text.toString() == "금액" || binding.btnPrice.text.toString() == ""){
                 Toast.makeText(requireContext(), "금액을 입력하세요", Toast.LENGTH_SHORT).show()
             } else if(viewModel.image.value==null){
                 Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT).show()
@@ -96,13 +101,13 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                 val myLocalDateTime = LocalDateTime.of(myYear, myMonth, myDay, LocalDateTime.now().hour, LocalDateTime.now().minute)
                 activityViewModel.sendData(
                     date = myLocalDateTime,
-                    amount = binding.price.text.toString(),
+                    amount = binding.btnPrice.text.toString(),
                     card = checked,
                     picture = viewModel.image.value!!
                 )
                 activityViewModel.insertData(
                     date = myLocalDateTime,
-                    amount = binding.price.text.toString(),
+                    amount = binding.btnPrice.text.toString(),
                     card = checked,
                     picture = viewModel.image.value!!
                 )

@@ -103,10 +103,12 @@
                 android:elevation="3dp"
                 android:fontFamily="@font/pretendardsemibold"
                 android:gravity="center"
-                android:text="금액"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView13" />
+                app:layout_constraintStart_toEndOf="@+id/textView13"
+                android:hint="금액"
+                android:inputType="number"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

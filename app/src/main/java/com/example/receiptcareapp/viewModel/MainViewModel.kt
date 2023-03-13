@@ -22,6 +22,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.http.Url
 import java.io.File
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -57,19 +58,10 @@ class MainViewModel @Inject constructor(
 
     fun sendData(date: LocalDateTime, amount : String, card:String, picture: Uri){
         viewModelScope.launch(exceptionHandler) {
-//            Log.e("TAG", "sendData: ${retrofitUseCase.test()}")
             Log.e("TAG", "보내는 데이터 : $date, $amount, $card, $picture", )
 
             var replacedAmount = amount
             if(replacedAmount.contains(",")) { replacedAmount = replacedAmount.replace(",", "") }
-
-//            val myDate: RequestBody = date.toString().toPlainRequestBody()
-//            val myAmount: RequestBody = replacedAmount.toPlainRequestBody()
-//            val myCard: RequestBody = card.toPlainRequestBody()
-//            val textHashMap = hashMapOf<String, RequestBody>()
-//            textHashMap["myDate"] = myDate
-//            textHashMap["myAmount"] = myAmount
-//            textHashMap["myCard"] = myCard
 
             val result = retrofitUseCase.sendDataUseCase(card = card, amount = replacedAmount.toInt(), pictureName = "sssss", date = date, bill = uriToMultiPartBody(picture))
             Log.e("TAG", "sendData: $result ")
@@ -81,9 +73,9 @@ class MainViewModel @Inject constructor(
         //uri를 받아서 그 사진의 절대경로를 얻어온 후 이 경로를 사용하여 사진을 file 변수에 저장
         val file = File(absolutelyPath(picture, myCotext))
         //다음을 통해 request로 바꿔준 후
-        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         //다음 구문을 통해 form-data 형식으로 바꿔줌
-        return MultipartBody.Part.createFormData("imagefile", file.name, requestFile)
+        return MultipartBody.Part.createFormData("bill", file.name, requestFile)
     }
 
     //절대경로로 변환

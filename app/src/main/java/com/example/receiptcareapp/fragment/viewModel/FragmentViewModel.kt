@@ -48,6 +48,13 @@ class FragmentViewModel(
         Log.e("TAG", "takeImage: ${image.value}", )
     }
 
+    private val _multiPartPicture = MutableLiveData<MultipartBody.Part>()
+    val multiPartPicture : LiveData<MultipartBody.Part>
+        get() = _multiPartPicture
+    fun getMultiPartPicture(img: MultipartBody.Part){
+        _multiPartPicture.value = img
+    }
+
 
 
 /*

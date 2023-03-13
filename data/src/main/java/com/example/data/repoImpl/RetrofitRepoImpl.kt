@@ -24,12 +24,14 @@ class RetrofitRepoImpl @Inject constructor(
 ):RetrofitRepo{
     override suspend fun sendDataRepo(card:String, amount:Int, pictureName:String, date:LocalDateTime, bill:MultipartBody.Part): DomainSendData {
 
-        var myCard = MultipartBody.Part.createFormData("card",card)
+
+
+        var myCard = MultipartBody.Part.createFormData("cardName",card)
         var myAmount = MultipartBody.Part.createFormData("amount",amount.toString())
         var myPicture = MultipartBody.Part.createFormData("pictureName","pictureName")
         var myDate = MultipartBody.Part.createFormData("date",date.toString())
 
-        return retrofitSource.sendDataSource(cardName = myCard, amount = myAmount, pictureName=myPicture, timestmap = myDate, bill = bill).toDomainSendData()
+        return retrofitSource.sendDataSource(cardName = myCard, amount = myAmount, pictureName=myPicture, /*timestmap = myDate,*/ bill = bill).toDomainSendData()
     }
 
     override suspend fun receiveDataRepo(): DomainReceiveData {

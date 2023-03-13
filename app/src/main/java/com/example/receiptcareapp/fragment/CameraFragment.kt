@@ -3,8 +3,10 @@ package com.example.receiptcareapp.fragment
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -29,6 +31,13 @@ import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
+import com.example.receiptcareapp.viewModel.MainViewModel
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,7 +47,8 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
     private var photoURI : Uri? = null
-    private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
+    private val fragmentViewModel : FragmentViewModel by viewModels({ requireActivity() })
+    private val activityViewModel : MainViewModel by viewModels({ requireActivity() })
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,11 +86,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         photoURI = uri
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
         activityResult.launch(takePictureIntent)
-
-
-//        val file = File(absolutelyPath(viewModel.image.value, requireActivity()))
-//        val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
-//        val body = MultipartBody.Part.createFormData("imagefile", file.name, requestFile)
     }
 
     fun createImageUri(filename:String, mimeType:String):Uri? {
@@ -98,36 +103,28 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         if (it.resultCode == Activity.RESULT_OK){
             Log.e("TAG", "onActivityResult: if 진입", )
             if(photoURI != null) {
-                Log.e("TAG", "REQUEST_CREATE_EX if 진입", )
-                viewModel.takeImage(photoURI!!)
+
+                fragmentViewModel.takeImage(photoURI!!)
+//                fragmentViewModel.getMultiPartPicture(body)
+
                 photoURI = null
                 NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
             }
         }
         else {
             Log.e("TAG", "RESULT_OK if: else 진입", )
-            //CallCamera()
             findNavController().navigate(R.id.action_cameraFragment_to_homeFragment)
         }
     }
 
-    fun loadBitmapFromMediaStoreBy(photoUri: Uri) : Bitmap?{
-        var image: Bitmap? = null
-        try {
-            image = if(Build.VERSION.SDK_INT > 27) {
-                val source: ImageDecoder.Source =
-                    ImageDecoder.createSource(requireActivity().contentResolver, photoUri)
-                ImageDecoder.decodeBitmap(source)
-            }
-            else{
-                MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, photoUri)
-            }
-        } catch(e: IOException) {
-            e.printStackTrace()
-        }
-        return image
+    fun absolutelyPath(path: Uri?, context : Context): String {
+        var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        var c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
+        var index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        c?.moveToFirst()
+        var result = c?.getString(index!!)
+        return result!!
     }
-
 
     /*** 권한 관련 코드 ***/
     fun checkPermission(permissions : Array<out String>) : Boolean{         // 실제 권한을 확인하는 곳

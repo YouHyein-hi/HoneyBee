@@ -63,19 +63,19 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                 when(position){
                     0 ->{
                         Log.e("TAG", "onItemSelected: 카드1 선택", )
-                        checked = "카드1"
+                        checked = "card1"
                     }
                     1 ->{
                         Log.e("TAG", "onItemSelected: 카드2 선택", )
-                        checked = "카드2"
+                        checked = "card2"
                     }
                     2 ->{
                         Log.e("TAG", "onItemSelected: 카드3 선택", )
-                        checked = "카드3"
+                        checked = "card3"
                     }
                     3 ->{
                         Log.e("TAG", "onItemSelected: 카드4 선택", )
-                        checked = "카드4"
+                        checked = "card4"
                     }
                 }
             }
@@ -112,7 +112,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                     date = myLocalDateTime,
                     amount = binding.btnPrice.text.toString(),
                     card = checked,
-                    picture = viewModel.image.value!!
+                    picture = viewModel.image .value!!
                 )
                 activityViewModel.insertData(
                     date = myLocalDateTime,

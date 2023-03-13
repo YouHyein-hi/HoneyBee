@@ -1,5 +1,6 @@
 package com.example.data.remote.dataSourceImpl
 
+import android.util.Log
 import com.example.data.remote.dataSource.RetrofitSource
 import com.example.data.remote.dto.ReceiveData
 import com.example.data.remote.dto.SendData
@@ -25,15 +26,16 @@ class RetrofitSourceImpl @Inject constructor(
         card: MultipartBody.Part,
         amount: MultipartBody.Part,
         pictureName: MultipartBody.Part,
-        date: MultipartBody.Part,
+        //date: MultipartBody.Part,
         bill: MultipartBody.Part
     ): SendData {
-//        return retrofit.create(RetrofitSource::class.java).sendDataSource(card = card, date = date, amount = amount, pictureName = "hello")
+
+
         return retrofit.create(RetrofitSource::class.java).sendDataSource(
             cardName = card,
             amount = amount,
             pictureName = pictureName,
-            timestmap = date,
+            //timestmap = date,
             bill = bill
         )
     }

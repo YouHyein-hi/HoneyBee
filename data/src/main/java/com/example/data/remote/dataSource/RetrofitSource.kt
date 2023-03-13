@@ -21,7 +21,7 @@ interface RetrofitSource {
         @Part cardName : MultipartBody.Part,
         @Part amount : MultipartBody.Part,
         @Part pictureName : MultipartBody.Part,
-        @Part timestmap : MultipartBody.Part,
+        //@Part timestmap : MultipartBody.Part,
         @Part bill : MultipartBody.Part,
     ): SendData
 

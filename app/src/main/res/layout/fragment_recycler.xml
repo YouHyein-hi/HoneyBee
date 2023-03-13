@@ -5,18 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.recyclerFragment.RecyclerFragment"
-    android:background="@color/base_light_orange"
+    android:background="@color/back_yellow"
     >
 
 
+    <View
+        android:layout_width="210dp"
+        android:layout_height="15px"
+        android:layout_marginTop="-15dp"
+        android:background="@color/emphasis_yellow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
     <TextView
-        android:fontFamily="@font/murukmuruk"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
-        android:text="Storage"
-        android:textSize="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/murukmuruk"
+        android:text="영수증 목록"
+        android:textSize="42sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,27 +39,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/list" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_fileName="flying-beee.json"
-        />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="ceras-bee.json"
-        app:lottie_loop="true" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

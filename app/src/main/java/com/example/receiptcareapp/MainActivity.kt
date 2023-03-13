@@ -27,11 +27,12 @@ class MainActivity : AppCompatActivity() {
 
         activityViewModel.fetchState.observe(this) {
             val message = when (it.second) {
-                    FetchState.BAD_INTERNET -> "BAD_INTERNET 오류"
-                    FetchState.PARSE_ERROR -> "PARSE_ERROR 오류"
-                    FetchState.WRONG_CONNECTION -> "WRONG_CONNECTION 오류"
-                    FetchState.SQLITE_CONSTRAINT_PRIMARYKEY -> "이미 저장되어있습니다!"
-                    else -> "${it.first.message} 오류"
+                FetchState.BAD_INTERNET -> "BAD_INTERNET 오류"
+                FetchState.PARSE_ERROR -> "PARSE_ERROR 오류"
+                FetchState.WRONG_CONNECTION -> "WRONG_CONNECTION 오류"
+                FetchState.SQLITE_CONSTRAINT_PRIMARYKEY -> "이미 값이 저장되어있습니다."
+                FetchState.SOCKET_TIMEOUT_EXCEPTION -> "연결 시간이 초과되었습니다."
+                    else -> "저장 안된 오류!  ${it.first.message} "
                 }
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             Log.e("TAG", "onCreate: $message", )

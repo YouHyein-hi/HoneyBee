@@ -17,11 +17,10 @@ interface RetrofitSource {
     @Multipart
     @POST("upload")
     suspend fun sendDataSource(
-//        @PartMap data:HashMap<String, RequestBody>,
         @Part cardName : MultipartBody.Part,
         @Part amount : MultipartBody.Part,
         @Part pictureName : MultipartBody.Part,
-        //@Part timestmap : MultipartBody.Part,
+        @Part timestmap : MultipartBody.Part,
         @Part bill : MultipartBody.Part,
     ): SendData
 

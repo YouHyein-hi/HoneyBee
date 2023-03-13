@@ -24,7 +24,7 @@ object RetrofitModule {
         return Retrofit.Builder()
             .baseUrl("http://10.9.138.16:8080/bills/")
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
+            //.client(okHttpClient)
             .build()
     }
 

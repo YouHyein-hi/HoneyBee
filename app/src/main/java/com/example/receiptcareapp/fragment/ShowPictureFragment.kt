@@ -114,12 +114,6 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                     card = checked,
                     picture = viewModel.image .value!!
                 )
-                activityViewModel.insertData(
-                    date = myLocalDateTime,
-                    amount = binding.btnPrice.text.toString(),
-                    card = checked,
-                    picture = viewModel.image.value!!
-                )
                 NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             }
         }

@@ -31,8 +31,8 @@ class Adapter(
 
     inner class MyAdapter(private val binding: ListBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:DomainRoomData){
-            binding.card.text = list.card
-            binding.date.text = list.card
+            binding.card.text = list.cardName
+            binding.date.text = list.date.toString()
 
             binding.listLayout.setOnClickListener{
                 onSaveClic(list)

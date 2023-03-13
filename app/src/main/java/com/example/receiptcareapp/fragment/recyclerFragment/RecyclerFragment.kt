@@ -26,6 +26,8 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         initRecyclerView()
 
+        activityViewModel.getAllData()
+
         activityViewModel.getRoomData.observe(viewLifecycleOwner){
             adapter.dataList = it
         }
@@ -41,9 +43,5 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     fun initRecyclerView(){
         binding.mainRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.mainRecycler.adapter = adapter
-        adapter.dataList = listOf(
-            DomainRoomData(LocalDateTime.now(), 99999, "나라사랑", null),
-
-        )
     }
 }

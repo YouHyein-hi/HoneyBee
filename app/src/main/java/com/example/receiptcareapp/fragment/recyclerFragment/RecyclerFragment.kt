@@ -1,8 +1,11 @@
 package com.example.receiptcareapp.fragment.recyclerFragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -34,6 +37,10 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             fragmentViewModel.myShowData(it)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
+
+        binding.imageBack.setOnClickListener{
+            findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
+        }
     }
 
 
@@ -44,6 +51,6 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         adapter.dataList = listOf(
             DomainRoomData(LocalDateTime.now(), 99999, "나라사랑", null),
 
-        )
+            )
     }
 }

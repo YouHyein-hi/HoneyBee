@@ -114,9 +114,6 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
 
 
         binding.sendBtn.setOnClickListener{
-
-
-
             if(checked=="") {
                 Toast.makeText(requireContext(), "카드를 입력하세요", Toast.LENGTH_SHORT).show()
             } else if(binding.btnDate.text == "날짜"){
@@ -126,6 +123,8 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             } else if(viewModel.image.value==null){
                 Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT).show()
                 NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
+            } else if(binding.btnStore.text.toString() == ""){
+                Toast.makeText(requireContext(), "가게를 입력하세요", Toast.LENGTH_SHORT).show()
             } else{
                 activityViewModel.isConnected("true")
                 val myLocalDateTime = LocalDateTime.of(myYear, myMonth, myDay, LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second)
@@ -133,7 +132,8 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                     date = myLocalDateTime,
                     amount = binding.btnPrice.text.toString(),
                     card = checked,
-                    picture = viewModel.image .value!!
+                    picture = viewModel.image .value!!,
+                    pictureName = binding.btnStore.text.toString()
                 )
             }
         }

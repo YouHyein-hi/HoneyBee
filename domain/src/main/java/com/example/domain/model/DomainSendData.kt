@@ -9,6 +9,6 @@ import java.time.LocalDateTime
  * pureum
  */
 data class DomainSendData(
-    val response: Response,
+    val response: String,
 )
 

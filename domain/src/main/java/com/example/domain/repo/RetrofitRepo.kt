@@ -11,7 +11,7 @@ import java.time.LocalDateTime
  * pureum
  */
 interface RetrofitRepo {
-    suspend fun sendDataRepo(card:MultipartBody.Part, amount:MultipartBody.Part, pictureName:MultipartBody.Part, date:MultipartBody.Part, picture: MultipartBody.Part): DomainSendData
+    suspend fun sendDataRepo(card:MultipartBody.Part, amount:MultipartBody.Part, pictureName:MultipartBody.Part, date:MultipartBody.Part, picture: MultipartBody.Part): String
 
     suspend fun receiveDataRepo():DomainReceiveData
 

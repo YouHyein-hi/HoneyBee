@@ -3,6 +3,7 @@ package com.example.receiptcareapp.fragment.recyclerFragment
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -30,6 +31,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         activityViewModel.getRoomData.observe(viewLifecycleOwner){
             adapter.dataList = it
+            binding.noneData.isVisible = adapter.dataList.isEmpty()
         }
 
         adapter.onSaveClic = {

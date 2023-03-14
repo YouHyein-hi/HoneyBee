@@ -22,7 +22,7 @@ interface RetrofitSource {
         @Part pictureName : MultipartBody.Part,
         @Part timestmap : MultipartBody.Part,
         @Part bill : MultipartBody.Part,
-    ): SendData
+    ): String
 
     @GET("")
     suspend fun receiveDataSource():ReceiveData

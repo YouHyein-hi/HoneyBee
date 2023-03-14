@@ -12,8 +12,8 @@ import java.time.LocalDateTime
  */
 
 data class SendData(
-    val response: Response,
+    val response: String,
 )
 
 
-fun SendData.toDomainSendData(): DomainSendData = DomainSendData(response = response)
+//fun SendData.toDomainSendData(): DomainSendData = DomainSendData(response = response)

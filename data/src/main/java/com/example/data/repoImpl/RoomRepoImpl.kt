@@ -1,5 +1,6 @@
 package com.example.data.repoImpl
 
+import android.util.Log
 import androidx.room.TypeConverters
 import com.example.data.local.dao.MyDao
 import com.example.data.local.entity.MyEntity

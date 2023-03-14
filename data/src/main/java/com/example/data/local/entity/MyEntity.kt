@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 @Entity(tableName = "MyDataTable")
 data class MyEntity(
     @PrimaryKey
-    val date : LocalDateTime,
+    val date : String,
     @ColumnInfo
     val cardName: String,
     @ColumnInfo
@@ -26,7 +26,7 @@ data class MyEntity(
     @ColumnInfo
     val pictureName: String,
     @ColumnInfo
-    val picture: Uri,
+    val picture: String,
 )
 
 fun MyEntity.toDomainEntity():DomainRoomData = DomainRoomData(

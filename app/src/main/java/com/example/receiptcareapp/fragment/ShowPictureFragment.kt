@@ -50,9 +50,14 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             if(it == "true") {
                 binding.waitingView.visibility = View.VISIBLE
                 binding.progressBar.visibility = View.VISIBLE
-            }else if(it== "pass"){
-                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
-            }else{
+            }else if(it== "pass") {
+                Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_showFragment_to_homeFragment)
+            }else if(it=="failed"){
+                NavHostFragment.findNavController(this)
+            }
+            else{
                 binding.waitingView.visibility = View.INVISIBLE
                 binding.progressBar.visibility = View.INVISIBLE
             }
@@ -109,21 +114,20 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
 
         binding.sendBtn.setOnClickListener{
 
-            activityViewModel.isConnected("true")
+
 
             if(checked=="") {
                 Toast.makeText(requireContext(), "카드를 입력하세요", Toast.LENGTH_SHORT).show()
             } else if(binding.btnDate.text == "날짜"){
                 Toast.makeText(requireContext(), "날짜를 입력하세요", Toast.LENGTH_SHORT).show()
-            } else if(binding.btnPrice.text.toString() == "금액" || binding.btnPrice.text.toString() == ""){
+            } else if(binding.btnPrice.text.isEmpty()){
                 Toast.makeText(requireContext(), "금액을 입력하세요", Toast.LENGTH_SHORT).show()
             } else if(viewModel.image.value==null){
                 Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT).show()
                 NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             } else{
-                val myLocalDateTime = LocalDateTime.of(myYear, myMonth, myDay, LocalDateTime.now().hour, LocalDateTime.now().minute)
-
-
+                activityViewModel.isConnected("true")
+                val myLocalDateTime = LocalDateTime.of(myYear, myMonth, myDay, LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second)
                 activityViewModel.sendData(
                     date = myLocalDateTime,
                     amount = binding.btnPrice.text.toString(),

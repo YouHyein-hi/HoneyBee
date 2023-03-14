@@ -39,8 +39,8 @@ class MainViewModel @Inject constructor(
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
     var myCotext: Context? = null
 
-    private val _sendResult = MutableLiveData<DomainSendData>()
-    val sendResult: LiveData<DomainSendData>
+    private val _sendResult = MutableLiveData<String>()
+    val sendResult: LiveData<String>
         get() = _sendResult
 
     private val _receiveResult = MutableLiveData<DomainReceiveData>()
@@ -60,7 +60,7 @@ class MainViewModel @Inject constructor(
 
 
     fun sendData(date: LocalDateTime, amount: String, card: String, picture: Uri) {
-        viewModelScope.launch(exceptionHandler) {
+        CoroutineScope(exceptionHandler).launch {
             Log.e("TAG", "보내는 데이터 : $date, $amount, $card, $picture")
 
             var replacedAmount = amount
@@ -75,12 +75,7 @@ class MainViewModel @Inject constructor(
             val myDate = MultipartBody.Part.createFormData("date", date.toString())
 
             // 사진을 MultiPart로 변환
-            val file = File(
-                absolutelyPath(
-                    picture,
-                    myCotext
-                )
-            )
+            val file = File(absolutelyPath(picture, myCotext))
             //uri를 받아서 그 사진의 절대경로를 얻어온 후 이 경로를 사용하여 사진을 file 변수에 저장
             val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             //다음을 통해 request로 바꿔준 후
@@ -96,13 +91,9 @@ class MainViewModel @Inject constructor(
             )
             Log.e("TAG", "sendData 응답 : $result ")
 
-//            정상적으로 보내졌다면 DB에 보내기
             _sendResult.value = result
-            if(result.response.toString() == "success") {
-                insertData(cardName = card, amount = replacedAmount, pictureName = "pictureName", date = date, picture = picture)
-            }
-
-            Log.e("TAG", "_sendResult: ${_sendResult.value}")
+            if(result == "success")  insertData(cardName = card, amount = replacedAmount, pictureName = "pictureName", date = date.toString(), picture = picture.toString())
+            else throw Exception("오류! 탈모진행중!")
         }
     }
 
@@ -120,8 +111,8 @@ class MainViewModel @Inject constructor(
         cardName: String,
         amount: String,
         pictureName: String,
-        date: LocalDateTime,
-        picture: Uri
+        date: String,
+        picture: String
     ) {
         CoroutineScope(exceptionHandler).launch {
             Log.e("TAG", "insertData : $date, $cardName, $amount, $pictureName, $picture,")
@@ -134,7 +125,7 @@ class MainViewModel @Inject constructor(
                     picture = picture
                 )
             )
-            isConnected("pass")
+            _isConnected.postValue("pass")
         }
     }
 

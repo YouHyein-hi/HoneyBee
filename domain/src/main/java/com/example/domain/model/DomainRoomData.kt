@@ -11,9 +11,9 @@ import java.time.LocalDateTime
 data class DomainRoomData(
     val cardName: String,
     val amount: String,
-    val date: LocalDateTime,
+    val date: String,
     val pictureName: String,
-    val picture: Uri
+    val picture: String
 )
 
 //fun DomainRoomData.toMyEntity(): = DomainRoomData(time, card, picture)

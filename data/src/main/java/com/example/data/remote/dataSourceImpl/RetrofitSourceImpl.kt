@@ -1,5 +1,6 @@
 package com.example.data.remote.dataSourceImpl
 
+import android.util.Log
 import com.example.data.remote.dataSource.RetrofitSource
 import com.example.data.remote.dto.ReceiveData
 import com.example.data.remote.dto.SendData
@@ -22,14 +23,16 @@ class RetrofitSourceImpl @Inject constructor(
         pictureName: MultipartBody.Part,
         timestmap: MultipartBody.Part,
         bill: MultipartBody.Part
-    ): SendData {
-        return retrofit.create(RetrofitSource::class.java).sendDataSource(
-            cardName = cardName,
-            amount = amount,
-            pictureName = pictureName,
-            timestmap = timestmap,
-            bill = bill
+    ): String {
+        val gap = retrofit.create(RetrofitSource::class.java).sendDataSource(
+        cardName = cardName,
+        amount = amount,
+        pictureName = pictureName,
+        timestmap = timestmap,
+        bill = bill
         )
+        Log.e("TAG", "sendDataSource: $gap", )
+        return gap
     }
 
     override suspend fun receiveDataSource(): ReceiveData {

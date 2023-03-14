@@ -13,12 +13,12 @@ import java.time.LocalDateTime
  * pureum
  */
 @Database(entities = [MyEntity::class], version = 1)
-@TypeConverters(
-    value = [
-        LocalDateTimeConverter::class,
-        MultipartBodyConverter::class
-    ]
-)
+//@TypeConverters(
+//    value = [
+//        LocalDateTimeConverter::class,
+//        MultipartBodyConverter::class
+//    ]
+//)
 abstract class LocalDatabase :RoomDatabase(){
     abstract fun myDatabase():MyDao
 }

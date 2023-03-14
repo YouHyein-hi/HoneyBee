@@ -21,8 +21,8 @@ import java.time.LocalDateTime
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
 
-    private val activityViewModel:MainViewModel by activityViewModels()
-    private val fragmentViewModel:FragmentViewModel by viewModels()
+    private val activityViewModel: MainViewModel by activityViewModels()
+    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val adapter:Adapter = Adapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

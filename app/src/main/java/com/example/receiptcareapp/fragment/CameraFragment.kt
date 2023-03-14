@@ -47,8 +47,8 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
     private var photoURI : Uri? = null
-    private val fragmentViewModel : FragmentViewModel by viewModels({ requireActivity() })
-    private val activityViewModel : MainViewModel by viewModels({ requireActivity() })
+    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
+    //private val activityViewModel : MainViewModel by viewModels({ requireActivity() })
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

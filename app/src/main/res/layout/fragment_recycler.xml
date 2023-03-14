@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/murukmuruk"
         android:text="데이터가 비었어요.."
-        android:textColor="@color/oragne"
+        android:textColor="@color/black"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

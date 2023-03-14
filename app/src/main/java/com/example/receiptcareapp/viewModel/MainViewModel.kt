@@ -36,6 +36,10 @@ class MainViewModel @Inject constructor(
 
 ) : BaseViewModel() {
 
+    init {
+        Log.e("TAG", "MainViewModel: start", )
+    }
+
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
     var myCotext: Context? = null
 
@@ -91,9 +95,9 @@ class MainViewModel @Inject constructor(
             )
             Log.e("TAG", "sendData 응답 : $result ")
 
-            _sendResult.value = result
+            _sendResult.postValue(result)
             if(result == "success")  insertData(cardName = card, amount = replacedAmount, pictureName = "pictureName", date = date.toString(), picture = picture.toString())
-            else throw Exception("오류! 탈모진행중!")
+            else throw Exception("오류! 전송 실패.")
         }
     }
 

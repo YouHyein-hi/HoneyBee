@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -17,16 +18,20 @@ import com.example.receiptcareapp.viewModel.MainViewModel
 
 class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
 
-    private val fragmentViewModel : FragmentViewModel by viewModels()
+    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val activityViewModel : MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fragmentViewModel.showData.observe(viewLifecycleOwner){
-            //binding.imageView.setImageURI("it.picture")
-            binding.cardAmount.text = "${it.cardName} : ${it.amount}"
+        fragmentViewModel.showData.let {
+            val myDate = it.value!!.date.split("-","T")
+            binding.imageView.setImageURI(it.value!!.picture.toUri())
+            binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
+            binding.cardAmount.text = "${it.value!!.cardName} : ${it.value!!.amount}"
         }
+
+        fragmentViewModel.showData
 
         binding.imageRemove.setOnClickListener{
             AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)

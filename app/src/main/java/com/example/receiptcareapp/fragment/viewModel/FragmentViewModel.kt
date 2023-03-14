@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.domain.model.DomainRoomData
 import okhttp3.MultipartBody
 import java.io.ByteArrayOutputStream
@@ -16,28 +17,7 @@ import java.io.ByteArrayOutputStream
  * pureum
  */
 
-class FragmentViewModel(
-    application: Application
-) : AndroidViewModel(Application()){
-    init {
-        Log.e("TAG", ": viewMoodel start", )
-    }
-
-//    private val _picture = MutableLiveData<MultipartBody.Part>()
-//    val picture : LiveData<MultipartBody.Part>
-//        get() = _picture
-//
-//    private val _bytePicture = MutableLiveData<MultipartBody.Part>()
-//    val bytePicture : LiveData<MultipartBody.Part>
-//        get() = _bytePicture
-//    fun takePicture(gap:MultipartBody.Part){
-        //bytearray 변환시키기
-//        val outputStream = ByteArrayOutputStream()
-//        gap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-//        _bytePicture.value = gap
-//        Log.e("TAG", "takePicture: ${_bytePicture.value}", )
-//        _picture.value = gap
-//    }
+class FragmentViewModel : ViewModel(){
 
     private val _image = MutableLiveData<Uri>()
     val image : LiveData<Uri>
@@ -55,30 +35,10 @@ class FragmentViewModel(
         _multiPartPicture.value = img
     }
 
-
-
-/*
-    /**
-     1 : CameraFragment
-     2 : GalleryFragment
-     **/
-    private val _pageNum = MutableLiveData<Int>()
-    val pageNum : LiveData<Int>
-        get() = _pageNum
-    fun takePage(pageNum: Int){
-        _pageNum.value = pageNum
-    }
-
- */
-
     private val _showData = MutableLiveData<DomainRoomData>()
     val showData : LiveData<DomainRoomData>
         get() = _showData
-    fun myShowData(list:DomainRoomData){
-        _showData.value = list
-        Log.e("TAG", "myShowData: $showData", )
+    fun myShowData(data: DomainRoomData){
+        _showData.value = data
     }
-
-
-
 }

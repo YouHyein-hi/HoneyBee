@@ -25,14 +25,16 @@ class Adapter(
     set(value){
         field = value
         notifyDataSetChanged()
-        Log.e("TAG", "$dataList: ", )
     }
 
 
     inner class MyAdapter(private val binding: ListBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:DomainRoomData){
-            binding.card.text = list.card
-            binding.date.text = list.card
+            val myDate = list.date.split("-","T")
+            Log.e("TAG", "bind: $myDate", )
+            binding.cardName.text = "${list.cardName} :"
+            binding.amount.text = " ${list.amount}"
+            binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
 
             binding.listLayout.setOnClickListener{
                 onSaveClic(list)

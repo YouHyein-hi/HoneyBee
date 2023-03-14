@@ -1,5 +1,7 @@
 package com.example.data.local.entity
 
+import android.graphics.Picture
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,13 +18,22 @@ import java.time.LocalDateTime
 @Entity(tableName = "MyDataTable")
 data class MyEntity(
     @PrimaryKey
-    val time:LocalDateTime,
+    val date : String,
     @ColumnInfo
-    val amount: Int,
+    val cardName: String,
     @ColumnInfo
-    val card: String,
+    val amount: String,
     @ColumnInfo
-    val picture: MultipartBody.Part?
+    val pictureName: String,
+    @ColumnInfo
+    val picture: String,
 )
 
-fun MyEntity.toDomainEntity():DomainRoomData = DomainRoomData(time,amount,card,picture)
+fun MyEntity.toDomainEntity():DomainRoomData = DomainRoomData(
+    date = date,
+    cardName = cardName,
+    amount = amount,
+    pictureName = pictureName,
+    picture = picture
+
+)

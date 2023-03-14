@@ -30,11 +30,11 @@ object LocalDataModule {
     @Singleton
     @Provides
     fun provideLocalDatabase(@ApplicationContext appContext: Context, gson: Gson): LocalDatabase{
-        return Room.databaseBuilder(appContext, LocalDatabase::class.java, "myDB")//
+        return Room.databaseBuilder(appContext, LocalDatabase::class.java, "myDB")
             // .fallbackToDestructiveMigration()
             // => 이걸쓰면 테이블이 유실되어 호출 실패해도 db를 재생성함(이전데이터 날라감)
-            .addTypeConverter(LocalDateTimeConverter(gson))
-            .addTypeConverter(MultipartBodyConverter(gson))
+            //.addTypeConverter(LocalDateTimeConverter(gson))
+            //.addTypeConverter(MultipartBodyConverter(gson))
             .build()
     }
 }

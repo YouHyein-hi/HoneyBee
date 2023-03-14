@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import retrofit2.HttpException
 import java.net.SocketException
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 /**
@@ -19,6 +20,7 @@ abstract class BaseViewModel  : ViewModel(){
     val fetchState : LiveData<Pair<Throwable, FetchState>>
         get() = _fetchState
 
+
     protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
         when(throwable){
@@ -26,6 +28,7 @@ abstract class BaseViewModel  : ViewModel(){
             is HttpException -> _fetchState.postValue(Pair(throwable, FetchState.PARSE_ERROR))
             is UnknownHostException -> _fetchState.postValue(Pair(throwable, FetchState.WRONG_CONNECTION))
             is SQLiteConstraintException -> _fetchState.postValue(Pair(throwable,FetchState.SQLITE_CONSTRAINT_PRIMARYKEY))
+            is SocketTimeoutException -> _fetchState.postValue(Pair(throwable,FetchState.SOCKET_TIMEOUT_EXCEPTION))
             else -> _fetchState.postValue(Pair(throwable, FetchState.FAIL))
         }
     }

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -29,8 +30,11 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         initRecyclerView()
 
+        activityViewModel.getAllData()
+
         activityViewModel.getRoomData.observe(viewLifecycleOwner){
             adapter.dataList = it
+            binding.noneData.isVisible = adapter.dataList.isEmpty()
         }
 
         adapter.onSaveClic = {
@@ -48,9 +52,5 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     fun initRecyclerView(){
         binding.mainRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.mainRecycler.adapter = adapter
-        adapter.dataList = listOf(
-            DomainRoomData(LocalDateTime.now(), 99999, "나라사랑", null),
-
-            )
     }
 }

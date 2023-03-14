@@ -4,6 +4,7 @@ import android.content.Entity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.DomainRoomData
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
@@ -31,10 +32,10 @@ class Adapter(
     inner class MyAdapter(private val binding: ListBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:DomainRoomData){
             val myDate = list.date.split("-","T")
-            Log.e("TAG", "bind: $myDate", )
             binding.cardName.text = "${list.cardName} :"
             binding.amount.text = " ${list.amount}"
             binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
+            binding.imageView2.setImageURI(list.picture.toUri())
 
             binding.listLayout.setOnClickListener{
                 onSaveClic(list)

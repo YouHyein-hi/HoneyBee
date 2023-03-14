@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
-    private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
+    private val viewModel : FragmentViewModel by viewModels({requireActivity()})
     private val activityViewModel : MainViewModel by activityViewModels()
     private var checked = ""
     private var myYear = 0

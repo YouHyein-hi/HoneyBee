@@ -39,7 +39,7 @@ class GalleryFragment : Fragment() {
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
     private val GALLERY_CODE = 101
 
-    private val viewModel : FragmentViewModel by viewModels({ requireActivity() })
+    private val viewModel : FragmentViewModel by viewModels({requireActivity()})
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

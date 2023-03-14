@@ -33,7 +33,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val ALBUM = android.Manifest.permission.READ_EXTERNAL_STORAGE
     private val ALBUM_CODE = 101
     private lateinit var callback: OnBackPressedCallback
-    private val activityViewModel:MainViewModel by activityViewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

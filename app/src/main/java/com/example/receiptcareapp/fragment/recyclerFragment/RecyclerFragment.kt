@@ -1,10 +1,13 @@
 package com.example.receiptcareapp.fragment.recyclerFragment
 
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -18,6 +21,7 @@ import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.time.LocalDateTime
+import kotlin.math.log
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
 
@@ -25,8 +29,22 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val adapter:Adapter = Adapter()
 
+
+//    private fun getImageFromGallery() {
+//        Log.e("TAG", "getImageFromGallery: in!!!", )
+//        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply { // 1
+//            addCategory(Intent.CATEGORY_OPENABLE) // 2
+//            type = "image/*" // 3
+//        }
+//        startActivityForResult(intent, READ_REQUEST_CODE) // 4
+//
+//    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
+
+        getImageFromGallery()
 
         initRecyclerView()
 

@@ -47,15 +47,15 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
 
         //프로그래스 바 컨트롤
         activityViewModel.isConnected.observe(viewLifecycleOwner) {
+            Log.e("TAG", "onViewCreated: $it", )
             if(it == "true") {
                 binding.waitingView.visibility = View.VISIBLE
                 binding.progressBar.visibility = View.VISIBLE
             }else if(it== "pass") {
                 Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_showFragment_to_homeFragment)
+                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             }else if(it=="failed"){
-                NavHostFragment.findNavController(this)
+                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             }
             else{
                 binding.waitingView.visibility = View.INVISIBLE

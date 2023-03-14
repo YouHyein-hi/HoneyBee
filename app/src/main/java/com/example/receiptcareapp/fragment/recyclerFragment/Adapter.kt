@@ -24,10 +24,9 @@ class Adapter(
     private lateinit var binding:ListBinding
     var dataList = listOf<DomainRoomData>()
     set(value){
-        field = value
+        field = value.reversed()
         notifyDataSetChanged()
     }
-
 
     inner class MyAdapter(private val binding: ListBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:DomainRoomData){
@@ -35,8 +34,7 @@ class Adapter(
             binding.cardName.text = "${list.cardName} :"
             binding.amount.text = " ${list.amount}"
             binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
-            binding.imageView2.setImageURI(list.picture.toUri())
-
+            binding.picture.setImageURI(list.picture.toUri())
             binding.listLayout.setOnClickListener{
                 onSaveClic(list)
             }

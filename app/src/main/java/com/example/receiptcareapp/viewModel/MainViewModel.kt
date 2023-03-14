@@ -78,7 +78,6 @@ class MainViewModel @Inject constructor(
             val myPictureName = MultipartBody.Part.createFormData("pictureName", "pictureName")
             val myDate = MultipartBody.Part.createFormData("date", date.toString())
 
-            // 사진을 MultiPart로 변환
             val file = File(absolutelyPath(picture, myCotext))
             //uri를 받아서 그 사진의 절대경로를 얻어온 후 이 경로를 사용하여 사진을 file 변수에 저장
             val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())

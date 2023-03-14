@@ -1,5 +1,6 @@
 package com.example.domain.model
 
+import android.net.Uri
 import okhttp3.MultipartBody
 import java.time.LocalDateTime
 
@@ -8,10 +9,11 @@ import java.time.LocalDateTime
  * pureum
  */
 data class DomainRoomData(
-    val date: LocalDateTime,
-    val amount:Int,
-    val card:String,
-    val picture: MultipartBody.Part?
+    val cardName: String,
+    val amount: String,
+    val date: String,
+    val pictureName: String,
+    val picture: String
 )
 
 //fun DomainRoomData.toMyEntity(): = DomainRoomData(time, card, picture)

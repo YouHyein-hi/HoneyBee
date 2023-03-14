@@ -1,6 +1,7 @@
 package com.example.domain.model
 
 import okhttp3.MultipartBody
+import okhttp3.Response
 import java.time.LocalDateTime
 
 /**
@@ -8,9 +9,6 @@ import java.time.LocalDateTime
  * pureum
  */
 data class DomainSendData(
-    val date:LocalDateTime,
-    val amount:Int,
-    val card:String,
-    val picture:MultipartBody.Part
+    val response: String,
 )
 

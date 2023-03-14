@@ -1,5 +1,6 @@
 package com.example.data.module
 
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,13 +19,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
+
+    var gson = GsonBuilder().setLenient().create()
     @Provides
     @Singleton
     fun provideSendRetrofit():Retrofit{
         return Retrofit.Builder()
             .baseUrl("http://10.9.138.16:8080/bills/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            //.client(okHttpClient)
             .build()
     }
 

@@ -19,7 +19,6 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
     private val fragmentViewModel : FragmentViewModel by viewModels()
     private val activityViewModel : MainViewModel by activityViewModels()
-    private lateinit var callback: OnBackPressedCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,6 +39,11 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                     activityViewModel.deleteData(binding.date.text.toString())
                     findNavController().popBackStack()
                 }.show()
+        }
+
+
+        binding.imageBack.setOnClickListener{
+            findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
         }
     }
 

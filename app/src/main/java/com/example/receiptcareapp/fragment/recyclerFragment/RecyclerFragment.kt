@@ -1,8 +1,11 @@
 package com.example.receiptcareapp.fragment.recyclerFragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -37,6 +40,10 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         adapter.onSaveClic = {
             fragmentViewModel.myShowData(it)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
+        }
+
+        binding.imageBack.setOnClickListener{
+            findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
         }
     }
 

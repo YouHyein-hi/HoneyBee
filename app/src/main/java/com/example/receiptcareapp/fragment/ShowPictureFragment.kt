@@ -99,6 +99,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
         binding.btnPrice.setOnClickListener{
             if(binding.btnPrice.text.contains(",")){
                 binding.btnPrice.setText(binding.btnPrice.text.toString().replace(",",""))
+                binding.btnPrice.setSelection(binding.btnPrice.text.length)
             }
         }
 

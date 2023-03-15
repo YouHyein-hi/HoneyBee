@@ -1,9 +1,12 @@
 package com.example.receiptcareapp.fragment.recyclerFragment
 
 import android.content.Entity
+import android.content.Intent
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.DomainRoomData
@@ -35,9 +38,7 @@ class Adapter(
             binding.amount.text = " ${list.amount}"
             binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
             binding.picture.setImageURI(list.picture.toUri())
-            binding.listLayout.setOnClickListener{
-                onSaveClic(list)
-            }
+            binding.listLayout.setOnClickListener{ onSaveClic(list) }
         }
 
 

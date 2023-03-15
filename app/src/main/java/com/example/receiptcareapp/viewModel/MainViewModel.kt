@@ -67,14 +67,14 @@ class MainViewModel @Inject constructor(
         CoroutineScope(exceptionHandler).launch {
             Log.e("TAG", "보내는 데이터 : $date, $amount, $card, $picture")
 
-            var replacedAmount = amount
-            if (replacedAmount.contains(",")) {
-                replacedAmount = replacedAmount.replace(",", "")
-            }
+//            var replacedAmount = amount
+//            if (replacedAmount.contains(",")) {
+//                replacedAmount = replacedAmount.replace(",", "")
+//            }
 
             // 각 데이터를 MultiPart로 변환
             val myCard = MultipartBody.Part.createFormData("cardName", card)
-            val myAmount = MultipartBody.Part.createFormData("amount", replacedAmount)
+            val myAmount = MultipartBody.Part.createFormData("amount", amount)
             val myPictureName = MultipartBody.Part.createFormData("pictureName", "pictureName")
             val myDate = MultipartBody.Part.createFormData("date", date.toString())
 
@@ -95,7 +95,7 @@ class MainViewModel @Inject constructor(
             Log.e("TAG", "sendData 응답 : $result ")
 
             _sendResult.postValue(result)
-            if(result == "success")  insertData(cardName = card, amount = replacedAmount, pictureName = "pictureName", date = date.toString(), picture = picture.toString())
+            if(result == "success")  insertData(cardName = card, amount = amount, pictureName = "pictureName", date = date.toString(), picture = picture.toString())
             else throw Exception("오류! 전송 실패.")
         }
     }

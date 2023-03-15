@@ -32,7 +32,6 @@ import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import java.io.File
 import kotlin.math.log
 
-//class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 class GalleryFragment : Fragment() {
 
     private val binding by lazy { FragmentGalleryBinding.inflate(layoutInflater) }
@@ -73,6 +72,7 @@ class GalleryFragment : Fragment() {
         if (it.resultCode == Activity.RESULT_OK){
             Log.e("TAG", "onActivityResult: if 진입", )
             val imageUri: Uri? = it.data?.data
+            Log.e("TAG", "my URI: $imageUri", )
             if (imageUri != null) {
                 Log.e("TAG", "data 있음", )
                 viewModel.takeImage(imageUri)

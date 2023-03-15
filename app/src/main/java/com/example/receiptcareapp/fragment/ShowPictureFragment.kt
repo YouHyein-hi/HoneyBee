@@ -30,6 +30,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
         binding.pictureView.setImageURI(viewModel.image.value)
 
         activityViewModel.isConnected("false")
@@ -118,11 +119,13 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
 
 
             if(checked=="") {
-                Toast.makeText(requireContext(), "카드를 입력하세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "카드를 입력하세요.", Toast.LENGTH_SHORT).show()
+            } else if(binding.storeName.text!!.isEmpty()){
+                Toast.makeText(requireContext(), "가게 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
             } else if(binding.btnDate.text == "날짜"){
-                Toast.makeText(requireContext(), "날짜를 입력하세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "날짜를 입력하세요.", Toast.LENGTH_SHORT).show()
             } else if(binding.btnPrice.text.isEmpty()){
-                Toast.makeText(requireContext(), "금액을 입력하세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "금액을 입력하세요.", Toast.LENGTH_SHORT).show()
             } else if(viewModel.image.value==null){
                 Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT).show()
                 NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
@@ -133,7 +136,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                     date = myLocalDateTime,
                     amount = binding.btnPrice.text.toString(),
                     card = checked,
-                    picture = viewModel.image .value!!
+                    picture = viewModel.image.value!!
                 )
             }
         }

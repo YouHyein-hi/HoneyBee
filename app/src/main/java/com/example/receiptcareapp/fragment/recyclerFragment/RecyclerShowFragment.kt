@@ -20,20 +20,19 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val activityViewModel : MainViewModel by activityViewModels()
-
+    private var myData : String = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         fragmentViewModel.showData.let {
-            val myDate = it.value!!.date.split("-","T")
+            myData = it.value!!.date
+            val myDate =myData.split("-","T")
             binding.imageView.setImageURI(it.value!!.picture.toUri())
             binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
             binding.cardAmount.text = "${it.value!!.cardName} : ${it.value!!.amount}"
         }
 
-        fragmentViewModel.showData
-
-        binding.imageRemove.setOnClickListener{
+        binding.removeData.setOnClickListener{
             AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
                 .setTitle("")
                 .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")
@@ -41,11 +40,10 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
                 }
                 .setNegativeButton("삭제"){dialog, id->
-                    activityViewModel.deleteData(binding.date.text.toString())
+                    activityViewModel.deleteData(myData)
                     findNavController().popBackStack()
                 }.show()
         }
-
 
         binding.imageBack.setOnClickListener{
             findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)

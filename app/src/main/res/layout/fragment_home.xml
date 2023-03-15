@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/back_yellow"
-    tools:context=".fragment.ShowPictureFragment">
+    tools:context=".fragment.HomeFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +27,9 @@
             android:background="@color/emphasis_yellow"
             app:layout_constraintEnd_toEndOf="@+id/textView3"
             app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            android:transitionName="yellowView"
+            />
 
         <TextView
             android:id="@+id/textView3"
@@ -39,6 +41,7 @@
             android:textSize="48sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:transitionName="title"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

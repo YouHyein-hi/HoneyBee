@@ -71,7 +71,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
 
         //해당 경로에 사진이 저장될거임
         val uri : Uri? = createImageUri("JPEG_${timeStamp}_", "image/jpeg")
-        println("my uri : $uri")
+        Log.e("TAG", "dispatchTakePictureIntentEx: my uri : $uri", )
 
         photoURI = uri
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)

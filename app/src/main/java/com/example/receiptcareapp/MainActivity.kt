@@ -17,19 +17,6 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val activityViewModel: MainViewModel by viewModels()
 
-    private fun navigatePhotos() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-        intent.type = "image/*"
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            Log.e("TAG", "navigatePhotos: ${it.resultCode}", )
-        }
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

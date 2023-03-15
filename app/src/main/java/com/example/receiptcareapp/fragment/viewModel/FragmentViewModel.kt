@@ -4,13 +4,11 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.model.DomainRoomData
 import okhttp3.MultipartBody
-import java.io.ByteArrayOutputStream
 
 /**
  * 2023-01-31

@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/avd_anim.xml" value="0.1005" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/choice_btn.xml" value="0.252" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2465" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/rectangle.xml" value="0.2515" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/recycler_show.xml" value="0.2515" />
@@ -10,13 +12,16 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/show_picture_btn.xml" value="0.199" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/spinner_custom.xml" value="0.199" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/string.xml" value="0.2075" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/yellow_btn.xml" value="0.252" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/activity_main.xml" value="0.22395833333333334" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/activity_splash.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_camera.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_gallery.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_home.xml" value="0.22395833333333334" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_home.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_recycler.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_recycler_show.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_show_picture.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_splash.xml" value="0.2171875" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/list.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/ReceiptCareApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.246" />
         <entry key="..\:/Users/PC01/Desktop/ReceiptCareApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.246" />

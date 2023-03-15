@@ -3,8 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/splashFragment">
 
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.receiptcareapp.fragment.SplashFragment"
+        android:label="splashFragment"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.receiptcareapp.fragment.HomeFragment"
@@ -107,4 +116,6 @@
             app:popUpTo="@id/homeFragment"
             />
     </fragment>
+
+
 </navigation>

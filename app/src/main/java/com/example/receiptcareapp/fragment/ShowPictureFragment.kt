@@ -34,6 +34,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
         binding.pictureView.setImageURI(viewModel.image.value)
 
         activityViewModel.isConnected("false")
@@ -57,16 +58,17 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
 
         //프로그래스 바 컨트롤
         activityViewModel.isConnected.observe(viewLifecycleOwner) {
+
             if (it == "true") {
                 binding.waitingView.visibility = View.VISIBLE
                 binding.progressBar.visibility = View.VISIBLE
             } else if (it == "pass") {
                 Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_showFragment_to_homeFragment)
-            } else if (it == "failed") {
-                NavHostFragment.findNavController(this)
-            } else {
+                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
+            }else if(it=="failed"){
+                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
+            }
+            else{
                 binding.waitingView.visibility = View.INVISIBLE
                 binding.progressBar.visibility = View.INVISIBLE
             }
@@ -118,43 +120,31 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             }
 
 
-            binding.sendBtn.setOnClickListener {
-                if (checked == "") {
-                    Toast.makeText(requireContext(), "카드를 입력하세요", Toast.LENGTH_SHORT).show()
-                } else if (binding.btnDate.text == "날짜") {
-                    Toast.makeText(requireContext(), "날짜를 입력하세요", Toast.LENGTH_SHORT).show()
-                } else if (binding.btnPrice.text.isEmpty()) {
-                    Toast.makeText(requireContext(), "금액을 입력하세요", Toast.LENGTH_SHORT).show()
-                } else if (viewModel.image.value == null) {
-                    Toast.makeText(
-                        requireContext(),
-                        "사진이 비었습니다.\n초기화면으로 돌아갑니다.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_showFragment_to_homeFragment)
-                } else if (binding.btnStore.text.toString() == "") {
-                    Toast.makeText(requireContext(), "가게를 입력하세요", Toast.LENGTH_SHORT).show()
-                } else {
-                    activityViewModel.isConnected("true")
-                    val myLocalDateTime = LocalDateTime.of(
-                        myYear,
-                        myMonth,
-                        myDay,
-                        LocalDateTime.now().hour,
-                        LocalDateTime.now().minute,
-                        LocalDateTime.now().second
-                    )
-                    activityViewModel.sendData(
+        binding.sendBtn.setOnClickListener{
+            if(checked=="") {
+                Toast.makeText(requireContext(), "카드를 입력하세요.", Toast.LENGTH_SHORT).show()
+            } else if(binding.storeName.text!!.isEmpty()){
+                Toast.makeText(requireContext(), "가게 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
+            } else if(binding.btnDate.text == "날짜"){
+                Toast.makeText(requireContext(), "날짜를 입력하세요.", Toast.LENGTH_SHORT).show()
+            } else if(binding.btnPrice.text.isEmpty()){
+                Toast.makeText(requireContext(), "금액을 입력하세요.", Toast.LENGTH_SHORT).show()
+            } else if(viewModel.image.value==null){
+                Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT).show()
+                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
+            } else{
+                activityViewModel.isConnected("true")
+                val myLocalDateTime = LocalDateTime.of(myYear, myMonth, myDay, LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second)
+                activityViewModel.sendData(
                         date = myLocalDateTime,
                         amount = binding.btnPrice.text.toString(),
                         card = checked,
                         picture = viewModel.image.value!!,
                         pictureName = binding.btnStore.text.toString()
                     )
-                }
             }
-            binding.cancleBtn.setOnClickListener {
+        }
+        binding.cancleBtn.setOnClickListener {
                 NavHostFragment.findNavController(this)
                     .navigate(R.id.action_showFragment_to_homeFragment)
             }

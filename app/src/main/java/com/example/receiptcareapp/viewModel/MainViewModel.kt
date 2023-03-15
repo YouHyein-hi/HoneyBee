@@ -67,18 +67,18 @@ class MainViewModel @Inject constructor(
         CoroutineScope(exceptionHandler).launch {
             Log.e("TAG", "보내는 데이터 : $date, $amount, $card, $picture, $pictureName")
 
-            var replacedAmount = amount
-            if (replacedAmount.contains(",")) {
-                replacedAmount = replacedAmount.replace(",", "")
-            }
+//            var replacedAmount = amount
+//            if (replacedAmount.contains(",")) {
+//                replacedAmount = replacedAmount.replace(",", "")
+//            }
 
             // 각 데이터를 MultiPart로 변환
             val myCard = MultipartBody.Part.createFormData("cardName", card)
-            val myAmount = MultipartBody.Part.createFormData("amount", replacedAmount)
-            val myPictureName = MultipartBody.Part.createFormData("pictureName", pictureName)
+            val myAmount = MultipartBody.Part.createFormData("amount", amount)
+            val myPictureName = MultipartBody.Part.createFormData("pictureName", "pictureName")
+
             val myDate = MultipartBody.Part.createFormData("date", date.toString())
 
-            // 사진을 MultiPart로 변환
             val file = File(absolutelyPath(picture, myCotext))
             //uri를 받아서 그 사진의 절대경로를 얻어온 후 이 경로를 사용하여 사진을 file 변수에 저장
             val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
@@ -96,7 +96,7 @@ class MainViewModel @Inject constructor(
             Log.e("TAG", "sendData 응답 : $result ")
 
             _sendResult.postValue(result)
-            if(result == "success")  insertData(cardName = card, amount = replacedAmount, pictureName = "pictureName", date = date.toString(), picture = picture.toString())
+            if(result == "success")  insertData(cardName = card, amount = amount, pictureName = "pictureName", date = date.toString(), picture = picture.toString())
             else throw Exception("오류! 전송 실패.")
         }
     }

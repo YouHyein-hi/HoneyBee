@@ -28,17 +28,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
-import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
-import com.example.receiptcareapp.viewModel.MainViewModel
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,7 +39,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     private val CAMERA_CODE = 98
     private var photoURI : Uri? = null
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
-    //private val activityViewModel : MainViewModel by viewModels({ requireActivity() })
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,7 +71,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
 
         //해당 경로에 사진이 저장될거임
         val uri : Uri? = createImageUri("JPEG_${timeStamp}_", "image/jpeg")
-        println("my uri : $uri")
+        Log.e("TAG", "dispatchTakePictureIntentEx: my uri : $uri", )
 
         photoURI = uri
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)

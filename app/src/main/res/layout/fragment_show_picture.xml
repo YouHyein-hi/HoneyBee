@@ -70,7 +70,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/storeName"
+            android:id="@+id/btnStore"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="30dp"
@@ -95,7 +95,7 @@
             android:layout_marginTop="5dp"
             android:paddingTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/storeName"
+            app:layout_constraintTop_toBottomOf="@+id/btnStore"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="1dp">
 
@@ -103,42 +103,35 @@
                 android:id="@+id/btn_date"
                 android:layout_width="150dp"
                 android:layout_height="40dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/choice_btn"
-                android:fontFamily="@font/pretendardsemibold"
                 android:elevation="3dp"
+                android:fontFamily="@font/pretendardsemibold"
                 android:hint="날짜"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textView13" />
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/btn_price"
                 android:layout_width="150dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/choice_btn"
                 android:elevation="3dp"
                 android:fontFamily="@font/pretendardsemibold"
                 android:gravity="center"
                 android:hint="금액"
+                android:inputType="number"
                 android:maxLength="7"
                 android:textSize="16sp"
-                android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView13" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

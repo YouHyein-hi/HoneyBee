@@ -123,7 +123,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
         binding.sendBtn.setOnClickListener{
             if(checked=="") {
                 Toast.makeText(requireContext(), "카드를 입력하세요.", Toast.LENGTH_SHORT).show()
-            } else if(binding.storeName.text!!.isEmpty()){
+            } else if(binding.btnStore.text!!.isEmpty()){
                 Toast.makeText(requireContext(), "가게 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
             } else if(binding.btnDate.text == "날짜"){
                 Toast.makeText(requireContext(), "날짜를 입력하세요.", Toast.LENGTH_SHORT).show()

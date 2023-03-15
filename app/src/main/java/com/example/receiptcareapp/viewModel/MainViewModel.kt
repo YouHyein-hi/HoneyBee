@@ -63,9 +63,9 @@ class MainViewModel @Inject constructor(
     }
 
 
-    fun sendData(date: LocalDateTime, amount: String, card: String, picture: Uri) {
+    fun sendData(date: LocalDateTime, amount: String, card: String, picture: Uri, pictureName: String) {
         CoroutineScope(exceptionHandler).launch {
-            Log.e("TAG", "보내는 데이터 : $date, $amount, $card, $picture")
+            Log.e("TAG", "보내는 데이터 : $date, $amount, $card, $picture, $pictureName")
 
 //            var replacedAmount = amount
 //            if (replacedAmount.contains(",")) {
@@ -76,6 +76,7 @@ class MainViewModel @Inject constructor(
             val myCard = MultipartBody.Part.createFormData("cardName", card)
             val myAmount = MultipartBody.Part.createFormData("amount", amount)
             val myPictureName = MultipartBody.Part.createFormData("pictureName", "pictureName")
+
             val myDate = MultipartBody.Part.createFormData("date", date.toString())
 
             val file = File(absolutelyPath(picture, myCotext))

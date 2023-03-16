@@ -81,6 +81,7 @@
             android:fontFamily="@font/pretendardsemibold"
             android:gravity="center"
             android:hint="가게 이름"
+            android:inputType="textCapCharacters"
             android:textSize="16sp"
             android:maxLength="15"
             app:layout_constraintEnd_toEndOf="parent"

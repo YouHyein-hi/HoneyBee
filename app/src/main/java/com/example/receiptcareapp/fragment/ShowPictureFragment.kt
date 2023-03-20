@@ -2,14 +2,11 @@ package com.example.receiptcareapp.fragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.core.view.marginStart
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -18,12 +15,9 @@ import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
-import okhttp3.internal.concat
 import java.text.DecimalFormat
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.math.log
 
 class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
     private val viewModel: FragmentViewModel by viewModels({ requireActivity() })
@@ -34,7 +28,6 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
     private var myDay = 0
 
     private var cardArray : MutableMap<String, Int>? = mutableMapOf("카드1" to 1000, "카드2" to 2000)
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,16 +77,17 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
         getSpinner()
 
         /** 카드 추가 관련 코드 **/
-        binding.cardaddBtn.setOnClickListener {
-            val editText = EditText(requireContext())
-            editText.gravity = Gravity.CENTER
-            //editText.marginStart
+        val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
+        val editText_cardName  = dialogView.findViewById<EditText>(R.id.dialog_cardname)
+        val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
+
+        binding.cardaddBtn.setOnClickListener{
             AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
                 .setTitle("카드 추가")
-                .setMessage("추가할 카드를 적어주세요.")
-                .setView(editText)
+                .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
+                .setView(dialogView)
                 .setPositiveButton("확인") { dialog, id ->
-                    cardArray?.put(editText.text.toString(), 3000)
+                    cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
                     cardArray?.let { it -> viewModel.takeCardData(it) }
                     getSpinner()
                 }.show()

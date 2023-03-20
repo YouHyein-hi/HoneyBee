@@ -1,14 +1,11 @@
 package com.example.receiptcareapp.fragment.recyclerFragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentRecyclerShowBinding
@@ -24,13 +21,30 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fragmentViewModel.showData.let {
-            myData = it.value!!.date
-            val myDate =myData.split("-","T")
-            binding.imageView.setImageURI(it.value!!.picture.toUri())
-            binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
-            binding.cardAmount.text = "${it.value!!.cardName} : ${it.value!!.amount}"
+
+        if(fragmentViewModel.showServerData != null){
+            fragmentViewModel.showServerData.let {
+                myData = it.value!!.date
+                val myDate =myData.split("-","T")
+                //binding.imageView.setImageURI(it.value!!.picture.toUri())
+                binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
+                binding.cardAmount.text = "${it.value!!.cardName} : ${it.value!!.amount}"
+            }
+
+        }else{
+            fragmentViewModel.showLocalData.let {
+                myData = it.value!!.date
+                val myDate =myData.split("-","T")
+                binding.imageView.setImageURI(it.value!!.picture.toUri())
+                binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
+                binding.cardAmount.text = "${it.value!!.cardName} : ${it.value!!.amount}"
+            }
         }
+
+
+
+
+
 
         binding.removeData.setOnClickListener{
             AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
@@ -40,7 +54,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
                 }
                 .setNegativeButton("삭제"){dialog, id->
-                    activityViewModel.deleteData(myData)
+                    activityViewModel.deleteRoomData(myData)
                     findNavController().popBackStack()
                 }.show()
         }

@@ -1,12 +1,11 @@
 package com.example.receiptcareapp.fragment.viewModel
 
-import android.app.Application
-import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.domain.model.DomainReceiveAllData
 import com.example.domain.model.DomainRoomData
 import okhttp3.MultipartBody
 
@@ -33,10 +32,19 @@ class FragmentViewModel : ViewModel(){
         _multiPartPicture.value = img
     }
 
-    private val _showData = MutableLiveData<DomainRoomData>()
-    val showData : LiveData<DomainRoomData>
-        get() = _showData
-    fun myShowData(data: DomainRoomData){
-        _showData.value = data
+    private val _showLocalData = MutableLiveData<DomainRoomData?>()
+    val showLocalData : LiveData<DomainRoomData?>
+        get() = _showLocalData
+    fun myShowLocalData(data: DomainRoomData?){
+        _showLocalData.value = data
     }
+
+    private val _showServerData = MutableLiveData<DomainReceiveAllData?>()
+    val showServerData : LiveData<DomainReceiveAllData?>
+        get() = _showServerData
+    fun myShowServerData(data: DomainReceiveAllData?){
+        _showServerData.value = data
+    }
+
+
 }

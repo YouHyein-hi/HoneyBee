@@ -15,7 +15,7 @@ interface RetrofitSource {
 
     //multipart에 쓰이는 모든 요소들은 @Part를 붙여줘야 함
     @Multipart
-    @POST("upload")
+    @POST("bills/add")
     suspend fun sendDataSource(
         @Part cardName : MultipartBody.Part,
         @Part amount : MultipartBody.Part,
@@ -24,13 +24,11 @@ interface RetrofitSource {
         @Part bill : MultipartBody.Part,
     ): String
 
-    @GET("")
-    suspend fun receiveDataSource():ReceiveData
+    @GET("bills")
+    suspend fun receiveDataSource():List<ReceiveData>
 
     @GET("test")
-    suspend fun test(
-        @Query("a") a:String
-    ):String
+    suspend fun deleteServerData():String
 
 
 }

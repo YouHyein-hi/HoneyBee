@@ -1,12 +1,16 @@
 package com.example.receiptcareapp
 
-import android.content.Intent
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import com.example.receiptcareapp.State.ConnetedState
+import com.example.receiptcareapp.State.ServerState
 import com.example.receiptcareapp.databinding.ActivityMainBinding
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.viewModel.base.FetchState
@@ -27,7 +31,9 @@ class MainActivity : AppCompatActivity() {
 
         activityViewModel.fetchState.observe(this) {
             //프로그래스 바 풀어주기
-            activityViewModel.isConnected("failed")
+            activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
+            // 에러라는것을 알리기
+            activityViewModel.changeServerState(ServerState.FALSE)
             val message = when (it.second) {
                 FetchState.BAD_INTERNET -> "BAD_INTERNET 오류"
                 FetchState.PARSE_ERROR -> "PARSE_ERROR 오류"
@@ -39,5 +45,12 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             Log.e("TAG", "onCreate: $message", )
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        val imm:InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        if(currentFocus is EditText) { currentFocus!!.clearFocus() }
+        return super.dispatchTouchEvent(ev)
     }
 }

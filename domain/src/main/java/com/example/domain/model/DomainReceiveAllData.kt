@@ -8,10 +8,10 @@ import java.time.LocalDateTime
  * 2023-02-02
  * pureum
  */
-data class DomainReceiveData(
+data class DomainReceiveAllData(
     val cardName: String,
     val amount: String,
-    val date: LocalDateTime,
+    val date: String,
     val pictureName: String,
     val picture: Uri
 )

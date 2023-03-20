@@ -2,7 +2,6 @@ package com.example.receiptcareapp.fragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,15 +12,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
+import com.example.receiptcareapp.State.ConnetedState
+import com.example.receiptcareapp.State.ServerState
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
-import okhttp3.internal.concat
 import java.text.DecimalFormat
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ShowPictureFragment :
     BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
@@ -39,8 +38,13 @@ class ShowPictureFragment :
         Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
         binding.pictureView.setImageURI(viewModel.image.value)
 
-        activityViewModel.isConnected("false")
+        // 서버와 연결 상태 초기화.
+        activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
+        activityViewModel.changeServerState(ServerState.NONE)
 
+
+
+        //날짜 관리
         binding.btnDate.setOnClickListener {
             val cal = Calendar.getInstance()
             val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
@@ -59,20 +63,24 @@ class ShowPictureFragment :
         }
 
         //프로그래스 바 컨트롤
-        activityViewModel.isConnected.observe(viewLifecycleOwner) {
-            if (it == "true") {
+        activityViewModel.connectedState.observe(viewLifecycleOwner) {
+            if (it == ConnetedState.CONNECTING) {
                 binding.waitingView.visibility = View.VISIBLE
                 binding.progressBar.visibility = View.VISIBLE
-            } else if (it == "pass") {
-                Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_showFragment_to_homeFragment)
-            } else if (it == "failed") {
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_showFragment_to_homeFragment)
             } else {
                 binding.waitingView.visibility = View.INVISIBLE
                 binding.progressBar.visibility = View.INVISIBLE
+            }
+        }
+
+        //서버 연결 상태에 따른 처리 후 화면 전환.
+        activityViewModel.serverState.observe(viewLifecycleOwner){
+            if (it == ServerState.SUCCESS) {
+                Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_showFragment_to_homeFragment)
+            } else if (it == ServerState.FALSE) {
+                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             }
         }
 
@@ -138,7 +146,8 @@ class ShowPictureFragment :
                 NavHostFragment.findNavController(this)
                     .navigate(R.id.action_showFragment_to_homeFragment)
             } else {
-                activityViewModel.isConnected("true")
+                //연결상태로 변경
+                activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
                 val myLocalDateTime = LocalDateTime.of(
                     myYear,
                     myMonth,
@@ -156,6 +165,8 @@ class ShowPictureFragment :
                 )
             }
         }
+
+        //취소버튼
         binding.cancleBtn.setOnClickListener {
             findNavController().navigate(R.id.action_showFragment_to_homeFragment)
         }

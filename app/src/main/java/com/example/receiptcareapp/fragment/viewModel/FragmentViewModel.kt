@@ -39,4 +39,12 @@ class FragmentViewModel : ViewModel(){
     fun myShowData(data: DomainRoomData){
         _showData.value = data
     }
+
+    private val _card = MutableLiveData<Map<String, Int>>()
+    val card : LiveData<Map<String, Int>>
+        get() = _card
+    fun takeCardData(card: Map<String, Int>){
+        _card.value = card
+    }
+
 }

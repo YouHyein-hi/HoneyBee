@@ -156,8 +156,9 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
         binding.spinner.adapter = adapter
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                checked = "."//binding.spinner.toString()
-                //Log.e("TAG", "onItemSelected: ${checked},, ",)
+                val spiltCard = ArrayCard[position].split(" : ")
+                checked = spiltCard[0]
+                Log.e("TAG", "onItemSelected: ${checked}", )
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {

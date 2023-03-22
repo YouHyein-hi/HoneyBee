@@ -2,7 +2,6 @@ package com.example.receiptcareapp.fragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,11 +15,9 @@ import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
-import okhttp3.internal.concat
 import java.text.DecimalFormat
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
     private val viewModel: FragmentViewModel by viewModels({ requireActivity() })
@@ -30,6 +27,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
     private var myMonth = 0
     private var myDay = 0
 
+    private var cardArray : MutableMap<String, Int>? = mutableMapOf("카드1" to 1000, "카드2" to 2000)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,50 +72,42 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             }
         }
 
-        /*** Spinner 관련 코드 ***/
-        var cardArray: Array<String> = arrayOf("카드1", "카드2", "카드3")//getShared()
-        var adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, cardArray)
-        binding.spinner.adapter = adapter
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                checked = "."//binding.spinner.toString()
-                Log.e("TAG", "onItemSelected: ${checked},, ",)
-            }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+        /** Spinner 호출 **/
+        getSpinner()
+
+        /** 카드 추가 관련 코드 **/
+        val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
+        val editText_cardName  = dialogView.findViewById<EditText>(R.id.dialog_cardname)
+        val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
+
+        binding.cardaddBtn.setOnClickListener{
+            AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
+                .setTitle("카드 추가")
+                .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
+                .setView(dialogView)
+                .setPositiveButton("확인") { dialog, id ->
+                    cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
+                    cardArray?.let { it -> viewModel.takeCardData(it) }
+                    getSpinner()
+                }.show()
+        }
+
+        binding.btnPrice.setOnClickListener {
+            if (binding.btnPrice.text.contains(",")) {
+                binding.btnPrice.setText(binding.btnPrice.text.toString().replace(",", ""))
+                binding.btnPrice.setSelection(binding.btnPrice.text.length)
             }
         }
 
-        /** 카드 추가 관련 코드 **/
-        binding.cardaddBtn.setOnClickListener {
-            val editText = EditText(requireContext())
-            AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
-                .setTitle("카드 추가")
-                .setMessage("추가할 카드를 적어주세요.")
-                .setView(editText)
-                .setPositiveButton("확인") { dialog, id ->
-                    Log.e("TAG", "cardArray: ${Arrays.toString(cardArray)}",)
-                    cardArray = cardArray.plus(editText.text.toString())
-                    Log.e("TAG", "cardArray: ${Arrays.toString(cardArray)}",)
-                    //viewModel.putshared(requireContext(), Arrays.toString(cardArray))
-                }.show()
-
-            binding.btnPrice.setOnClickListener {
-                if (binding.btnPrice.text.contains(",")) {
-                    binding.btnPrice.setText(binding.btnPrice.text.toString().replace(",", ""))
-                    binding.btnPrice.setSelection(binding.btnPrice.text.length)
-                }
+        binding.btnPrice.setOnEditorActionListener { v, actionId, event ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val gap = DecimalFormat("#,###")
+                binding.btnPrice.setText(gap.format(binding.btnPrice.text.toString().toInt()))
             }
-
-            binding.btnPrice.setOnEditorActionListener { v, actionId, event ->
-                var handled = false
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    val gap = DecimalFormat("#,###")
-                    binding.btnPrice.setText(gap.format(binding.btnPrice.text.toString().toInt()))
-                }
-                handled
-            }
+            handled
+        }
 
 
         binding.sendBtn.setOnClickListener{
@@ -147,8 +137,32 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
         binding.cancleBtn.setOnClickListener {
                 NavHostFragment.findNavController(this)
                     .navigate(R.id.action_showFragment_to_homeFragment)
+        }
+
+    }
+
+    fun getSpinner(){
+        cardArray?.let { viewModel.takeCardData(it) }
+        val array : Map<String, Int>? = viewModel.card.value
+        val ArrayCard : MutableList<String> = mutableListOf()
+
+        if (array != null) {
+            for(i in array){
+                ArrayCard?.add("${i.key} : ${i.value}")
             }
         }
 
+        var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ArrayCard)  // ArrayAdapter에 item 값을 넣고 spinner만 보여주면 되는데 그게 안됨 ArrayAdapter에 대해 알아보기
+        binding.spinner.adapter = adapter
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val spiltCard = ArrayCard[position].split(" : ")
+                checked = spiltCard[0]
+                Log.e("TAG", "onItemSelected: ${checked}", )
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
     }
 }

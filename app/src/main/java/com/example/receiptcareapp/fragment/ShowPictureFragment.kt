@@ -31,6 +31,7 @@ class ShowPictureFragment :
     private var myMonth = 0
     private var myDay = 0
 
+    private var cardArray : MutableMap<String, Int>? = mutableMapOf("카드1" to 1000, "카드2" to 2000)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,6 +74,7 @@ class ShowPictureFragment :
             }
         }
 
+
         //서버 연결 상태에 따른 처리 후 화면 전환.
         activityViewModel.serverState.observe(viewLifecycleOwner){
             if (it == ServerState.SUCCESS) {
@@ -84,33 +86,23 @@ class ShowPictureFragment :
             }
         }
 
-        /*** Spinner 관련 코드 ***/
-        var cardArray: Array<String> = arrayOf("카드1", "카드2", "카드3")//getShared()
-        var adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, cardArray)
-        binding.spinner.adapter = adapter
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                checked = "."//binding.spinner.toString()
-                Log.e("TAG", "onItemSelected: ${checked},, ")
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-        }
+        /** Spinner 호출 **/
+        getSpinner()
 
         /** 카드 추가 관련 코드 **/
-        binding.cardaddBtn.setOnClickListener {
-            val editText = EditText(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
+        val editText_cardName  = dialogView.findViewById<EditText>(R.id.dialog_cardname)
+        val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
+
+        binding.cardaddBtn.setOnClickListener{
             AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
                 .setTitle("카드 추가")
-                .setMessage("추가할 카드를 적어주세요.")
-                .setView(editText)
+                .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
+                .setView(dialogView)
                 .setPositiveButton("확인") { dialog, id ->
-                    Log.e("TAG", "cardArray: ${Arrays.toString(cardArray)}")
-                    cardArray = cardArray.plus(editText.text.toString())
-                    Log.e("TAG", "cardArray: ${Arrays.toString(cardArray)}")
-                    //viewModel.putshared(requireContext(), Arrays.toString(cardArray))
+                    cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
+                    cardArray?.let { it -> viewModel.takeCardData(it) }
+                    getSpinner()
                 }.show()
         }
 
@@ -120,9 +112,11 @@ class ShowPictureFragment :
                 binding.btnPrice.setSelection(binding.btnPrice.text.length)
             }
         }
+
         binding.btnPrice.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE && binding.btnPrice.text.isNotEmpty()) {
+
                 val gap = DecimalFormat("#,###")
                 binding.btnPrice.setText(gap.format(binding.btnPrice.text.toString().toInt()))
             }
@@ -145,6 +139,7 @@ class ShowPictureFragment :
                     .show()
                 NavHostFragment.findNavController(this)
                     .navigate(R.id.action_showFragment_to_homeFragment)
+
             } else {
                 //연결상태로 변경
                 activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
@@ -169,6 +164,34 @@ class ShowPictureFragment :
         //취소버튼
         binding.cancleBtn.setOnClickListener {
             findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+
+        }
+
+    }
+
+    fun getSpinner(){
+        cardArray?.let { viewModel.takeCardData(it) }
+        val array : Map<String, Int>? = viewModel.card.value
+        val ArrayCard : MutableList<String> = mutableListOf()
+
+        if (array != null) {
+            for(i in array){
+                ArrayCard?.add("${i.key} : ${i.value}")
+            }
+        }
+
+        var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ArrayCard)  // ArrayAdapter에 item 값을 넣고 spinner만 보여주면 되는데 그게 안됨 ArrayAdapter에 대해 알아보기
+        binding.spinner.adapter = adapter
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val spiltCard = ArrayCard[position].split(" : ")
+                checked = spiltCard[0]
+                Log.e("TAG", "onItemSelected: ${checked}", )
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+
         }
     }
 }

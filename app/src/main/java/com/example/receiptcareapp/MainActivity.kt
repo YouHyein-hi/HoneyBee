@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         activityViewModel.fetchState.observe(this) {
+
             //프로그래스 바 풀어주기
             activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
             // 에러라는것을 알리기
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> "실패! 연결 시간이 초과되었습니다."
                     else -> "저장 안된 오류!  ${it.first.message} "
                 }
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             Log.e("TAG", "onCreate: $message", )
         }
     }

@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.receiptcareapp.fragment.HomeFragment"
+        android:name="com.example.receiptcareapp.fragment.homeFragment.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home"
         >

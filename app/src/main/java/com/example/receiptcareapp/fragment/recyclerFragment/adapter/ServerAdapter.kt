@@ -2,10 +2,8 @@ package com.example.receiptcareapp.fragment.recyclerFragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.DomainReceiveAllData
-import com.example.domain.model.DomainRoomData
+import com.example.domain.model.DomainRecyclerData
 import com.example.receiptcareapp.databinding.ServerItemBinding
 
 /**
@@ -16,16 +14,16 @@ class ServerAdapter(
 
 ) :RecyclerView.Adapter<ServerAdapter.MyAdapter>(){
 
-    lateinit var onServerSaveClick : (DomainReceiveAllData)->Unit
+    lateinit var onServerSaveClick : (DomainRecyclerData)->Unit
     private lateinit var serverBinding:ServerItemBinding
-    var dataList = listOf<DomainReceiveAllData>()
+    var dataList = listOf<DomainRecyclerData>()
     set(value){
         field = value.reversed()
         notifyDataSetChanged()
     }
 
     inner class MyAdapter(private val binding: ServerItemBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(list:DomainReceiveAllData){
+        fun bind(list:DomainRecyclerData){
             val myDate = list.date.split("-","T")
             binding.cardName.text = "${list.cardName} :"
             binding.amount.text = " ${list.amount}"

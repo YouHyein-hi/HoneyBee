@@ -15,7 +15,7 @@ class RetrofitUseCase(
         return retrofitRepo.sendDataRepo(card = cardName, amount = amount, pictureName=pictureName, date = date, picture = picture)
     }
 
-    suspend fun receiveDataUseCase(): List<DomainReceiveAllData> {
+    suspend fun receiveDataUseCase(): MutableList<DomainReceiveAllData> {
         return retrofitRepo.receiveDataRepo()
     }
 

@@ -14,4 +14,5 @@
     <color name="emphasis_yellow">#FEB020</color>
     <color name="basic_white">#F5F5F5</color>
     <color name="bottom_Sheet_Orange">#FF5722</color>
+    <color name="myTransparent">#00FF5722</color>
 </resources>

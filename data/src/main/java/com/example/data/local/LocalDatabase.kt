@@ -12,7 +12,7 @@ import java.time.LocalDateTime
  * 2023-02-15
  * pureum
  */
-@Database(entities = [MyEntity::class], version = 2)
+@Database(entities = [MyEntity::class], version = 1)
 //@TypeConverters(
 //    value = [
 //        LocalDateTimeConverter::class,

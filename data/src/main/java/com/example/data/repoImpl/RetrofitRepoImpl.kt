@@ -18,8 +18,8 @@ class RetrofitRepoImpl @Inject constructor(
         return retrofitSource.sendDataSource(cardName = card, amount = amount, pictureName=pictureName, timestmap = date, bill = picture)
     }
 
-    override suspend fun receiveDataRepo(): List<DomainReceiveAllData> {
-        return retrofitSource.receiveDataSource().map { DomainReceiveAllData(it.cardName, it.amount, it.date, it.pictureName, it.picture) }
+    override suspend fun receiveDataRepo(): MutableList<DomainReceiveAllData> {
+        return retrofitSource.receiveDataSource().map { DomainReceiveAllData(it.cardName, it.amount, it.date, it.pictureName, it.picture) }.toMutableList()
     }
 
     override suspend fun deleteServerData(date:String): String {

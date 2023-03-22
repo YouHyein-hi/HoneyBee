@@ -12,14 +12,14 @@ import java.time.LocalDateTime
  * 2023-03-09
  * pureum
  */
-@ProvidedTypeConverter
-class MultipartBodyConverter(private val gson: Gson) {
-    @TypeConverter
-    fun UriToJson(gap : Uri):String{
-        return gson.toJson(gap)
-    }
-    @TypeConverter
-    fun jsonToUri(gap : String): Uri {
-        return gson.fromJson(gap, Uri::class.java)
-    }
-}
+//@ProvidedTypeConverter
+//class MultipartBodyConverter(private val gson: Gson) {
+//    @TypeConverter
+//    fun UriToJson(gap : Uri):String{
+//        return gson.toJson(gap)
+//    }
+//    @TypeConverter
+//    fun jsonToUri(gap : String): Uri {
+//        return gson.fromJson(gap, Uri::class.java)
+//    }
+//}

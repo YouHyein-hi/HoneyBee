@@ -16,5 +16,5 @@ data class DomainRoomData(
     val picture: String
 )
 
-//fun DomainRoomData.toMyEntity(): = DomainRoomData(time, card, picture)
+fun DomainRoomData.toDomainRecyclerData():DomainRecyclerData = DomainRecyclerData(cardName, amount, date, pictureName, picture)
 

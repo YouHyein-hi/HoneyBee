@@ -10,7 +10,7 @@ import okhttp3.MultipartBody
 interface RetrofitRepo {
     suspend fun sendDataRepo(card:MultipartBody.Part, amount:MultipartBody.Part, pictureName:MultipartBody.Part, date:MultipartBody.Part, picture: MultipartBody.Part): String
 
-    suspend fun receiveDataRepo():List<DomainReceiveAllData>
+    suspend fun receiveDataRepo():MutableList<DomainReceiveAllData>
 
     suspend fun deleteServerData(date:String):String
 }

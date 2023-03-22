@@ -25,7 +25,7 @@ interface RetrofitSource {
     ): String
 
     @GET("bills")
-    suspend fun receiveDataSource():List<ReceiveData>
+    suspend fun receiveDataSource() : MutableList<ReceiveData>
 
     @GET("test")
     suspend fun deleteServerData():String

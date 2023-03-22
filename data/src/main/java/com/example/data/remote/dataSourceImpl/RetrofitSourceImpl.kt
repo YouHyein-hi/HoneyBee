@@ -34,7 +34,7 @@ class RetrofitSourceImpl @Inject constructor(
         return gap
     }
 
-    override suspend fun receiveDataSource(): List<ReceiveData> {
+    override suspend fun receiveDataSource(): MutableList<ReceiveData> {
         return retrofit.create(RetrofitSource::class.java).receiveDataSource()
     }
 

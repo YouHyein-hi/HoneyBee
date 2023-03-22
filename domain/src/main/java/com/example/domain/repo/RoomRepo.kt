@@ -10,5 +10,5 @@ import okhttp3.MultipartBody
 interface RoomRepo {
     suspend fun insertData(list:DomainRoomData)
     suspend fun getAllData():ArrayList<DomainRoomData>
-    suspend fun deleteData(date:String)
+    suspend fun deleteData(date:String) : Int
 }

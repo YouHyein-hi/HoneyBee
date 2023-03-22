@@ -1,8 +1,6 @@
 package com.example.domain.model
 
 import android.net.Uri
-import okhttp3.MultipartBody
-import java.time.LocalDateTime
 
 /**
  * 2023-02-02
@@ -15,3 +13,9 @@ data class DomainReceiveAllData(
     val pictureName: String,
     val picture: Uri
 )
+
+fun DomainReceiveAllData.toDomainRecyclerViewData(): DomainRecyclerData=
+    DomainRecyclerData(
+        cardName, amount, date, pictureName, picture.toString()
+)
+

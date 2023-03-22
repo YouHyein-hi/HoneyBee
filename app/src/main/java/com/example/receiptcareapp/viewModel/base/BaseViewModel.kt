@@ -1,6 +1,7 @@
 package com.example.receiptcareapp.viewModel.base
 
 import android.database.sqlite.SQLiteConstraintException
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,6 +23,7 @@ abstract class BaseViewModel  : ViewModel(){
 
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.e("TAG", "오잉?: ", )
         throwable.printStackTrace()
         when(throwable){
             is SocketException -> _fetchState.postValue(Pair(throwable, FetchState.BAD_INTERNET))

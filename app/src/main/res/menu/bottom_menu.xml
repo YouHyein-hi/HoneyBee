@@ -6,7 +6,6 @@
         android:icon="@drawable/book"
         />
     <item
-        android:iconTintMode="add"
         android:title="local"
         android:id="@+id/local"
         android:icon="@drawable/book"

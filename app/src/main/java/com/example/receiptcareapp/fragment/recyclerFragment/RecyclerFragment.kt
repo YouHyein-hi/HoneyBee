@@ -83,7 +83,6 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             binding.bottomNavigationView.menu.findItem(R.id.local).isChecked = true
             initLocalRecyclerView()
             activityViewModel.getAllLocalData()
-            initServerRecyclerView()
             binding.explain.text = "휴대폰의 데이터 입니다."
         }
 

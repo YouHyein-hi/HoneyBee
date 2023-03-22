@@ -1,14 +1,9 @@
 package com.example.data.local.entity
 
-import android.graphics.Picture
-import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.domain.model.DomainReceiveData
 import com.example.domain.model.DomainRoomData
-import okhttp3.MultipartBody
-import java.time.LocalDateTime
 
 /**
  * 2023-02-15

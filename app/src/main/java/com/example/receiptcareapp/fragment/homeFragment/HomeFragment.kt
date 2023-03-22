@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment
+package com.example.receiptcareapp.fragment.homeFragment
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,24 +6,20 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
+import com.example.receiptcareapp.dto.ServerCardData
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.viewModel.MainViewModel
-import java.time.LocalDateTime
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 //메인 프레그먼트/
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -33,6 +29,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val ALBUM = android.Manifest.permission.READ_EXTERNAL_STORAGE
     private val ALBUM_CODE = 101
     private lateinit var callback: OnBackPressedCallback
+    private val activityViewModel : MainViewModel by activityViewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,8 +38,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
         binding.galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
         binding.storageBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
+        binding.settingBtn.setOnClickListener{
 
-        //activityViewModel.sendData(date = LocalDateTime.now(), card = "hh", amount = 11111.toString(), picture = "dd".toUri())
+
+            val bottomDialogFragment = HomeCardBottomSheet()
+            bottomDialogFragment.show(parentFragmentManager,"tag")
+//            val bottomSheetView = layoutInflater.inflate(R.layout.setting_bottom_sheet, null)
+//            val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
+//            bottomSheetDialog.setContentView(bottomSheetView)
+//            bottomSheetDialog.show()
+        }
     }
 
     /*** 권한 관련 코드 ***/
@@ -103,6 +108,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onDetach() {
         super.onDetach()
         callback.remove()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activityViewModel.serverCoroutineStop()
     }
 
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="server"
+        android:id="@+id/server"
+        android:icon="@drawable/book"
+        />
+    <item
+        android:title="local"
+        android:id="@+id/local"
+        android:icon="@drawable/book"
+        />
+</menu>

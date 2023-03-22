@@ -10,7 +10,10 @@ import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
+import com.example.receiptcareapp.State.ConnetedState
+import com.example.receiptcareapp.State.ServerState
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
@@ -19,7 +22,8 @@ import java.text.DecimalFormat
 import java.time.LocalDateTime
 import java.util.*
 
-class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
+class ShowPictureFragment :
+    BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
     private val viewModel: FragmentViewModel by viewModels({ requireActivity() })
     private val activityViewModel: MainViewModel by activityViewModels()
     private var checked = ""
@@ -35,8 +39,13 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
         Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
         binding.pictureView.setImageURI(viewModel.image.value)
 
-        activityViewModel.isConnected("false")
+        // 서버와 연결 상태 초기화.
+        activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
+        activityViewModel.changeServerState(ServerState.NONE)
 
+
+
+        //날짜 관리
         binding.btnDate.setOnClickListener {
             val cal = Calendar.getInstance()
             val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
@@ -55,23 +64,27 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
         }
 
         //프로그래스 바 컨트롤
-        activityViewModel.isConnected.observe(viewLifecycleOwner) {
-
-            if (it == "true") {
+        activityViewModel.connectedState.observe(viewLifecycleOwner) {
+            if (it == ConnetedState.CONNECTING) {
                 binding.waitingView.visibility = View.VISIBLE
                 binding.progressBar.visibility = View.VISIBLE
-            } else if (it == "pass") {
-                Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
-            }else if(it=="failed"){
-                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
-            }
-            else{
+            } else {
                 binding.waitingView.visibility = View.INVISIBLE
                 binding.progressBar.visibility = View.INVISIBLE
             }
         }
 
+
+        //서버 연결 상태에 따른 처리 후 화면 전환.
+        activityViewModel.serverState.observe(viewLifecycleOwner){
+            if (it == ServerState.SUCCESS) {
+                Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_showFragment_to_homeFragment)
+            } else if (it == ServerState.FALSE) {
+                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
+            }
+        }
 
         /** Spinner 호출 **/
         getSpinner()
@@ -102,7 +115,8 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
 
         binding.btnPrice.setOnEditorActionListener { v, actionId, event ->
             var handled = false
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (actionId == EditorInfo.IME_ACTION_DONE && binding.btnPrice.text.isNotEmpty()) {
+
                 val gap = DecimalFormat("#,###")
                 binding.btnPrice.setText(gap.format(binding.btnPrice.text.toString().toInt()))
             }
@@ -110,33 +124,47 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
         }
 
 
-        binding.sendBtn.setOnClickListener{
-            if(checked=="") {
+        binding.sendBtn.setOnClickListener {
+            Log.e("TAG", "onViewCreated: iinin")
+            if (checked == "") {
                 Toast.makeText(requireContext(), "카드를 입력하세요.", Toast.LENGTH_SHORT).show()
-            } else if(binding.btnStore.text!!.isEmpty()){
+            } else if (binding.btnStore.text!!.isEmpty()) {
                 Toast.makeText(requireContext(), "가게 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
-            } else if(binding.btnDate.text == "날짜"){
+            } else if (binding.btnDate.text == "날짜") {
                 Toast.makeText(requireContext(), "날짜를 입력하세요.", Toast.LENGTH_SHORT).show()
-            } else if(binding.btnPrice.text.isEmpty()){
+            } else if (binding.btnPrice.text.isEmpty()) {
                 Toast.makeText(requireContext(), "금액을 입력하세요.", Toast.LENGTH_SHORT).show()
-            } else if(viewModel.image.value==null){
-                Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
-            } else{
-                activityViewModel.isConnected("true")
-                val myLocalDateTime = LocalDateTime.of(myYear, myMonth, myDay, LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second)
-                activityViewModel.sendData(
-                        date = myLocalDateTime,
-                        amount = binding.btnPrice.text.toString(),
-                        card = checked,
-                        picture = viewModel.image.value!!,
-                        pictureName = binding.btnStore.text.toString()
-                    )
-            }
-        }
-        binding.cancleBtn.setOnClickListener {
+            } else if (viewModel.image.value == null) {
+                Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT)
+                    .show()
                 NavHostFragment.findNavController(this)
                     .navigate(R.id.action_showFragment_to_homeFragment)
+
+            } else {
+                //연결상태로 변경
+                activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
+                val myLocalDateTime = LocalDateTime.of(
+                    myYear,
+                    myMonth,
+                    myDay,
+                    LocalDateTime.now().hour,
+                    LocalDateTime.now().minute,
+                    LocalDateTime.now().second
+                )
+                activityViewModel.sendData(
+                    date = myLocalDateTime,
+                    amount = binding.btnPrice.text.toString(),
+                    card = checked,
+                    picture = viewModel.image.value!!,
+                    pictureName = binding.btnStore.text.toString()
+                )
+            }
+        }
+
+        //취소버튼
+        binding.cancleBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+
         }
 
     }
@@ -163,6 +191,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
+
         }
     }
 }

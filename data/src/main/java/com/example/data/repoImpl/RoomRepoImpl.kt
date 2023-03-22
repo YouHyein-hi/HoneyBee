@@ -39,7 +39,7 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao):RoomRepo{
         return myList
     }
 
-    override suspend fun deleteData(date: String) {
-        roomDao.deleteData(date)
+    override suspend fun deleteData(date: String):Int {
+        return roomDao.deleteData(date)
     }
 }

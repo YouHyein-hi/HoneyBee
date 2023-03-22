@@ -7,20 +7,20 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.example.domain.model.DomainReceiveData
+import com.example.domain.model.DomainReceiveAllData
 import com.example.domain.model.DomainRoomData
-import com.example.domain.model.DomainSendData
 import com.example.domain.usecase.RetrofitUseCase
 import com.example.domain.usecase.RoomUseCase
+import com.example.receiptcareapp.State.ConnetedState
+import com.example.receiptcareapp.State.ServerState
 import com.example.receiptcareapp.viewModel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import java.io.InterruptedIOException
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -38,40 +38,46 @@ class MainViewModel @Inject constructor(
 
     init {
         Log.e("TAG", "MainViewModel: start", )
+
     }
 
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
     var myCotext: Context? = null
 
-    private val _sendResult = MutableLiveData<String>()
-    val sendResult: LiveData<String>
-        get() = _sendResult
+    //서버에서 받은 데이터 담는 박스
+    private val _serverData = MutableLiveData<MutableList<DomainReceiveAllData>>()
+    val serverData: LiveData<MutableList<DomainReceiveAllData>>
+        get() = _serverData
 
-    private val _receiveResult = MutableLiveData<DomainReceiveData>()
-    val receiveResult: LiveData<DomainReceiveData>
-        get() = _receiveResult
+    //룸에서 받은 데이터 담는 박스
+    private var _roomData = MutableLiveData<ArrayList<DomainRoomData>>()
+    val roomData: LiveData<ArrayList<DomainRoomData>>
+        get() = _roomData
 
-    private var _getRoomData = MutableLiveData<ArrayList<DomainRoomData>>()
-    val getRoomData: LiveData<ArrayList<DomainRoomData>>
-        get() = _getRoomData
-
-    private var _isConnected = MutableLiveData<String>()
-    val isConnected: LiveData<String>
-        get() = _isConnected
-    fun isConnected(state:String){
-        _isConnected.value = state
+    //서버 연결 유무 관리
+    private var _connectedState = MutableLiveData<ConnetedState>()
+    val connectedState: LiveData<ConnetedState>
+        get() = _connectedState
+    fun changeConnectedState(connetedState: ConnetedState){
+        _connectedState.value = connetedState
     }
 
+    //서버 결과값 관리
+    private var _serverState = MutableLiveData<ServerState>()
+    val serverState: LiveData<ServerState>
+        get() = _serverState
+    fun changeServerState(serverState: ServerState){
+        _serverState.value = serverState
+    }
 
+    private var _serverJob = MutableLiveData<Job>()
+    val serverJob :LiveData<Job>
+        get() = _serverJob
+
+    //서버에 데이터 전송 기능
     fun sendData(date: LocalDateTime, amount: String, card: String, picture: Uri, pictureName: String) {
-        CoroutineScope(exceptionHandler).launch {
+        _serverJob.value = CoroutineScope(exceptionHandler).launch {
             Log.e("TAG", "보내는 데이터 : $date, $amount, $card, $picture, $pictureName")
-
-//            var replacedAmount = amount
-//            if (replacedAmount.contains(",")) {
-//                replacedAmount = replacedAmount.replace(",", "")
-//            }
-
             // 각 데이터를 MultiPart로 변환
             val myCard = MultipartBody.Part.createFormData("cardName", card)
             val myAmount = MultipartBody.Part.createFormData("amount", amount)
@@ -95,10 +101,19 @@ class MainViewModel @Inject constructor(
             )
             Log.e("TAG", "sendData 응답 : $result ")
 
-            _sendResult.postValue(result)
-            if(result == "success")  insertData(cardName = card, amount = amount, pictureName = "pictureName", date = date.toString(), picture = picture.toString())
-            else throw Exception("오류! 전송 실패.")
+            if(result == "success"){
+                _serverState.postValue(ServerState.SUCCESS)
+                _connectedState.postValue(ConnetedState.DISCONNECTED)
+                insertData(cardName = card, amount = amount, pictureName = "pifTJQJctureName", date = date.toString(), picture = picture.toString())
+            }else if(result == "false"){
+                _serverState.postValue(ServerState.FALSE)
+                _connectedState.postValue(ConnetedState.DISCONNECTED)
+                Exception("오류! 전송 실패.")
+            }else{
+                Exception("서버 연결 실패.")
+            }
         }
+
     }
 
     //절대경로로 변환
@@ -129,31 +144,59 @@ class MainViewModel @Inject constructor(
                     picture = picture
                 )
             )
-            _isConnected.postValue("pass")
+            _connectedState.postValue(ConnetedState.CONNECTING)
         }
     }
 
-    fun receiveData() {
+//    fun receiveData() {
+//        CoroutineScope(exceptionHandler).launch {
+//            val result = retrofitUseCase.receiveDataUseCase()
+//            Log.e("TAG", "sendData: $result ")
+//            _receiveResult.value = result
+//        }
+//    }
+
+
+    fun getAllLocalData() {
+        //_connectedState.value = ConnetedState.CONNECTING
         CoroutineScope(exceptionHandler).launch {
-            val result = retrofitUseCase.receiveDataUseCase()
-            Log.e("TAG", "sendData: $result ")
-            _receiveResult.value = result
+            val gap = roomUseCase.getAllData()
+            _roomData.postValue(gap)
+            Log.e("TAG", "getAllLocalData: $gap", )
+            //_connectedState.value = ConnetedState.DISCONNECTED
         }
     }
 
+    fun deleteRoomData(date: String) {
+       CoroutineScope(exceptionHandler).launch {
+           roomUseCase.deleteData(date)
+           //삭제 후에 데이터 끌어오기 위한 구성
+           getAllLocalData()
+        }
+    }
 
-    fun getAllData() {
+    fun getAllServerData(){
+        _connectedState.value = ConnetedState.CONNECTING
+        _serverJob.value = CoroutineScope(exceptionHandler).launch {
+            _serverData.postValue(retrofitUseCase.receiveDataUseCase())
+            _connectedState.value = ConnetedState.DISCONNECTED
+        }
+    }
+
+    fun deleteServerData(data:String){
         CoroutineScope(exceptionHandler).launch {
-            Log.e("TAG", "getAllData: start")
-            _getRoomData.postValue(roomUseCase.getAllData())
+            val gap = retrofitUseCase.deleteServerData(data)
+            Log.e("TAG", "deleteServerData return: $gap", )
+            //_receiveResult.value = gap
         }
+
+
     }
 
-    fun deleteData(date: String) {
-        CoroutineScope(exceptionHandler).launch {
-            Log.e("TAG", "deleteData: start")
-            roomUseCase.deleteData(date)
-        }
-    }
+    fun serverCoroutineStop(){
+        Log.e("TAG", "coroutineStop: stop ${_serverJob.value}", )
+        _serverJob.value?.cancel("코루틴 취소")
+        _connectedState.value = ConnetedState.DISCONNECTED
 
+    }
 }

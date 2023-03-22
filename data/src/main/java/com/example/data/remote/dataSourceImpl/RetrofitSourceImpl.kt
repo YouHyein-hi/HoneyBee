@@ -3,7 +3,6 @@ package com.example.data.remote.dataSourceImpl
 import android.util.Log
 import com.example.data.remote.dataSource.RetrofitSource
 import com.example.data.remote.dto.ReceiveData
-import com.example.data.remote.dto.SendData
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
 import javax.inject.Inject
@@ -35,11 +34,13 @@ class RetrofitSourceImpl @Inject constructor(
         return gap
     }
 
-    override suspend fun receiveDataSource(): ReceiveData {
+    override suspend fun receiveDataSource(): MutableList<ReceiveData> {
         return retrofit.create(RetrofitSource::class.java).receiveDataSource()
     }
 
-    override suspend fun test(a: String): String {
-        return retrofit.create(RetrofitSource::class.java).test("a")
+    override suspend fun deleteServerData(): String {
+        return retrofit.create(RetrofitSource::class.java).deleteServerData()
     }
+
+
 }

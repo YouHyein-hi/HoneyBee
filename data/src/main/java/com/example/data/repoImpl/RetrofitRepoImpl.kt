@@ -1,9 +1,7 @@
 package com.example.data.repoImpl
 
 import com.example.data.remote.dataSource.RetrofitSource
-import com.example.data.remote.dto.toDomainReceiveData
-import com.example.domain.model.DomainReceiveData
-import com.example.domain.model.DomainSendData
+import com.example.domain.model.DomainReceiveAllData
 import com.example.domain.repo.RetrofitRepo
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -20,12 +18,12 @@ class RetrofitRepoImpl @Inject constructor(
         return retrofitSource.sendDataSource(cardName = card, amount = amount, pictureName=pictureName, timestmap = date, bill = picture)
     }
 
-    override suspend fun receiveDataRepo(): DomainReceiveData {
-        return retrofitSource.receiveDataSource().toDomainReceiveData()
+    override suspend fun receiveDataRepo(): MutableList<DomainReceiveAllData> {
+        return retrofitSource.receiveDataSource().map { DomainReceiveAllData(it.cardName, it.amount, it.date, it.pictureName, it.picture) }.toMutableList()
     }
 
-    override suspend fun test(): String {
-        return retrofitSource.test("ㅇ")
+    override suspend fun deleteServerData(date:String): String {
+        return retrofitSource.deleteServerData()
     }
 
 

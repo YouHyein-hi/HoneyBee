@@ -20,7 +20,7 @@ class RoomUseCase(
         return roomRepo.getAllData()
     }
 
-    suspend fun deleteData(date:String){
-        roomRepo.deleteData(date)
+    suspend fun deleteData(date:String):Int{
+        return roomRepo.deleteData(date)
     }
 }

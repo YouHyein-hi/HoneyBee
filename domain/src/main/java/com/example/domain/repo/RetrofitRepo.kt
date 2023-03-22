@@ -1,10 +1,7 @@
 package com.example.domain.repo
 
-import com.example.domain.model.DomainReceiveData
-import com.example.domain.model.DomainSendData
+import com.example.domain.model.DomainReceiveAllData
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.time.LocalDateTime
 
 /**
  * 2023-02-02
@@ -13,7 +10,7 @@ import java.time.LocalDateTime
 interface RetrofitRepo {
     suspend fun sendDataRepo(card:MultipartBody.Part, amount:MultipartBody.Part, pictureName:MultipartBody.Part, date:MultipartBody.Part, picture: MultipartBody.Part): String
 
-    suspend fun receiveDataRepo():DomainReceiveData
+    suspend fun receiveDataRepo():MutableList<DomainReceiveAllData>
 
-    suspend fun test():String
+    suspend fun deleteServerData(date:String):String
 }

@@ -20,11 +20,17 @@ abstract class BaseViewModel  : ViewModel(){
     private val _fetchState = MutableLiveData<Pair<Throwable, FetchState>>()
     val fetchState : LiveData<Pair<Throwable, FetchState>>
         get() = _fetchState
-
+    fun setFetchStateStop(){
+        _fetchState.postValue(Pair(Throwable(""),FetchState.STOP))
+    }
+    fun hideSetFetchStateStop(){
+        _fetchState.postValue(Pair(Throwable(""),FetchState.HIDE_STOP))
+    }
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.e("TAG", "오잉?: ", )
         throwable.printStackTrace()
+        Log.e("TAG", "$throwable: ", )
         when(throwable){
             is SocketException -> _fetchState.postValue(Pair(throwable, FetchState.BAD_INTERNET))
             is HttpException -> _fetchState.postValue(Pair(throwable, FetchState.PARSE_ERROR))

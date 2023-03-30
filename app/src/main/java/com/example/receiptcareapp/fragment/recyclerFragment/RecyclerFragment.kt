@@ -1,8 +1,11 @@
 package com.example.receiptcareapp.fragment.recyclerFragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -30,6 +33,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val serverAdapter: ServerAdapter = ServerAdapter()
     private val localAdapter: LocalAdapter = LocalAdapter()
+    private lateinit var callback : OnBackPressedCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +47,6 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.e("TAG", "onViewCreated: start", )
         super.onViewCreated(view, savedInstanceState)
 
         // 통신연결, 서버상태 값 초기화
@@ -70,7 +73,6 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
 
 
-        Log.e("TAG", "fragmentViewModel.startGap.value: ${fragmentViewModel.startGap.value}")
         if(fragmentViewModel.startGap.value == "server"){
             Log.e("TAG", "서버부분!", )
             activityViewModel.getAllServerData()
@@ -112,8 +114,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             setTextAndVisible("",false)
             when(it.itemId){
                 R.id.server -> {
-                    Log.e("TAG", "click listener server: ", )
-                    activityViewModel.serverCoroutineStop()
+//                    activityViewModel.hideServerCoroutineStop()
                     binding.explain.text = "서버의 데이터 입니다."
                     activityViewModel.getAllServerData()
                     initServerRecyclerView()
@@ -121,7 +122,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
                 }
                 R.id.local -> {
                     Log.e("TAG", "click listener local: ", )
-                    activityViewModel.serverCoroutineStop()
+                    activityViewModel.hideServerCoroutineStop()
                     setTextAndVisible("",false)
                     binding.explain.text = "휴대폰의 데이터 입니다."
                     activityViewModel.getAllLocalData()
@@ -146,24 +147,10 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             fragmentViewModel.changeStartGap("local")
         }
 
+        //뒤로가기 버튼
         binding.imageBack.setOnClickListener{
-            findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
+//            onAttach(requireContext())
         }
-    }
-
-    override fun onResume() {
-        Log.e("TAG", "onResume: 다시옴!", )
-        super.onResume()
-//        activityViewModel.getAllLocalData()
-//        if(binding.bottomNavigationView.selectedItemId == R.id.local){
-//            Log.e("TAG", "onResume: 로컬부분!", )
-//            activityViewModel.getAllLocalData()
-//            if(localAdapter.dataList.isEmpty()) setTextAndVisible("데이터가 없어요!", true)
-//        }
-//        else{
-//            activityViewModel.getAllServerData()
-//            if(serverAdapter.dataList.isEmpty()) setTextAndVisible("데이터가 없어요!", true)
-//        }
     }
 
     fun initServerRecyclerView(){
@@ -178,5 +165,29 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     fun setTextAndVisible(text:String, state:Boolean){
         binding.backgroundText.text = text
         binding.backgroundText.isVisible = state
+    }
+
+
+
+
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
+                    activityViewModel.serverCoroutineStop()
+                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
+                } else {
+                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 }

@@ -1,5 +1,6 @@
 package com.example.domain.usecase
 
+import com.example.domain.model.DomainReceiveCardData
 import com.example.domain.model.DomainReceiveAllData
 import com.example.domain.repo.RetrofitRepo
 import okhttp3.MultipartBody
@@ -21,5 +22,17 @@ class RetrofitUseCase(
 
     suspend fun deleteServerData(date:String): String {
         return retrofitRepo.deleteServerData(date)
+    }
+
+    suspend fun sendCardDataUseCase(cardName:MultipartBody.Part, amount:MultipartBody.Part) : String{
+        return retrofitRepo.sendCardDataRepo(card = cardName, amount = amount)
+    }
+
+    suspend fun receiveCardDataUseCase() : MutableList<DomainReceiveCardData>{
+        return retrofitRepo.receiveCardDataRepo()
+    }
+
+    suspend fun deleteCardDataUseCase():String {
+        return retrofitRepo.deleteCardDataRepo()
     }
 }

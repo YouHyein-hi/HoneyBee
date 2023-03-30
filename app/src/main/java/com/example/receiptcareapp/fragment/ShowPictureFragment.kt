@@ -2,11 +2,13 @@ package com.example.receiptcareapp.fragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -30,8 +32,8 @@ class ShowPictureFragment :
     private var myYear = 0
     private var myMonth = 0
     private var myDay = 0
-
-    private var cardArray : MutableMap<String, Int>? = mutableMapOf("카드1" to 1000, "카드2" to 2000)
+    private var cardArray: MutableMap<String, Int>? = mutableMapOf("카드1" to 1000, "카드2" to 2000)
+    private lateinit var callback: OnBackPressedCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,7 +44,6 @@ class ShowPictureFragment :
         // 서버와 연결 상태 초기화.
         activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
         activityViewModel.changeServerState(ServerState.NONE)
-
 
 
         //날짜 관리
@@ -76,14 +77,17 @@ class ShowPictureFragment :
 
 
         //서버 연결 상태에 따른 처리 후 화면 전환.
-        activityViewModel.serverState.observe(viewLifecycleOwner){
+        activityViewModel.serverState.observe(viewLifecycleOwner) {
             if (it == ServerState.SUCCESS) {
                 Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
                 NavHostFragment.findNavController(this)
                     .navigate(R.id.action_showFragment_to_homeFragment)
-            } else if (it == ServerState.FALSE) {
-                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
             }
+//            else if (it == ServerState.FALSE) {
+//                Log.e("TAG", "onViewCreated: 실패", )
+//                NavHostFragment.findNavController(this)
+//                    .navigate(R.id.action_showFragment_to_homeFragment)
+//            }
         }
 
         /** Spinner 호출 **/
@@ -91,16 +95,19 @@ class ShowPictureFragment :
 
         /** 카드 추가 관련 코드 **/
         val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
-        val editText_cardName  = dialogView.findViewById<EditText>(R.id.dialog_cardname)
+        val editText_cardName = dialogView.findViewById<EditText>(R.id.dialog_cardname)
         val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
 
-        binding.cardaddBtn.setOnClickListener{
+        binding.cardaddBtn.setOnClickListener {
             AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
                 .setTitle("카드 추가")
                 .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
                 .setView(dialogView)
                 .setPositiveButton("확인") { dialog, id ->
-                    cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
+                    cardArray?.put(
+                        editText_cardName.text.toString(),
+                        editText_cardPrice.text.toString().toInt()
+                    )
                     cardArray?.let { it -> viewModel.takeCardData(it) }
                     getSpinner()
                 }.show()
@@ -130,7 +137,7 @@ class ShowPictureFragment :
                 Toast.makeText(requireContext(), "카드를 입력하세요.", Toast.LENGTH_SHORT).show()
             } else if (binding.btnStore.text!!.isEmpty()) {
                 Toast.makeText(requireContext(), "가게 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
-            } else if (binding.btnDate.text == "날짜") {
+            } else if (binding.btnDate.text.isEmpty()) {
                 Toast.makeText(requireContext(), "날짜를 입력하세요.", Toast.LENGTH_SHORT).show()
             } else if (binding.btnPrice.text.isEmpty()) {
                 Toast.makeText(requireContext(), "금액을 입력하세요.", Toast.LENGTH_SHORT).show()
@@ -139,10 +146,9 @@ class ShowPictureFragment :
                     .show()
                 NavHostFragment.findNavController(this)
                     .navigate(R.id.action_showFragment_to_homeFragment)
-
             } else {
                 //연결상태로 변경
-                activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
+//                activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
                 val myLocalDateTime = LocalDateTime.of(
                     myYear,
                     myMonth,
@@ -164,34 +170,59 @@ class ShowPictureFragment :
         //취소버튼
         binding.cancleBtn.setOnClickListener {
             findNavController().navigate(R.id.action_showFragment_to_homeFragment)
-
         }
 
     }
 
-    fun getSpinner(){
+    fun getSpinner() {
         cardArray?.let { viewModel.takeCardData(it) }
-        val array : Map<String, Int>? = viewModel.card.value
-        val ArrayCard : MutableList<String> = mutableListOf()
+        val array: Map<String, Int>? = viewModel.card.value
+        val ArrayCard: MutableList<String> = mutableListOf()
 
         if (array != null) {
-            for(i in array){
+            for (i in array) {
                 ArrayCard?.add("${i.key} : ${i.value}")
             }
         }
 
-        var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ArrayCard)  // ArrayAdapter에 item 값을 넣고 spinner만 보여주면 되는데 그게 안됨 ArrayAdapter에 대해 알아보기
+        var adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            ArrayCard
+        )  // ArrayAdapter에 item 값을 넣고 spinner만 보여주면 되는데 그게 안됨 ArrayAdapter에 대해 알아보기
         binding.spinner.adapter = adapter
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val spiltCard = ArrayCard[position].split(" : ")
                 checked = spiltCard[0]
-                Log.e("TAG", "onItemSelected: ${checked}", )
+                Log.e("TAG", "onItemSelected: ${checked}")
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
-
         }
+    }
+
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
+                if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
+                    Log.e("TAG", "handleOnBackPressed: stop")
+                    activityViewModel.serverCoroutineStop()
+                } else {
+                    Log.e("TAG", "handleOnBackPressed: back")
+                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 }

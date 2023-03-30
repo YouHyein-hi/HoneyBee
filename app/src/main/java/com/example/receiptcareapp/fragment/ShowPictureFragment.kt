@@ -2,6 +2,8 @@ package com.example.receiptcareapp.fragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -55,13 +57,19 @@ class ShowPictureFragment :
                 myDay = day
                 binding.btnDate.text = "${myYear}/${myMonth}/${myDay}"
             }
-            DatePickerDialog(
+            val dataDialog = DatePickerDialog(
                 requireContext(),
                 data,
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH)
-            ).show()
+            )
+            dataDialog.show()
+            dataDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(Color.RED)
+            dataDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                .setTextColor(Color.BLACK)
+
         }
 
         //프로그래스 바 컨트롤
@@ -107,7 +115,7 @@ class ShowPictureFragment :
                     }
                     else if(editText_cardPrice.text.toString() == ""){
                         //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
-                        Log.e("TAG", "onViewCreated: 초기 금액을 입력해주세요", )
+                        Log.e("TAG", "onViewCreated: 초기을 입력해주세요", )
                     }
                     else{
                         cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
@@ -209,5 +217,21 @@ class ShowPictureFragment :
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
+        /*
+        binding.spinner.onItemLongClickListener = object : AdapterView.OnItemLongClickListener{
+            override fun onItemLongClick(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long): Boolean {
+                Log.e("TAG", "onItemLongClick: 꾹 누름", )
+                Toast.makeText(requireContext(), "item 꾹 누름", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        }
+         */
+
+        binding.spinner.setOnLongClickListener{
+            Log.e("TAG", "onItemLongClick: 꾹 누름", )
+            Toast.makeText(requireContext(), "꾹 누름", Toast.LENGTH_SHORT).show()
+            return@setOnLongClickListener true
+        }
+
     }
 }

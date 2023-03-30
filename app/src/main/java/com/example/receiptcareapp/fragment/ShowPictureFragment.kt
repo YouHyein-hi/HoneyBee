@@ -21,7 +21,9 @@ import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.text.DecimalFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.time.measureTime
 
@@ -46,11 +48,14 @@ class ShowPictureFragment :
         activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
         activityViewModel.changeServerState(ServerState.NONE)
 
-
+        val dataNow = LocalDate.now()
+        val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        binding.btnDate.text = "${dataNow.format(formatterDate)}"
 
         //날짜 관리
         binding.btnDate.setOnClickListener {
             val cal = Calendar.getInstance()
+            binding.btnDate.text = "${myYear}/${myMonth}/${myDay}"
             val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
                 myYear = year
                 myMonth = month + 1

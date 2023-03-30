@@ -22,4 +22,8 @@ class RetrofitUseCase(
     suspend fun deleteServerData(date:String): String {
         return retrofitRepo.deleteServerData(date)
     }
+
+    suspend fun sendCardUseCae(cardList : MultipartBody.Part) : String{
+        return retrofitRepo.sendCardRepo(cardList = cardList)
+    }
 }

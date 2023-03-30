@@ -26,7 +26,8 @@ class RetrofitRepoImpl @Inject constructor(
         return retrofitSource.deleteServerData()
     }
 
-
-
+    override suspend fun sendCardRepo(cardList : MultipartBody.Part) : String{
+        return retrofitSource.sendCardSource(cardList = cardList)
+    }
 
 }

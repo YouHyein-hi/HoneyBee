@@ -199,4 +199,16 @@ class MainViewModel @Inject constructor(
         _connectedState.value = ConnetedState.DISCONNECTED
 
     }
+
+    // 카드 목록 서버에 전송하기
+    fun sendCard(cardList : Map<String, Int>){
+        _serverJob.value = CoroutineScope(exceptionHandler).launch{
+            Log.e("TAG", "CardList : ${cardList}", )
+            val myCardList = MultipartBody.Part.createFormData("cardList", cardList.toString())
+            val result = retrofitUseCase.sendCardUseCae(
+                cardList = myCardList
+            )
+            Log.e("TAG", "sendCard: ${result}", )
+        }
+    }
 }

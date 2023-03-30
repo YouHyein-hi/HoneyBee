@@ -13,4 +13,6 @@ interface RetrofitRepo {
     suspend fun receiveDataRepo():MutableList<DomainReceiveAllData>
 
     suspend fun deleteServerData(date:String):String
+
+    suspend fun sendCardRepo(cardList : MultipartBody.Part) : String
 }

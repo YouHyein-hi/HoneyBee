@@ -5,6 +5,7 @@ import com.example.data.remote.dataSource.RetrofitSource
 import com.example.data.remote.dto.ReceiveData
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
+import retrofit2.create
 import javax.inject.Inject
 
 /**
@@ -42,6 +43,16 @@ class RetrofitSourceImpl @Inject constructor(
         return retrofit.create(RetrofitSource::class.java).deleteServerData()
     }
 
+    override suspend fun sendCardSource(
+        cardList : MultipartBody.Part
+    ): String{
+        Log.e("TAG", "sendCardSource: 들어감", )
+        val cl = retrofit.create(RetrofitSource::class.java).sendCardSource(
+            cardList = cardList
+        )  // 여기서 오류가 난건뎅
+        Log.e("TAG", "sendCardSource: ${cl}", )
+        return cl
+    }
 
 
 }

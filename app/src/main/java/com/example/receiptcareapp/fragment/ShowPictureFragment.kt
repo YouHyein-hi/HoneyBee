@@ -21,6 +21,7 @@ import com.example.receiptcareapp.viewModel.MainViewModel
 import java.text.DecimalFormat
 import java.time.LocalDateTime
 import java.util.*
+import kotlin.time.measureTime
 
 class ShowPictureFragment :
     BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
@@ -93,17 +94,33 @@ class ShowPictureFragment :
         val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
         val editText_cardName  = dialogView.findViewById<EditText>(R.id.dialog_cardname)
         val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
+        var builder = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
 
         binding.cardaddBtn.setOnClickListener{
-            AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
-                .setTitle("카드 추가")
+            builder.setTitle("카드 추가")
                 .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
                 .setView(dialogView)
                 .setPositiveButton("확인") { dialog, id ->
-                    cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
-                    cardArray?.let { it -> viewModel.takeCardData(it) }
-                    getSpinner()
-                }.show()
+                    if(editText_cardName.text.toString() == ""){
+                        //Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
+                        Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요", )
+                    }
+                    else if(editText_cardPrice.text.toString() == ""){
+                        //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
+                        Log.e("TAG", "onViewCreated: 초기 금액을 입력해주세요", )
+                    }
+                    else{
+                        cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
+                        cardArray?.let { it -> viewModel.takeCardData(it) }
+                        val cardMap = mapOf<String, Int>(editText_cardName.text.toString() to editText_cardPrice.text.toString().toInt())
+                        Log.e("TAG", "onViewCreated: ${cardMap}", )
+                        activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
+                        activityViewModel.sendCard(cardMap)
+                        getSpinner()
+                    }
+                }
+                .setCancelable(false)
+                .show()
         }
 
         binding.btnPrice.setOnClickListener {
@@ -183,7 +200,7 @@ class ShowPictureFragment :
         var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ArrayCard)  // ArrayAdapter에 item 값을 넣고 spinner만 보여주면 되는데 그게 안됨 ArrayAdapter에 대해 알아보기
         binding.spinner.adapter = adapter
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val spiltCard = ArrayCard[position].split(" : ")
                 checked = spiltCard[0]
                 Log.e("TAG", "onItemSelected: ${checked}", )
@@ -191,7 +208,6 @@ class ShowPictureFragment :
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
-
         }
     }
 }

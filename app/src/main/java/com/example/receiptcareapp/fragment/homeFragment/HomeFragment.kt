@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
+import com.example.receiptcareapp.State.ConnetedState
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.dto.ServerCardData
 import com.example.receiptcareapp.fragment.base.BaseFragment
@@ -39,14 +40,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
         binding.storageBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
         binding.settingBtn.setOnClickListener{
-
-
             val bottomDialogFragment = HomeCardBottomSheet()
             bottomDialogFragment.show(parentFragmentManager,"tag")
-//            val bottomSheetView = layoutInflater.inflate(R.layout.setting_bottom_sheet, null)
-//            val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
-//            bottomSheetDialog.setContentView(bottomSheetView)
-//            bottomSheetDialog.show()
         }
     }
 
@@ -110,9 +105,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         callback.remove()
     }
 
-    override fun onResume() {
-        super.onResume()
-        activityViewModel.serverCoroutineStop()
-    }
 
 }

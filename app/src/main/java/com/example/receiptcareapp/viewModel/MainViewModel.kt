@@ -8,11 +8,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.DomainReceiveAllData
+import com.example.domain.model.DomainReceiveCardData
 import com.example.domain.model.DomainRoomData
 import com.example.domain.usecase.RetrofitUseCase
 import com.example.domain.usecase.RoomUseCase
 import com.example.receiptcareapp.State.ConnetedState
 import com.example.receiptcareapp.State.ServerState
+import com.example.receiptcareapp.dto.ServerCardData
 import com.example.receiptcareapp.viewModel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -23,6 +25,7 @@ import java.io.File
 import java.io.InterruptedIOException
 import java.time.LocalDateTime
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 
 /**
  * 2023-01-31
@@ -37,7 +40,7 @@ class MainViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     init {
-        Log.e("TAG", "MainViewModel: start", )
+        Log.e("TAG", "MainViewModel: start")
 
     }
 
@@ -58,7 +61,8 @@ class MainViewModel @Inject constructor(
     private var _connectedState = MutableLiveData<ConnetedState>()
     val connectedState: LiveData<ConnetedState>
         get() = _connectedState
-    fun changeConnectedState(connetedState: ConnetedState){
+    fun changeConnectedState(connetedState: ConnetedState) {
+        Log.e("TAG", "changeConnectedState: $connetedState", )
         _connectedState.value = connetedState
     }
 
@@ -66,16 +70,30 @@ class MainViewModel @Inject constructor(
     private var _serverState = MutableLiveData<ServerState>()
     val serverState: LiveData<ServerState>
         get() = _serverState
-    fun changeServerState(serverState: ServerState){
+    fun changeServerState(serverState: ServerState) {
         _serverState.value = serverState
     }
 
+    // 서버 카드 전달받은 값 관리
+    private var _cardData = MutableLiveData<MutableList<DomainReceiveCardData>>()
+    val cardData: LiveData<MutableList<DomainReceiveCardData>>
+        get() = _cardData
+
+
+    // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
-    val serverJob :LiveData<Job>
+    val serverJob: LiveData<Job>
         get() = _serverJob
 
     //서버에 데이터 전송 기능
-    fun sendData(date: LocalDateTime, amount: String, card: String, picture: Uri, pictureName: String) {
+    fun sendData(
+        date: LocalDateTime,
+        amount: String,
+        card: String,
+        picture: Uri,
+        pictureName: String
+    ) {
+        _connectedState.value = ConnetedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             Log.e("TAG", "보내는 데이터 : $date, $amount, $card, $picture, $pictureName")
             // 각 데이터를 MultiPart로 변환
@@ -101,19 +119,59 @@ class MainViewModel @Inject constructor(
             )
             Log.e("TAG", "sendData 응답 : $result ")
 
-            if(result == "success"){
+            if (result == "success") {
                 _serverState.postValue(ServerState.SUCCESS)
                 _connectedState.postValue(ConnetedState.DISCONNECTED)
-                insertData(cardName = card, amount = amount, pictureName = "pifTJQJctureName", date = date.toString(), picture = picture.toString())
-            }else if(result == "false"){
+                insertData(
+                    cardName = card,
+                    amount = amount,
+                    pictureName = "pifTJQJctureName",
+                    date = date.toString(),
+                    picture = picture.toString()
+                )
+            } else if (result == "false") {
+                Log.e("TAG", "sendData: 실패입니다!", )
                 _serverState.postValue(ServerState.FALSE)
                 _connectedState.postValue(ConnetedState.DISCONNECTED)
                 Exception("오류! 전송 실패.")
-            }else{
+            } else {
                 Exception("서버 연결 실패.")
             }
         }
+    }
 
+    fun sendCardData(cardName: String, amount: String) {
+        _connectedState.value = ConnetedState.CONNECTING
+        _serverJob.value = CoroutineScope(exceptionHandler).launch{
+            val myCardName = MultipartBody.Part.createFormData("cardName", cardName)
+            val myAount = MultipartBody.Part.createFormData("cardName", amount)
+            retrofitUseCase.sendCardDataUseCase(cardName = myCardName, amount = myAount)
+
+            // 성공하면 값을 불러오기
+            receiveCardData()
+        }
+    }
+
+    fun receiveCardData(){
+        _connectedState.value = ConnetedState.CONNECTING
+        _serverJob.value =CoroutineScope(exceptionHandler).launch{
+            _cardData.value = retrofitUseCase.receiveCardDataUseCase()
+            // 통신 끝나면 커넥트 풀어주기
+            _connectedState.value = ConnetedState.DISCONNECTED
+            // 라이브데이터로 관리하기!
+            // 결과값을 분기문으로 관리 + 커넥트 풀어주기
+        }
+    }
+
+    fun deleteCardData(){
+        _connectedState.value = ConnetedState.CONNECTING
+        _serverJob.value = CoroutineScope(exceptionHandler).launch{
+            retrofitUseCase.deleteCardDataUseCase()
+            // 결과값을 분기문으로 관리 + 커넥트 풀어주기
+
+            // 성공하면 값을 불러오기
+            receiveCardData()
+        }
     }
 
     //절대경로로 변환
@@ -148,34 +206,26 @@ class MainViewModel @Inject constructor(
         }
     }
 
-//    fun receiveData() {
-//        CoroutineScope(exceptionHandler).launch {
-//            val result = retrofitUseCase.receiveDataUseCase()
-//            Log.e("TAG", "sendData: $result ")
-//            _receiveResult.value = result
-//        }
-//    }
-
-
     fun getAllLocalData() {
         //_connectedState.value = ConnetedState.CONNECTING
         CoroutineScope(exceptionHandler).launch {
             val gap = roomUseCase.getAllData()
             _roomData.postValue(gap)
-            Log.e("TAG", "getAllLocalData: $gap", )
+            Log.e("TAG", "getAllLocalData: $gap")
             //_connectedState.value = ConnetedState.DISCONNECTED
         }
     }
 
     fun deleteRoomData(date: String) {
-       CoroutineScope(exceptionHandler).launch {
-           roomUseCase.deleteData(date)
-           //삭제 후에 데이터 끌어오기 위한 구성
-           getAllLocalData()
+        CoroutineScope(exceptionHandler).launch {
+            roomUseCase.deleteData(date)
+            //삭제 후에 데이터 끌어오기 위한 구성
+            getAllLocalData()
         }
     }
 
-    fun getAllServerData(){
+    fun getAllServerData() {
+        Log.e("TAG", "getAllServerData: ", )
         _connectedState.value = ConnetedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             _serverData.postValue(retrofitUseCase.receiveDataUseCase())
@@ -183,20 +233,22 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun deleteServerData(data:String){
+    fun deleteServerData(data: String) {
         CoroutineScope(exceptionHandler).launch {
             val gap = retrofitUseCase.deleteServerData(data)
-            Log.e("TAG", "deleteServerData return: $gap", )
-            //_receiveResult.value = gap
+            Log.e("TAG", "deleteServerData return: $gap")
         }
-
-
     }
 
-    fun serverCoroutineStop(){
-        Log.e("TAG", "coroutineStop: stop ${_serverJob.value}", )
-        _serverJob.value?.cancel("코루틴 취소")
-        _connectedState.value = ConnetedState.DISCONNECTED
+    fun serverCoroutineStop() {
+        _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소하겠다구!"))
+        this.setFetchStateStop()
+        _connectedState.postValue(ConnetedState.DISCONNECTED)
+    }
 
+    fun hideServerCoroutineStop() {
+        _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소하겠다구!"))
+        this.hideSetFetchStateStop()
+        _connectedState.postValue(ConnetedState.DISCONNECTED)
     }
 }

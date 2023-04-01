@@ -1,9 +1,11 @@
 package com.example.receiptcareapp.fragment.recyclerFragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -29,10 +31,9 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val activityViewModel : MainViewModel by activityViewModels()
     private var myData : DeleteData = DeleteData(DeleteType.NONE, DomainRecyclerData("","","","",""))
+    private lateinit var callback:OnBackPressedCallback
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        activityViewModel.serverCoroutineStop()
         myData.data = fragmentViewModel.showLocalData.value
         activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
         activityViewModel.changeServerState(ServerState.NONE)
@@ -48,7 +49,6 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             // 로컬 데이터 일 시
         }else if(fragmentViewModel.showLocalData.value != null){
             myData.type = DeleteType.LOCAL
-//            binding.replayBtn.setImageResource(R.drawable.replay_btn)
             binding.changeBtn.setOnClickListener{
                 replayServerAlertDialog()
             }
@@ -73,6 +73,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         }
 
         activityViewModel.serverState.observe(viewLifecycleOwner){
+            Log.e("TAG", "onViewCreated@@@@: ${activityViewModel.serverState.value}", )
             if(it==ServerState.SUCCESS) {
                 Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
@@ -95,21 +96,25 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         }
 
 
+        //뒤로가기 아이콘
         binding.imageBack.setOnClickListener{
-            findNavController().popBackStack()
-//            findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+            if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
+                activityViewModel.serverCoroutineStop()
+                findNavController().popBackStack()
+            } else {
+                findNavController().popBackStack()
+            }
         }
     }
 
-    //재전송 아트다이알로그
-    fun replayServerAlertDialog(){
+    //로컬 데이터 재전송 아트다이알로그
+    private fun replayServerAlertDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
             .setMessage("서버에 보내시겠어요?")
             .setPositiveButton("닫기"){dialog, id-> }
             .setNegativeButton("보내기"){dialog, id->
                 //서버와 연결!
-                activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
                 val data = myData.data
                 Log.e("TAG", "onViewCreated: ${myData.data!!.date}", )
                 val myDate = myData.data!!.date.split("-","T",":")
@@ -128,7 +133,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     }
 
     //서버 삭제 아트다이알로그
-    fun deleteServerAlertDialog(){
+    private fun deleteServerAlertDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
             .setMessage("서버 데이터를 삭제하시겠어요?")
@@ -153,7 +158,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     }
 
     //로컬 삭제 아트다이알로그
-    fun deleteLocalAlertDialog(){
+    private fun deleteLocalAlertDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
             .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")
@@ -166,5 +171,29 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             }.create().show()
     }
 
+    /** Fragment 뒤로가기 **/
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
+                    activityViewModel.serverCoroutineStop()
+                } else {
+                    findNavController().popBackStack()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+
+//    private fun myBack(){
+//        activityViewModel.serverCoroutineStop()
+//        findNavController().popBackStack()
+//    }
 }

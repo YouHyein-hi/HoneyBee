@@ -1,7 +1,7 @@
 package com.example.data.remote.dataSourceImpl
 
-import android.util.Log
 import com.example.data.remote.dataSource.RetrofitSource
+import com.example.data.remote.dto.ReceiveCardData
 import com.example.data.remote.dto.ReceiveData
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
@@ -23,23 +23,32 @@ class RetrofitSourceImpl @Inject constructor(
         timestmap: MultipartBody.Part,
         bill: MultipartBody.Part
     ): String {
-        val gap = retrofit.create(RetrofitSource::class.java).sendDataSource(
+        return retrofit.create(RetrofitSource::class.java).sendDataSource(
         cardName = cardName,
         amount = amount,
         pictureName = pictureName,
         timestmap = timestmap,
         bill = bill
         )
-        Log.e("TAG", "sendDataSource: $gap", )
-        return gap
     }
-
     override suspend fun receiveDataSource(): MutableList<ReceiveData> {
         return retrofit.create(RetrofitSource::class.java).receiveDataSource()
     }
 
     override suspend fun deleteServerData(): String {
         return retrofit.create(RetrofitSource::class.java).deleteServerData()
+    }
+
+    override suspend fun sendCardDataSource(cardName: MultipartBody.Part, amount: MultipartBody.Part): String {
+        return retrofit.create(RetrofitSource::class.java).sendCardDataSource(cardName = cardName, amount = amount)
+    }
+
+    override suspend fun receiveCardDataSource(): MutableList<ReceiveCardData> {
+        return retrofit.create(RetrofitSource::class.java).receiveCardDataSource()
+    }
+
+    override suspend fun deleteCardDataSource(): String {
+        return retrofit.create(RetrofitSource::class.java).deleteCardDataSource()
     }
 
 

@@ -41,17 +41,22 @@ class MainActivity : AppCompatActivity() {
                 FetchState.WRONG_CONNECTION -> "WRONG_CONNECTION 오류"
                 FetchState.SQLITE_CONSTRAINT_PRIMARYKEY -> "실패! 이미 값이 저장되어있습니다."
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> "실패! 연결 시간이 초과되었습니다."
-                    else -> "저장 안된 오류!  ${it.first.message} "
-                }
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            Log.e("TAG", "onCreate: $message", )
+                FetchState.STOP -> "통신 강제 종료"
+                FetchState.HIDE_STOP -> ""
+                else -> "저장 안된 오류!  ${it.first.message} "
+            }
+            if(message.isNotEmpty()) Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            Log.e("TAG", "onCreate: $message")
         }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        val imm:InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm: InputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-        if(currentFocus is EditText) { currentFocus!!.clearFocus() }
+        if (currentFocus is EditText) {
+            currentFocus!!.clearFocus()
+        }
         return super.dispatchTouchEvent(ev)
     }
 }

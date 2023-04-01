@@ -16,7 +16,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +32,15 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
+            android:id="@+id/cardminus_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/minus"
+            app:layout_constraintEnd_toStartOf="@+id/cardadd_btn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:id="@+id/cardadd_btn"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -44,13 +53,13 @@
             android:id="@+id/explain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/pretendardbold"
             android:text="해당 카드와 날짜를 금액을 입력해주세요."
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/cardadd_btn" />
 
         <Spinner
             android:id="@+id/spinner"
@@ -112,12 +121,11 @@
                 android:elevation="3dp"
                 android:fontFamily="@font/pretendardsemibold"
                 android:hint="날짜"
+                android:imeOptions="actionDone"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:imeOptions="actionDone"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/btn_price"

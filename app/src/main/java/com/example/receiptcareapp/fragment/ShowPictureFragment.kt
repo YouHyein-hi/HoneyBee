@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
@@ -107,20 +108,23 @@ class ShowPictureFragment :
         val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
         val editText_cardName  = dialogView.findViewById<EditText>(R.id.dialog_cardname)
         val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
-        var builder = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
+        //val dialogParentView: ViewGroup? = dialogView.parent as ViewGroup?
 
         binding.cardaddBtn.setOnClickListener{
-            builder.setTitle("카드 추가")
+            val cardAddDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
+                .setTitle("카드 추가")
                 .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
                 .setView(dialogView)
                 .setPositiveButton("확인") { dialog, id ->
                     if(editText_cardName.text.toString() == ""){
                         //Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
                         Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요", )
+                        dialog.dismiss()
                     }
                     else if(editText_cardPrice.text.toString() == ""){
                         //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
                         Log.e("TAG", "onViewCreated: 초기을 입력해주세요", )
+                        dialog.dismiss()
                     }
                     else{
                         cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
@@ -129,11 +133,22 @@ class ShowPictureFragment :
                         Log.e("TAG", "onViewCreated: ${cardMap}", )
                         activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
                         activityViewModel.sendCard(cardMap)
+                        //dialogParentView?.removeView(dialogView)
                         getSpinner()
                     }
                 }
                 .setCancelable(false)
                 .show()
+
+            cardAddDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(Color.RED)
+            cardAddDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                .setTextColor(Color.BLACK)
+        }
+
+        /** 카드 삭제 관련 코드 **/
+        binding.cardminusBtn.setOnClickListener(){
+            minusDialog()
         }
 
         binding.btnPrice.setOnClickListener {
@@ -199,6 +214,44 @@ class ShowPictureFragment :
 
     }
 
+    fun minusDialog(){
+        val array : Map<String, Int>? = viewModel.card.value
+        Log.e("TAG", "minusDialog: ${array}", )
+        val ArrayCardList : MutableList<String> = mutableListOf()
+        var ArrayCard : Array<String>
+
+        if (array != null) {
+            for(i in array){
+                ArrayCardList?.add("${i.key} : ${i.value}")
+                Log.e("TAG", "minusDialog: ${ArrayCardList}", )
+            }
+        }
+        ArrayCard = ArrayCardList.toTypedArray()
+        val checkedItemIndex = 0
+
+        val cardMinusDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
+            .setTitle("카드 삭제")
+            .setSingleChoiceItems(ArrayCard, checkedItemIndex) { dialog_, which ->
+                Log.e("TAG", "minusDialog: ${which}", )
+            }
+            .setPositiveButton("삭제한다"){dialog, id->
+                // 카드 삭제 event 넣기
+                Log.e("TAG", "getSpinner: 카드 삭제 성공", )
+                dialog.dismiss()   // 예비
+            }
+            .setNegativeButton("삭제하지 않는다"){dialog, id->
+                Log.e("TAG", "getSpinner: 카드 삭제 취소", )
+                dialog.dismiss()
+            }
+            .show()
+
+        cardMinusDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+            .setTextColor(Color.RED)
+        cardMinusDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+            .setTextColor(Color.BLACK)
+    }
+
+
     fun getSpinner(){
         cardArray?.let { viewModel.takeCardData(it) }
         val array : Map<String, Int>? = viewModel.card.value
@@ -222,21 +275,7 @@ class ShowPictureFragment :
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
-        /*
-        binding.spinner.onItemLongClickListener = object : AdapterView.OnItemLongClickListener{
-            override fun onItemLongClick(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long): Boolean {
-                Log.e("TAG", "onItemLongClick: 꾹 누름", )
-                Toast.makeText(requireContext(), "item 꾹 누름", Toast.LENGTH_SHORT).show()
-                return true
-            }
-        }
-         */
 
-        binding.spinner.setOnLongClickListener{
-            Log.e("TAG", "onItemLongClick: 꾹 누름", )
-            Toast.makeText(requireContext(), "꾹 누름", Toast.LENGTH_SHORT).show()
-            return@setOnLongClickListener true
-        }
 
     }
 }

@@ -28,6 +28,7 @@ class RetrofitRepoImpl @Inject constructor(
         return retrofitSource.deleteServerData()
     }
 
+
     override suspend fun sendCardDataRepo(card: MultipartBody.Part, amount: MultipartBody.Part): String {
         return retrofitSource.sendCardDataSource(cardName = card,amount = amount)
     }
@@ -39,4 +40,5 @@ class RetrofitRepoImpl @Inject constructor(
     override suspend fun deleteCardDataRepo(): String {
         return retrofitSource.deleteCardDataSource()
     }
+
 }

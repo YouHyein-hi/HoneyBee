@@ -25,7 +25,7 @@ interface RetrofitSource {
         @Part bill : MultipartBody.Part,
     ): String
 
-    @GET("bills")
+    @GET("bills")   // 전체 데이터 요청
     suspend fun receiveDataSource() : MutableList<ReceiveData>
 
     @GET("test")

@@ -5,6 +5,7 @@ import com.example.data.remote.dto.ReceiveCardData
 import com.example.data.remote.dto.ReceiveData
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
+import retrofit2.create
 import javax.inject.Inject
 
 /**
@@ -50,7 +51,6 @@ class RetrofitSourceImpl @Inject constructor(
     override suspend fun deleteCardDataSource(): String {
         return retrofit.create(RetrofitSource::class.java).deleteCardDataSource()
     }
-
 
 
 }

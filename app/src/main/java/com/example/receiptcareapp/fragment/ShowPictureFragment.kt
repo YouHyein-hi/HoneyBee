@@ -136,11 +136,8 @@ class ShowPictureFragment :
                     else{
                         cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
                         cardArray?.let { it -> viewModel.takeCardData(it) }
-                        val cardMap = mapOf<String, Int>(editText_cardName.text.toString() to editText_cardPrice.text.toString().toInt())
-                        Log.e("TAG", "onViewCreated: ${cardMap}", )
                         activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
-                        activityViewModel.sendCard(cardMap)
-                        //dialogParentView?.removeView(dialogView)
+                        activityViewModel.sendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString())
                         getSpinner()
                     }
                 }

@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+
+        android:id="@+id/dialog_server_cardName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendardbold"
+        android:gravity="center"
+        android:text=" "
+        android:textColor="@color/black"
+        android:textSize="25sp" />
+
+    <EditText
+        android:paddingTop="20dp"
+        android:id="@+id/dialog_server_cardPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:hint="수정될 금액을 입력해주세요."
+        android:inputType="number" />
+</LinearLayout>

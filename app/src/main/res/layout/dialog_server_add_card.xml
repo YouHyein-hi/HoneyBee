@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <EditText
+        android:paddingTop="20dp"
+        android:id="@+id/addCardName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="카드 이름을 입력해주세요."
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:paddingTop="20dp"
+        android:id="@+id/addCardAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:hint="수정될 금액을 입력해주세요."
+        android:inputType="number" />
+</LinearLayout>

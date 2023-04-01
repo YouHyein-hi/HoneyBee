@@ -1,6 +1,7 @@
 package com.example.domain.repo
 
 import com.example.domain.model.DomainReceiveAllData
+import com.example.domain.model.DomainReceiveCardData
 import okhttp3.MultipartBody
 
 /**
@@ -14,5 +15,9 @@ interface RetrofitRepo {
 
     suspend fun deleteServerData(date:String):String
 
-    suspend fun sendCardRepo(cardList : MultipartBody.Part) : String
+    suspend fun sendCardDataRepo(card:MultipartBody.Part, amount:MultipartBody.Part): String
+
+    suspend fun receiveCardDataRepo():MutableList<DomainReceiveCardData>
+
+    suspend fun deleteCardDataRepo():String
 }

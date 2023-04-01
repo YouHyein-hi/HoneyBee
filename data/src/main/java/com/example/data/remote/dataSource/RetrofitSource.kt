@@ -1,5 +1,6 @@
 package com.example.data.remote.dataSource
 
+import com.example.data.remote.dto.ReceiveCardData
 import com.example.data.remote.dto.ReceiveData
 import com.example.data.remote.dto.SendData
 import okhttp3.MultipartBody
@@ -31,11 +32,15 @@ interface RetrofitSource {
     suspend fun deleteServerData():String
 
     @Multipart
-    @POST("bills/card")   // 카드 목록 추가
-    suspend fun sendCardSource(
-        @Part cardList : MultipartBody.Part
-    ) : String
+    @POST("bills/add")
+    suspend fun sendCardDataSource(
+        @Part cardName : MultipartBody.Part,
+        @Part amount : MultipartBody.Part,
+    ): String
 
+    @GET("bills")
+    suspend fun receiveCardDataSource() : MutableList<ReceiveCardData>
 
-
+    @GET("bills")
+    suspend fun deleteCardDataSource() : String
 }

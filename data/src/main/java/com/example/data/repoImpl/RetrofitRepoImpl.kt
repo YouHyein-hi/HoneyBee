@@ -1,7 +1,9 @@
 package com.example.data.repoImpl
 
 import com.example.data.remote.dataSource.RetrofitSource
+import com.example.data.remote.dto.toDomainReceiveCardData
 import com.example.domain.model.DomainReceiveAllData
+import com.example.domain.model.DomainReceiveCardData
 import com.example.domain.repo.RetrofitRepo
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -26,8 +28,17 @@ class RetrofitRepoImpl @Inject constructor(
         return retrofitSource.deleteServerData()
     }
 
-    override suspend fun sendCardRepo(cardList : MultipartBody.Part) : String{
-        return retrofitSource.sendCardSource(cardList = cardList)
+
+    override suspend fun sendCardDataRepo(card: MultipartBody.Part, amount: MultipartBody.Part): String {
+        return retrofitSource.sendCardDataSource(cardName = card,amount = amount)
+    }
+
+    override suspend fun receiveCardDataRepo(): MutableList<DomainReceiveCardData> {
+        return retrofitSource.receiveCardDataSource().map { it.toDomainReceiveCardData() }.toMutableList()
+    }
+
+    override suspend fun deleteCardDataRepo(): String {
+        return retrofitSource.deleteCardDataSource()
     }
 
 }

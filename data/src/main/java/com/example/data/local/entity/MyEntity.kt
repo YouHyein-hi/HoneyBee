@@ -28,7 +28,7 @@ fun MyEntity.toDomainEntity():DomainRoomData = DomainRoomData(
     date = date,
     cardName = cardName,
     amount = amount,
-    pictureName = pictureName,
-    picture = picture
+    storeName = pictureName,
+    file = picture
 
 )

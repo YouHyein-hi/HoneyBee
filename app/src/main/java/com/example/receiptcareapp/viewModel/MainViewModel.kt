@@ -14,7 +14,6 @@ import com.example.domain.usecase.RetrofitUseCase
 import com.example.domain.usecase.RoomUseCase
 import com.example.receiptcareapp.State.ConnetedState
 import com.example.receiptcareapp.State.ServerState
-import com.example.receiptcareapp.dto.ServerCardData
 import com.example.receiptcareapp.viewModel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -25,7 +24,6 @@ import java.io.File
 import java.io.InterruptedIOException
 import java.time.LocalDateTime
 import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 /**
  * 2023-01-31
@@ -38,11 +36,6 @@ class MainViewModel @Inject constructor(
     private val roomUseCase: RoomUseCase
 
 ) : BaseViewModel() {
-
-    init {
-        Log.e("TAG", "MainViewModel: start")
-
-    }
 
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
     var myCotext: Context? = null
@@ -89,54 +82,51 @@ class MainViewModel @Inject constructor(
     fun sendData(
         date: LocalDateTime,
         amount: String,
-        card: String,
-        picture: Uri,
-        pictureName: String
+        cardName: String,
+        file: Uri,
+        storeName: String
     ) {
         _connectedState.value = ConnetedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
-            Log.e("TAG", "보내는 데이터 : $date, $amount, $card, $picture, $pictureName")
-            // 각 데이터를 MultiPart로 변환
-            val myCard = MultipartBody.Part.createFormData("cardName", card)
+            Log.e("TAG", "보내는 데이터 : $date, $amount, $cardName, $file, $storeName")
+            val myCard = MultipartBody.Part.createFormData("cardName", cardName)
             val myAmount = MultipartBody.Part.createFormData("amount", amount)
-            val myPictureName = MultipartBody.Part.createFormData("pictureName", "pictureName")
-
+            val myStoreName = MultipartBody.Part.createFormData("storeName", storeName)
             val myDate = MultipartBody.Part.createFormData("date", date.toString())
 
-            val file = File(absolutelyPath(picture, myCotext))
-            //uri를 받아서 그 사진의 절대경로를 얻어온 후 이 경로를 사용하여 사진을 file 변수에 저장
+            //file은 리퀘스트 바디로 바꾼 후 multipartbody로 바꿔야 함.
+            val file = File(absolutelyPath(file, myCotext))
             val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            //다음을 통해 request로 바꿔준 후
-            val myPicture = MultipartBody.Part.createFormData("bill", file.name, requestFile)
-            //다음 구문을 통해 form-data 형식으로 바꿔줌
+            val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
             val result = retrofitUseCase.sendDataUseCase(
                 cardName = myCard,
                 amount = myAmount,
-                pictureName = myPictureName,
+                pictureName = myStoreName,
                 date = myDate,
                 picture = myPicture
             )
-            Log.e("TAG", "sendData 응답 : $result ")
 
-            if (result == "success") {
+            Log.e("TAG", "sendData 응답 : $result ")
+            if (result == "add success") {
                 _serverState.postValue(ServerState.SUCCESS)
                 _connectedState.postValue(ConnetedState.DISCONNECTED)
                 insertData(
-                    cardName = card,
+                    cardName = cardName,
                     amount = amount,
-                    pictureName = "pifTJQJctureName",
+                    storeName = storeName,
                     date = date.toString(),
-                    picture = picture.toString()
+                    file = file.toString()
                 )
-            } else if (result == "false") {
+            } else {
                 Log.e("TAG", "sendData: 실패입니다!", )
                 _serverState.postValue(ServerState.FALSE)
                 _connectedState.postValue(ConnetedState.DISCONNECTED)
                 Exception("오류! 전송 실패.")
-            } else {
-                Exception("서버 연결 실패.")
             }
+            /*else {
+                Exception("서버 연결 실패.")
+            }*/
         }
     }
 
@@ -187,19 +177,19 @@ class MainViewModel @Inject constructor(
     fun insertData(
         cardName: String,
         amount: String,
-        pictureName: String,
+        storeName: String,
         date: String,
-        picture: String
+        file: String
     ) {
         CoroutineScope(exceptionHandler).launch {
-            Log.e("TAG", "insertData : $date, $cardName, $amount, $pictureName, $picture,")
+            Log.e("TAG", "insertData : $date, $cardName, $amount, $storeName, $file,")
             roomUseCase.insertData(
                 DomainRoomData(
                     cardName = cardName,
                     amount = amount,
-                    pictureName = pictureName,
+                    storeName = storeName,
                     date = date,
-                    picture = picture
+                    file = file
                 )
             )
             _connectedState.postValue(ConnetedState.CONNECTING)

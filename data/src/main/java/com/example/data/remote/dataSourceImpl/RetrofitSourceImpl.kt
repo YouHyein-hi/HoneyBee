@@ -1,5 +1,6 @@
 package com.example.data.remote.dataSourceImpl
 
+import android.util.Log
 import com.example.data.remote.dataSource.RetrofitSource
 import com.example.data.remote.dto.ReceiveCardData
 import com.example.data.remote.dto.ReceiveData
@@ -24,12 +25,15 @@ class RetrofitSourceImpl @Inject constructor(
         timestmap: MultipartBody.Part,
         bill: MultipartBody.Part
     ): String {
+
+        Log.e("TAG", "sendDataSource: $bill", )
+
         return retrofit.create(RetrofitSource::class.java).sendDataSource(
         cardName = cardName,
         amount = amount,
-        pictureName = pictureName,
-        timestmap = timestmap,
-        bill = bill
+        storeName = pictureName,
+        date = timestmap,
+        file = bill
         )
     }
     override suspend fun receiveDataSource(): MutableList<ReceiveData> {
@@ -52,5 +56,9 @@ class RetrofitSourceImpl @Inject constructor(
         return retrofit.create(RetrofitSource::class.java).deleteCardDataSource()
     }
 
+    override suspend fun myTest(file: MultipartBody.Part): String {
+        Log.e("TAG", "myTest: test $file", )
+        return retrofit.create(RetrofitSource::class.java).myTest(file)
+    }
 
 }

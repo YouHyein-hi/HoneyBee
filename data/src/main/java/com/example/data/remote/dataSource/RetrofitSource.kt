@@ -3,6 +3,7 @@ package com.example.data.remote.dataSource
 import com.example.data.remote.dto.ReceiveCardData
 import com.example.data.remote.dto.ReceiveData
 import com.example.data.remote.dto.SendData
+import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
@@ -16,13 +17,13 @@ interface RetrofitSource {
 
     //multipart에 쓰이는 모든 요소들은 @Part를 붙여줘야 함
     @Multipart
-    @POST("bills/add")
+    @POST("bill/add")
     suspend fun sendDataSource(
         @Part cardName : MultipartBody.Part,
         @Part amount : MultipartBody.Part,
-        @Part pictureName : MultipartBody.Part,
-        @Part timestmap : MultipartBody.Part,
-        @Part bill : MultipartBody.Part,
+        @Part storeName : MultipartBody.Part,
+        @Part date : MultipartBody.Part,
+        @Part file : MultipartBody.Part,
     ): String
 
     @GET("bills")   // 전체 데이터 요청
@@ -43,4 +44,10 @@ interface RetrofitSource {
 
     @GET("bills")
     suspend fun deleteCardDataSource() : String
+
+    @Multipart
+    @POST("bill/test")
+    suspend fun myTest(
+        @Part file : MultipartBody.Part
+    ):String
 }

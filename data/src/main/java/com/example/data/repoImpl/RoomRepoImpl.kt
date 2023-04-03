@@ -1,12 +1,9 @@
 package com.example.data.repoImpl
 
-import android.util.Log
-import androidx.room.TypeConverters
 import com.example.data.local.dao.MyDao
 import com.example.data.local.entity.MyEntity
 import com.example.domain.model.DomainRoomData
 import com.example.domain.repo.RoomRepo
-import okhttp3.MultipartBody
 import javax.inject.Inject
 
 /**
@@ -20,8 +17,8 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao):RoomRepo{
             date = list.date,
             cardName = list.cardName,
             amount = list.amount,
-            pictureName = list.pictureName,
-            picture = list.picture
+            pictureName = list.storeName,
+            picture = list.file
         )
         roomDao.insertData(myList)
     }
@@ -32,8 +29,8 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao):RoomRepo{
             cardName = it.cardName,
             amount = it.amount,
             date = it.date,
-            pictureName = it.pictureName,
-            picture = it.picture
+            storeName = it.pictureName,
+            file = it.picture
 
         )) }
         return myList

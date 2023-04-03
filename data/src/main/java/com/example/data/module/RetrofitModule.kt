@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -25,8 +26,9 @@ object RetrofitModule {
     @Singleton
     fun provideSendRetrofit():Retrofit{
         return Retrofit.Builder()
-            .baseUrl("http://10.9.138.16:8080/")
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .baseUrl("http://192.168.1.13:8080/")
+//            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(ScalarsConverterFactory.create())
             //.client(okHttpClient)
             .build()
     }

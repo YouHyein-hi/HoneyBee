@@ -51,9 +51,12 @@ class ShowPictureFragment :
         activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
         activityViewModel.changeServerState(ServerState.NONE)
 
-        val dataNow = LocalDate.now()
+        val dateNow = LocalDate.now()
         val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-        binding.btnDate.text = "${dataNow.format(formatterDate)}"
+        binding.btnDate.text = "${dateNow.format(formatterDate)}"
+        myYear = dateNow.year
+        myMonth = dateNow.monthValue
+        myDay = dateNow.dayOfMonth
 
 
         //날짜 관리
@@ -192,6 +195,7 @@ class ShowPictureFragment :
             } else {
                 //연결상태로 변경
 //                activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
+                Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}", )
                 val myLocalDateTime = LocalDateTime.of(
                     myYear,
                     myMonth,

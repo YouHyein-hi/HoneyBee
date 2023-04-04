@@ -112,43 +112,8 @@ class ShowPictureFragment :
         getSpinner()
 
         /** 카드 추가 관련 코드 **/
-        val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
-        val editText_cardName = dialogView.findViewById<EditText>(R.id.dialog_cardname)
-        val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
-        //val dialogParentView: ViewGroup? = dialogView.parent as ViewGroup?
-
         binding.cardaddBtn.setOnClickListener{
-            val cardAddDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
-
-                .setTitle("카드 추가")
-                .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
-                .setView(dialogView)
-                .setPositiveButton("확인") { dialog, id ->
-                    if(editText_cardName.text.toString() == ""){
-                        //Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
-                        Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요", )
-                        dialog.dismiss()
-                    }
-                    else if(editText_cardPrice.text.toString() == ""){
-                        //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
-                        Log.e("TAG", "onViewCreated: 초기을 입력해주세요", )
-                        dialog.dismiss()
-                    }
-                    else{
-                        cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
-                        cardArray?.let { it -> viewModel.takeCardData(it) }
-                        activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
-                        activityViewModel.sendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString())
-                        getSpinner()
-                    }
-                }
-                .setCancelable(false)
-                .show()
-
-            cardAddDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-                .setTextColor(Color.RED)
-            cardAddDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
-                .setTextColor(Color.BLACK)
+            cardAddDialog()
         }
 
         /** 카드 삭제 관련 코드 **/
@@ -216,6 +181,47 @@ class ShowPictureFragment :
             findNavController().navigate(R.id.action_showFragment_to_homeFragment)
         }
 
+    }
+
+    fun cardAddDialog(){
+        val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
+        val editText_cardName = dialogView.findViewById<EditText>(R.id.dialog_cardname)
+        val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
+
+        val cardAddDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
+            .setTitle("카드 추가")
+            .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
+            .setView(dialogView)
+            .setPositiveButton("확인") { dialog, id ->
+                if(editText_cardName.text.toString() == ""){
+                    //Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
+                    Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요", )
+                    dialog.dismiss()
+                }
+                else if(editText_cardPrice.text.toString() == ""){
+                    //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
+                    Log.e("TAG", "onViewCreated: 초기을 입력해주세요", )
+                    dialog.dismiss()
+                }
+                else{
+                    cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
+                    cardArray?.let { it -> viewModel.takeCardData(it) }
+                    activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
+                    activityViewModel.sendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString())
+                    getSpinner()
+                }
+            }
+            .setNegativeButton("취소"){dialog, id->
+                Log.e("TAG", "getSpinner: 카드 추가 취소", )
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .show()
+
+        cardAddDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+            .setTextColor(Color.RED)
+        cardAddDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+            .setTextColor(Color.BLACK)
     }
 
     fun cardMinusDialog(){

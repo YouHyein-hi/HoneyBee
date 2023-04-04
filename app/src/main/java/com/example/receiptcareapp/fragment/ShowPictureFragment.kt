@@ -153,8 +153,7 @@ class ShowPictureFragment :
 
         /** 카드 삭제 관련 코드 **/
         binding.cardminusBtn.setOnClickListener(){
-            minusDialog()
-            
+            cardMinusDialog()
         }
 
         binding.btnPrice.setOnClickListener {
@@ -219,7 +218,7 @@ class ShowPictureFragment :
 
     }
 
-    fun minusDialog(){
+    fun cardMinusDialog(){
         val array : Map<String, Int>? = viewModel.card.value
         Log.e("TAG", "minusDialog: ${array}", )
         val ArrayCardList : MutableList<String> = mutableListOf()
@@ -239,12 +238,12 @@ class ShowPictureFragment :
             .setSingleChoiceItems(ArrayCard, checkedItemIndex) { dialog_, which ->
                 Log.e("TAG", "minusDialog: ${which}", )
             }
-            .setPositiveButton("삭제한다"){dialog, id->
+            .setPositiveButton("삭제"){dialog, id->
                 // 카드 삭제 event 넣기
                 Log.e("TAG", "getSpinner: 카드 삭제 성공", )
                 dialog.dismiss()   // 예비
             }
-            .setNegativeButton("삭제하지 않는다"){dialog, id->
+            .setNegativeButton("취소"){dialog, id->
                 Log.e("TAG", "getSpinner: 카드 삭제 취소", )
                 dialog.dismiss()
             }

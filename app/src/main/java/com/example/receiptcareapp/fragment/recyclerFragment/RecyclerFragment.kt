@@ -150,6 +150,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         //뒤로가기 버튼
         binding.imageBack.setOnClickListener{
 //            onAttach(requireContext())
+            findNavController().popBackStack()
         }
     }
 

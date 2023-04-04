@@ -20,4 +20,6 @@ interface RetrofitRepo {
     suspend fun receiveCardDataRepo():MutableList<DomainReceiveCardData>
 
     suspend fun deleteCardDataRepo():String
+
+    suspend fun myTest(file:MultipartBody.Part):String
 }

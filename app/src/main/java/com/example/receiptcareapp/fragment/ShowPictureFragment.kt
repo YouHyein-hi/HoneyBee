@@ -8,7 +8,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
@@ -28,7 +27,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.time.measureTime
 
 class ShowPictureFragment :
     BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
@@ -207,9 +205,9 @@ class ShowPictureFragment :
                 activityViewModel.sendData(
                     date = myLocalDateTime,
                     amount = binding.btnPrice.text.toString(),
-                    card = checked,
-                    picture = viewModel.image.value!!,
-                    pictureName = binding.btnStore.text.toString()
+                    cardName = checked,
+                    file = viewModel.image.value!!,
+                    storeName = binding.btnStore.text.toString()
                 )
             }
         }

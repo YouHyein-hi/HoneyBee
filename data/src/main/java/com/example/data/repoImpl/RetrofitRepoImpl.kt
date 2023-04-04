@@ -17,7 +17,7 @@ class RetrofitRepoImpl @Inject constructor(
     private val retrofitSource: RetrofitSource,
 ):RetrofitRepo{
     override suspend fun sendDataRepo(card:MultipartBody.Part, amount:MultipartBody.Part, pictureName:MultipartBody.Part, date:MultipartBody.Part, picture:MultipartBody.Part): String {
-        return retrofitSource.sendDataSource(cardName = card, amount = amount, pictureName=pictureName, timestmap = date, bill = picture)
+        return retrofitSource.sendDataSource(cardName = card, amount = amount, storeName=pictureName, date = date, file = picture)
     }
 
     override suspend fun receiveDataRepo(): MutableList<DomainReceiveAllData> {
@@ -40,5 +40,10 @@ class RetrofitRepoImpl @Inject constructor(
     override suspend fun deleteCardDataRepo(): String {
         return retrofitSource.deleteCardDataSource()
     }
+
+    override suspend fun myTest(file: MultipartBody.Part): String {
+        return retrofitSource.myTest(file)
+    }
+
 
 }

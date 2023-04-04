@@ -35,4 +35,8 @@ class RetrofitUseCase(
     suspend fun deleteCardDataUseCase():String {
         return retrofitRepo.deleteCardDataRepo()
     }
+
+    suspend fun myTest(file:MultipartBody.Part):String {
+        return retrofitRepo.myTest(file)
+    }
 }

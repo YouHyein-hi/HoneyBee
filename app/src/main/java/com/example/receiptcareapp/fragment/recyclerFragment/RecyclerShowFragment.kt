@@ -122,9 +122,9 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                     activityViewModel.sendData(
                         date = LocalDateTime.of(myDate[0].toInt(), myDate[1].toInt(), myDate[2].toInt(), myDate[3].toInt(), myDate[4].toInt(), myDate[5].toInt()),
                         amount = data.amount,
-                        card = data.cardName,
-                        picture = data.picture.toUri(),
-                        pictureName = data.pictureName
+                        cardName = data.cardName,
+                        file = data.picture.toUri(),
+                        storeName = data.pictureName
                     )
                 }else{
                     Log.e("TAG", "onViewCreated: 전송 실패..", )

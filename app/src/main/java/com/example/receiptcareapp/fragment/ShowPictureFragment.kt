@@ -61,20 +61,22 @@ class ShowPictureFragment :
         binding.btnDate.setOnClickListener {
             val cal = Calendar.getInstance()
             val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                var myMonthSt : String
+                var mydaySt : String
                 myYear = year
+                myMonth = month
+                myDay = day
 
-                if(myMonth < 10){
+                if(month < 10)
+                    myMonthSt = "0${month + 1}"
+                else myMonthSt = "${month + 1}"
+                    Log.e("TAG", "onViewCreated: month else~", )
                     myMonth = month + 1
-                    myMonth = "0${myMonth}".toInt()
-                    Log.e("TAG", "onViewCreated myMonth: 0${myMonth}", )
-                } else myMonth = month + 1
-                if(myDay < 10){
-                    myDay = day
-                    myDay = "0${myDay}".toInt()
-                    Log.e("TAG", "onViewCreated myMonth: ${myDay}", )
-                }else myDay = day
+                if(day < 10)
+                    mydaySt = "0${day}"
+                else mydaySt = "${day}"
 
-                binding.btnDate.text = "${myYear}/${myMonth}/${myDay}"
+                binding.btnDate.text = "${myYear}/${myMonthSt}/${mydaySt}"
             }
             val dataDialog = DatePickerDialog(
                 requireContext(),

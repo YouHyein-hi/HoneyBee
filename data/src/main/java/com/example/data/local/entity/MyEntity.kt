@@ -24,11 +24,10 @@ data class MyEntity(
     val picture: String,
 )
 
-fun MyEntity.toDomainEntity():DomainRoomData = DomainRoomData(
-    date = date,
-    cardName = cardName,
-    amount = amount,
-    storeName = pictureName,
-    file = picture
-
-)
+//fun MyEntity.toDomainEntity():DomainRoomData = DomainRoomData(
+//    date = date,
+//    cardName = cardName,
+//    amount = amount,
+//    storeName = pictureName,
+//    file = picture
+//)

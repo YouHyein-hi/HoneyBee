@@ -140,7 +140,7 @@
                 android:gravity="center"
                 android:hint="금액"
                 android:inputType="number"
-                android:maxLength="7"
+                android:maxLength="10"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

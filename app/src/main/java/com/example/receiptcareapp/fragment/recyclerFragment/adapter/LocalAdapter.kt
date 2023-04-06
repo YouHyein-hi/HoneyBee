@@ -1,12 +1,13 @@
 package com.example.receiptcareapp.fragment.recyclerFragment.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.DomainRecyclerData
+import com.example.domain.model.DomainReceiveAllData
+import com.example.domain.model.DomainRoomData
 import com.example.receiptcareapp.databinding.LocalItemBinding
+import com.example.receiptcareapp.dto.ShowData
 
 /**
  * 2023-03-16
@@ -14,21 +15,21 @@ import com.example.receiptcareapp.databinding.LocalItemBinding
  */
 class LocalAdapter: RecyclerView.Adapter<LocalAdapter.MyAdapter>(){
 
-    lateinit var onLocalSaveClic : (DomainRecyclerData)->Unit
+    lateinit var onLocalSaveClic : (DomainRoomData)->Unit
     private lateinit var localBinding: LocalItemBinding
-    var dataList = listOf<DomainRecyclerData>()
+    var dataList = listOf<DomainRoomData>()
         set(value){
             field = value.reversed()
             notifyDataSetChanged()
         }
 
     inner class MyAdapter(private val binding: LocalItemBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(list:DomainRecyclerData){
+        fun bind(list:DomainRoomData){
             val myDate = list.date.split("-","T")
             binding.cardName.text = "${list.cardName} :"
             binding.amount.text = " ${list.amount}"
             binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
-            binding.picture.setImageURI(list.picture.toUri())
+            binding.picture.setImageURI(list.file)
             binding.listLayout.setOnClickListener{ onLocalSaveClic(list) }
         }
     }

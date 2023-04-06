@@ -19,6 +19,8 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnetedState
 import com.example.receiptcareapp.State.ServerState
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
+import com.example.receiptcareapp.dto.SendCardData
+import com.example.receiptcareapp.dto.SendData
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
@@ -138,7 +140,7 @@ class ShowPictureFragment :
                         cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
                         cardArray?.let { it -> viewModel.takeCardData(it) }
                         activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
-                        activityViewModel.sendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString())
+                        activityViewModel.sendCardData(SendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString()))
                         getSpinner()
                     }
                 }
@@ -167,9 +169,8 @@ class ShowPictureFragment :
         binding.btnPrice.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE && binding.btnPrice.text.isNotEmpty()) {
-
                 val gap = DecimalFormat("#,###")
-                binding.btnPrice.setText(gap.format(binding.btnPrice.text.toString().toInt()))
+                binding.btnPrice.setText(gap.format(binding.btnPrice.text.toString().replace(",","").toInt()))
             }
             handled
         }
@@ -203,11 +204,8 @@ class ShowPictureFragment :
                     LocalDateTime.now().second
                 )
                 activityViewModel.sendData(
-                    date = myLocalDateTime,
-                    amount = binding.btnPrice.text.toString(),
-                    cardName = checked,
-                    file = viewModel.image.value!!,
-                    storeName = binding.btnStore.text.toString()
+                    SendData(
+                        date = myLocalDateTime.toString(), amount = binding.btnPrice.text.toString(), cardName = checked, picture = viewModel.image.value!!, storeName = binding.btnStore.text.toString())
                 )
             }
         }

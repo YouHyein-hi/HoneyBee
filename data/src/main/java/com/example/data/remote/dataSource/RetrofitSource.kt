@@ -46,6 +46,26 @@ interface RetrofitSource {
     suspend fun deleteCardDataSource() : String
 
     @Multipart
+    @POST("")
+    suspend fun resendDataSource(
+        @Part id : MultipartBody.Part,
+        @Part cardName : MultipartBody.Part,
+        @Part amount : MultipartBody.Part,
+        @Part storeName : MultipartBody.Part,
+        @Part date : MultipartBody.Part,
+        @Part file : MultipartBody.Part,
+    ):String
+
+    @FormUrlEncoded
+    @POST("")
+    suspend fun resendCardDataSource(
+        @Field("cardName") cardName : String,
+        @Field("cardAmount") cardAmount : Int
+    ):String
+
+
+
+    @Multipart
     @POST("bill/test")
     suspend fun myTest(
         @Part file : MultipartBody.Part

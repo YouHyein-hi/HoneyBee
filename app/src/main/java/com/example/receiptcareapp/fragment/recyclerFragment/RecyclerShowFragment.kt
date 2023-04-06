@@ -12,66 +12,68 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.domain.model.DomainRecyclerData
+import com.example.domain.model.DomainSendData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnetedState
-import com.example.receiptcareapp.State.DeleteType
 import com.example.receiptcareapp.State.ServerState
+import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.databinding.FragmentRecyclerShowBinding
-import com.example.receiptcareapp.dto.DeleteData
+import com.example.receiptcareapp.dto.SendData
+import com.example.receiptcareapp.dto.ShowData
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.time.LocalDateTime
 
 class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
-    init {
-        Log.e("TAG", ": RecyclerShowFragment Start", )
-    }
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val activityViewModel : MainViewModel by activityViewModels()
-    private var myData : DeleteData = DeleteData(DeleteType.NONE, DomainRecyclerData("","","","",""))
+    private lateinit var myData: ShowData
     private lateinit var callback:OnBackPressedCallback
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        myData.data = fragmentViewModel.showLocalData.value
         activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
         activityViewModel.changeServerState(ServerState.NONE)
 
+        // 서버, 로컬 데이터를 구분하여 맞춰 아트다이알로그를 띄움
         //서버 데이터일 시
         if(fragmentViewModel.showServerData.value != null){
-            myData.type = DeleteType.SERVER
-            binding.changeBtn.isVisible = false
-            binding.removeBtn.setImageResource(R.drawable.delete_btn)
-            binding.changeBtn.setOnClickListener{
-                deleteServerAlertDialog()
-            }
-            // 로컬 데이터 일 시
+            val data = fragmentViewModel.showServerData.value
+            myData = ShowData(ShowType.SERVER, data!!.id, data.cardName, data.amount, data.date, data.pictureName, data.picture)
+
+        // 로컬 데이터 일 시
         }else if(fragmentViewModel.showLocalData.value != null){
-            myData.type = DeleteType.LOCAL
-            binding.changeBtn.setOnClickListener{
-                replayServerAlertDialog()
-            }
+            binding.changeBtn.isVisible = false
+            val data = fragmentViewModel.showLocalData.value
+            myData = ShowData(ShowType.LOCAL, data!!.id, data.cardName, data.amount, data.date, data.pictureName, data.picture)
         }else{
             binding.backgroundText.text = "데이터가 없어요!"
             Toast.makeText(requireContext(), "데이터가 없어요!", Toast.LENGTH_SHORT).show()
-//            findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
             findNavController().popBackStack()
         }
 
-        val newDate = myData.data!!.date.split("-","T",":")
-        binding.pictureName.text = myData.data!!.pictureName
-        binding.imageView.setImageURI(myData.data!!.picture.toUri())
+        val newDate = myData.date.split("-","T",":")
+        binding.pictureName.text = myData.pictureName
+        binding.imageView.setImageURI(myData.picture)
         binding.date.text = "${newDate[0]}.${newDate[1]}.${newDate[2]} / ${newDate[3]}:${newDate[4]}:${newDate[5]}"
-        binding.cardAmount.text = "${myData.data!!.cardName} : ${myData.data!!.amount}"
+        binding.cardAmount.text = "${myData.cardName} : ${myData.amount}"
 
 
-
-        //삭제 버튼
+        //재전송 버튼, 서버와 로컬
+        binding.resendBtn.setOnClickListener{
+            resendDialog()
+        }
+        //수정 버튼, 서버
+        binding.changeBtn.setOnClickListener{
+            changeDialog()
+        }
+        //삭제 버튼, 서버와 로컬
         binding.removeBtn.setOnClickListener{
-            deleteLocalAlertDialog()
+            deleteDialog()
         }
 
+
+        //전송완료시
         activityViewModel.serverState.observe(viewLifecycleOwner){
             Log.e("TAG", "onViewCreated@@@@: ${activityViewModel.serverState.value}", )
             if(it==ServerState.SUCCESS) {
@@ -83,7 +85,6 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 findNavController().popBackStack()
             }
         }
-
 
 
         //프로그래스 바 컨트롤
@@ -106,72 +107,110 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             }
         }
     }
-
-    //로컬 데이터 재전송 아트다이알로그
-    private fun replayServerAlertDialog(){
+    //서버, 로컬 재전송
+    private fun resendDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
-            .setMessage("서버에 보내시겠어요?")
-            .setPositiveButton("닫기"){dialog, id-> }
-            .setNegativeButton("보내기"){dialog, id->
-                //서버와 연결!
-                val data = myData.data
-                Log.e("TAG", "onViewCreated: ${myData.data!!.date}", )
-                val myDate = myData.data!!.date.split("-","T",":")
-                if (data != null) {
+            .setMessage("")
+            .setPositiveButton("닫기"){_,_->}
+            .setNegativeButton("보내기"){_,_->
                     activityViewModel.sendData(
-                        date = LocalDateTime.of(myDate[0].toInt(), myDate[1].toInt(), myDate[2].toInt(), myDate[3].toInt(), myDate[4].toInt(), myDate[5].toInt()),
-                        amount = data.amount,
-                        cardName = data.cardName,
-                        file = data.picture.toUri(),
-                        storeName = data.pictureName
+                        SendData(id = myData.id, cardName = myData.cardName, amount = myData.date, date = myData.date, picture = myData.picture, storeName = myData.pictureName)
                     )
-                }else{
-                    Log.e("TAG", "onViewCreated: 전송 실패..", )
-                }
-            }.create().show()
+            }
+            .create().show()
     }
 
-    //서버 삭제 아트다이알로그
-    private fun deleteServerAlertDialog(){
+    //서버 수정
+    private fun changeDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
-            .setMessage("서버 데이터를 삭제하시겠어요?")
-            .setPositiveButton("닫기"){dialog, id->
-
+            .setMessage("")
+            .setPositiveButton("닫기"){_,_->}
+            .setNegativeButton("수정해서 보내기"){_,_->
+                activityViewModel.changeServerData(SendData(
+                    id = myData.id, cardName = myData.cardName, amount = myData.date, date = myData.date, picture = myData.picture, storeName = myData.pictureName))
             }
-            .setNegativeButton("삭제하기"){dialog, id->
-                //서버와 연결!
-                activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
-                val data = myData.data
-                Log.e("TAG", "onViewCreated: ${myData.data!!.date}", )
-                val myDate = myData.data!!.date.split("-","T",":")
-                if (data != null) {
-                    activityViewModel.deleteServerData(
-                        LocalDateTime.of(myDate[0].toInt(), myDate[1].toInt(), myDate[2].toInt(), myDate[3].toInt(), myDate[4].toInt(), myDate[5].toInt()).toString()
-                    )
-                    findNavController().popBackStack()
-                }else{
-                    Log.e("TAG", "onViewCreated: 전송 실패..", )
-                }
-            }.create().show()
+            .create().show()
     }
-
-    //로컬 삭제 아트다이알로그
-    private fun deleteLocalAlertDialog(){
+    //서버와 로컬 삭제
+    private fun deleteDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
-            .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")
-            .setPositiveButton("닫기"){dialog, id->
-
+            .setMessage("")
+            .setPositiveButton("닫기"){_,_->}
+            .setNegativeButton("삭제하기"){_,_->
+                if(myData.type == ShowType.SERVER){
+                    activityViewModel.deleteServerData(myData.id)
+                }else{
+                    activityViewModel.deleteRoomData(myData.id)
+                }
             }
-            .setNegativeButton("삭제"){dialog, id->
-                activityViewModel.deleteRoomData(myData.data!!.date)
-                findNavController().popBackStack()
-            }.create().show()
+            .create().show()
     }
 
-    /** Fragment 뒤로가기 **/
+
+//
+//    //로컬 데이터 재전송 아트다이알로그
+//    private fun replayServerAlertDialog(){
+//        AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
+//            .setTitle("")
+//            .setMessage("서버에 보내시겠어요?")
+//            .setPositiveButton("닫기"){dialog, id-> }
+//            .setNegativeButton("보내기"){dialog, id->
+//                //서버와 연결!
+//                Log.e("TAG", "onViewCreated: ${myData.date}", )
+//                val myDate = myData.date.split("-","T",":")
+//                activityViewModel.sendData(
+//                    date = LocalDateTime.of(myDate[0].toInt(), myDate[1].toInt(), myDate[2].toInt(), myDate[3].toInt(), myDate[4].toInt(), myDate[5].toInt()),
+//                    amount = myData.amount,
+//                    cardName = myData.cardName,
+//                    file = myData.picture.toUri(),
+//                    storeName = myData.pictureName
+//                )
+//            }.create().show()
+//    }
+//
+//    //서버 삭제 아트다이알로그
+//    private fun deleteServerAlertDialog(){
+//        AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
+//            .setTitle("")
+//            .setMessage("서버 데이터를 삭제하시겠어요?")
+//            .setPositiveButton("닫기"){dialog, id->
+//
+//            }
+//            .setNegativeButton("삭제하기"){dialog, id->
+//                //서버와 연결!
+//                activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
+//                val data = myData
+//                Log.e("TAG", "onViewCreated: ${myData.date}", )
+//                val myDate = myData.date.split("-","T",":")
+//                activityViewModel.deleteServerData(
+//                    LocalDateTime.of(myDate[0].toInt(), myDate[1].toInt(), myDate[2].toInt(), myDate[3].toInt(), myDate[4].toInt(), myDate[5].toInt()).toString()
+//                )
+//                findNavController().popBackStack()
+//            }.setNeutralButton("수정하기"){dialog, id ->
+//                activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
+//                activityViewModel.changeServerData(myData.id)
+//            }
+//            .create().show()
+//    }
+//
+//    //로컬 삭제 아트다이알로그
+//    private fun deleteLocalAlertDialog(){
+//        AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
+//            .setTitle("")
+//            .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")
+//            .setPositiveButton("닫기"){dialog, id->
+//
+//            }
+//            .setNegativeButton("삭제"){dialog, id->
+//                activityViewModel.deleteRoomData(myData.date)
+//                findNavController().popBackStack()
+//            }.create().show()
+//    }
+
+
     /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -191,9 +230,4 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         super.onDetach()
         callback.remove()
     }
-
-//    private fun myBack(){
-//        activityViewModel.serverCoroutineStop()
-//        findNavController().popBackStack()
-//    }
 }

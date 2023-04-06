@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.toDomainRecyclerData
-import com.example.domain.model.toDomainRecyclerViewData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnetedState
 import com.example.receiptcareapp.State.ServerState
@@ -61,13 +59,13 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         //서버에서 받아온 데이터
         activityViewModel.serverData.observe(viewLifecycleOwner){
-            serverAdapter.dataList = it.map { it.toDomainRecyclerViewData() }
+            serverAdapter.dataList = it
             setTextAndVisible("데이터가 비었어요!", serverAdapter.dataList.isEmpty())
         }
 
         //룸에서 받아온 데이터
         activityViewModel.roomData.observe(viewLifecycleOwner){
-            localAdapter.dataList = it.map { it.toDomainRecyclerData() }
+            localAdapter.dataList = it
             setTextAndVisible("데이터가 비었어요!", localAdapter.dataList.isEmpty())
         }
 
@@ -84,7 +82,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             Log.e("TAG", "로컬부분!", )
             binding.bottomNavigationView.menu.findItem(R.id.local).isChecked = true
             initLocalRecyclerView()
-            activityViewModel.getAllLocalData()
+            activityViewModel.getAllRoomData()
             binding.explain.text = "휴대폰의 데이터 입니다."
         }
 
@@ -125,7 +123,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
                     activityViewModel.hideServerCoroutineStop()
                     setTextAndVisible("",false)
                     binding.explain.text = "휴대폰의 데이터 입니다."
-                    activityViewModel.getAllLocalData()
+                    activityViewModel.getAllRoomData()
                     initLocalRecyclerView()
                     true
                 }
@@ -136,20 +134,20 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         serverAdapter.onServerSaveClick = {
             fragmentViewModel.myShowServerData(it)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
-            fragmentViewModel.changeStartGap("local")
+            fragmentViewModel.changeStartGap("server")
         }
 
-        //
+
         localAdapter.onLocalSaveClic = {
             Log.e("TAG", "onViewCreated: $it", )
-            fragmentViewModel.myShowLocalData(it)
+            fragmentViewModel.myShowLocalData(it.toDomainRecyclerData())
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
             fragmentViewModel.changeStartGap("local")
         }
 
+
         //뒤로가기 버튼
         binding.imageBack.setOnClickListener{
-//            onAttach(requireContext())
             findNavController().popBackStack()
         }
     }

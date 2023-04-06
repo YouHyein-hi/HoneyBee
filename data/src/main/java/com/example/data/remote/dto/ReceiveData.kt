@@ -9,11 +9,12 @@ import java.time.LocalDateTime
  * pureum
  */
 data class ReceiveData(
+    val id: Long,
     val cardName: String,
     val amount: String,
     val date: String,
     val pictureName: String,
-    val picture: Uri
+    val picture: String
 )
 
 //fun ReceiveData.toDomainReceiveData() = DomainReceiveAllData(cardName, amount, date, pictureName, picture)

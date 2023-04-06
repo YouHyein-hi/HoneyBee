@@ -9,13 +9,13 @@ import android.net.Uri
 data class DomainReceiveAllData(
     val cardName: String,
     val amount: String,
-    val date: String,
+    var date: String,
     val pictureName: String,
-    val picture: Uri
+    val picture: String
 )
 
-fun DomainReceiveAllData.toDomainRecyclerViewData(): DomainRecyclerData=
-    DomainRecyclerData(
-        cardName, amount, date, pictureName, picture.toString()
-)
+//fun DomainReceiveAllData.toDomainRecyclerViewData(): DomainRecyclerData=
+//    DomainRecyclerData(
+//        cardName, amount, date, pictureName, picture.toString()
+//)
 

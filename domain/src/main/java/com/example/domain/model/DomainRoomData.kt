@@ -1,5 +1,7 @@
 package com.example.domain.model
 
+import android.net.Uri
+
 /**
  * 2023-02-15
  * pureum
@@ -12,5 +14,5 @@ data class DomainRoomData(
     val file: String
 )
 
-fun DomainRoomData.toDomainRecyclerData():DomainRecyclerData = DomainRecyclerData(cardName, amount, date, storeName, file)
+fun DomainRoomData.toDomainRecyclerData():DomainReceiveAllData = DomainReceiveAllData(cardName, amount, date, storeName, file)
 

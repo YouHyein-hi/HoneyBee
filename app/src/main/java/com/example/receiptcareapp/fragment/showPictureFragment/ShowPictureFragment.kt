@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment
+package com.example.receiptcareapp.fragment.showPictureFragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -137,7 +137,6 @@ class ShowPictureFragment :
                 binding.btnPrice.setSelection(binding.btnPrice.text.length)
             }
         }
-
         binding.btnPrice.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE && binding.btnPrice.text.isNotEmpty()) {
@@ -299,11 +298,8 @@ class ShowPictureFragment :
             }
         }
 
-        var adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            ArrayCard
-        )  // ArrayAdapter에 item 값을 넣고 spinner만 보여주면 되는데 그게 안됨 ArrayAdapter에 대해 알아보기
+        //var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ArrayCard)
+        var adapter = SpinnerCustomAdapter(requireContext(), ArrayCard)
         binding.spinner.adapter = adapter
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {

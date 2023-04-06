@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ShowPictureFragment"
+    tools:context=".fragment.showPictureFragment.ShowPictureFragment"
     android:background="@color/back_yellow"
     >
 
@@ -64,15 +64,15 @@
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/spinner_custom"
             android:elevation="3dp"
             android:fontFamily="@font/pretendardsemibold"
-            android:textAlignment="center"
             android:gravity="center"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

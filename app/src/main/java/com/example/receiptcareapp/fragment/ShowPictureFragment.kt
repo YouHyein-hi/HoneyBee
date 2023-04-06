@@ -60,11 +60,20 @@ class ShowPictureFragment :
         //날짜 관리
         binding.btnDate.setOnClickListener {
             val cal = Calendar.getInstance()
-            binding.btnDate.text = "${myYear}/${myMonth}/${myDay}"
             val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
                 myYear = year
-                myMonth = month + 1
-                myDay = day
+
+                if(myMonth < 10){
+                    myMonth = month + 1
+                    myMonth = "0${myMonth}".toInt()
+                    Log.e("TAG", "onViewCreated myMonth: 0${myMonth}", )
+                } else myMonth = month + 1
+                if(myDay < 10){
+                    myDay = day
+                    myDay = "0${myDay}".toInt()
+                    Log.e("TAG", "onViewCreated myMonth: ${myDay}", )
+                }else myDay = day
+
                 binding.btnDate.text = "${myYear}/${myMonth}/${myDay}"
             }
             val dataDialog = DatePickerDialog(
@@ -79,7 +88,6 @@ class ShowPictureFragment :
                 .setTextColor(Color.RED)
             dataDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
                 .setTextColor(Color.BLACK)
-
         }
 
         //프로그래스 바 컨트롤
@@ -187,6 +195,21 @@ class ShowPictureFragment :
         val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
         val editText_cardName = dialogView.findViewById<EditText>(R.id.dialog_cardname)
         val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
+
+        editText_cardPrice.setOnClickListener {
+            if (editText_cardPrice.text.contains(",")) {
+                editText_cardPrice.setText(editText_cardPrice.text.toString().replace(",", ""))
+                editText_cardPrice.setSelection(editText_cardPrice.text.length)
+            }
+        }
+        editText_cardPrice.setOnEditorActionListener { v, actionId, event ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_DONE && editText_cardPrice.text.isNotEmpty()) {
+                val gap = DecimalFormat("#,###")
+                editText_cardPrice.setText(gap.format(editText_cardPrice.text.toString().toInt()))
+            }
+            handled
+        }
 
         val cardAddDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
             .setTitle("카드 추가")

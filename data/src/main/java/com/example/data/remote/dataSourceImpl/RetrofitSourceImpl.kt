@@ -2,12 +2,10 @@ package com.example.data.remote.dataSourceImpl
 
 import android.util.Log
 import com.example.data.remote.dataSource.RetrofitSource
-import com.example.data.remote.dto.ReceiveCardData
-import com.example.data.remote.dto.ReceiveData
-import com.example.domain.model.DomainSendCardData
+import com.example.data.remote.model.ReceiveCardData
+import com.example.data.remote.model.ReceiveData
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
-import retrofit2.create
 import javax.inject.Inject
 
 /**
@@ -34,29 +32,29 @@ class RetrofitSourceImpl @Inject constructor(
             file = bill
         )
     }
+    override suspend fun sendCardDataSource(
+        cardName: String?,
+        amount: Int?
+    ): String {
+        var gap = retrofit.create(RetrofitSource::class.java).sendCardDataSource(cardName = "cardName", amount = 55)
+        Log.e("TAG", "sendCardDataSource: $gap", )
+        return gap
+    }
 
     override suspend fun receiveDataSource(): MutableList<ReceiveData> {
         return retrofit.create(RetrofitSource::class.java).receiveDataSource()
-    }
-
-    override suspend fun deleteServerData(): String {
-        return retrofit.create(RetrofitSource::class.java).deleteServerData()
-    }
-
-    override suspend fun sendCardDataSource(
-        cardName: MultipartBody.Part,
-        amount: MultipartBody.Part
-    ): String {
-        return retrofit.create(RetrofitSource::class.java)
-            .sendCardDataSource(cardName = cardName, amount = amount)
     }
 
     override suspend fun receiveCardDataSource(): MutableList<ReceiveCardData> {
         return retrofit.create(RetrofitSource::class.java).receiveCardDataSource()
     }
 
-    override suspend fun deleteCardDataSource(): String {
-        return retrofit.create(RetrofitSource::class.java).deleteCardDataSource()
+    override suspend fun deleteServerData(uid:Long): String {
+        return retrofit.create(RetrofitSource::class.java).deleteServerData(uid)
+    }
+
+    override suspend fun deleteCardDataSource(uid:Long): String {
+        return retrofit.create(RetrofitSource::class.java).deleteCardDataSource(uid)
     }
 
     override suspend fun resendDataSource(

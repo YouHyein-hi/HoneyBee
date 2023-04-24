@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.domain.model.DomainReceiveAllData
+import com.example.domain.model.receive.DomainReceiveAllData
 import okhttp3.MultipartBody
 
 /**

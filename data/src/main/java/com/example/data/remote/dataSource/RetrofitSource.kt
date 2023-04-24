@@ -1,13 +1,9 @@
 package com.example.data.remote.dataSource
 
-import com.example.data.remote.dto.ReceiveCardData
-import com.example.data.remote.dto.ReceiveData
-import com.example.data.remote.dto.SendData
-import com.google.gson.annotations.SerializedName
+import com.example.data.remote.model.ReceiveCardData
+import com.example.data.remote.model.ReceiveData
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.http.*
-import java.time.LocalDateTime
 
 /**
  * 2023-02-02
@@ -26,24 +22,30 @@ interface RetrofitSource {
         @Part file : MultipartBody.Part,
     ): String
 
-    @GET("bills")   // 전체 데이터 요청
-    suspend fun receiveDataSource() : MutableList<ReceiveData>
-
-    @GET("test")
-    suspend fun deleteServerData():String
-
-    @Multipart
-    @POST("bills/add")
+    @FormUrlEncoded
+    @POST("billCard/add")
     suspend fun sendCardDataSource(
-        @Part cardName : MultipartBody.Part,
-        @Part amount : MultipartBody.Part,
+        @Field("cardName") cardName : String?,
+        @Field("cardAmount") amount : Int?,
     ): String
 
-    @GET("bills")
+    @GET("bill")   // 전체 데이터 요청
+    suspend fun receiveDataSource() : MutableList<ReceiveData>
+
+    @GET("bill")
     suspend fun receiveCardDataSource() : MutableList<ReceiveCardData>
 
-    @GET("bills")
-    suspend fun deleteCardDataSource() : String
+
+    @DELETE("bill/delete/{uid}")
+    suspend fun deleteServerData(
+        @Path("uid") uid:Long
+    ): String
+
+    @DELETE("billCard/delete/{uid}")
+    suspend fun deleteCardDataSource(
+        @Path("uid") uid:Long
+    ): String
+
 
     @Multipart
     @POST("")
@@ -62,7 +64,6 @@ interface RetrofitSource {
         @Field("cardName") cardName : String,
         @Field("cardAmount") cardAmount : Int
     ):String
-
 
 
     @Multipart

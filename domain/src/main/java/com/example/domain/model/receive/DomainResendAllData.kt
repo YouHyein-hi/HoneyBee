@@ -1,18 +1,16 @@
-package com.example.domain.model
+package com.example.domain.model.receive
 
 import okhttp3.MultipartBody
-import okhttp3.Response
-import java.time.LocalDateTime
 
 /**
- * 2023-02-02
+ * 2023-04-06
  * pureum
  */
-data class DomainSendData(
+data class DomainResendAllData(
+    val id : MultipartBody.Part,
     val cardName: MultipartBody.Part,
     val amount: MultipartBody.Part,
     var date: MultipartBody.Part,
     val storeName: MultipartBody.Part,
     val picture: MultipartBody.Part
 )
-

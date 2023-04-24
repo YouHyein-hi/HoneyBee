@@ -1,6 +1,6 @@
-package com.example.data.remote.dto
+package com.example.data.remote.model
 
-import com.example.domain.model.DomainReceiveCardData
+import com.example.domain.model.receive.DomainReceiveCardData
 
 /**
  * 2023-03-30

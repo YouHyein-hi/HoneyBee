@@ -2,12 +2,9 @@ package com.example.receiptcareapp.fragment.recyclerFragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.DomainReceiveAllData
-import com.example.domain.model.DomainRoomData
+import com.example.domain.model.local.DomainRoomData
 import com.example.receiptcareapp.databinding.LocalItemBinding
-import com.example.receiptcareapp.dto.ShowData
 
 /**
  * 2023-03-16
@@ -25,11 +22,12 @@ class LocalAdapter: RecyclerView.Adapter<LocalAdapter.MyAdapter>(){
 
     inner class MyAdapter(private val binding: LocalItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:DomainRoomData){
-            val myDate = list.date.split("-","T")
+            var myDate = list.date.split("-","T")
             binding.cardName.text = "${list.cardName} :"
             binding.amount.text = " ${list.amount}"
             binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
-            binding.picture.setImageURI(list.file)
+//            binding.date.text = "${list.date}"
+//            binding.picture.setImageURI(list.file)
             binding.listLayout.setOnClickListener{ onLocalSaveClic(list) }
         }
     }

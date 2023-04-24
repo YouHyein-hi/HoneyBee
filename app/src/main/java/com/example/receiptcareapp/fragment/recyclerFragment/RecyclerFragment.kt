@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.toDomainRecyclerData
+import com.example.domain.model.local.toDomainRecyclerData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnetedState
 import com.example.receiptcareapp.State.ServerState
@@ -23,10 +23,6 @@ import com.example.receiptcareapp.viewModel.MainViewModel
 
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
-    init {
-        Log.e("TAG", ": recyclerfragment Start", )
-    }
-
     private val activityViewModel: MainViewModel by activityViewModels()
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val serverAdapter: ServerAdapter = ServerAdapter()
@@ -51,19 +47,17 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
         activityViewModel.changeServerState(ServerState.NONE)
 
-        // recycler show에서 넘어왔을땐
-
         //넘겨받는 데이터의 값을 초기화시키기.
         fragmentViewModel.myShowLocalData(null)
         fragmentViewModel.myShowServerData(null)
 
-        //서버에서 받아온 데이터
+        //서버에서 받아온 데이터 옵져버
         activityViewModel.serverData.observe(viewLifecycleOwner){
             serverAdapter.dataList = it
             setTextAndVisible("데이터가 비었어요!", serverAdapter.dataList.isEmpty())
         }
 
-        //룸에서 받아온 데이터
+        //룸에서 받아온 데이터 옵져버
         activityViewModel.roomData.observe(viewLifecycleOwner){
             localAdapter.dataList = it
             setTextAndVisible("데이터가 비었어요!", localAdapter.dataList.isEmpty())
@@ -73,16 +67,15 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         if(fragmentViewModel.startGap.value == "server"){
             Log.e("TAG", "서버부분!", )
-            activityViewModel.getAllServerData()
+            activityViewModel.receiveServerAllData()
             initServerRecyclerView()
             binding.explain.text = "서버의 데이터 입니다."
-            //리사이클러뷰 초기화
         }
         else if(fragmentViewModel.startGap.value == "local"){
             Log.e("TAG", "로컬부분!", )
             binding.bottomNavigationView.menu.findItem(R.id.local).isChecked = true
             initLocalRecyclerView()
-            activityViewModel.getAllRoomData()
+            activityViewModel.receiveAllRoomData()
             binding.explain.text = "휴대폰의 데이터 입니다."
         }
 
@@ -114,7 +107,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
                 R.id.server -> {
 //                    activityViewModel.hideServerCoroutineStop()
                     binding.explain.text = "서버의 데이터 입니다."
-                    activityViewModel.getAllServerData()
+                    activityViewModel.receiveServerAllData()
                     initServerRecyclerView()
                     true
                 }
@@ -123,7 +116,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
                     activityViewModel.hideServerCoroutineStop()
                     setTextAndVisible("",false)
                     binding.explain.text = "휴대폰의 데이터 입니다."
-                    activityViewModel.getAllRoomData()
+                    activityViewModel.receiveAllRoomData()
                     initLocalRecyclerView()
                     true
                 }
@@ -131,6 +124,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             }
         }
 
+        //서버 목록에서 리스트를 누를 경우
         serverAdapter.onServerSaveClick = {
             fragmentViewModel.myShowServerData(it)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
@@ -138,8 +132,9 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         }
 
 
+        //로컬 목록에서 리스트를 누를경우
         localAdapter.onLocalSaveClic = {
-            Log.e("TAG", "onViewCreated: $it", )
+            Log.e("TAG", "localAdapter.onLocalSaveClic: $it", )
             fragmentViewModel.myShowLocalData(it.toDomainRecyclerData())
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
             fragmentViewModel.changeStartGap("local")

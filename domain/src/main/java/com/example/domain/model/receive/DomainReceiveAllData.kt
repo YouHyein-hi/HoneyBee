@@ -1,4 +1,4 @@
-package com.example.domain.model
+package com.example.domain.model.receive
 
 import android.net.Uri
 
@@ -6,12 +6,21 @@ import android.net.Uri
  * 2023-02-02
  * pureum
  */
+//data class DomainReceiveAllData(
+//    val cardName: String,
+//    val amount: String,
+//    var date: String,
+//    val pictureName: String,
+//    val picture: String
+//)
+
 data class DomainReceiveAllData(
+    val uid: String,
     val cardName: String,
     val amount: String,
-    var date: String,
-    val pictureName: String,
-    val picture: String
+    val date: String,
+    val storeName: String,
+    val file: String
 )
 
 //fun DomainReceiveAllData.toDomainRecyclerViewData(): DomainRecyclerData=

@@ -2,36 +2,29 @@ package com.example.receiptcareapp.fragment.homeFragment
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.local.dao.MyDao
+import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnetedState
 import com.example.receiptcareapp.State.ServerState
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
-import com.example.receiptcareapp.dto.ServerCardData
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.text.DecimalFormat
-import java.time.LocalDateTime
 
 /**
  * 2023-03-22
@@ -51,8 +44,8 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val list = mutableListOf(
-            ServerCardData("나라사랑 카드", 10000),
-            ServerCardData("선민사랑 카드", 5555)
+            DomainReceiveCardData("나라사랑 카드", 10000),
+            DomainReceiveCardData("선민사랑 카드", 5555)
         )
 
         // 통신연결, 서버상태 값 초기화
@@ -72,7 +65,7 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
         adapter.dataList = list
 
         //서버 데이터 불러오기
-        activityViewModel.receiveCardData()
+        activityViewModel.receiveServerCardData()
         activityViewModel.cardData.observe(viewLifecycleOwner){
             if(it.isEmpty()) setCenterText("데이터가 비었어요!", true)
             else{
@@ -97,7 +90,7 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
                 .setTitle("서버 카드 데이터 추가")
                 .setView(dialogView)
                 .setPositiveButton("보내기") { dialog, id ->
-                    activityViewModel.sendCardData(cardName.text.toString(), cardPrice.text.toString())
+                    activityViewModel.sendCardData(AppSendCardData(cardName.text.toString(), cardPrice.text.toString()))
                 }
                 .setNegativeButton("닫기") { dialog, id -> }
                 .show()
@@ -137,10 +130,10 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
 //                .setMessage("${it.name} 금액을 수정하여 서버에 보내시겠어요?")
                 .setView(dialogView)
                 .setPositiveButton("보내기") { dialog, id ->
-                    activityViewModel.sendCardData(cardName.text.toString(), cardPrice.text.toString())
+//                    activityViewModel.sendCardData(cardName.text.toString(), cardPrice.text.toString())
                 }
                 .setNeutralButton("삭제"){dialog, id ->
-                    activityViewModel.deleteCardData()
+//                    activityViewModel.deleteCardData()
                 }
                 .setNegativeButton("닫기") { dialog, id -> }
                 .show()

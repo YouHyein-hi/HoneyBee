@@ -1,4 +1,4 @@
-package com.example.domain.model
+package com.example.domain.model.send
 
 import okhttp3.MultipartBody
 

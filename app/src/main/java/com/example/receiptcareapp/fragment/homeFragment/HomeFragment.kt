@@ -17,7 +17,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnetedState
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
-import com.example.receiptcareapp.dto.ServerCardData
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog

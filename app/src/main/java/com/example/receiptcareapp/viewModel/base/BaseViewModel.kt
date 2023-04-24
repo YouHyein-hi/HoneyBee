@@ -28,7 +28,6 @@ abstract class BaseViewModel  : ViewModel(){
     }
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Log.e("TAG", "오잉?: ", )
         throwable.printStackTrace()
         Log.e("TAG", "$throwable: ", )
         when(throwable){

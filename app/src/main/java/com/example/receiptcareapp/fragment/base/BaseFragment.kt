@@ -37,6 +37,7 @@ abstract class BaseFragment<VB: ViewBinding>(
         return binding.root
     }
 
+    //viewBinding으로 인한 메모리 누수 방지
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

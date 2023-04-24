@@ -1,8 +1,12 @@
 package com.example.domain.usecase
 
-import com.example.domain.model.*
+import com.example.domain.model.receive.DomainReceiveAllData
+import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.receive.DomainResendAllData
+import com.example.domain.model.receive.DomainResendCardData
+import com.example.domain.model.send.DomainSendCardData
+import com.example.domain.model.send.DomainSendData
 import com.example.domain.repo.RetrofitRepo
-import okhttp3.MultipartBody
 
 /**
  * 2023-02-02
@@ -11,7 +15,7 @@ import okhttp3.MultipartBody
 class RetrofitUseCase(
     private val retrofitRepo: RetrofitRepo,
 ) {
-    suspend fun sendDataUseCase(domainSendData:DomainSendData): String {
+    suspend fun sendDataUseCase(domainSendData: DomainSendData): String {
         return retrofitRepo.sendDataRepo(domainSendData)
     }
 
@@ -35,7 +39,7 @@ class RetrofitUseCase(
         return retrofitRepo.deleteCardDataRepo(id)
     }
 
-    suspend fun resendDataUseCase(domainResendData: DomainResendData):String {
+    suspend fun resendDataUseCase(domainResendData: DomainResendAllData):String {
         return retrofitRepo.resendDataRepo(domainResendData)
     }
 

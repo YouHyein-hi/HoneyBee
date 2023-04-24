@@ -15,12 +15,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.example.domain.model.send.AppSendCardData
+import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnetedState
 import com.example.receiptcareapp.State.ServerState
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
-import com.example.receiptcareapp.dto.SendCardData
-import com.example.receiptcareapp.dto.SendData
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
@@ -140,7 +140,7 @@ class ShowPictureFragment :
                         cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
                         cardArray?.let { it -> viewModel.takeCardData(it) }
                         activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
-                        activityViewModel.sendCardData(SendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString()))
+                        activityViewModel.sendCardData(AppSendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString()))
                         getSpinner()
                     }
                 }
@@ -203,8 +203,8 @@ class ShowPictureFragment :
                     LocalDateTime.now().minute,
                     LocalDateTime.now().second
                 )
-                activityViewModel.sendData(
-                    SendData(
+                activityViewModel.sendAllData(
+                    AppSendData(
                         date = myLocalDateTime.toString(), amount = binding.btnPrice.text.toString(), cardName = checked, picture = viewModel.image.value!!, storeName = binding.btnStore.text.toString())
                 )
             }

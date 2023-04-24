@@ -1,6 +1,6 @@
 package com.example.domain.usecase
 
-import com.example.domain.model.DomainRoomData
+import com.example.domain.model.local.DomainRoomData
 import com.example.domain.repo.RoomRepo
 
 /**
@@ -10,7 +10,7 @@ import com.example.domain.repo.RoomRepo
 class RoomUseCase(
     private val roomRepo:RoomRepo
 ) {
-    suspend fun insertData(domainRoomData:DomainRoomData){
+    suspend fun insertData(domainRoomData: DomainRoomData){
         roomRepo.insertData(domainRoomData)
     }
 

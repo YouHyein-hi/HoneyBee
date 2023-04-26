@@ -12,8 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.local.toDomainRecyclerData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnetedState
-import com.example.receiptcareapp.State.ServerState
+import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.recyclerFragment.adapter.LocalAdapter
@@ -44,8 +43,8 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         super.onViewCreated(view, savedInstanceState)
 
         // 통신연결, 서버상태 값 초기화
-        activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
-        activityViewModel.changeServerState(ServerState.NONE)
+        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
+//        activityViewModel.changeServerState(ServerState.NONE)
 
         //넘겨받는 데이터의 값을 초기화시키기.
         fragmentViewModel.myShowLocalData(null)
@@ -83,22 +82,30 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         //프로그래스 바 컨트롤
         activityViewModel.connectedState.observe(viewLifecycleOwner){
-            Log.e("TAG", "onViewCreated: $it", )
-            if(it==ConnetedState.DISCONNECTED) {
+            Log.e("TAG", "progress bar: $it", )
+            if(it==ConnectedState.DISCONNECTED) {
                 binding.progressBar.visibility = View.INVISIBLE
             }
-            else binding.progressBar.visibility = View.VISIBLE
-        }
-
-        //서버 연결 안될 시 배경에 보여주기
-        activityViewModel.serverState.observe(viewLifecycleOwner){
-            Log.e("TAG", "onViewCreated: inin! $it", )
-            if(it==ServerState.FALSE) {
-                setTextAndVisible("서버 연결 실패!", true)
-            }else{
+            else if(it==ConnectedState.CONNECTING){
+                binding.progressBar.visibility = View.VISIBLE
+            }
+            else if(it==ConnectedState.CONNECTING_SUCCESS){
                 setTextAndVisible("", false)
+            }else{
+                binding.progressBar.visibility = View.INVISIBLE
+                setTextAndVisible("서버 연결 실패!", true)
             }
         }
+
+//        //서버 연결 안될 시 배경에 보여주기
+//        activityViewModel.serverState.observe(viewLifecycleOwner){
+//            Log.e("TAG", "onViewCreated: inin! $it", )
+//            if(it==ServerState.FALSE) {
+//                setTextAndVisible("서버 연결 실패!", true)
+//            }else{
+//                setTextAndVisible("", false)
+//            }
+//        }
 
         // 하단 바텀시트 버튼
         binding.bottomNavigationView.setOnItemSelectedListener{
@@ -169,7 +176,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                     activityViewModel.serverCoroutineStop()
                     findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
                 } else {

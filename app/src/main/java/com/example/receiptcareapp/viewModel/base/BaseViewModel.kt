@@ -10,6 +10,7 @@ import retrofit2.HttpException
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.util.concurrent.TimeoutException
 
 /**
  * 2023-02-15

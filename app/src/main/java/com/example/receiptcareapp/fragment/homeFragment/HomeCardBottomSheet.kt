@@ -5,12 +5,14 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -18,8 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnetedState
-import com.example.receiptcareapp.State.ServerState
+import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -43,22 +44,39 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val list = mutableListOf(
-            DomainReceiveCardData("나라사랑 카드", 10000),
-            DomainReceiveCardData("선민사랑 카드", 5555)
+        val list = mutableListOf<DomainReceiveCardData>(
+//            DomainReceiveCardData("나라사랑 카드", 10000),
+//            DomainReceiveCardData("선민사랑 카드", 5555)
         )
+        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
 
-        // 통신연결, 서버상태 값 초기화
-        activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
-        activityViewModel.changeServerState(ServerState.NONE)
-
-        //서버 커넥팅 시 프로그래스 바와 클릭 안되게 관리
+        //서버 커넥팅 관리
         activityViewModel.connectedState.observe(viewLifecycleOwner){
-            binding.connectingView.isVisible = it == ConnetedState.CONNECTING
-            binding.serverProgressBar.isVisible = it == ConnetedState.CONNECTING
-            binding.addBtn.isClickable = it != ConnetedState.CONNECTING
+            Log.e("TAG", "onCreateView: $it", )
+            if(it == ConnectedState.CONNECTING){
+                binding.connectingView.isVisible = true
+                binding.serverProgressBar.isVisible = true
+                binding.addBtn.isClickable = false
+                setCenterText("", false)
+            }else if(it == ConnectedState.DISCONNECTED){
+                binding.connectingView.isVisible = false
+                binding.serverProgressBar.isVisible = false
+                binding.addBtn.isClickable = true
+                setCenterText("", false)
+            }else if(it == ConnectedState.CONNECTING_SUCCESS){
+                Toast.makeText(requireContext(), "전송 성공!", Toast.LENGTH_SHORT).show()
+                binding.connectingView.isVisible = false
+                binding.serverProgressBar.isVisible = false
+                binding.addBtn.isClickable = true
+                setCenterText("", false)
+            }else if(it == ConnectedState.CONNECTING_FALSE){
+                binding.connectingView.isVisible = false
+                binding.serverProgressBar.isVisible = false
+                binding.addBtn.isClickable = true
+                setCenterText("", false)
+                setCenterText("서버와 연결 실패!", true)
+            }
         }
-
 
         binding.cardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.cardRecyclerview.adapter = adapter
@@ -74,13 +92,6 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
             }
         }
 
-        //서버 연결상태에 따른 센터 텍스트 수정
-        activityViewModel.serverState.observe(viewLifecycleOwner){
-            if(it == ServerState.FALSE) setCenterText("서버와 연결 실패!", true)
-            else setCenterText("", false)
-        }
-
-
         //서버 카드 추가 다이얼로그
         binding.addBtn.setOnClickListener{
             val dialogView = layoutInflater.inflate(R.layout.dialog_server_add_card, null)
@@ -94,7 +105,6 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
                 }
                 .setNegativeButton("닫기") { dialog, id -> }
                 .show()
-
             gap.getButton(DialogInterface.BUTTON_POSITIVE)
                 .setTextColor(Color.RED)
             gap.getButton(DialogInterface.BUTTON_NEGATIVE)

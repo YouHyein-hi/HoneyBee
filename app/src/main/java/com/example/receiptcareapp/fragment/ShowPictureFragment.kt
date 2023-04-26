@@ -18,8 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnetedState
-import com.example.receiptcareapp.State.ServerState
+import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
@@ -48,8 +47,7 @@ class ShowPictureFragment :
         binding.pictureView.setImageURI(viewModel.image.value)
 
         // 서버와 연결 상태 초기화.
-        activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
-        activityViewModel.changeServerState(ServerState.NONE)
+        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
 
         val dateNow = LocalDate.now()
         val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
@@ -85,29 +83,27 @@ class ShowPictureFragment :
         }
 
         //프로그래스 바 컨트롤
-        activityViewModel.connectedState.observe(viewLifecycleOwner) {
-            if (it == ConnetedState.CONNECTING) {
+        activityViewModel.connectedState.observe(viewLifecycleOwner){
+            Log.e("TAG", "onViewCreated: $it", )
+            if(it==ConnectedState.CONNECTING) {
                 binding.waitingView.visibility = View.VISIBLE
                 binding.progressBar.visibility = View.VISIBLE
-            } else {
+            }
+            else if(it==ConnectedState.DISCONNECTED){
                 binding.waitingView.visibility = View.INVISIBLE
                 binding.progressBar.visibility = View.INVISIBLE
             }
-        }
-
-
-        //서버 연결 상태에 따른 처리 후 화면 전환.
-        activityViewModel.serverState.observe(viewLifecycleOwner) {
-            if (it == ServerState.SUCCESS) {
+            else if(it==ConnectedState.CONNECTING_SUCCESS){
                 Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_showFragment_to_homeFragment)
+                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
+            }else if(it == ConnectedState.CARD_CONNECTING_SUCCESS){
+                binding.waitingView.visibility = View.INVISIBLE
+                binding.progressBar.visibility = View.INVISIBLE
+                Toast.makeText(requireContext(), "카드 추가 완료!", Toast.LENGTH_SHORT).show()
+            } else{
+                binding.waitingView.visibility = View.INVISIBLE
+                binding.progressBar.visibility = View.INVISIBLE
             }
-//            else if (it == ServerState.FALSE) {
-//                Log.e("TAG", "onViewCreated: 실패", )
-//                NavHostFragment.findNavController(this)
-//                    .navigate(R.id.action_showFragment_to_homeFragment)
-//            }
         }
 
         /** Spinner 호출 **/
@@ -133,13 +129,13 @@ class ShowPictureFragment :
                     }
                     else if(editText_cardPrice.text.toString() == ""){
                         //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
-                        Log.e("TAG", "onViewCreated: 초기을 입력해주세요", )
+                        Log.e("TAG", "onViewCreated: 초기 금액을 입력해주세요", )
                         dialog.dismiss()
                     }
                     else{
                         cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
                         cardArray?.let { it -> viewModel.takeCardData(it) }
-                        activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
+                        activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
                         activityViewModel.sendCardData(AppSendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString()))
                         getSpinner()
                     }
@@ -192,8 +188,6 @@ class ShowPictureFragment :
                 NavHostFragment.findNavController(this)
                     .navigate(R.id.action_showFragment_to_homeFragment)
             } else {
-                //연결상태로 변경
-//                activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
                 Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}", )
                 val myLocalDateTime = LocalDateTime.of(
                     myYear,
@@ -291,7 +285,7 @@ class ShowPictureFragment :
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
-                if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                     Log.e("TAG", "handleOnBackPressed: stop")
                     activityViewModel.serverCoroutineStop()
                 } else {

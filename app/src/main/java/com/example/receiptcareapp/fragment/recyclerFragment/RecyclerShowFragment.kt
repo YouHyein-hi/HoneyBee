@@ -12,8 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnetedState
-import com.example.receiptcareapp.State.ServerState
+import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.databinding.FragmentRecyclerShowBinding
 import com.example.receiptcareapp.dto.ShowData
@@ -28,8 +27,8 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     private lateinit var callback:OnBackPressedCallback
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
-        activityViewModel.changeServerState(ServerState.NONE)
+        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
+//        activityViewModel.changeServerState(ServerState.NONE)
 
         // 서버, 로컬 데이터를 구분하여 맞춰 아트다이알로그를 띄움
         //서버 데이터일 시
@@ -68,34 +67,27 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             deleteDialog()
         }
 
-
-        //전송완료시
-        activityViewModel.serverState.observe(viewLifecycleOwner){
-            Log.e("TAG", "onViewCreated@@@@: ${activityViewModel.serverState.value}", )
-            if(it==ServerState.SUCCESS) {
+        //프로그래스 바 컨트롤
+        activityViewModel.connectedState.observe(viewLifecycleOwner){
+            Log.e("TAG", "onViewCreated: $it", )
+            if(it==ConnectedState.DISCONNECTED) {
+                binding.progressBar.visibility = View.INVISIBLE
+            }
+            else if(it==ConnectedState.DISCONNECTED){
+                binding.progressBar.visibility = View.VISIBLE
+            }
+            else if(it==ConnectedState.CONNECTING_SUCCESS){
                 Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
-            }
-            else if(it==ServerState.FALSE){
+            }else{
                 Toast.makeText(requireContext(), "전송 실패..", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             }
         }
 
-
-        //프로그래스 바 컨트롤
-        activityViewModel.connectedState.observe(viewLifecycleOwner){
-            Log.e("TAG", "onViewCreated: $it", )
-            if(it==ConnetedState.DISCONNECTED) {
-                binding.progressBar.visibility = View.INVISIBLE
-            }
-            else binding.progressBar.visibility = View.VISIBLE
-        }
-
-
         //뒤로가기 아이콘
         binding.imageBack.setOnClickListener{
-            if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
+            if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                 activityViewModel.serverCoroutineStop()
                 findNavController().popBackStack()
             } else {
@@ -152,7 +144,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                     activityViewModel.serverCoroutineStop()
                 } else {
                     findNavController().popBackStack()

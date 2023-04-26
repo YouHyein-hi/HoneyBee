@@ -26,7 +26,6 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao):RoomRepo{
     override suspend fun getAllData(): ArrayList<DomainRoomData> {
         val myList = arrayListOf<DomainRoomData>()
         roomDao.getAllData().map { myList.add(DomainRoomData(
-//            uid = 0,
             cardName = it.cardName,
             amount = it.amount,
             date = it.date,
@@ -37,7 +36,7 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao):RoomRepo{
         return myList
     }
 
-    override suspend fun deleteData(id:Long):Int {
-        return roomDao.deleteData(id)
+    override suspend fun deleteData(date:String):Int {
+        return roomDao.deleteData(date = date)
     }
 }

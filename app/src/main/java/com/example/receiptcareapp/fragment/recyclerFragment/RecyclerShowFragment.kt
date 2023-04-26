@@ -121,10 +121,11 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
             .setMessage("")
-            .setPositiveButton("닫기"){_,_->}
+            .setPositiveButton("닫기"){_,_->findNavController().popBackStack()}
             .setNegativeButton("수정해서 보내기"){_,_->
 //                activityViewModel.changeServerData(SendData(
 //                    id = myData.id, cardName = myData.cardName, amount = myData.date, date = myData.date, picture = myData.picture, storeName = myData.pictureName))
+                findNavController().popBackStack()
             }
             .create().show()
     }
@@ -133,14 +134,15 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
             .setMessage("")
-            .setPositiveButton("닫기"){_,_->}
+            .setPositiveButton("닫기"){_,_->findNavController().popBackStack()}
             .setNegativeButton("삭제하기"){_,_->
                 Log.e("TAG", "deleteDialog: ${myData}", )
                 if(myData.type == ShowType.SERVER){
                     activityViewModel.deleteServerData(myData.uid.toLong())
                 }else{
-                    activityViewModel.deleteRoomData(myData.uid.toLong())
+                    activityViewModel.deleteRoomData(myData.date)
                 }
+                findNavController().popBackStack()
             }
             .create().show()
     }

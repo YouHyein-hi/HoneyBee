@@ -85,31 +85,26 @@ class MainViewModel @Inject constructor(
     fun sendAllData(sendData: AppSendData) {
         _connectedState.value = ConnetedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
-            val myCard = MultipartBody.Part.createFormData("cardName", sendData.cardName)
-            val myAmount = MultipartBody.Part.createFormData("amount", sendData.amount)
-            val myStoreName = MultipartBody.Part.createFormData("storeName", sendData.storeName)
-            val myDate = MultipartBody.Part.createFormData("date", sendData.date)
-
-            //file은 리퀘스트 바디로 바꾼 후 multipartbody로 바꿔야 함.
             val file = File(absolutelyPath(sendData.picture, myCotext))
             val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
+            //서버 전송
             val result = retrofitUseCase.sendDataUseCase(
                 DomainSendData(
-                    cardName = myCard,
-                    amount = myAmount,
-                    storeName = myStoreName,
-                    date = myDate,
+                    cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
+                    amount = MultipartBody.Part.createFormData("amount", sendData.amount),
+                    storeName = MultipartBody.Part.createFormData("storeName", sendData.storeName),
+                    date = MultipartBody.Part.createFormData("date", sendData.date),
                     picture = myPicture
                 )
             )
             Log.e("TAG", "sendData 응답 : $result ")
+
             if (result == "add success") {
                 _serverState.postValue(ServerState.SUCCESS)
                 _connectedState.postValue(ConnetedState.DISCONNECTED)
                 insertRoomData(
                     DomainRoomData(
-//                        uid = 0,
                         cardName = sendData.cardName,
                         amount = sendData.amount,
                         storeName = sendData.storeName,
@@ -123,11 +118,9 @@ class MainViewModel @Inject constructor(
                 _connectedState.postValue(ConnetedState.DISCONNECTED)
                 Exception("오류! 전송 실패.")
             }
-            /*else {
-                Exception("서버 연결 실패.")
-            }*/
         }
     }
+
     //절대경로로 변환
     fun absolutelyPath(path: Uri?, context: Context?): String {
         val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
@@ -141,12 +134,10 @@ class MainViewModel @Inject constructor(
     fun sendCardData(sendData: AppSendCardData) {
         _connectedState.value = ConnetedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
-            val myCardName = MultipartBody.Part.createFormData("cardName", sendData.cardName)
-            val myAount = MultipartBody.Part.createFormData("cardName", sendData.cardAmount)
             retrofitUseCase.sendCardDataUseCase(
                 DomainSendCardData(
-                    cardName = myCardName,
-                    cardAmount = myAount
+                    cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
+                    cardAmount = MultipartBody.Part.createFormData("cardName", sendData.cardAmount)
                 )
             )
             // 성공하면 값을 불러오기
@@ -158,7 +149,7 @@ class MainViewModel @Inject constructor(
         _connectedState.value = ConnetedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             val gap = retrofitUseCase.receiveDataUseCase()
-            Log.e("TAG", "receiveAllServerData: $gap", )
+            Log.e("TAG", "receiveAllServerData: $gap")
             _serverData.postValue(gap)
             _connectedState.postValue(ConnetedState.DISCONNECTED)
         }
@@ -168,7 +159,7 @@ class MainViewModel @Inject constructor(
         _connectedState.postValue(ConnetedState.CONNECTING)
         _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
             val gap = retrofitUseCase.receiveCardDataUseCase()
-            Log.e("TAG", "receiveCardData: $gap", )
+            Log.e("TAG", "receiveCardData: $gap")
             _cardData.postValue(gap)
 //            _cardData.value = retrofitUseCase.receiveCardDataUseCase()
             // 통신 끝나면 커넥트 풀어주기
@@ -212,19 +203,18 @@ class MainViewModel @Inject constructor(
     }
 
 
-
-    fun deleteRoomData(id: Long) {
+    fun deleteRoomData(date: String) {
         CoroutineScope(exceptionHandler).launch {
-            roomUseCase.deleteData(id)
+            roomUseCase.deleteData(date)
             //삭제 후에 데이터 끌어오기 위한 구성
             receiveAllRoomData()
         }
     }
+
     fun insertRoomData(domainRoomData: DomainRoomData) {
         CoroutineScope(exceptionHandler).launch {
             roomUseCase.insertData(
                 DomainRoomData(
-//                    uid = 0,
                     cardName = domainRoomData.cardName,
                     amount = domainRoomData.amount,
                     storeName = domainRoomData.storeName,
@@ -235,6 +225,7 @@ class MainViewModel @Inject constructor(
             _connectedState.postValue(ConnetedState.CONNECTING)
         }
     }
+
     fun receiveAllRoomData() {
         CoroutineScope(exceptionHandler).launch {
             val gap = roomUseCase.getAllData()

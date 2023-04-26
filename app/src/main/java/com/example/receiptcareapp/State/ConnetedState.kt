@@ -5,7 +5,7 @@ package com.example.receiptcareapp.State
  * pureum
  */
 enum class ConnetedState{
-    CONNECTING, DISCONNECTED, ERR
+    CONNECTING, DISCONNECTED, CONNECTING_SUCCESS, CONNECTING_FALSE
 }
 
 

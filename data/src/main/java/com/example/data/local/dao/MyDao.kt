@@ -18,5 +18,5 @@ interface MyDao {
     fun insertData(list:MyEntity)
 
     @Query("Delete from MyDataTable where date = :date")
-    fun deleteData(date:Long):Int
+    fun deleteData(date:String):Int
 }

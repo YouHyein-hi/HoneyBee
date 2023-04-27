@@ -11,6 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 /**
@@ -22,27 +23,39 @@ import javax.inject.Singleton
 object RetrofitModule {
 
     var gson = GsonBuilder().setLenient().create()
-    @Provides
+
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class SendCard
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class Api
+
     @Singleton
+    @Provides
     fun provideSendRetrofit():Retrofit{
         return Retrofit.Builder()
             .baseUrl("http://192.168.1.13:8080/")
-//            .addConverterFactory(GsonConverterFactory.create(gson))
+//            .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
-            //.client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(okHttpClient)
             .build()
     }
+
+
+
+
 
     private val okHttpClient = OkHttpClient.Builder().
     addInterceptor(HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }).addInterceptor {
-        // Request
         val request = it.request()
             .newBuilder()
-//            .addHeader("jwt_token", SmartCampusApp.prefs.token?:"")
             .build()
-        // Response
         val response = it.proceed(request)
         response
     }.connectTimeout(20, TimeUnit.SECONDS).

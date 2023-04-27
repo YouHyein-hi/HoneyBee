@@ -1,7 +1,11 @@
 package com.example.domain.repo
 
-import com.example.domain.model.DomainReceiveAllData
-import com.example.domain.model.DomainReceiveCardData
+import com.example.domain.model.receive.DomainReceiveAllData
+import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.receive.DomainResendAllData
+import com.example.domain.model.receive.DomainResendCardData
+import com.example.domain.model.send.DomainSendCardData
+import com.example.domain.model.send.DomainSendData
 import okhttp3.MultipartBody
 
 /**
@@ -9,17 +13,21 @@ import okhttp3.MultipartBody
  * pureum
  */
 interface RetrofitRepo {
-    suspend fun sendDataRepo(card:MultipartBody.Part, amount:MultipartBody.Part, pictureName:MultipartBody.Part, date:MultipartBody.Part, picture: MultipartBody.Part): String
+    suspend fun sendDataRepo(domainSendData: DomainSendData): String
 
     suspend fun receiveDataRepo():MutableList<DomainReceiveAllData>
 
-    suspend fun deleteServerData(date:String):String
+    suspend fun deleteServerData(id: Long):String
 
-    suspend fun sendCardDataRepo(card:MultipartBody.Part, amount:MultipartBody.Part): String
+    suspend fun sendCardDataRepo(dataDomainSendCardData: DomainSendCardData): String
 
     suspend fun receiveCardDataRepo():MutableList<DomainReceiveCardData>
 
-    suspend fun deleteCardDataRepo():String
+    suspend fun deleteCardDataRepo(id: Long):String
+
+    suspend fun resendDataRepo(domainResendData: DomainResendAllData):String
+
+    suspend fun resendCardDataRepo(domainResendCardData: DomainResendCardData):String
 
     suspend fun myTest(file:MultipartBody.Part):String
 }

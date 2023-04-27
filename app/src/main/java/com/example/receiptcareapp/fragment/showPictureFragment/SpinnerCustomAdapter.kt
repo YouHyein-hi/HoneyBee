@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.SpinnerCustomItemLayoutBinding
 
-class SpinnerCustomAdapter(context: Context, items: List<String>) : ArrayAdapter<String>(context, R.layout.spinner_custom_item_layout, items) {
+class SpinnerCustomAdapter(context: Context, items: ArrayList<String>) : ArrayAdapter<String>(context, R.layout.spinner_custom_item_layout, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val binding = SpinnerCustomItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)

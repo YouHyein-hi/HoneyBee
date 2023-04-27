@@ -1,9 +1,12 @@
 package com.example.domain.usecase
 
-import com.example.domain.model.DomainReceiveCardData
-import com.example.domain.model.DomainReceiveAllData
+import com.example.domain.model.receive.DomainReceiveAllData
+import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.receive.DomainResendAllData
+import com.example.domain.model.receive.DomainResendCardData
+import com.example.domain.model.send.DomainSendCardData
+import com.example.domain.model.send.DomainSendData
 import com.example.domain.repo.RetrofitRepo
-import okhttp3.MultipartBody
 
 /**
  * 2023-02-02
@@ -12,31 +15,35 @@ import okhttp3.MultipartBody
 class RetrofitUseCase(
     private val retrofitRepo: RetrofitRepo,
 ) {
-    suspend fun sendDataUseCase(cardName:MultipartBody.Part, amount:MultipartBody.Part, pictureName:MultipartBody.Part, date:MultipartBody.Part, picture:MultipartBody.Part): String {
-        return retrofitRepo.sendDataRepo(card = cardName, amount = amount, pictureName=pictureName, date = date, picture = picture)
+    suspend fun sendDataUseCase(domainSendData: DomainSendData): String {
+        return retrofitRepo.sendDataRepo(domainSendData)
     }
 
     suspend fun receiveDataUseCase(): MutableList<DomainReceiveAllData> {
         return retrofitRepo.receiveDataRepo()
     }
 
-    suspend fun deleteServerData(date:String): String {
-        return retrofitRepo.deleteServerData(date)
+    suspend fun deleteServerData(id:Long): String {
+        return retrofitRepo.deleteServerData(id)
     }
 
-    suspend fun sendCardDataUseCase(cardName:MultipartBody.Part, amount:MultipartBody.Part) : String{
-        return retrofitRepo.sendCardDataRepo(card = cardName, amount = amount)
+    suspend fun sendCardDataUseCase(domainSendCardData: DomainSendCardData) : String{
+        return retrofitRepo.sendCardDataRepo(domainSendCardData)
     }
 
     suspend fun receiveCardDataUseCase() : MutableList<DomainReceiveCardData>{
         return retrofitRepo.receiveCardDataRepo()
     }
 
-    suspend fun deleteCardDataUseCase():String {
-        return retrofitRepo.deleteCardDataRepo()
+    suspend fun deleteCardDataUseCase(id:Long):String {
+        return retrofitRepo.deleteCardDataRepo(id)
     }
 
-    suspend fun myTest(file:MultipartBody.Part):String {
-        return retrofitRepo.myTest(file)
+    suspend fun resendDataUseCase(domainResendData: DomainResendAllData):String {
+        return retrofitRepo.resendDataRepo(domainResendData)
+    }
+
+    suspend fun resendCardDataUseCase(domainResendCardData: DomainResendCardData):String {
+        return retrofitRepo.resendCardDataRepo(domainResendCardData)
     }
 }

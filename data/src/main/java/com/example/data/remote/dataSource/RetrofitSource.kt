@@ -1,13 +1,9 @@
 package com.example.data.remote.dataSource
 
-import com.example.data.remote.dto.ReceiveCardData
-import com.example.data.remote.dto.ReceiveData
-import com.example.data.remote.dto.SendData
-import com.google.gson.annotations.SerializedName
+import com.example.data.remote.model.ReceiveCardData
+import com.example.data.remote.model.ReceiveData
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.http.*
-import java.time.LocalDateTime
 
 /**
  * 2023-02-02
@@ -20,30 +16,55 @@ interface RetrofitSource {
     @POST("bill/add")
     suspend fun sendDataSource(
         @Part cardName : MultipartBody.Part,
+        @Part storeName : MultipartBody.Part,
+        @Part date : MultipartBody.Part,
+        @Part amount : MultipartBody.Part,
+        @Part file : MultipartBody.Part,
+    ): String
+
+    @FormUrlEncoded
+    @POST("billCard/add")
+    suspend fun sendCardDataSource(
+        @Field("cardName") cardName : String?,
+        @Field("cardAmount") amount : Int?,
+    ): String
+
+    @GET("bill")   // 전체 데이터 요청
+    suspend fun receiveDataSource() : MutableList<ReceiveData>
+
+    @GET("billCard")
+    suspend fun receiveCardDataSource() : MutableList<ReceiveCardData>
+
+
+    @DELETE("bill/delete/{uid}")
+    suspend fun deleteServerData(
+        @Path("uid") uid:Long
+    ): String
+
+    @DELETE("billCard/delete/{uid}")
+    suspend fun deleteCardDataSource(
+        @Path("uid") uid:Long
+    ): String
+
+
+    @Multipart
+    @POST("")
+    suspend fun resendDataSource(
+        @Part id : MultipartBody.Part,
+        @Part cardName : MultipartBody.Part,
         @Part amount : MultipartBody.Part,
         @Part storeName : MultipartBody.Part,
         @Part date : MultipartBody.Part,
         @Part file : MultipartBody.Part,
-    ): String
+    ):String
 
-    @GET("bills")   // 전체 데이터 요청
-    suspend fun receiveDataSource() : MutableList<ReceiveData>
+    @FormUrlEncoded
+    @POST("")
+    suspend fun resendCardDataSource(
+        @Field("cardName") cardName : String,
+        @Field("cardAmount") cardAmount : Int
+    ):String
 
-    @GET("test")
-    suspend fun deleteServerData():String
-
-    @Multipart
-    @POST("bills/add")
-    suspend fun sendCardDataSource(
-        @Part cardName : MultipartBody.Part,
-        @Part amount : MultipartBody.Part,
-    ): String
-
-    @GET("bills")
-    suspend fun receiveCardDataSource() : MutableList<ReceiveCardData>
-
-    @GET("bills")
-    suspend fun deleteCardDataSource() : String
 
     @Multipart
     @POST("bill/test")

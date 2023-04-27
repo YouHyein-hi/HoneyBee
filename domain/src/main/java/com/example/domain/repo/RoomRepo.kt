@@ -1,6 +1,6 @@
 package com.example.domain.repo
 
-import com.example.domain.model.DomainRoomData
+import com.example.domain.model.local.DomainRoomData
 import okhttp3.MultipartBody
 
 /**
@@ -8,7 +8,7 @@ import okhttp3.MultipartBody
  * pureum
  */
 interface RoomRepo {
-    suspend fun insertData(list:DomainRoomData)
+    suspend fun insertData(list: DomainRoomData)
     suspend fun getAllData():ArrayList<DomainRoomData>
-    suspend fun deleteData(date:String) : Int
+    suspend fun deleteData(date: String) : Int
 }

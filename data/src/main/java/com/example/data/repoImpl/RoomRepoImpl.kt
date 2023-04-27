@@ -2,7 +2,7 @@ package com.example.data.repoImpl
 
 import com.example.data.local.dao.MyDao
 import com.example.data.local.entity.MyEntity
-import com.example.domain.model.DomainRoomData
+import com.example.domain.model.local.DomainRoomData
 import com.example.domain.repo.RoomRepo
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ import javax.inject.Inject
  */
 class RoomRepoImpl @Inject constructor(private val roomDao: MyDao):RoomRepo{
 
-    override suspend fun insertData(list:DomainRoomData) {
+    override suspend fun insertData(list: DomainRoomData) {
         val myList = MyEntity(
             date = list.date,
             cardName = list.cardName,
@@ -36,7 +36,7 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao):RoomRepo{
         return myList
     }
 
-    override suspend fun deleteData(date: String):Int {
-        return roomDao.deleteData(date)
+    override suspend fun deleteData(date:String):Int {
+        return roomDao.deleteData(date = date)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment.showPictureFragment
+package com.example.receiptcareapp.fragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -15,9 +15,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.send.AppSendCardData
+import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnetedState
-import com.example.receiptcareapp.State.ServerState
+import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
@@ -36,18 +38,20 @@ class ShowPictureFragment :
     private var myYear = 0
     private var myMonth = 0
     private var myDay = 0
-    private var cardArray: MutableMap<String, Int>? = mutableMapOf("카드1" to 1000, "카드2" to 2000)
+    private var cardArray: MutableMap<String, Int>? = mutableMapOf()
     private lateinit var callback: OnBackPressedCallback
+    private var arrayCardList : MutableList<DomainReceiveCardData> = mutableListOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /** Spinner 호출 **/
+        getSpinner()
 
         Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
         binding.pictureView.setImageURI(viewModel.image.value)
 
         // 서버와 연결 상태 초기화.
-        activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
-        activityViewModel.changeServerState(ServerState.NONE)
+        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
 
         val dateNow = LocalDate.now()
         val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
@@ -56,6 +60,17 @@ class ShowPictureFragment :
         myMonth = dateNow.monthValue
         myDay = dateNow.dayOfMonth
 
+
+        activityViewModel.cardData.observe(viewLifecycleOwner){
+            val myArray = arrayListOf<String>()
+            it.forEach{myArray.add("${it.cardName}  :  ${it.cardAmount}")}
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                myArray
+            )
+            binding.spinner.adapter = adapter
+        }
 
         //날짜 관리
         binding.btnDate.setOnClickListener {
@@ -93,35 +108,36 @@ class ShowPictureFragment :
         }
 
         //프로그래스 바 컨트롤
-        activityViewModel.connectedState.observe(viewLifecycleOwner) {
-            if (it == ConnetedState.CONNECTING) {
+        activityViewModel.connectedState.observe(viewLifecycleOwner){
+            Log.e("TAG", "onViewCreated: $it", )
+            if(it==ConnectedState.CONNECTING) {
                 binding.waitingView.visibility = View.VISIBLE
                 binding.progressBar.visibility = View.VISIBLE
-            } else {
+            }
+            else if(it==ConnectedState.DISCONNECTED){
+                binding.waitingView.visibility = View.INVISIBLE
+                binding.progressBar.visibility = View.INVISIBLE
+            }
+            else if(it==ConnectedState.CONNECTING_SUCCESS){
+                Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
+                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
+            }else if(it == ConnectedState.CARD_CONNECTING_SUCCESS){
+                binding.waitingView.visibility = View.INVISIBLE
+                binding.progressBar.visibility = View.INVISIBLE
+                Toast.makeText(requireContext(), "카드 추가 완료!", Toast.LENGTH_SHORT).show()
+            } else{
                 binding.waitingView.visibility = View.INVISIBLE
                 binding.progressBar.visibility = View.INVISIBLE
             }
         }
 
 
-        //서버 연결 상태에 따른 처리 후 화면 전환.
-        activityViewModel.serverState.observe(viewLifecycleOwner) {
-            if (it == ServerState.SUCCESS) {
-                Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_showFragment_to_homeFragment)
-            }
-//            else if (it == ServerState.FALSE) {
-//                Log.e("TAG", "onViewCreated: 실패", )
-//                NavHostFragment.findNavController(this)
-//                    .navigate(R.id.action_showFragment_to_homeFragment)
-//            }
-        }
-
-        /** Spinner 호출 **/
-        getSpinner()
 
         /** 카드 추가 관련 코드 **/
+        val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
+        val editText_cardName = dialogView.findViewById<EditText>(R.id.dialog_cardname)
+        val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
+
         binding.cardaddBtn.setOnClickListener{
             cardAddDialog()
         }
@@ -137,12 +153,12 @@ class ShowPictureFragment :
                 binding.btnPrice.setSelection(binding.btnPrice.text.length)
             }
         }
+
         binding.btnPrice.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE && binding.btnPrice.text.isNotEmpty()) {
-
                 val gap = DecimalFormat("#,###")
-                binding.btnPrice.setText(gap.format(binding.btnPrice.text.toString().toInt()))
+                binding.btnPrice.setText(gap.format(binding.btnPrice.text.toString().replace(",","").toInt()))
             }
             handled
         }
@@ -164,8 +180,6 @@ class ShowPictureFragment :
                 NavHostFragment.findNavController(this)
                     .navigate(R.id.action_showFragment_to_homeFragment)
             } else {
-                //연결상태로 변경
-//                activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
                 Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}", )
                 val myLocalDateTime = LocalDateTime.of(
                     myYear,
@@ -176,11 +190,8 @@ class ShowPictureFragment :
                     LocalDateTime.now().second
                 )
                 activityViewModel.sendData(
-                    date = myLocalDateTime,
-                    amount = binding.btnPrice.text.toString(),
-                    cardName = checked,
-                    file = viewModel.image.value!!,
-                    storeName = binding.btnStore.text.toString()
+                    AppSendData(
+                        date = myLocalDateTime.toString(), amount = binding.btnPrice.text.toString(), cardName = checked, picture = viewModel.image.value!!, storeName = binding.btnStore.text.toString())
                 )
             }
         }
@@ -251,16 +262,16 @@ class ShowPictureFragment :
     fun cardMinusDialog(){
         val array : Map<String, Int>? = viewModel.card.value
         Log.e("TAG", "minusDialog: ${array}", )
-        val ArrayCardList : MutableList<String> = mutableListOf()
-        var ArrayCard : Array<String>
+        val ArrayCard : Array<String>
 
         if (array != null) {
             for(i in array){
-                ArrayCardList?.add("${i.key} : ${i.value}")
-                Log.e("TAG", "minusDialog: ${ArrayCardList}", )
+//                arrayCardList.add("${i.key} : ${i.value}")
+                Log.e("TAG", "minusDialog: ${arrayCardList}", )
             }
         }
-        ArrayCard = ArrayCardList.toTypedArray()
+//        ArrayCard = arrayCardList.toTypedArray()
+        ArrayCard = Array(2){""}
         val checkedItemIndex = 0
 
         val cardMinusDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
@@ -271,6 +282,7 @@ class ShowPictureFragment :
             .setPositiveButton("삭제"){dialog, id->
                 // 카드 삭제 event 넣기
                 Log.e("TAG", "getSpinner: 카드 삭제 성공", )
+//                activityViewModel.deleteCardData()
                 dialog.dismiss()   // 예비
             }
             .setNegativeButton("취소"){dialog, id->
@@ -286,28 +298,28 @@ class ShowPictureFragment :
     }
 
 
-    fun getSpinner(){
-
+    private fun getSpinner() {
+        activityViewModel.receiveServerCardData()
+        Log.e("TAG", "getSpinner: getSpinner",)
         cardArray?.let { viewModel.takeCardData(it) }
-        val array: Map<String, Int>? = viewModel.card.value
-        val ArrayCard: MutableList<String> = mutableListOf()
-
-        if (array != null) {
-            for (i in array) {
-                ArrayCard?.add("${i.key} : ${i.value}")
-            }
-        }
-
-        //var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ArrayCard)
-        var adapter = SpinnerCustomAdapter(requireContext(), ArrayCard)
+        var adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            arrayListOf<String>()
+        )  // ArrayAdapter에 item 값을 넣고 spinner만 보여주면 되는데 그게 안됨 ArrayAdapter에 대해 알아보기
         binding.spinner.adapter = adapter
+        Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val spiltCard = ArrayCard[position].split(" : ")
-                checked = spiltCard[0]
-                Log.e("TAG", "onItemSelected: ${checked}")
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+//                val spiltCard = ArrayCard[position].split(" : ")
+//                checked = spiltCard[0]
+//                Log.e("TAG", "onItemSelected: ${arrayCardList[position]}")
             }
-
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
@@ -319,7 +331,7 @@ class ShowPictureFragment :
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
-                if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                     Log.e("TAG", "handleOnBackPressed: stop")
                     activityViewModel.serverCoroutineStop()
                 } else {

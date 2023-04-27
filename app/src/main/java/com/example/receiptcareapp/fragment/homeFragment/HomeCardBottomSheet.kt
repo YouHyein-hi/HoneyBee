@@ -2,7 +2,6 @@ package com.example.receiptcareapp.fragment.homeFragment
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
@@ -11,26 +10,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnetedState
-import com.example.receiptcareapp.State.ServerState
+import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
-import com.example.receiptcareapp.dto.ServerCardData
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.text.DecimalFormat
-import java.time.LocalDateTime
 
 /**
  * 2023-03-22
@@ -49,29 +44,46 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val list = mutableListOf(
-            ServerCardData("나라사랑 카드", 10000),
-            ServerCardData("선민사랑 카드", 5555)
+        val list = mutableListOf<DomainReceiveCardData>(
+//            DomainReceiveCardData("나라사랑 카드", 10000),
+//            DomainReceiveCardData("선민사랑 카드", 5555)
         )
+        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
 
-        // 통신연결, 서버상태 값 초기화
-        activityViewModel.changeConnectedState(ConnetedState.DISCONNECTED)
-        activityViewModel.changeServerState(ServerState.NONE)
-
-        //서버 커넥팅 시 프로그래스 바와 클릭 안되게 관리
+        //서버 커넥팅 관리
         activityViewModel.connectedState.observe(viewLifecycleOwner){
-            binding.connectingView.isVisible = it == ConnetedState.CONNECTING
-            binding.serverProgressBar.isVisible = it == ConnetedState.CONNECTING
-            binding.addBtn.isClickable = it != ConnetedState.CONNECTING
+            Log.e("TAG", "onCreateView: $it", )
+            if(it == ConnectedState.CONNECTING){
+                binding.connectingView.isVisible = true
+                binding.serverProgressBar.isVisible = true
+                binding.addBtn.isClickable = false
+                setCenterText("", false)
+            }else if(it == ConnectedState.DISCONNECTED){
+                binding.connectingView.isVisible = false
+                binding.serverProgressBar.isVisible = false
+                binding.addBtn.isClickable = true
+                setCenterText("", false)
+            }else if(it == ConnectedState.CONNECTING_SUCCESS){
+                Toast.makeText(requireContext(), "전송 성공!", Toast.LENGTH_SHORT).show()
+                binding.connectingView.isVisible = false
+                binding.serverProgressBar.isVisible = false
+                binding.addBtn.isClickable = true
+                setCenterText("", false)
+            }else if(it == ConnectedState.CONNECTING_FALSE){
+                binding.connectingView.isVisible = false
+                binding.serverProgressBar.isVisible = false
+                binding.addBtn.isClickable = true
+                setCenterText("", false)
+                setCenterText("서버와 연결 실패!", true)
+            }
         }
-
 
         binding.cardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.cardRecyclerview.adapter = adapter
         adapter.dataList = list
 
         //서버 데이터 불러오기
-        activityViewModel.receiveCardData()
+        activityViewModel.receiveServerCardData()
         activityViewModel.cardData.observe(viewLifecycleOwner){
             if(it.isEmpty()) setCenterText("데이터가 비었어요!", true)
             else{
@@ -79,13 +91,6 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
                 adapter.dataList = list
             }
         }
-
-        //서버 연결상태에 따른 센터 텍스트 수정
-        activityViewModel.serverState.observe(viewLifecycleOwner){
-            if(it == ServerState.FALSE) setCenterText("서버와 연결 실패!", true)
-            else setCenterText("", false)
-        }
-
 
         //서버 카드 추가 다이얼로그
         binding.addBtn.setOnClickListener{
@@ -96,11 +101,10 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
                 .setTitle("서버 카드 데이터 추가")
                 .setView(dialogView)
                 .setPositiveButton("보내기") { dialog, id ->
-                    activityViewModel.sendCardData(cardName.text.toString(), cardPrice.text.toString())
+                    activityViewModel.sendCardData(AppSendCardData(cardName.text.toString(), cardPrice.text.toString().toInt()))
                 }
                 .setNegativeButton("닫기") { dialog, id -> }
                 .show()
-
             gap.getButton(DialogInterface.BUTTON_POSITIVE)
                 .setTextColor(Color.RED)
             gap.getButton(DialogInterface.BUTTON_NEGATIVE)
@@ -113,7 +117,7 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
             val cardName  = dialogView.findViewById<TextView>(R.id.dialog_server_cardName)
             val cardPrice = dialogView.findViewById<EditText>(R.id.dialog_server_cardPrice)
 
-            cardName.text = "\n${it.name}"
+            cardName.text = "\n${it.cardName}"
 
             cardPrice.setOnClickListener {
                 if (cardPrice.text.contains(",")) {
@@ -136,10 +140,10 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
 //                .setMessage("${it.name} 금액을 수정하여 서버에 보내시겠어요?")
                 .setView(dialogView)
                 .setPositiveButton("보내기") { dialog, id ->
-                    activityViewModel.sendCardData(cardName.text.toString(), cardPrice.text.toString())
+//                    activityViewModel.sendCardData(cardName.text.toString(), cardPrice.text.toString())
                 }
                 .setNeutralButton("삭제"){dialog, id ->
-                    activityViewModel.deleteCardData()
+//                    activityViewModel.deleteCardData()
                 }
                 .setNegativeButton("닫기") { dialog, id -> }
                 .show()

@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.databinding.CardItemBinding
-import com.example.receiptcareapp.dto.ServerCardData
 
 /**
  * 2023-03-22
@@ -14,19 +14,19 @@ import com.example.receiptcareapp.dto.ServerCardData
  */
 class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
 
-    lateinit var onLocalSaveClic : (ServerCardData)->Unit
-    lateinit var longClick : (ServerCardData)->Unit
+    lateinit var onLocalSaveClic : (DomainReceiveCardData)->Unit
+    lateinit var longClick : (DomainReceiveCardData)->Unit
     private lateinit var cardBinding: CardItemBinding
-    var dataList = mutableListOf<ServerCardData>()
+    var dataList = mutableListOf<DomainReceiveCardData>()
         set(value){
             field = value.reversed().toMutableList()
             notifyDataSetChanged()
         }
     inner class MyHolder(private val binding : CardItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ServerCardData) {
+        fun bind(item: DomainReceiveCardData) {
             Log.e("TAG", "bind: inin", )
-            binding.cardName.text = item.name
-            binding.amount.text = "${item.amount} 원"
+            binding.cardName.text = item.cardName
+            binding.amount.text = "${item.cardAmount} 원"
             binding.body.setOnClickListener{ onLocalSaveClic(item) }
             binding.body.setOnLongClickListener(View.OnLongClickListener {
                 longClick(item)

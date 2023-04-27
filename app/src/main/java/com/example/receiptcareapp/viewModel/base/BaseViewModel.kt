@@ -10,6 +10,7 @@ import retrofit2.HttpException
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.util.concurrent.TimeoutException
 
 /**
  * 2023-02-15
@@ -28,7 +29,6 @@ abstract class BaseViewModel  : ViewModel(){
     }
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Log.e("TAG", "오잉?: ", )
         throwable.printStackTrace()
         Log.e("TAG", "$throwable: ", )
         when(throwable){

@@ -1,9 +1,7 @@
 package com.example.domain.usecase
 
-import com.example.domain.model.DomainRoomData
+import com.example.domain.model.local.DomainRoomData
 import com.example.domain.repo.RoomRepo
-import okhttp3.MultipartBody
-import java.time.LocalDateTime
 
 /**
  * 2023-02-15
@@ -12,8 +10,8 @@ import java.time.LocalDateTime
 class RoomUseCase(
     private val roomRepo:RoomRepo
 ) {
-    suspend fun insertData(list:DomainRoomData){
-        roomRepo.insertData(list)
+    suspend fun insertData(domainRoomData: DomainRoomData){
+        roomRepo.insertData(domainRoomData)
     }
 
     suspend fun getAllData(): ArrayList<DomainRoomData>{

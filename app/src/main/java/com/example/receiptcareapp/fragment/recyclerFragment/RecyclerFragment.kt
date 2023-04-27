@@ -5,14 +5,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.local.toDomainRecyclerData
+import com.example.domain.model.toDomainRecyclerData
+import com.example.domain.model.toDomainRecyclerViewData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnectedState
+import com.example.receiptcareapp.State.ConnetedState
+import com.example.receiptcareapp.State.ServerState
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.recyclerFragment.adapter.LocalAdapter
@@ -22,6 +25,10 @@ import com.example.receiptcareapp.viewModel.MainViewModel
 
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
+    init {
+        Log.e("TAG", ": recyclerfragment Start", )
+    }
+
     private val activityViewModel: MainViewModel by activityViewModels()
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val serverAdapter: ServerAdapter = ServerAdapter()
@@ -149,7 +156,8 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
 
         //뒤로가기 버튼
-        binding.imageBack.setOnClickListener{
+        binding.backBtn.setOnClickListener{
+//            onAttach(requireContext())
             findNavController().popBackStack()
         }
     }
@@ -176,7 +184,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
                     activityViewModel.serverCoroutineStop()
                     findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
                 } else {

@@ -85,9 +85,10 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             }
         }
 
+
         //뒤로가기 아이콘
-        binding.imageBack.setOnClickListener{
-            if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+        binding.backBtn.setOnClickListener{
+            if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
                 activityViewModel.serverCoroutineStop()
                 findNavController().popBackStack()
             } else {
@@ -158,4 +159,9 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         super.onDetach()
         callback.remove()
     }
+
+//    private fun myBack(){
+//        activityViewModel.serverCoroutineStop()
+//        findNavController().popBackStack()
+//    }
 }

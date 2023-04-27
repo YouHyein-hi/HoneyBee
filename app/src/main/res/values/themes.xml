@@ -22,7 +22,7 @@
 
 
     <style name="AppCompatAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/purple_200</item>
+        <item name="colorAccent">@color/emphasis_yellow</item>
         <item name="android:textColorPrimary">@android:color/black</item>
         <item name="android:background">#FFFFFF</item>
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>

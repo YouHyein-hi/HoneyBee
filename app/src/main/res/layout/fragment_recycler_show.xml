@@ -88,18 +88,8 @@
         android:layout_height="30dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="30dp"
-        android:src="@drawable/change_btn"
-        app:layout_constraintEnd_toStartOf="@+id/remove_btn"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/resend_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="30dp"
         android:src="@drawable/replay_btn"
-        app:layout_constraintEnd_toStartOf="@+id/change_btn"
+        app:layout_constraintEnd_toStartOf="@+id/remove_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

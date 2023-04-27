@@ -7,8 +7,9 @@ import com.example.domain.model.receive.DomainReceiveCardData
  * pureum
  */
 data class ReceiveCardData(
-    var name:String,
-    var amount:Int
+    var uid:Long,
+    var cardName:String,
+    var cardAmount:Int
 )
 
-fun ReceiveCardData.toDomainReceiveCardData() = DomainReceiveCardData(name, amount)
+fun ReceiveCardData.toDomainReceiveCardData() = DomainReceiveCardData(uid,cardName, cardAmount)

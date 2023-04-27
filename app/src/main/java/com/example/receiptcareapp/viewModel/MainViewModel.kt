@@ -72,7 +72,8 @@ class MainViewModel @Inject constructor(
     private var _serverJob = MutableLiveData<Job>()
 
     //서버에 데이터 전송 기능
-    fun sendAllData(sendData: AppSendData) {
+    fun sendData(sendData: AppSendData) {
+        Log.e("TAG", "sendData: $sendData", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
@@ -84,19 +85,18 @@ class MainViewModel @Inject constructor(
                 val result = retrofitUseCase.sendDataUseCase(
                     DomainSendData(
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
-                        amount = MultipartBody.Part.createFormData("amount", sendData.amount),
                         storeName = MultipartBody.Part.createFormData(
                             "storeName",
                             sendData.storeName
                         ),
                         date = MultipartBody.Part.createFormData("date", sendData.date),
+                        amount = MultipartBody.Part.createFormData("amount", sendData.amount),
                         picture = myPicture
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
 
                 if (result == "add success") {
-//                _serverState.postValue(ServerState.SUCCESS)
                     _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
                     insertRoomData(
                         DomainRoomData(
@@ -109,7 +109,6 @@ class MainViewModel @Inject constructor(
                     )
                 } else {
                     Log.e("TAG", "sendData: 실패입니다!")
-//                _serverState.postValue(ServerState.FALSE)
                     _connectedState.postValue(ConnectedState.CONNECTING_FALSE)
                     Exception("오류! 전송 실패.")
                 }
@@ -128,19 +127,22 @@ class MainViewModel @Inject constructor(
     }
 
     fun sendCardData(sendData: AppSendCardData) {
+        Log.e("TAG", "sendCardData: 카드 보내기 $sendData", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
                 retrofitUseCase.sendCardDataUseCase(
                     DomainSendCardData(
-                        cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
-                        cardAmount = MultipartBody.Part.createFormData(
-                            "cardName",
-                            sendData.cardAmount
-                        )
+                        cardName = sendData.cardName,
+                        cardAmount = sendData.cardAmount
+//                        cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
+//                        cardAmount = MultipartBody.Part.createFormData(
+//                            "cardName",
+//                            sendData.cardAmount
+//                        )
                     )
                 )
-                _connectedState.value = ConnectedState.CARD_CONNECTING_SUCCESS
+                _connectedState.postValue(ConnectedState.CARD_CONNECTING_SUCCESS)
                 // 성공하면 값을 불러오기
                 receiveServerCardData()
             }?:throw SocketTimeoutException()
@@ -164,7 +166,6 @@ class MainViewModel @Inject constructor(
         _connectedState.postValue(ConnectedState.CONNECTING)
         _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
-
                 val gap = retrofitUseCase.receiveCardDataUseCase()
                 Log.e("TAG", "receiveCardData: $gap")
                 _cardData.postValue(gap)

@@ -101,7 +101,7 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
                 .setTitle("서버 카드 데이터 추가")
                 .setView(dialogView)
                 .setPositiveButton("보내기") { dialog, id ->
-                    activityViewModel.sendCardData(AppSendCardData(cardName.text.toString(), cardPrice.text.toString()))
+                    activityViewModel.sendCardData(AppSendCardData(cardName.text.toString(), cardPrice.text.toString().toInt()))
                 }
                 .setNegativeButton("닫기") { dialog, id -> }
                 .show()
@@ -117,7 +117,7 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
             val cardName  = dialogView.findViewById<TextView>(R.id.dialog_server_cardName)
             val cardPrice = dialogView.findViewById<EditText>(R.id.dialog_server_cardPrice)
 
-            cardName.text = "\n${it.name}"
+            cardName.text = "\n${it.cardName}"
 
             cardPrice.setOnClickListener {
                 if (cardPrice.text.contains(",")) {

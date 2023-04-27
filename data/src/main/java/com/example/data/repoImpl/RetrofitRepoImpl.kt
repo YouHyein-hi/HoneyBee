@@ -31,8 +31,8 @@ class RetrofitRepoImpl @Inject constructor(
     }
     override suspend fun sendCardDataRepo(domainSendCardData: DomainSendCardData): String {
         return retrofitSource.sendCardDataSource(
-            cardName = "domainSendCardData.cardName",
-            amount = 0
+            cardName = domainSendCardData.cardName,
+            amount = domainSendCardData.cardAmount
         )
     }
     override suspend fun receiveDataRepo(): MutableList<DomainReceiveAllData> {

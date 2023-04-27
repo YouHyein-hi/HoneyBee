@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
@@ -28,6 +29,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ShowPictureFragment :
     BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
@@ -37,11 +39,15 @@ class ShowPictureFragment :
     private var myYear = 0
     private var myMonth = 0
     private var myDay = 0
-    private var cardArray: MutableMap<String, Int>? = mutableMapOf("카드1" to 1000, "카드2" to 2000)
+    private var cardArray: MutableMap<String, Int>? = mutableMapOf()
     private lateinit var callback: OnBackPressedCallback
+    private var arrayCardList : MutableList<DomainReceiveCardData> = mutableListOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        /** Spinner 호출 **/
+        getSpinner()
 
         Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
         binding.pictureView.setImageURI(viewModel.image.value)
@@ -56,6 +62,22 @@ class ShowPictureFragment :
         myMonth = dateNow.monthValue
         myDay = dateNow.dayOfMonth
 
+
+//        binding.spinner.setOnClickListener {
+//            activityViewModel.receiveServerCardData()
+//
+//        }
+
+        activityViewModel.cardData.observe(viewLifecycleOwner){
+            val myArray = arrayListOf<String>()
+            it.forEach{myArray.add("${it.cardName}  :  ${it.cardAmount}")}
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                myArray
+            )
+            binding.spinner.adapter = adapter
+        }
 
         //날짜 관리
         binding.btnDate.setOnClickListener {
@@ -79,7 +101,6 @@ class ShowPictureFragment :
                 .setTextColor(Color.RED)
             dataDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
                 .setTextColor(Color.BLACK)
-
         }
 
         //프로그래스 바 컨트롤
@@ -106,8 +127,7 @@ class ShowPictureFragment :
             }
         }
 
-        /** Spinner 호출 **/
-        getSpinner()
+
 
         /** 카드 추가 관련 코드 **/
         val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
@@ -136,7 +156,7 @@ class ShowPictureFragment :
                         cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
                         cardArray?.let { it -> viewModel.takeCardData(it) }
                         activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
-                        activityViewModel.sendCardData(AppSendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString()))
+                        activityViewModel.sendCardData(AppSendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt()))
                         getSpinner()
                     }
                 }
@@ -197,7 +217,7 @@ class ShowPictureFragment :
                     LocalDateTime.now().minute,
                     LocalDateTime.now().second
                 )
-                activityViewModel.sendAllData(
+                activityViewModel.sendData(
                     AppSendData(
                         date = myLocalDateTime.toString(), amount = binding.btnPrice.text.toString(), cardName = checked, picture = viewModel.image.value!!, storeName = binding.btnStore.text.toString())
                 )
@@ -214,16 +234,16 @@ class ShowPictureFragment :
     fun minusDialog(){
         val array : Map<String, Int>? = viewModel.card.value
         Log.e("TAG", "minusDialog: ${array}", )
-        val ArrayCardList : MutableList<String> = mutableListOf()
-        var ArrayCard : Array<String>
+        val ArrayCard : Array<String>
 
         if (array != null) {
             for(i in array){
-                ArrayCardList?.add("${i.key} : ${i.value}")
-                Log.e("TAG", "minusDialog: ${ArrayCardList}", )
+//                arrayCardList.add("${i.key} : ${i.value}")
+                Log.e("TAG", "minusDialog: ${arrayCardList}", )
             }
         }
-        ArrayCard = ArrayCardList.toTypedArray()
+//        ArrayCard = arrayCardList.toTypedArray()
+        ArrayCard = Array(2){""}
         val checkedItemIndex = 0
 
         val cardMinusDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
@@ -234,6 +254,7 @@ class ShowPictureFragment :
             .setPositiveButton("삭제한다"){dialog, id->
                 // 카드 삭제 event 넣기
                 Log.e("TAG", "getSpinner: 카드 삭제 성공", )
+//                activityViewModel.deleteCardData()
                 dialog.dismiss()   // 예비
             }
             .setNegativeButton("삭제하지 않는다"){dialog, id->
@@ -249,31 +270,28 @@ class ShowPictureFragment :
     }
 
 
-    fun getSpinner(){
-
+    private fun getSpinner() {
+        activityViewModel.receiveServerCardData()
+        Log.e("TAG", "getSpinner: getSpinner",)
         cardArray?.let { viewModel.takeCardData(it) }
-        val array: Map<String, Int>? = viewModel.card.value
-        val ArrayCard: MutableList<String> = mutableListOf()
-
-        if (array != null) {
-            for (i in array) {
-                ArrayCard?.add("${i.key} : ${i.value}")
-            }
-        }
-
         var adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
-            ArrayCard
+            arrayListOf<String>()
         )  // ArrayAdapter에 item 값을 넣고 spinner만 보여주면 되는데 그게 안됨 ArrayAdapter에 대해 알아보기
         binding.spinner.adapter = adapter
+        Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val spiltCard = ArrayCard[position].split(" : ")
-                checked = spiltCard[0]
-                Log.e("TAG", "onItemSelected: ${checked}")
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+//                val spiltCard = ArrayCard[position].split(" : ")
+//                checked = spiltCard[0]
+//                Log.e("TAG", "onItemSelected: ${arrayCardList[position]}")
             }
-
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }

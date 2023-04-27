@@ -16,9 +16,9 @@ interface RetrofitSource {
     @POST("bill/add")
     suspend fun sendDataSource(
         @Part cardName : MultipartBody.Part,
-        @Part amount : MultipartBody.Part,
         @Part storeName : MultipartBody.Part,
         @Part date : MultipartBody.Part,
+        @Part amount : MultipartBody.Part,
         @Part file : MultipartBody.Part,
     ): String
 
@@ -32,7 +32,7 @@ interface RetrofitSource {
     @GET("bill")   // 전체 데이터 요청
     suspend fun receiveDataSource() : MutableList<ReceiveData>
 
-    @GET("bill")
+    @GET("billCard")
     suspend fun receiveCardDataSource() : MutableList<ReceiveCardData>
 
 

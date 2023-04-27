@@ -7,6 +7,6 @@ import okhttp3.MultipartBody
  * pureum
  */
 data class DomainSendCardData(
-    var cardName:MultipartBody.Part,
-    var cardAmount:MultipartBody.Part
+    var cardName:String,
+    var cardAmount:Int
 )

@@ -5,7 +5,8 @@ package com.example.domain.model.receive
  * pureum
  */
 data class DomainReceiveCardData(
-    var name:String?,
-    var amount:Int?
+    var uid:Long,
+    var cardName:String,
+    var cardAmount:Int
 )
 

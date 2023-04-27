@@ -25,8 +25,8 @@ class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
     inner class MyHolder(private val binding : CardItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DomainReceiveCardData) {
             Log.e("TAG", "bind: inin", )
-            binding.cardName.text = item.name
-            binding.amount.text = "${item.amount} 원"
+            binding.cardName.text = item.cardName
+            binding.amount.text = "${item.cardAmount} 원"
             binding.body.setOnClickListener{ onLocalSaveClic(item) }
             binding.body.setOnLongClickListener(View.OnLongClickListener {
                 longClick(item)

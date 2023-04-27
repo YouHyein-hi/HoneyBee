@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:gravity="center"
+        android:background="@color/white_yellow"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

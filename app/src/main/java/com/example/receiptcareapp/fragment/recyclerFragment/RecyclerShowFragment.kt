@@ -97,7 +97,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
 
         //뒤로가기 아이콘
-        binding.imageBack.setOnClickListener{
+        binding.backBtn.setOnClickListener{
             if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
                 activityViewModel.serverCoroutineStop()
                 findNavController().popBackStack()

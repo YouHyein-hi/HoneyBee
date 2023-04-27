@@ -9,12 +9,12 @@
     >
 
     <ImageView
-        android:id="@+id/image_back"
+        android:id="@+id/back_btn"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
-        android:src="@drawable/leftarrow"
+        android:src="@drawable/icon_leftarrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,19 +24,20 @@
         android:layout_height="15px"
         android:layout_marginTop="-14dp"
         android:background="@color/emphasis_yellow"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/murukmuruk"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/pretendardbold"
         android:text="영수증 목록"
-        android:textSize="42sp"
         android:textColor="@color/black"
+        android:textSize="42sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,12 +45,13 @@
         android:id="@+id/explain"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/pretendardbold"
+        android:gravity="center"
         android:text="서버의 데이터입니다."
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <TextView
@@ -70,12 +72,12 @@
         android:id="@+id/mainRecycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/explain"
         tools:listitem="@layout/server_item" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

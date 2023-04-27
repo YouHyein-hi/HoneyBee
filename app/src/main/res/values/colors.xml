@@ -4,14 +4,20 @@
     <color name="base_light_orange">#FFF7D6</color>
     <color name="mid_light_orange">#FFF7D6</color>
     <color name="oragne">#FFF7D6</color>
-    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_200">#FEB020</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="watingColor">#4D000000</color>
 
-    <color name="back_yellow">#FFF7D6</color>
-    <color name="emphasis_yellow">#FEB020</color>
+    <color name="shadow">#A8000000</color>
+    <color name="gray">#545454</color>
+    <color name="light_gray_1">#ADADAD</color>
+    <color name="light_gray_2">#E7E7E7</color>
+    <color name="back_yellow">#FDFDFD</color>
+    <color name="emphasis_yellow">#FFD484</color>
+    <color name="white_yellow">#FFFBF4</color>
+    <color name="home_yellow">#FFEFD2</color>
     <color name="basic_white">#F5F5F5</color>
     <color name="bottom_Sheet_Orange">#FF5722</color>
     <color name="myTransparent">#00FF5722</color>

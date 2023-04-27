@@ -31,7 +31,7 @@
         android:layout_height="35dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/add"
+        android:background="@drawable/icon_add"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toTopOf="parent" />
 

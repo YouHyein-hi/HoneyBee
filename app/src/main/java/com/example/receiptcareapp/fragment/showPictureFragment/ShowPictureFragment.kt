@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment
+package com.example.receiptcareapp.fragment.showPictureFragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -60,12 +60,23 @@ class ShowPictureFragment :
         //날짜 관리
         binding.btnDate.setOnClickListener {
             val cal = Calendar.getInstance()
-            binding.btnDate.text = "${myYear}/${myMonth}/${myDay}"
             val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                var myMonthSt : String
+                var mydaySt : String
                 myYear = year
-                myMonth = month + 1
+                myMonth = month
                 myDay = day
-                binding.btnDate.text = "${myYear}/${myMonth}/${myDay}"
+
+                if(month < 10)
+                    myMonthSt = "0${month + 1}"
+                else myMonthSt = "${month + 1}"
+                    Log.e("TAG", "onViewCreated: month else~", )
+                    myMonth = month + 1
+                if(day < 10)
+                    mydaySt = "0${day}"
+                else mydaySt = "${day}"
+
+                binding.btnDate.text = "${myYear}/${myMonthSt}/${mydaySt}"
             }
             val dataDialog = DatePickerDialog(
                 requireContext(),
@@ -79,7 +90,6 @@ class ShowPictureFragment :
                 .setTextColor(Color.RED)
             dataDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
                 .setTextColor(Color.BLACK)
-
         }
 
         //프로그래스 바 컨트롤
@@ -112,49 +122,13 @@ class ShowPictureFragment :
         getSpinner()
 
         /** 카드 추가 관련 코드 **/
-        val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
-        val editText_cardName = dialogView.findViewById<EditText>(R.id.dialog_cardname)
-        val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
-        //val dialogParentView: ViewGroup? = dialogView.parent as ViewGroup?
-
         binding.cardaddBtn.setOnClickListener{
-            val cardAddDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
-
-                .setTitle("카드 추가")
-                .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
-                .setView(dialogView)
-                .setPositiveButton("확인") { dialog, id ->
-                    if(editText_cardName.text.toString() == ""){
-                        //Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
-                        Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요", )
-                        dialog.dismiss()
-                    }
-                    else if(editText_cardPrice.text.toString() == ""){
-                        //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
-                        Log.e("TAG", "onViewCreated: 초기을 입력해주세요", )
-                        dialog.dismiss()
-                    }
-                    else{
-                        cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
-                        cardArray?.let { it -> viewModel.takeCardData(it) }
-                        activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
-                        activityViewModel.sendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString())
-                        getSpinner()
-                    }
-                }
-                .setCancelable(false)
-                .show()
-
-            cardAddDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-                .setTextColor(Color.RED)
-            cardAddDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
-                .setTextColor(Color.BLACK)
+            cardAddDialog()
         }
 
         /** 카드 삭제 관련 코드 **/
         binding.cardminusBtn.setOnClickListener(){
-            minusDialog()
-            
+            cardMinusDialog()
         }
 
         binding.btnPrice.setOnClickListener {
@@ -163,7 +137,6 @@ class ShowPictureFragment :
                 binding.btnPrice.setSelection(binding.btnPrice.text.length)
             }
         }
-
         binding.btnPrice.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE && binding.btnPrice.text.isNotEmpty()) {
@@ -219,7 +192,63 @@ class ShowPictureFragment :
 
     }
 
-    fun minusDialog(){
+    fun cardAddDialog(){
+        val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
+        val editText_cardName = dialogView.findViewById<EditText>(R.id.dialog_cardname)
+        val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
+
+        editText_cardPrice.setOnClickListener {
+            if (editText_cardPrice.text.contains(",")) {
+                editText_cardPrice.setText(editText_cardPrice.text.toString().replace(",", ""))
+                editText_cardPrice.setSelection(editText_cardPrice.text.length)
+            }
+        }
+        editText_cardPrice.setOnEditorActionListener { v, actionId, event ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_DONE && editText_cardPrice.text.isNotEmpty()) {
+                val gap = DecimalFormat("#,###")
+                editText_cardPrice.setText(gap.format(editText_cardPrice.text.toString().toInt()))
+            }
+            handled
+        }
+
+        val cardAddDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
+            .setTitle("카드 추가")
+            .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
+            .setView(dialogView)
+            .setPositiveButton("확인") { dialog, id ->
+                if(editText_cardName.text.toString() == ""){
+                    //Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
+                    Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요", )
+                    dialog.dismiss()
+                }
+                else if(editText_cardPrice.text.toString() == ""){
+                    //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
+                    Log.e("TAG", "onViewCreated: 초기을 입력해주세요", )
+                    dialog.dismiss()
+                }
+                else{
+                    cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
+                    cardArray?.let { it -> viewModel.takeCardData(it) }
+                    activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
+                    activityViewModel.sendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString())
+                    getSpinner()
+                }
+            }
+            .setNegativeButton("취소"){dialog, id->
+                Log.e("TAG", "getSpinner: 카드 추가 취소", )
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .show()
+
+        cardAddDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+            .setTextColor(Color.RED)
+        cardAddDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+            .setTextColor(Color.BLACK)
+    }
+
+    fun cardMinusDialog(){
         val array : Map<String, Int>? = viewModel.card.value
         Log.e("TAG", "minusDialog: ${array}", )
         val ArrayCardList : MutableList<String> = mutableListOf()
@@ -239,12 +268,12 @@ class ShowPictureFragment :
             .setSingleChoiceItems(ArrayCard, checkedItemIndex) { dialog_, which ->
                 Log.e("TAG", "minusDialog: ${which}", )
             }
-            .setPositiveButton("삭제한다"){dialog, id->
+            .setPositiveButton("삭제"){dialog, id->
                 // 카드 삭제 event 넣기
                 Log.e("TAG", "getSpinner: 카드 삭제 성공", )
                 dialog.dismiss()   // 예비
             }
-            .setNegativeButton("삭제하지 않는다"){dialog, id->
+            .setNegativeButton("취소"){dialog, id->
                 Log.e("TAG", "getSpinner: 카드 삭제 취소", )
                 dialog.dismiss()
             }
@@ -269,11 +298,8 @@ class ShowPictureFragment :
             }
         }
 
-        var adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            ArrayCard
-        )  // ArrayAdapter에 item 값을 넣고 spinner만 보여주면 되는데 그게 안됨 ArrayAdapter에 대해 알아보기
+        //var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ArrayCard)
+        var adapter = SpinnerCustomAdapter(requireContext(), ArrayCard)
         binding.spinner.adapter = adapter
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {

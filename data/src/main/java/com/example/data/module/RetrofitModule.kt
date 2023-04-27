@@ -41,7 +41,7 @@ object RetrofitModule {
 //            .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
-//            .client(okHttpClient)
+            .client(okHttpClient)
             .build()
     }
 

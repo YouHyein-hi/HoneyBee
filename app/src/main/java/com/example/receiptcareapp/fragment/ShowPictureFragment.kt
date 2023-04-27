@@ -29,7 +29,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ShowPictureFragment :
     BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
@@ -45,7 +44,6 @@ class ShowPictureFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         /** Spinner 호출 **/
         getSpinner()
 
@@ -62,11 +60,6 @@ class ShowPictureFragment :
         myMonth = dateNow.monthValue
         myDay = dateNow.dayOfMonth
 
-
-//        binding.spinner.setOnClickListener {
-//            activityViewModel.receiveServerCardData()
-//
-//        }
 
         activityViewModel.cardData.observe(viewLifecycleOwner){
             val myArray = arrayListOf<String>()
@@ -133,7 +126,6 @@ class ShowPictureFragment :
         val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
         val editText_cardName = dialogView.findViewById<EditText>(R.id.dialog_cardname)
         val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
-        //val dialogParentView: ViewGroup? = dialogView.parent as ViewGroup?
 
         binding.cardaddBtn.setOnClickListener{
             val cardAddDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)

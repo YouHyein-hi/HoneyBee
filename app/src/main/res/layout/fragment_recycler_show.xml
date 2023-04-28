@@ -8,12 +8,12 @@
     android:background="@color/back_yellow">
 
     <ImageView
-        android:id="@+id/image_back"
+        android:id="@+id/back_btn"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
-        android:src="@drawable/leftarrow"
+        android:src="@drawable/icon_leftarrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

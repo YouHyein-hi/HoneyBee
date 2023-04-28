@@ -241,8 +241,8 @@ class ShowPictureFragment :
                 else{
                     cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
                     cardArray?.let { it -> viewModel.takeCardData(it) }
-                    activityViewModel.changeConnectedState(ConnetedState.CONNECTING)
-                    activityViewModel.sendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString())
+                    activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
+                    activityViewModel.sendCardData(AppSendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt()))
                     getSpinner()
                 }
             }

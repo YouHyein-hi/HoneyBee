@@ -11,11 +11,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.toDomainRecyclerData
-import com.example.domain.model.toDomainRecyclerViewData
+import com.example.domain.model.local.toDomainRecyclerData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnetedState
-import com.example.receiptcareapp.State.ServerState
+import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
 import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.recyclerFragment.adapter.LocalAdapter
@@ -184,7 +182,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                     activityViewModel.serverCoroutineStop()
                     findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
                 } else {

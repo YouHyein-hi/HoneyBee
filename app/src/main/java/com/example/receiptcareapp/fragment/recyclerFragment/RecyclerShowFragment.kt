@@ -55,9 +55,9 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
 
         //재전송 버튼, 서버와 로컬
-        binding.resendBtn.setOnClickListener{
-            resendDialog()
-        }
+//        binding.resendBtn.setOnClickListener{
+//            resendDialog()
+//        }
         //수정 버튼, 서버
         binding.changeBtn.setOnClickListener{
             changeDialog()
@@ -88,7 +88,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
         //뒤로가기 아이콘
         binding.backBtn.setOnClickListener{
-            if (activityViewModel.connectedState.value == ConnetedState.CONNECTING) {
+            if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                 activityViewModel.serverCoroutineStop()
                 findNavController().popBackStack()
             } else {

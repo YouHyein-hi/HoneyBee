@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment
+package com.example.receiptcareapp.fragment.showPictureFragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -49,6 +49,7 @@ class ShowPictureFragment :
 
         Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
         binding.pictureView.setImageURI(viewModel.image.value)
+        binding.pictureView.clipToOutline = true
 
         // 서버와 연결 상태 초기화.
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)

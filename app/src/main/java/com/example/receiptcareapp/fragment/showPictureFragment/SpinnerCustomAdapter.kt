@@ -12,7 +12,7 @@ class SpinnerCustomAdapter(context: Context, items: ArrayList<String>) : ArrayAd
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val binding = SpinnerCustomItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.spinnerItem.height = 35 // 높이를 40dp로 설정합니다.
+        binding.spinnerItem.height = 35 // 높이를 35dp로 설정합니다.
 
         val item = getItem(position)
         binding.spinnerItem.text = item
@@ -21,7 +21,7 @@ class SpinnerCustomAdapter(context: Context, items: ArrayList<String>) : ArrayAd
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         val binding = SpinnerCustomItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.spinnerItem.height = 35 // 높이를 40dp로 설정합니다.
+        binding.spinnerItem.height = 35 // 높이를 35dp로 설정합니다.
 
         val item = getItem(position)
         binding.spinnerItem.text = item

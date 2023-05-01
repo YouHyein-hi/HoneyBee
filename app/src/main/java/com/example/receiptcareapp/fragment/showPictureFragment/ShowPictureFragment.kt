@@ -65,11 +65,14 @@ class ShowPictureFragment :
         activityViewModel.cardData.observe(viewLifecycleOwner){
             val myArray = arrayListOf<String>()
             it.forEach{myArray.add("${it.cardName}  :  ${it.cardAmount}")}
+            val adapter = SpinnerCustomAdapter(requireContext(), myArray)
+            /*
             val adapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
                 myArray
             )
+            */
             binding.spinner.adapter = adapter
         }
 
@@ -303,11 +306,14 @@ class ShowPictureFragment :
         activityViewModel.receiveServerCardData()
         Log.e("TAG", "getSpinner: getSpinner",)
         cardArray?.let { viewModel.takeCardData(it) }
+        var adapter = SpinnerCustomAdapter(requireContext(), arrayListOf<String>())
+        /*
         var adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
             arrayListOf<String>()
-        )  // ArrayAdapter에 item 값을 넣고 spinner만 보여주면 되는데 그게 안됨 ArrayAdapter에 대해 알아보기
+        )
+        */
         binding.spinner.adapter = adapter
         Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

@@ -94,21 +94,7 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
 
         //서버 카드 추가 다이얼로그
         binding.addBtn.setOnClickListener{
-            val dialogView = layoutInflater.inflate(R.layout.dialog_server_add_card, null)
-            val cardName  = dialogView.findViewById<EditText>(R.id.addCardName)
-            val cardPrice = dialogView.findViewById<EditText>(R.id.addCardAmount)
-            var gap = AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-                .setTitle("서버 카드 데이터 추가")
-                .setView(dialogView)
-                .setPositiveButton("보내기") { dialog, id ->
-                    activityViewModel.sendCardData(AppSendCardData(cardName.text.toString(), cardPrice.text.toString().toInt()))
-                }
-                .setNegativeButton("닫기") { dialog, id -> }
-                .show()
-            gap.getButton(DialogInterface.BUTTON_POSITIVE)
-                .setTextColor(Color.RED)
-            gap.getButton(DialogInterface.BUTTON_NEGATIVE)
-                .setTextColor(Color.BLACK)
+            cardAddDialog()
         }
 
         //서버 카드 수정 및 삭제 다이알로그
@@ -172,5 +158,36 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
     override fun onDestroy() {
         super.onDestroy()
         activityViewModel.serverCoroutineStop()
+    }
+
+    fun cardAddDialog(){
+        val dialogView = layoutInflater.inflate(R.layout.dialog_server_add_card, null)
+        val cardName  = dialogView.findViewById<EditText>(R.id.addCardName)
+        val cardPrice = dialogView.findViewById<EditText>(R.id.addCardAmount)
+        var gap = AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
+            .setTitle("서버 카드 데이터 추가")
+            .setView(dialogView)
+            .setPositiveButton("보내기") { dialog, id ->
+                if(cardName.text.toString() == ""){
+                    //Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
+                    Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요", )
+                    dialog.dismiss()
+                }
+                else if(cardPrice.text.toString() == ""){
+                    //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
+                    Log.e("TAG", "onViewCreated: 초기을 입력해주세요", )
+                    dialog.dismiss()
+                }
+                else{
+                    activityViewModel.sendCardData(AppSendCardData(cardName.text.toString(), cardPrice.text.toString().toInt()))
+                }
+            }
+            .setNegativeButton("닫기") { dialog, id -> }
+            .setCancelable(false)
+            .show()
+        gap.getButton(DialogInterface.BUTTON_POSITIVE)
+            .setTextColor(Color.RED)
+        gap.getButton(DialogInterface.BUTTON_NEGATIVE)
+            .setTextColor(Color.BLACK)
     }
 }

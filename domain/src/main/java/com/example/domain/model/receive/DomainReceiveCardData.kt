@@ -7,6 +7,6 @@ package com.example.domain.model.receive
 data class DomainReceiveCardData(
     var uid:Long,
     var cardName:String,
-    var cardAmount:Int
+    var cardAmount:String
 )
 

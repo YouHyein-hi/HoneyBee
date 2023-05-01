@@ -14,18 +14,19 @@ class LocalAdapter: RecyclerView.Adapter<LocalAdapter.MyAdapter>(){
 
     lateinit var onLocalSaveClic : (DomainRoomData)->Unit
     private lateinit var localBinding: LocalItemBinding
-    var dataList = listOf<DomainRoomData>()
+    var dataList = mutableListOf<DomainRoomData>()
         set(value){
-            field = value.reversed()
+            field = value.reversed().toMutableList()
             notifyDataSetChanged()
         }
 
     inner class MyAdapter(private val binding: LocalItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:DomainRoomData){
-            var myDate = list.date.split("-","T")
+//            var myDate = list.date.split("-","T")
             binding.cardName.text = "${list.cardName} :"
             binding.amount.text = " ${list.amount}"
-            binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
+            binding.date.text = list.date
+//            binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]} / ${myDate[3]}"
 //            binding.date.text = "${list.date}"
 //            binding.picture.setImageURI(list.file)
             binding.listLayout.setOnClickListener{ onLocalSaveClic(list) }

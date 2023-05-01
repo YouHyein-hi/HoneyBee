@@ -163,10 +163,12 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     fun initServerRecyclerView(){
         binding.mainRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.mainRecycler.adapter = serverAdapter
+        serverAdapter.dataList.clear()
     }
     fun initLocalRecyclerView(){
         binding.mainRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.mainRecycler.adapter = localAdapter
+        localAdapter.dataList.clear()
     }
 
     fun setTextAndVisible(text:String, state:Boolean){

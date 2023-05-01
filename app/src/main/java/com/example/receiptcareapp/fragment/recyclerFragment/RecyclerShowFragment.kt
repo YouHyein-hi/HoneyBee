@@ -50,14 +50,15 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         val newDate = myData.date.split("-","T",":")
         binding.pictureName.text = myData.storeName
 //        binding.imageView.setImageURI(myData.picture)
+        binding.imageView.clipToOutline = true
         binding.date.text = "${newDate[0]}.${newDate[1]}.${newDate[2]} / ${newDate[3]}:${newDate[4]}:${newDate[5]}"
         binding.cardAmount.text = "${myData.cardName} : ${myData.amount}"
 
 
         //재전송 버튼, 서버와 로컬
-//        binding.resendBtn.setOnClickListener{
-//            resendDialog()
-//        }
+        binding.resendBtn.setOnClickListener{
+            resendDialog()
+        }
         //수정 버튼, 서버
         binding.changeBtn.setOnClickListener{
             changeDialog()
@@ -100,7 +101,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     private fun resendDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
-            .setMessage("")
+            .setMessage("서버에 보내시겠어요?")
             .setPositiveButton("닫기"){_,_->}
             .setNegativeButton("보내기"){_,_->
 //                    activityViewModel.sendData(
@@ -113,7 +114,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     private fun changeDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
-            .setMessage("")
+            .setMessage("데이터를 수정하시겠어요?")
             .setPositiveButton("닫기"){_,_->findNavController().popBackStack()}
             .setNegativeButton("수정해서 보내기"){_,_->
 //                activityViewModel.changeServerData(SendData(
@@ -126,7 +127,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     private fun deleteDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
-            .setMessage("")
+            .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")
             .setPositiveButton("닫기"){_,_->findNavController().popBackStack()}
             .setNegativeButton("삭제하기"){_,_->
                 Log.e("TAG", "deleteDialog: ${myData}", )

@@ -33,12 +33,12 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         // 서버, 로컬 데이터를 구분하여 맞춰 아트다이알로그를 띄움
         //서버 데이터일 시
         if(fragmentViewModel.showServerData.value != null){
+            binding.resendBtn.isVisible = false
             val data = fragmentViewModel.showServerData.value
             myData = ShowData(ShowType.SERVER, data!!.uid, data.cardName, data.amount, data.date, data.storeName, data.file)
 
         // 로컬 데이터 일 시
         }else if(fragmentViewModel.showLocalData.value != null){
-            binding.changeBtn.isVisible = false
             val data = fragmentViewModel.showLocalData.value
             myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, data.file)
         }else{

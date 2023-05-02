@@ -51,8 +51,8 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         binding.pictureName.text = myData.storeName
 //        binding.imageView.setImageURI(myData.picture)
         binding.imageView.clipToOutline = true
-        binding.date.text = "${newDate[0]}.${newDate[1]}.${newDate[2]} / ${newDate[3]}:${newDate[4]}:${newDate[5]}"
-        binding.cardAmount.text = "${myData.cardName} : ${myData.amount}"
+        binding.date.text = "${newDate[0]}.${newDate[1]}.${newDate[2]}.  ${newDate[3]}:${newDate[4]}"
+        binding.cardAmount.text = "${myData.cardName}카드 : ${myData.amount}원"
 
 
         //재전송 버튼, 서버와 로컬

@@ -41,6 +41,7 @@ class ShowPictureFragment :
     private var cardArray: MutableMap<String, Int>? = mutableMapOf()
     private lateinit var callback: OnBackPressedCallback
     private var arrayCardList : MutableList<DomainReceiveCardData> = mutableListOf()
+    private var myArray = arrayListOf<String>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,7 +64,7 @@ class ShowPictureFragment :
 
 
         activityViewModel.cardData.observe(viewLifecycleOwner){
-            val myArray = arrayListOf<String>()
+            //val myArray = arrayListOf<String>()
             it.forEach{myArray.add("${it.cardName}  :  ${it.cardAmount}")}
             val adapter = SpinnerCustomAdapter(requireContext(), myArray)
             /*
@@ -233,14 +234,14 @@ class ShowPictureFragment :
             .setView(dialogView)
             .setPositiveButton("확인") { dialog, id ->
                 if(editText_cardName.text.toString() == ""){
-                    //Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
                     Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요", )
                     dialog.dismiss()
+                    Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
                 }
                 else if(editText_cardPrice.text.toString() == ""){
-                    //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
                     Log.e("TAG", "onViewCreated: 초기을 입력해주세요", )
                     dialog.dismiss()
+                    Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
@@ -274,8 +275,8 @@ class ShowPictureFragment :
                 Log.e("TAG", "minusDialog: ${arrayCardList}", )
             }
         }
-//        ArrayCard = arrayCardList.toTypedArray()
-        ArrayCard = Array(2){""}
+
+        ArrayCard = myArray.toTypedArray()
         val checkedItemIndex = 0
 
         val cardMinusDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
@@ -323,9 +324,10 @@ class ShowPictureFragment :
                 position: Int,
                 id: Long
             ) {
-//                val spiltCard = ArrayCard[position].split(" : ")
-//                checked = spiltCard[0]
-//                Log.e("TAG", "onItemSelected: ${arrayCardList[position]}")
+                Log.e("TAG", "onItemSelected: ${myArray[position]}", )
+                val spiltCard = myArray[position].split(" : ")
+                checked = spiltCard[0]
+                Log.e("TAG", "onItemSelected: ${checked}", )
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }

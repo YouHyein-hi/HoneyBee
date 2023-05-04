@@ -80,8 +80,6 @@ class MainViewModel @Inject constructor(
                 val file = File(absolutelyPath(sendData.picture, myCotext))
                 val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
-                //서버 전송
-
                 val result = retrofitUseCase.sendDataUseCase(
                     DomainSendData(
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),

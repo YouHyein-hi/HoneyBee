@@ -20,21 +20,21 @@ class ServerAdapter(
 
     lateinit var onServerSaveClick : (DomainReceiveAllData)->Unit
     private lateinit var serverBinding:ServerItemBinding
-    var dataList = listOf<DomainReceiveAllData>()
+    var dataList = mutableListOf<DomainReceiveAllData>()
     set(value){
-        field = value.reversed()
+        field = value.reversed().toMutableList()
         notifyDataSetChanged()
     }
 
     inner class MyAdapter(private val binding: ServerItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list: DomainReceiveAllData){
+
             Log.e("TAG", "bind: ${list.file}")
             val myDate = list.date.split("-","T",":")
             binding.storeName.text = "${list.storeName}, "
             binding.cardName.text = "${list.cardName}카드 :"
             binding.amount.text = " ${list.amount}원"
             binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]}.  ${myDate[3]}:${myDate[4]}"
-
             Log.e("TAG", "bind: ${String(list.file.toByteArray())}")
             Log.e("TAG", "bind: ${Uri.parse(String(list.file.toByteArray()))}")
 

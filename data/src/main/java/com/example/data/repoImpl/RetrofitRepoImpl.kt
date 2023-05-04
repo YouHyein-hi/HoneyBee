@@ -2,6 +2,7 @@ package com.example.data.repoImpl
 
 import com.example.data.remote.dataSource.RetrofitSource
 import com.example.data.remote.model.toDomainReceiveCardData
+import com.example.data.remote.model.toDomainReceiveData
 import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.receive.DomainResendAllData
@@ -36,16 +37,7 @@ class RetrofitRepoImpl @Inject constructor(
         )
     }
     override suspend fun receiveDataRepo(): MutableList<DomainReceiveAllData> {
-        return retrofitSource.receiveDataSource().map {
-            DomainReceiveAllData(
-                it.uid,
-                it.cardName,
-                it.amount,
-                it.date,
-                it.storeName,
-                it.file
-            )
-        }.toMutableList()
+        return retrofitSource.receiveDataSource().map { it.toDomainReceiveData() }.toMutableList()
     }
     override suspend fun receiveCardDataRepo(): MutableList<DomainReceiveCardData> {
         return retrofitSource.receiveCardDataSource().map { it.toDomainReceiveCardData() }

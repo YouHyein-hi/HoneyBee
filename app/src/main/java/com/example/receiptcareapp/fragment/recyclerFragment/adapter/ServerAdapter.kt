@@ -28,11 +28,13 @@ class ServerAdapter(
 
     inner class MyAdapter(private val binding: ServerItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list: DomainReceiveAllData){
-//            Log.e("TAG", "bind: ${list.file}")
-            binding.cardName.text = "${list.cardName} :"
-            binding.amount.text = " ${list.amount}"
-            binding.date.text = list.date
-//            binding.date.text = "${list.date}"
+
+            Log.e("TAG", "bind: ${list.file}")
+            val myDate = list.date.split("-","T",":")
+            binding.storeName.text = "${list.storeName}, "
+            binding.cardName.text = "${list.cardName}카드 :"
+            binding.amount.text = " ${list.amount}원"
+            binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]}.  ${myDate[3]}:${myDate[4]}"
             Log.e("TAG", "bind: ${String(list.file.toByteArray())}")
             Log.e("TAG", "bind: ${Uri.parse(String(list.file.toByteArray()))}")
 

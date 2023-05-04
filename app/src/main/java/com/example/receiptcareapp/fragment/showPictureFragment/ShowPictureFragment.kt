@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment
+package com.example.receiptcareapp.fragment.showPictureFragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -41,6 +41,7 @@ class ShowPictureFragment :
     private var cardArray: MutableMap<String, Int>? = mutableMapOf()
     private lateinit var callback: OnBackPressedCallback
     private var arrayCardList : MutableList<DomainReceiveCardData> = mutableListOf()
+    private var myArray = arrayListOf<String>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,6 +50,7 @@ class ShowPictureFragment :
 
         Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
         binding.pictureView.setImageURI(viewModel.image.value)
+        binding.pictureView.clipToOutline = true
 
         // 서버와 연결 상태 초기화.
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
@@ -62,13 +64,16 @@ class ShowPictureFragment :
 
 
         activityViewModel.cardData.observe(viewLifecycleOwner){
-            val myArray = arrayListOf<String>()
+            //val myArray = arrayListOf<String>()
             it.forEach{myArray.add("${it.cardName}  :  ${it.cardAmount}")}
+            val adapter = SpinnerCustomAdapter(requireContext(), myArray)
+            /*
             val adapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
                 myArray
             )
+            */
             binding.spinner.adapter = adapter
         }
 
@@ -229,14 +234,14 @@ class ShowPictureFragment :
             .setView(dialogView)
             .setPositiveButton("확인") { dialog, id ->
                 if(editText_cardName.text.toString() == ""){
-                    //Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
                     Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요", )
                     dialog.dismiss()
+                    Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
                 }
                 else if(editText_cardPrice.text.toString() == ""){
-                    //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
                     Log.e("TAG", "onViewCreated: 초기을 입력해주세요", )
                     dialog.dismiss()
+                    Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
@@ -270,8 +275,8 @@ class ShowPictureFragment :
                 Log.e("TAG", "minusDialog: ${arrayCardList}", )
             }
         }
-//        ArrayCard = arrayCardList.toTypedArray()
-        ArrayCard = Array(2){""}
+
+        ArrayCard = myArray.toTypedArray()
         val checkedItemIndex = 0
 
         val cardMinusDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
@@ -302,11 +307,14 @@ class ShowPictureFragment :
         activityViewModel.receiveServerCardData()
         Log.e("TAG", "getSpinner: getSpinner",)
         cardArray?.let { viewModel.takeCardData(it) }
+        var adapter = SpinnerCustomAdapter(requireContext(), arrayListOf<String>())
+        /*
         var adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
             arrayListOf<String>()
-        )  // ArrayAdapter에 item 값을 넣고 spinner만 보여주면 되는데 그게 안됨 ArrayAdapter에 대해 알아보기
+        )
+        */
         binding.spinner.adapter = adapter
         Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -316,9 +324,10 @@ class ShowPictureFragment :
                 position: Int,
                 id: Long
             ) {
-//                val spiltCard = ArrayCard[position].split(" : ")
-//                checked = spiltCard[0]
-//                Log.e("TAG", "onItemSelected: ${arrayCardList[position]}")
+                Log.e("TAG", "onItemSelected: ${myArray[position]}", )
+                val spiltCard = myArray[position].split(" : ")
+                checked = spiltCard[0]
+                Log.e("TAG", "onItemSelected: ${checked}", )
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }

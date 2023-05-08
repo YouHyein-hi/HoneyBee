@@ -1,5 +1,6 @@
 package com.example.domain.model.receive
 
+import android.graphics.Bitmap
 import android.net.Uri
 
 /**
@@ -20,7 +21,7 @@ data class DomainReceiveAllData(
     val amount: String,
     val date: String,
     val storeName: String,
-    val file: String
+    val file: Bitmap?
 )
 
 //fun DomainReceiveAllData.toDomainRecyclerViewData(): DomainRecyclerData=

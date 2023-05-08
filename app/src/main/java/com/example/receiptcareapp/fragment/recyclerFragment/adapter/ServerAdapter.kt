@@ -1,11 +1,10 @@
 package com.example.receiptcareapp.fragment.recyclerFragment.adapter
 
 import android.graphics.BitmapFactory
-import android.net.Uri
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.receiptcareapp.databinding.ServerItemBinding
@@ -29,19 +28,17 @@ class ServerAdapter(
     inner class MyAdapter(private val binding: ServerItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list: DomainReceiveAllData){
 
-            Log.e("TAG", "bind: ${list.file}")
             val myDate = list.date.split("-","T",":")
             binding.storeName.text = "${list.storeName}, "
             binding.cardName.text = "${list.cardName}카드 :"
             binding.amount.text = " ${list.amount}원"
-            binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]}.  ${myDate[3]}:${myDate[4]}"
-            Log.e("TAG", "bind: ${String(list.file.toByteArray())}")
-            Log.e("TAG", "bind: ${Uri.parse(String(list.file.toByteArray()))}")
+            binding.date.text = "${list.date}"
+            binding.picture.setImageBitmap(list.file)
 
-            BitmapFactory.decodeByteArray(list.file.toByteArray(),0,list.file.toByteArray().size)
+//            var gap = list.file.toByteArray()
+//            var decode = Base64.decode(gap,Base64.DEFAULT)
+//            var bitmap = BitmapFactory.decodeByteArray(decode, 0, decode.size)
 
-//            binding.picture.setImageURI(Uri.parse(String(list.file.toByteArray())))
-            binding.picture.setImageBitmap(BitmapFactory.decodeByteArray(list.file.toByteArray(),0,list.file.toByteArray().size))
             binding.listLayout.setOnClickListener{ onServerSaveClick(list) }
         }
     }

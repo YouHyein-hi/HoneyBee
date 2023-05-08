@@ -1,8 +1,11 @@
 package com.example.data.module
 
 import android.content.Context
+import android.graphics.Bitmap
 import androidx.room.Room
+import com.example.data.local.BitmapConverter
 import com.example.data.local.LocalDatabase
+import com.example.data.module.RetrofitModule.gson
 //import com.example.data.local.LocalDateTimeConverter
 //import com.example.data.local.MultipartBodyConverter
 import com.google.gson.Gson
@@ -30,11 +33,11 @@ object LocalDataModule {
     @Singleton
     @Provides
     fun provideLocalDatabase(@ApplicationContext appContext: Context): LocalDatabase{
-        return Room.databaseBuilder(appContext, LocalDatabase::class.java, "mymyDB")
+        return Room.databaseBuilder(appContext, LocalDatabase::class.java, "mymymyDB")
             // .fallbackToDestructiveMigration()
             // => 이걸쓰면 테이블이 유실되어 호출 실패해도 db를 재생성함(이전데이터 날라감)
             //.addTypeConverter(LocalDateTimeConverter(gson))
-            //.addTypeConverter(MultipartBodyConverter(gson))
+            .addTypeConverter(BitmapConverter())
             .build()
     }
 }

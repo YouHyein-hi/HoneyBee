@@ -1,6 +1,8 @@
 package com.example.receiptcareapp.fragment.recyclerFragment
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -20,6 +22,7 @@ import com.example.receiptcareapp.fragment.recyclerFragment.adapter.LocalAdapter
 import com.example.receiptcareapp.fragment.recyclerFragment.adapter.ServerAdapter
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
+import java.io.File
 
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
@@ -37,11 +40,8 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         super.onCreate(savedInstanceState)
         Log.e("TAG", "onCreate: RecyclerFragment start", )
         fragmentViewModel.changeStartGap("server")
-//        activityViewModel.insertData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:20", "content://media/external/images/media/1000014186")
-//        activityViewModel.insertData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:21", "content://media/external/images/media/1000014186")
-//        activityViewModel.insertData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:22", "content://media/external/images/media/1000014186")
-//        activityViewModel.insertData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:23", "content://media/external/images/media/1000014186")
-//        activityViewModel.insertData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:24", "content://media/external/images/media/1000014186")
+//        activityViewModel.insertRoomData(
+//            DomainRoomData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:20", BitmapFactory.decodeFile("content://media/external/images/media/1000014186")))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

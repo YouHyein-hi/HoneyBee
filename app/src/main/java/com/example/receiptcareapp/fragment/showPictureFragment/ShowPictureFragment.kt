@@ -65,8 +65,9 @@ class ShowPictureFragment :
 
         activityViewModel.cardData.observe(viewLifecycleOwner){
             //val myArray = arrayListOf<String>()
-            it.forEach{myArray.add("${it.cardName}  :  ${it.cardAmount}")}
+            it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
             val adapter = SpinnerCustomAdapter(requireContext(), myArray)
+            Log.e("TAG", "myArray: $myArray", )
             /*
             val adapter = ArrayAdapter(
                 requireContext(),
@@ -244,6 +245,7 @@ class ShowPictureFragment :
                     Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
                 }
                 else{
+                    Log.e("TAG", "cardAddDialog: ${editText_cardName.text}", )
                     cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
                     cardArray?.let { it -> viewModel.takeCardData(it) }
                     activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
@@ -325,9 +327,10 @@ class ShowPictureFragment :
                 id: Long
             ) {
                 Log.e("TAG", "onItemSelected: ${myArray[position]}", )
+                Log.e("TAG", "onItemSelected: ${position}", )
                 val spiltCard = myArray[position].split(" : ")
                 checked = spiltCard[0]
-                Log.e("TAG", "onItemSelected: ${checked}", )
+                Log.e("TAG", "onItemSelected: ${checked}fgnjkgasdnndfjknasjfndj", )
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }

@@ -2,6 +2,8 @@ package com.example.receiptcareapp.viewModel
 
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -103,6 +105,8 @@ class MainViewModel @Inject constructor(
                             storeName = sendData.storeName,
                             date = sendData.date,
                             file = sendData.picture.toString()
+//                            file = fileToBitmap(file)
+//                            file = sendData.picture
                         )
                     )
                 } else {
@@ -112,6 +116,13 @@ class MainViewModel @Inject constructor(
                 }
             } ?: throw SocketTimeoutException()
         }
+    }
+
+    fun fileToBitmap(file : File): Bitmap {
+        Log.e("TAG", "fileToBitmap: $file", )
+        var gap = BitmapFactory.decodeFile(file.path)
+        Log.e("TAG", "fileToBitmap: $gap", )
+        return gap
     }
 
     //절대경로로 변환
@@ -152,7 +163,7 @@ class MainViewModel @Inject constructor(
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime){
                 val gap = retrofitUseCase.receiveDataUseCase()
-                Log.e("TAG", "receiveAllServerData: $gap")
+                Log.e("TAG", "receiveAllServerData: ${gap.forEach{it.file}}")
                 _serverData.postValue(gap)
                 _connectedState.postValue(ConnectedState.DISCONNECTED)
             } ?: throw SocketTimeoutException()

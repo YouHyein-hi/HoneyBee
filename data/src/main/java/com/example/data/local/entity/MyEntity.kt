@@ -1,5 +1,6 @@
 package com.example.data.local.entity
 
+import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -20,7 +21,7 @@ data class MyEntity(
     @ColumnInfo
     val pictureName: String,
     @ColumnInfo
-    val picture: String,
+    val picture: Bitmap,
 )
 
 //fun MyEntity.toDomainEntity():DomainRoomData = DomainRoomData(

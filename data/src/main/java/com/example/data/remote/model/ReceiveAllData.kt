@@ -1,6 +1,9 @@
 package com.example.data.remote.model
 
+import android.graphics.BitmapFactory
+import android.util.Base64
 import com.example.domain.model.receive.DomainReceiveAllData
+import okio.utf8Size
 import java.text.DecimalFormat
 import java.time.LocalDateTime
 
@@ -27,5 +30,10 @@ fun ReceiveData.toDomainReceiveData(): DomainReceiveAllData{
         if(myList.size == 6)
             myData = "${myData[0]}년 ${myData[1]}월 ${myData[2]}일 ${myData[3]}시 ${myData[4]}분 ${myData[5]}초"
     }
-    return DomainReceiveAllData(uid, cardName, amount, myData, storeName, file)
+
+    val gap = file.toByteArray()
+    val decode = Base64.decode(gap, Base64.DEFAULT)
+    val myBitmap = BitmapFactory.decodeByteArray(decode, 0, decode.size)
+
+    return DomainReceiveAllData(uid, cardName, amount, myData, storeName, myBitmap)
 }

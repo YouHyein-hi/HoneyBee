@@ -34,11 +34,6 @@ class ServerAdapter(
             binding.amount.text = " ${list.amount}원"
             binding.date.text = "${list.date}"
             binding.picture.setImageBitmap(list.file)
-
-//            var gap = list.file.toByteArray()
-//            var decode = Base64.decode(gap,Base64.DEFAULT)
-//            var bitmap = BitmapFactory.decodeByteArray(decode, 0, decode.size)
-
             binding.listLayout.setOnClickListener{ onServerSaveClick(list) }
         }
     }

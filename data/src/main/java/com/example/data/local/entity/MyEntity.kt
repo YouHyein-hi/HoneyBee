@@ -21,7 +21,7 @@ data class MyEntity(
     @ColumnInfo
     val pictureName: String,
     @ColumnInfo
-    val picture: Bitmap,
+    val picture: String,
 )
 
 //fun MyEntity.toDomainEntity():DomainRoomData = DomainRoomData(

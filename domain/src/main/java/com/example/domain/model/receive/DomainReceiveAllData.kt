@@ -21,7 +21,7 @@ data class DomainReceiveAllData(
     val amount: String,
     val date: String,
     val storeName: String,
-    val file: Bitmap?
+    val file: Bitmap
 )
 
 //fun DomainReceiveAllData.toDomainRecyclerViewData(): DomainRecyclerData=

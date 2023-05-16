@@ -1,19 +1,16 @@
 package com.example.receiptcareapp.fragment.recyclerFragment
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.local.toDomainRecyclerData
+import com.example.domain.model.local.toRecyclerShowData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
@@ -22,7 +19,6 @@ import com.example.receiptcareapp.fragment.recyclerFragment.adapter.LocalAdapter
 import com.example.receiptcareapp.fragment.recyclerFragment.adapter.ServerAdapter
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
-import java.io.File
 
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
@@ -45,6 +41,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.e("TAG", "onViewCreated: ", )
         super.onViewCreated(view, savedInstanceState)
 
         // 통신연결, 서버상태 값 초기화
@@ -57,13 +54,15 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         //서버에서 받아온 데이터 옵져버
         activityViewModel.serverData.observe(viewLifecycleOwner){
+            serverAdapter.dataList.clear()
             serverAdapter.dataList = it
             setTextAndVisible("데이터가 비었어요!", serverAdapter.dataList.isEmpty())
         }
 
         //룸에서 받아온 데이터 옵져버
         activityViewModel.roomData.observe(viewLifecycleOwner){
-            localAdapter.dataList = it
+            localAdapter.dataList.clear()
+            localAdapter.dataList = it.map {it.toRecyclerShowData()}.toMutableList()
             setTextAndVisible("데이터가 비었어요!", localAdapter.dataList.isEmpty())
         }
 
@@ -147,7 +146,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         //로컬 목록에서 리스트를 누를경우
         localAdapter.onLocalSaveClic = {
             Log.e("TAG", "localAdapter.onLocalSaveClic: $it", )
-            fragmentViewModel.myShowLocalData(it.toDomainRecyclerData())
+            fragmentViewModel.myShowLocalData(it)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
             fragmentViewModel.changeStartGap("local")
         }
@@ -177,7 +176,11 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     }
 
 
-
+    override fun onResume() {
+        super.onResume()
+        serverAdapter.dataList.clear()
+        localAdapter.dataList.clear()
+    }
 
     /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {

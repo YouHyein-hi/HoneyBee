@@ -14,7 +14,7 @@ import java.time.LocalDateTime
  * pureum
  */
 @Database(entities = [MyEntity::class], version = 2)
-@TypeConverters(BitmapConverter::class)
+//@TypeConverters(BitmapConverter::class)
 //@TypeConverters(
 //    value = [
 //        LocalDateTimeConverter::class,

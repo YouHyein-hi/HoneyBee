@@ -1,6 +1,7 @@
 package com.example.receiptcareapp.fragment.recyclerFragment
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -40,18 +41,18 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         // 로컬 데이터 일 시
         }else if(fragmentViewModel.showLocalData.value != null){
             val data = fragmentViewModel.showLocalData.value
-            myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, data.file)
+            var bitmap = BitmapFactory.decodeFile(data?.file?.path)
+            myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, bitmap)
         }else{
             binding.backgroundText.text = "데이터가 없어요!"
             Toast.makeText(requireContext(), "데이터가 없어요!", Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()
         }
 
-        val newDate = myData.date.split("-","T",":")
         binding.pictureName.text = myData.storeName
-//        binding.imageView.setImageURI(myData.picture)
+        binding.imageView.setImageBitmap(myData.file)
         binding.imageView.clipToOutline = true
-        binding.date.text = "${newDate[0]}.${newDate[1]}.${newDate[2]}.  ${newDate[3]}:${newDate[4]}"
+        binding.date.text = myData.date
         binding.cardAmount.text = "${myData.cardName}카드 : ${myData.amount}원"
 
 

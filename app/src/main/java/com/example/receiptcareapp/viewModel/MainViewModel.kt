@@ -42,7 +42,7 @@ class MainViewModel @Inject constructor(
     private val roomUseCase: RoomUseCase
 ) : BaseViewModel() {
 
-    private var waitTime = 3000L
+    private var waitTime = 5000L
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
     var myCotext: Context? = null
 
@@ -69,7 +69,6 @@ class MainViewModel @Inject constructor(
     private var _cardData = MutableLiveData<MutableList<DomainReceiveCardData>>()
     val cardData: LiveData<MutableList<DomainReceiveCardData>>
         get() = _cardData
-
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
 
@@ -90,7 +89,7 @@ class MainViewModel @Inject constructor(
                             sendData.storeName
                         ),
                         date = MultipartBody.Part.createFormData("date", sendData.date),
-                        amount = MultipartBody.Part.createFormData("amount", sendData.amount),
+                        amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
                         picture = myPicture
                     )
                 )
@@ -118,7 +117,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun fileToBitmap(file : File): Bitmap {
+    fun uriToBitmap(file : File): Bitmap {
         Log.e("TAG", "fileToBitmap: $file", )
         var gap = BitmapFactory.decodeFile(file.path)
         Log.e("TAG", "fileToBitmap: $gap", )
@@ -238,15 +237,7 @@ class MainViewModel @Inject constructor(
 
     fun insertRoomData(domainRoomData: DomainRoomData) {
         CoroutineScope(exceptionHandler).launch {
-            roomUseCase.insertData(
-                DomainRoomData(
-                    cardName = domainRoomData.cardName,
-                    amount = domainRoomData.amount,
-                    storeName = domainRoomData.storeName,
-                    date = domainRoomData.date,
-                    file = domainRoomData.file
-                )
-            )
+            roomUseCase.insertData(domainRoomData)
             _connectedState.postValue(ConnectedState.CONNECTING)
         }
     }

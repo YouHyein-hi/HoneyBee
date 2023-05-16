@@ -37,7 +37,7 @@ object LocalDataModule {
             // .fallbackToDestructiveMigration()
             // => 이걸쓰면 테이블이 유실되어 호출 실패해도 db를 재생성함(이전데이터 날라감)
             //.addTypeConverter(LocalDateTimeConverter(gson))
-            .addTypeConverter(BitmapConverter())
+//            .addTypeConverter(BitmapConverter())
             .build()
     }
 }

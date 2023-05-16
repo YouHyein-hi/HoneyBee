@@ -48,7 +48,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="center"
-                    android:text="가게 이름" />
+                    android:text="가게 이름"
+                    android:textColor="@color/gray" />
 
                 <TextView
                     android:id="@+id/cardName"

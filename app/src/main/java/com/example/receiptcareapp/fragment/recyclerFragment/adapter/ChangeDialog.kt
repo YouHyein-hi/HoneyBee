@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
+import com.example.domain.model.RecyclerShowData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.State.ShowType
@@ -29,7 +30,7 @@ class ChangeDialog : DialogFragment() {
     private val activityViewModel: MainViewModel by activityViewModels()
     private var myArray = arrayListOf<String>()
     private lateinit var binding : DialogChangeBinding
-    private lateinit var myData: ShowData
+    private lateinit var myData: RecyclerShowData
     private var settingYear = 0
     private var settingMonth = 0
     private var settingDay = 0
@@ -70,9 +71,9 @@ class ChangeDialog : DialogFragment() {
         binding = DialogChangeBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(requireContext())
 
-        val data = fragmentViewModel.showLocalData.value
-        myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, data.file)
-        val newDate = myData.date.split("-","T",":")
+//        myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, data.file)
+        myData = fragmentViewModel.showLocalData.value!!
+        val newDate = myData.date.split("년","월","일","시","분","초")
 
         // 다이얼로그 타이틀, 메세지, 뷰를 설정합니다.
         builder.setTitle("")
@@ -82,9 +83,15 @@ class ChangeDialog : DialogFragment() {
         // 수정 전 로컬 데이터 화면에 띄우기
         binding.changeBtnStore.setText(myData.storeName)
         binding.changeBtnPrice.setText(myData.amount)
-        settingYear = newDate[0].toInt()
-        settingMonth = newDate[1].toInt()
-        settingDay = newDate[2].toInt()
+        try {
+            settingYear = newDate[0].toInt()
+            settingMonth = newDate[1].toInt()
+            settingDay = newDate[2].toInt()
+        }catch (E:Exception){
+            settingYear = 2023
+            settingMonth = 5
+            settingDay = 16
+        }
         binding.changeDatepicker.init(settingYear, settingMonth-1, settingDay, null)
         Log.e("TAG", "onCreateView: ${settingYear}, ${settingMonth}, ${settingYear}", )
 

@@ -2,6 +2,7 @@ package com.example.data.remote.model
 
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.util.Log
 import com.example.domain.model.receive.DomainReceiveAllData
 import okio.utf8Size
 import java.text.DecimalFormat
@@ -27,9 +28,12 @@ fun ReceiveData.toDomainReceiveData(): DomainReceiveAllData{
     var myData = date
     if(date.contains("-") && date.contains("T") && date.contains(":")){
         val myList = myData.split("-","T",":")
+        Log.e("TAG", "toDomainReceiveData: $myList", )
         if(myList.size == 6)
-            myData = "${myData[0]}년 ${myData[1]}월 ${myData[2]}일 ${myData[3]}시 ${myData[4]}분 ${myData[5]}초"
+            myData = "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
     }
+    Log.e("TAG", "toDomainReceiveData: $myData", )
+
 
     val gap = file.toByteArray()
     val decode = Base64.decode(gap, Base64.DEFAULT)

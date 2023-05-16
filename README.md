@@ -23,7 +23,7 @@
 - Room Database
 - Lottie
 - Coroutine
-- Retrofit
+- Retrofit 
 
 ## 메인 화면
 |제목|내용|

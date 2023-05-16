@@ -4,9 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -17,6 +20,8 @@ import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.databinding.FragmentRecyclerShowBinding
 import com.example.receiptcareapp.dto.ShowData
 import com.example.receiptcareapp.fragment.base.BaseFragment
+import com.example.receiptcareapp.fragment.recyclerFragment.adapter.ChangeDialog
+import com.example.receiptcareapp.fragment.showPictureFragment.SpinnerCustomAdapter
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 
@@ -25,6 +30,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     private val activityViewModel : MainViewModel by activityViewModels()
     private lateinit var myData: ShowData
     private lateinit var callback:OnBackPressedCallback
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
@@ -102,34 +108,33 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
             .setMessage("서버에 보내시겠어요?")
-            .setPositiveButton("닫기"){_,_->}
-            .setNegativeButton("보내기"){_,_->
+            .setPositiveButton("닫기"){dialog,id->
+                dialog.dismiss()
+            }
+            .setNegativeButton("보내기"){dialog,id->
 //                    activityViewModel.sendData(
 //                        SendData(id = myData.id, cardName = myData.cardName, amount = myData.date, date = myData.date, picture = myData.picture, storeName = myData.pictureName))
+                dialog.dismiss()
             }
             .create().show()
     }
 
     //서버 수정
     private fun changeDialog(){
-        AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-            .setTitle("")
-            .setMessage("데이터를 수정하시겠어요?")
-            .setPositiveButton("닫기"){_,_->findNavController().popBackStack()}
-            .setNegativeButton("수정해서 보내기"){_,_->
-//                activityViewModel.changeServerData(SendData(
-//                    id = myData.id, cardName = myData.cardName, amount = myData.date, date = myData.date, picture = myData.picture, storeName = myData.pictureName))
-                findNavController().popBackStack()
-            }
-            .create().show()
+        val changeDialogFragment = ChangeDialog()
+        changeDialogFragment.show(parentFragmentManager, "CustomDialog")
     }
+
     //서버와 로컬 삭제
     private fun deleteDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
             .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")
-            .setPositiveButton("닫기"){_,_->findNavController().popBackStack()}
-            .setNegativeButton("삭제하기"){_,_->
+            .setPositiveButton("닫기"){dialog,id->
+                //findNavController().popBackStack()
+                dialog.dismiss()
+            }
+            .setNegativeButton("삭제하기"){dialog,id->
                 Log.e("TAG", "deleteDialog: ${myData}", )
                 if(myData.type == ShowType.SERVER){
                     activityViewModel.deleteServerData(myData.uid.toLong())

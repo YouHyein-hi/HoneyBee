@@ -2,6 +2,7 @@ package com.example.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.example.data.local.dao.MyDao
 import com.example.data.local.entity.MyEntity
@@ -12,7 +13,8 @@ import java.time.LocalDateTime
  * 2023-02-15
  * pureum
  */
-@Database(entities = [MyEntity::class], version = 1)
+@Database(entities = [MyEntity::class], version = 2)
+//@TypeConverters(BitmapConverter::class)
 //@TypeConverters(
 //    value = [
 //        LocalDateTimeConverter::class,

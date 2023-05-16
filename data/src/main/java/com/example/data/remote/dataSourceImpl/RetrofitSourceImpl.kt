@@ -5,6 +5,7 @@ import com.example.data.remote.dataSource.RetrofitSource
 import com.example.data.remote.model.ReceiveCardData
 import com.example.data.remote.model.ReceiveData
 import okhttp3.MultipartBody
+import okio.utf8Size
 import retrofit2.Retrofit
 import javax.inject.Inject
 
@@ -42,7 +43,11 @@ class RetrofitSourceImpl @Inject constructor(
     }
 
     override suspend fun receiveDataSource(): MutableList<ReceiveData> {
-        return retrofit.create(RetrofitSource::class.java).receiveDataSource()
+
+        val data = retrofit.create(RetrofitSource::class.java).receiveDataSource()
+        Log.e("TAG", "receiveDataSource data: ${data}")
+        Log.e("TAG", "receiveDataSource size: ${data.first().file.utf8Size()}")
+        return data
     }
 
     override suspend fun receiveCardDataSource(): MutableList<ReceiveCardData> {

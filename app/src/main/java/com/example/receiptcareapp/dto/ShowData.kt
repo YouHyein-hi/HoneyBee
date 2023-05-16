@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.dto
 
+import android.graphics.Bitmap
 import android.net.Uri
 import com.example.receiptcareapp.State.ShowType
 
@@ -15,5 +16,5 @@ data class ShowData(
     val amount: String,
     var date: String,
     val storeName: String,
-    val file: String
+    val file: Bitmap?
 )

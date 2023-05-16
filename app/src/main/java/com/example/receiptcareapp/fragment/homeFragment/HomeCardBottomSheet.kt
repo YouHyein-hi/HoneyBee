@@ -87,6 +87,7 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
         activityViewModel.cardData.observe(viewLifecycleOwner){
             if(it.isEmpty()) setCenterText("데이터가 비었어요!", true)
             else{
+                Log.e("TAG", "bottomsheet observe: $it", )
                 setCenterText("", false)
                 adapter.dataList = list
             }

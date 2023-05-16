@@ -2,6 +2,8 @@ package com.example.receiptcareapp.viewModel
 
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -40,7 +42,7 @@ class MainViewModel @Inject constructor(
     private val roomUseCase: RoomUseCase
 ) : BaseViewModel() {
 
-    private var waitTime = 3000L
+    private var waitTime = 5000L
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
     var myCotext: Context? = null
 
@@ -67,7 +69,6 @@ class MainViewModel @Inject constructor(
     private var _cardData = MutableLiveData<MutableList<DomainReceiveCardData>>()
     val cardData: LiveData<MutableList<DomainReceiveCardData>>
         get() = _cardData
-
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
 
@@ -88,7 +89,7 @@ class MainViewModel @Inject constructor(
                             sendData.storeName
                         ),
                         date = MultipartBody.Part.createFormData("date", sendData.date),
-                        amount = MultipartBody.Part.createFormData("amount", sendData.amount),
+                        amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
                         picture = myPicture
                     )
                 )
@@ -103,6 +104,8 @@ class MainViewModel @Inject constructor(
                             storeName = sendData.storeName,
                             date = sendData.date,
                             file = sendData.picture.toString()
+//                            file = fileToBitmap(file)
+//                            file = sendData.picture
                         )
                     )
                 } else {
@@ -112,6 +115,13 @@ class MainViewModel @Inject constructor(
                 }
             } ?: throw SocketTimeoutException()
         }
+    }
+
+    fun uriToBitmap(file : File): Bitmap {
+        Log.e("TAG", "fileToBitmap: $file", )
+        var gap = BitmapFactory.decodeFile(file.path)
+        Log.e("TAG", "fileToBitmap: $gap", )
+        return gap
     }
 
     //절대경로로 변환
@@ -152,7 +162,7 @@ class MainViewModel @Inject constructor(
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime){
                 val gap = retrofitUseCase.receiveDataUseCase()
-                Log.e("TAG", "receiveAllServerData: $gap")
+                Log.e("TAG", "receiveAllServerData: ${gap.forEach{it.file}}")
                 _serverData.postValue(gap)
                 _connectedState.postValue(ConnectedState.DISCONNECTED)
             } ?: throw SocketTimeoutException()
@@ -227,15 +237,7 @@ class MainViewModel @Inject constructor(
 
     fun insertRoomData(domainRoomData: DomainRoomData) {
         CoroutineScope(exceptionHandler).launch {
-            roomUseCase.insertData(
-                DomainRoomData(
-                    cardName = domainRoomData.cardName,
-                    amount = domainRoomData.amount,
-                    storeName = domainRoomData.storeName,
-                    date = domainRoomData.date,
-                    file = domainRoomData.file
-                )
-            )
+            roomUseCase.insertData(domainRoomData)
             _connectedState.postValue(ConnectedState.CONNECTING)
         }
     }

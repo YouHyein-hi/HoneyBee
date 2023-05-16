@@ -1,5 +1,6 @@
 package com.example.data.remote.model
 
+import android.util.Log
 import com.example.domain.model.receive.DomainReceiveCardData
 import java.text.DecimalFormat
 
@@ -14,7 +15,9 @@ data class ReceiveCardData(
 )
 
 fun ReceiveCardData.toDomainReceiveCardData():DomainReceiveCardData{
+    Log.e("TAG", "toDomainReceiveCardData: $cardAmount", )
     val myCardAmount = DecimalFormat("#,###")
-    myCardAmount.format(cardAmount.toString().replace(",","").toInt())
-    return DomainReceiveCardData(uid,cardName, myCardAmount.toString())
+    val newCardAmount = myCardAmount.format(cardAmount.toString().toInt())
+    Log.e("TAG", "toDomainReceiveCardData: $newCardAmount", )
+    return DomainReceiveCardData(uid,cardName, newCardAmount)
 }

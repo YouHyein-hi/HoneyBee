@@ -29,10 +29,13 @@ interface RetrofitSource {
         @Field("cardAmount") amount : Int?,
     ): String
 
-    @GET("bill")   // 전체 데이터 요청
+    @Streaming
+    @GET("bill/list")   // 전체 데이터 요청
+
     suspend fun receiveDataSource() : MutableList<ReceiveData>
 
-    @GET("billCard")
+    @Streaming
+    @GET("billCard/list")
     suspend fun receiveCardDataSource() : MutableList<ReceiveCardData>
 
 

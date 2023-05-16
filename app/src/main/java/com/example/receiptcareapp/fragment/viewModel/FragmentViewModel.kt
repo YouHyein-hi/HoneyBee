@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.domain.model.RecyclerShowData
 import com.example.domain.model.receive.DomainReceiveAllData
 import okhttp3.MultipartBody
 
@@ -31,10 +32,10 @@ class FragmentViewModel : ViewModel(){
         _multiPartPicture.value = img
     }
 
-    private val _showLocalData = MutableLiveData<DomainReceiveAllData?>()
-    val showLocalData : LiveData<DomainReceiveAllData?>
+    private val _showLocalData = MutableLiveData<RecyclerShowData?>()
+    val showLocalData : LiveData<RecyclerShowData?>
         get() = _showLocalData
-    fun myShowLocalData(data: DomainReceiveAllData?){
+    fun myShowLocalData(data: RecyclerShowData?){
         Log.e("TAG", "myShowLocalData: $data", )
         _showLocalData.value = data
     }

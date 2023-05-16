@@ -5,13 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.local.toDomainRecyclerData
+import com.example.domain.model.local.toRecyclerShowData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
@@ -37,14 +36,12 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         super.onCreate(savedInstanceState)
         Log.e("TAG", "onCreate: RecyclerFragment start", )
         fragmentViewModel.changeStartGap("server")
-//        activityViewModel.insertData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:20", "content://media/external/images/media/1000014186")
-//        activityViewModel.insertData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:21", "content://media/external/images/media/1000014186")
-//        activityViewModel.insertData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:22", "content://media/external/images/media/1000014186")
-//        activityViewModel.insertData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:23", "content://media/external/images/media/1000014186")
-//        activityViewModel.insertData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:24", "content://media/external/images/media/1000014186")
+//        activityViewModel.insertRoomData(
+//            DomainRoomData("하이하이", "10,000", "아우네순댓국", "2023-03-20T20:20:20", BitmapFactory.decodeFile("content://media/external/images/media/1000014186")))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.e("TAG", "onViewCreated: ", )
         super.onViewCreated(view, savedInstanceState)
 
         // 통신연결, 서버상태 값 초기화
@@ -57,13 +54,15 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         //서버에서 받아온 데이터 옵져버
         activityViewModel.serverData.observe(viewLifecycleOwner){
+            serverAdapter.dataList.clear()
             serverAdapter.dataList = it
             setTextAndVisible("데이터가 비었어요!", serverAdapter.dataList.isEmpty())
         }
 
         //룸에서 받아온 데이터 옵져버
         activityViewModel.roomData.observe(viewLifecycleOwner){
-            localAdapter.dataList = it
+            localAdapter.dataList.clear()
+            localAdapter.dataList = it.map {it.toRecyclerShowData()}.toMutableList()
             setTextAndVisible("데이터가 비었어요!", localAdapter.dataList.isEmpty())
         }
 
@@ -147,7 +146,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         //로컬 목록에서 리스트를 누를경우
         localAdapter.onLocalSaveClic = {
             Log.e("TAG", "localAdapter.onLocalSaveClic: $it", )
-            fragmentViewModel.myShowLocalData(it.toDomainRecyclerData())
+            fragmentViewModel.myShowLocalData(it)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
             fragmentViewModel.changeStartGap("local")
         }
@@ -177,7 +176,11 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     }
 
 
-
+    override fun onResume() {
+        super.onResume()
+        serverAdapter.dataList.clear()
+        localAdapter.dataList.clear()
+    }
 
     /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {

@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.graphics.Color
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -42,6 +43,7 @@ class ShowPictureFragment :
     private lateinit var callback: OnBackPressedCallback
     private var arrayCardList : MutableList<DomainReceiveCardData> = mutableListOf()
     private var myArray = arrayListOf<String>()
+    private var newCard = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,9 +67,15 @@ class ShowPictureFragment :
 
         activityViewModel.cardData.observe(viewLifecycleOwner){
             //val myArray = arrayListOf<String>()
-            it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
+            if(myArray.isEmpty()){
+                it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
+            }
+            if(newCard == 1){
+                myArray.clear()
+                it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
+                newCard = 0
+            }
             val adapter = SpinnerCustomAdapter(requireContext(), myArray)
-            Log.e("TAG", "myArray: $myArray", )
             /*
             val adapter = ArrayAdapter(
                 requireContext(),
@@ -137,12 +145,6 @@ class ShowPictureFragment :
             }
         }
 
-
-
-        /** 카드 추가 관련 코드 **/
-        val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
-        val editText_cardName = dialogView.findViewById<EditText>(R.id.dialog_cardname)
-        val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
 
         binding.cardaddBtn.setOnClickListener{
             cardAddDialog()
@@ -246,20 +248,24 @@ class ShowPictureFragment :
                 }
                 else{
                     Log.e("TAG", "cardAddDialog: ${editText_cardName.text}", )
-                    cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
-                    cardArray?.let { it -> viewModel.takeCardData(it) }
+                    //cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
+                    //cardArray?.let { it -> viewModel.takeCardData(it) }
+                    newCard = 1
                     activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
                     activityViewModel.sendCardData(AppSendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt()))
                     getSpinner()
+                    dialog.dismiss()
                 }
+
             }
             .setNegativeButton("취소"){dialog, id->
                 Log.e("TAG", "getSpinner: 카드 추가 취소", )
                 dialog.dismiss()
             }
             .setCancelable(false)
-            .show()
+            .create()
 
+        cardAddDialog.show()
         cardAddDialog.getButton(DialogInterface.BUTTON_POSITIVE)
             .setTextColor(Color.RED)
         cardAddDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
@@ -289,7 +295,8 @@ class ShowPictureFragment :
             .setPositiveButton("삭제"){dialog, id->
                 // 카드 삭제 event 넣기
                 Log.e("TAG", "getSpinner: 카드 삭제 성공", )
-//                activityViewModel.deleteCardData()
+//                activityViewModel.deleteCardData(minusCard)
+                newCard = 1
                 dialog.dismiss()   // 예비
             }
             .setNegativeButton("취소"){dialog, id->

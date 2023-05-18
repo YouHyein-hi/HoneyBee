@@ -117,13 +117,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun uriToBitmap(file : File): Bitmap {
-        Log.e("TAG", "fileToBitmap: $file", )
-        var gap = BitmapFactory.decodeFile(file.path)
-        Log.e("TAG", "fileToBitmap: $gap", )
-        return gap
-    }
-
     //절대경로로 변환
     fun absolutelyPath(path: Uri?, context: Context?): String {
         val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
@@ -143,11 +136,6 @@ class MainViewModel @Inject constructor(
                     DomainSendCardData(
                         cardName = sendData.cardName,
                         cardAmount = sendData.cardAmount
-//                        cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
-//                        cardAmount = MultipartBody.Part.createFormData(
-//                            "cardName",
-//                            sendData.cardAmount
-//                        )
                     )
                 )
                 _connectedState.postValue(ConnectedState.CARD_CONNECTING_SUCCESS)
@@ -229,37 +217,41 @@ class MainViewModel @Inject constructor(
 
     fun deleteRoomData(date: String) {
         CoroutineScope(exceptionHandler).launch {
+            _connectedState.postValue(ConnectedState.CONNECTING)
             roomUseCase.deleteData(date)
             //삭제 후에 데이터 끌어오기 위한 구성
             receiveAllRoomData()
+            _connectedState.postValue(ConnectedState.DISCONNECTED)
         }
     }
 
     fun insertRoomData(domainRoomData: DomainRoomData) {
         CoroutineScope(exceptionHandler).launch {
-            roomUseCase.insertData(domainRoomData)
             _connectedState.postValue(ConnectedState.CONNECTING)
+            roomUseCase.insertData(domainRoomData)
+            _connectedState.postValue(ConnectedState.DISCONNECTED)
         }
     }
 
     fun receiveAllRoomData() {
         CoroutineScope(exceptionHandler).launch {
+            _connectedState.postValue(ConnectedState.CONNECTING)
             val gap = roomUseCase.getAllData()
             Log.e("TAG", "receiveAllRoomData: $gap")
             _roomData.postValue(gap)
+            _connectedState.postValue(ConnectedState.DISCONNECTED)
         }
     }
 
 
     fun serverCoroutineStop() {
-        _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소하겠다구!"))
+        _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소"))
         this.setFetchStateStop()
         _connectedState.postValue(ConnectedState.DISCONNECTED)
     }
 
     fun hideServerCoroutineStop() {
-        _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소하겠다구!"))
-        this.hideSetFetchStateStop()
+        _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소"))
         _connectedState.postValue(ConnectedState.DISCONNECTED)
     }
 }

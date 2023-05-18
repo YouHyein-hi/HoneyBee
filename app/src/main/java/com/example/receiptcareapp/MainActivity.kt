@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        activityViewModel.myCotext = this
+        activityViewModel.myCotext = applicationContext
 
         supportActionBar?.hide()
 

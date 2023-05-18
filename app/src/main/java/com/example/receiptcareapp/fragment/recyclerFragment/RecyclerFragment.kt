@@ -116,7 +116,6 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             setTextAndVisible("",false)
             when(it.itemId){
                 R.id.server -> {
-//                    activityViewModel.hideServerCoroutineStop()
                     binding.explain.text = "서버의 데이터 입니다."
                     activityViewModel.receiveServerAllData()
                     initServerRecyclerView()
@@ -124,9 +123,9 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
                 }
                 R.id.local -> {
                     Log.e("TAG", "click listener local: ", )
+                    binding.explain.text = "휴대폰의 데이터 입니다."
                     activityViewModel.hideServerCoroutineStop()
                     setTextAndVisible("",false)
-                    binding.explain.text = "휴대폰의 데이터 입니다."
                     activityViewModel.receiveAllRoomData()
                     initLocalRecyclerView()
                     true
@@ -187,6 +186,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                Log.e("TAG", "handleOnBackPressed: 뒤로가기", )
                 if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                     activityViewModel.serverCoroutineStop()
                     findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)

@@ -2,6 +2,7 @@ package com.example.receiptcareapp.fragment.recyclerFragment
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -25,6 +26,7 @@ import com.example.receiptcareapp.fragment.recyclerFragment.adapter.ChangeDialog
 import com.example.receiptcareapp.fragment.showPictureFragment.SpinnerCustomAdapter
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
+import java.io.File
 
 class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
@@ -43,12 +45,12 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             binding.resendBtn.isVisible = false
             val data = fragmentViewModel.showServerData.value
             myData = ShowData(ShowType.SERVER, data!!.uid, data.cardName, data.amount, data.date, data.storeName, data.file)
-
-        // 로컬 데이터 일 시
+            binding.imageView.setImageBitmap(myData.file)
+            // 로컬 데이터 일 시
         }else if(fragmentViewModel.showLocalData.value != null){
             val data = fragmentViewModel.showLocalData.value
-            var bitmap = BitmapFactory.decodeFile(data?.file?.path)
-            myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, bitmap)
+            myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, null)
+            binding.imageView.setImageURI(data?.file)
         }else{
             binding.backgroundText.text = "데이터가 없어요!"
             Toast.makeText(requireContext(), "데이터가 없어요!", Toast.LENGTH_SHORT).show()
@@ -56,11 +58,9 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         }
 
         binding.pictureName.text = myData.storeName
-        binding.imageView.setImageBitmap(myData.file)
         binding.imageView.clipToOutline = true
         binding.date.text = myData.date
         binding.cardAmount.text = "${myData.cardName}카드 : ${myData.amount}원"
-
 
         //재전송 버튼, 서버와 로컬
         binding.resendBtn.setOnClickListener{
@@ -81,7 +81,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             if(it==ConnectedState.DISCONNECTED) {
                 binding.progressBar.visibility = View.INVISIBLE
             }
-            else if(it==ConnectedState.DISCONNECTED){
+            else if(it==ConnectedState.CONNECTING){
                 binding.progressBar.visibility = View.VISIBLE
             }
             else if(it==ConnectedState.CONNECTING_SUCCESS){
@@ -120,8 +120,9 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             .create().show()
     }
 
-    //서버 수정
+    //수정
     private fun changeDialog(){
+        activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
         val changeDialogFragment = ChangeDialog()
         changeDialogFragment.show(parentFragmentManager, "CustomDialog")
     }
@@ -155,7 +156,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                     activityViewModel.serverCoroutineStop()
                 } else {
-                    findNavController().popBackStack()
+                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
                 }
             }
         }
@@ -166,9 +167,4 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         super.onDetach()
         callback.remove()
     }
-
-//    private fun myBack(){
-//        activityViewModel.serverCoroutineStop()
-//        findNavController().popBackStack()
-//    }
 }

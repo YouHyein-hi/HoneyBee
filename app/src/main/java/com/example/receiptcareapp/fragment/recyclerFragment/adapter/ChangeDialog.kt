@@ -3,6 +3,8 @@ package com.example.receiptcareapp.fragment.recyclerFragment.adapter
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,15 +30,17 @@ class ChangeDialog : DialogFragment() {
 
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val activityViewModel: MainViewModel by activityViewModels()
-    private var myArray = arrayListOf<String>()
     private lateinit var binding : DialogChangeBinding
     private lateinit var myData: RecyclerShowData
+    private var myArray = arrayListOf<String>()
     private var settingYear = 0
     private var settingMonth = 0
     private var settingDay = 0
     private var myYear = 0
     private var myMonth = 0
     private var myDay = 0
+    private var positiveButton: Button? = null
+    private var negativeButton: Button? = null
 
 
 
@@ -75,10 +79,23 @@ class ChangeDialog : DialogFragment() {
         myData = fragmentViewModel.showLocalData.value!!
         val newDate = myData.date.split("년","월","일","시","분","초")
 
-        // 다이얼로그 타이틀, 메세지, 뷰를 설정합니다.
-        builder.setTitle("")
-        builder.setMessage("데이터를 수정하시겠어요?")
-        builder.setView(binding.root)
+        val changeDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
+            .setTitle("")
+            .setMessage("데이터를 수정하시겠어요?")
+            .setView(binding.root)
+            .setPositiveButton("수정해서 보내기") { _, _ ->
+//                activityViewModel.changeServerData(SendData(
+//                    id = myData.id, cardName = myData.cardName, amount = myData.date, date = myData.date, picture = myData.picture, storeName = myData.pictureName))
+                //                    findNavController().popBackStack()
+                myYear = binding.changeDatepicker.year
+                myMonth = binding.changeDatepicker.month + 1
+                myDay = binding.changeDatepicker.dayOfMonth
+                Log.e("TAG", "onCreateDialog: $myYear, $myMonth, $myDay")
+            }
+            .setNegativeButton("닫기") { _,  _ ->
+                // Cancel 버튼을 클릭했을 때 처리하는 코드를 작성합니다.
+            }
+            .create()
 
         // 수정 전 로컬 데이터 화면에 띄우기
         binding.changeBtnStore.setText(myData.storeName)
@@ -97,21 +114,6 @@ class ChangeDialog : DialogFragment() {
 
         getSpinner()
 
-
-        // PositiveButton과 NegativeButton을 설정합니다.
-        builder.setPositiveButton("수정해서 보내기") { _, _ ->
-//                activityViewModel.changeServerData(SendData(
-//                    id = myData.id, cardName = myData.cardName, amount = myData.date, date = myData.date, picture = myData.picture, storeName = myData.pictureName))
-        //                    findNavController().popBackStack()
-            myYear = binding.changeDatepicker.year
-            myMonth = binding.changeDatepicker.month + 1
-            myDay = binding.changeDatepicker.dayOfMonth
-            Log.e("TAG", "onCreateDialog: $myYear, $myMonth, $myDay")
-        }
-
-        builder.setNegativeButton("닫기") { _,  _ ->
-            // Cancel 버튼을 클릭했을 때 처리하는 코드를 작성합니다.
-        }
 
 
 
@@ -136,9 +138,15 @@ class ChangeDialog : DialogFragment() {
         }
         */
 
+        changeDialog.setOnShowListener{
+            positiveButton = changeDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+            negativeButton = changeDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
 
+            positiveButton?.setTextColor(Color.RED)
+            negativeButton?.setTextColor(Color.BLACK)
+        }
         // 다이얼로그를 생성하고 반환합니다.
-        return builder.create()
+        return changeDialog
     }
 
     private fun getSpinner(){

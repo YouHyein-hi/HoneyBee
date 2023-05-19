@@ -12,6 +12,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -76,13 +77,6 @@ class ShowPictureFragment :
                 newCard = 0
             }
             val adapter = SpinnerCustomAdapter(requireContext(), myArray)
-            /*
-            val adapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                myArray
-            )
-            */
             binding.spinner.adapter = adapter
         }
 
@@ -107,12 +101,7 @@ class ShowPictureFragment :
 
                 binding.btnDate.text = "${myYear}/${myMonthSt}/${mydaySt}"
             }
-            val dataDialog = DatePickerDialog(
-                requireContext(),
-                data,
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)
+            val dataDialog = DatePickerDialog(requireContext(), data, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)
             )
             dataDialog.show()
             dataDialog.getButton(DialogInterface.BUTTON_POSITIVE)
@@ -231,6 +220,36 @@ class ShowPictureFragment :
             handled
         }
 
+        // EditText 비어있을 시 나타나는 style 이벤트
+        val hintCardNmae = editText_cardName.hint
+        val emphasis_yellow = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.emphasis_yellow))
+        editText_cardName.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus && editText_cardName.text.isEmpty()) {
+                editText_cardName.hint = "카드 이름을 꼭 적어주세요!"
+                editText_cardName.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            } else if(hasFocus && !editText_cardName.text.isEmpty())  {
+                editText_cardName.hint = hintCardNmae // 초기 hint로 되돌리기
+                editText_cardName.backgroundTintList = emphasis_yellow
+            }
+            else if(!hasFocus && !editText_cardName.text.isEmpty()){
+                editText_cardName.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+            }
+        }
+        val hintCardPrice = editText_cardPrice.hint
+        editText_cardPrice.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus && editText_cardPrice.text.isEmpty()) {
+                // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
+                editText_cardPrice.hint = "초기 금액을 꼭 적어주세요!"
+                editText_cardPrice.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            } else if(hasFocus && !editText_cardPrice.text.isEmpty()) {
+                editText_cardPrice.hint = hintCardPrice // 초기 hint로 되돌리기
+                editText_cardPrice.backgroundTintList = emphasis_yellow
+            }
+            else if(!hasFocus && !editText_cardPrice.text.isEmpty()){
+                editText_cardPrice.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+            }
+        }
+
         val cardAddDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
             .setTitle("카드 추가")
             .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
@@ -242,14 +261,12 @@ class ShowPictureFragment :
                     Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
                 }
                 else if(editText_cardPrice.text.toString() == ""){
-                    Log.e("TAG", "onViewCreated: 초기을 입력해주세요", )
+                    Log.e("TAG", "onViewCreated: 초기 금액을 입력해주세요", )
                     dialog.dismiss()
                     Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     Log.e("TAG", "cardAddDialog: ${editText_cardName.text}", )
-                    //cardArray?.put(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt())
-                    //cardArray?.let { it -> viewModel.takeCardData(it) }
                     newCard = 1
                     activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
                     activityViewModel.sendCardData(AppSendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt()))
@@ -337,7 +354,7 @@ class ShowPictureFragment :
                 Log.e("TAG", "onItemSelected: ${position}", )
                 val spiltCard = myArray[position].split(" : ")
                 checked = spiltCard[0]
-                Log.e("TAG", "onItemSelected: ${checked}fgnjkgasdnndfjknasjfndj", )
+                Log.e("TAG", "onItemSelected: ${checked}", )
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }

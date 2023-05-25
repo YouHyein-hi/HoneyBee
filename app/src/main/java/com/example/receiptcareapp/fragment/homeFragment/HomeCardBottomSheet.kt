@@ -46,10 +46,10 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val list = mutableListOf<DomainReceiveCardData>(
-//            DomainReceiveCardData("나라사랑 카드", 10000),
-//            DomainReceiveCardData("선민사랑 카드", 5555)
-        )
+//        val list = mutableListOf<DomainReceiveCardData>(
+////            DomainReceiveCardData("나라사랑 카드", 10000),
+////            DomainReceiveCardData("선민사랑 카드", 5555)
+//        )
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
 
         //서버 커넥팅 관리
@@ -82,7 +82,6 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
 
         binding.cardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.cardRecyclerview.adapter = adapter
-        adapter.dataList = list
 
         //서버 데이터 불러오기
         activityViewModel.receiveServerCardData()
@@ -91,7 +90,7 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
             else{
                 Log.e("TAG", "bottomsheet observe: $it", )
                 setCenterText("", false)
-                adapter.dataList = list
+                adapter.dataList = it
             }
         }
 

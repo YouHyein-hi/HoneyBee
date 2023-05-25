@@ -59,11 +59,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
-        android:visibility="invisible"
         android:id="@+id/serverProgressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/cardRecyclerview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

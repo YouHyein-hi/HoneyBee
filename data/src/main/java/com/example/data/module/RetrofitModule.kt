@@ -25,19 +25,21 @@ object RetrofitModule {
     var gson = GsonBuilder().setLenient().create()
 
 
-    @Qualifier
-    @Retention(AnnotationRetention.BINARY)
-    annotation class SendCard
-
-    @Qualifier
-    @Retention(AnnotationRetention.BINARY)
-    annotation class Api
+//    @Qualifier
+//    @Retention(AnnotationRetention.BINARY)
+//    annotation class SendCard
+//
+//    @Qualifier
+//    @Retention(AnnotationRetention.BINARY)
+//    annotation class Api
 
     @Singleton
     @Provides
     fun provideSendRetrofit():Retrofit{
         return Retrofit.Builder()
-            .baseUrl("http://192.168.1.13:8080/")
+            .baseUrl("http://210.119.104.158:8080/")
+//            .baseUrl("http://192.168.1.13:8080/")
+
 //            .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))

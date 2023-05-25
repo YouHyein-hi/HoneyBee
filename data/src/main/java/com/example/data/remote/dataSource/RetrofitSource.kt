@@ -31,7 +31,6 @@ interface RetrofitSource {
 
     @Streaming
     @GET("bill/list")   // 전체 데이터 요청
-
     suspend fun receiveDataSource() : MutableList<ReceiveData>
 
     @Streaming

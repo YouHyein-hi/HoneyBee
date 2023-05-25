@@ -42,7 +42,7 @@ class MainViewModel @Inject constructor(
     private val roomUseCase: RoomUseCase
 ) : BaseViewModel() {
 
-    private var waitTime = 5000L
+    private var waitTime = 10000L
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
     var myCotext: Context? = null
 

@@ -1,10 +1,5 @@
 package com.example.receiptcareapp.fragment.recyclerFragment.adapter
 
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.Dialog
-import android.content.DialogInterface
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,19 +9,13 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import com.example.domain.model.RecyclerShowData
 import com.example.domain.model.send.AppSendData
-import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnectedState
-import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.databinding.DialogChangeBinding
-import com.example.receiptcareapp.dto.ShowData
 import com.example.receiptcareapp.fragment.showPictureFragment.SpinnerCustomAdapter
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.time.LocalDateTime
-import java.util.*
 
 class ChangeDialog : DialogFragment() {
 
@@ -36,14 +25,13 @@ class ChangeDialog : DialogFragment() {
     private lateinit var myData: RecyclerShowData
     private var myArray = arrayListOf<String>()
     private var checked = ""
+    private var cardId = 0
     private var settingYear = 0
     private var settingMonth = 0
     private var settingDay = 0
     private var myYear = 0
     private var myMonth = 0
     private var myDay = 0
-    private var positiveButton: Button? = null
-    private var negativeButton: Button? = null
 
 
 
@@ -69,6 +57,7 @@ class ChangeDialog : DialogFragment() {
         val newDate = myData.date.split("년","월","일","시","분","초")
 
         // 수정 전 로컬 데이터 화면에 띄우기
+        // Spinner은 아직 설정 안함
         binding.changeBtnStore.setText(myData.storeName)
         binding.changeBtnPrice.setText(myData.amount)
         try {
@@ -96,13 +85,36 @@ class ChangeDialog : DialogFragment() {
             val myLocalDateTime = LocalDateTime.of(
                 myYear, myMonth, myDay,
                 LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second
-            )  // 값이 오늘로 설정되어있음. datePicker에서 설정한 날짜로 보내지게 하기
-            val changePrice = binding.changeBtnPrice.text.toString()
-//                activityViewModel.changeServerData(
-//                    AppSendData(
-//                        date = myLocalDateTime.toString(), amount = binding.changeBtnPrice.text.toString(), cardName = checked, picture = fragmentViewModel.image.value!!, storeName = binding.changeBtnStore.text.toString())
-//                )
-            Log.e("TAG", "onCreateDialog: ${myLocalDateTime}, ${changePrice}, ${/*checked*/myData.cardName}, ${binding.changeBtnStore.text}, ${myData.file}", )
+            )
+
+            Log.e("TAG", "onCreateView: ${myData.uid}", )
+            Log.e("TAG", "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${checked}, ${binding.changeBtnStore.text}, ${myData.file}", )
+
+            val data = fragmentViewModel.showLocalData.value
+
+            if(checked == " "){
+                Log.e("TAG", "onCreateView: 카드가 비어있습니다.", )
+            }
+            else if(binding.changeBtnStore.text!!.isEmpty()){
+                Log.e("TAG", "onCreateView: 가게 이름이 비어있습니다.", )
+            }
+            else if(binding.changeBtnPrice.text!!.isEmpty()){
+                Log.e("TAG", "onCreateView: 금액이 비어있습니다.", )
+            }
+            else if(myLocalDateTime.toString() == ""){
+                Log.e("TAG", "onCreateView: 날짜가 비어있습니다.", )
+            }
+            else if(data?.file == null){
+                Log.e("TAG", "onCreateView: 이미지가 비어있습니다.", )
+            }
+            else{
+                Log.e("TAG", "onCreateView: 다 있음!", )
+                activityViewModel.changeServerData(
+                    AppSendData(
+                        date = myLocalDateTime.toString(), amount = binding.changeBtnPrice.text.toString(), cardName = checked, picture = data!!.file, storeName = binding.changeBtnStore.text.toString())
+                    , myData.uid
+                )
+            }
 
             dismiss()
         }
@@ -120,16 +132,18 @@ class ChangeDialog : DialogFragment() {
         Log.e("TAG", "getSpinner", )
 
         activityViewModel.receiveServerCardData()
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, myArray)
-        // SpinnerCustomAdapter(requireContext(), myArray)
-        // ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, myArray)
+        val adapter = SpinnerCustomAdapter(requireContext(), myArray)
 
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.changeCardspinner?.adapter = adapter
         binding.changeCardspinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // 여기서 position은 0부터 시작함
                 Log.e("TAG", "getSpinner onItemSelected: ${position}", )
                 Log.e("TAG", "getSpinner onItemSelected: ${myArray[position]}", )
+                val spiltCard = myArray[position].split(" : ")
+                cardId = position
+                checked = spiltCard[0]
+                Log.e("TAG", "onItemSelected: ${checked}", )
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {

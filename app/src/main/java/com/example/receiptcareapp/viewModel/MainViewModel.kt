@@ -69,6 +69,16 @@ class MainViewModel @Inject constructor(
     private var _cardData = MutableLiveData<MutableList<DomainReceiveCardData>>()
     val cardData: LiveData<MutableList<DomainReceiveCardData>>
         get() = _cardData
+
+    // 전달받은 서버 사진 데이터 관리
+    private var _picture = MutableLiveData<Bitmap?>()
+    val picture: LiveData<Bitmap?>
+        get() = _picture
+    fun nullPicture(){
+        _picture.value=null
+    }
+
+
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
 
@@ -139,7 +149,6 @@ class MainViewModel @Inject constructor(
                     )
                 )
                 _connectedState.postValue(ConnectedState.CARD_CONNECTING_SUCCESS)
-                // 성공하면 값을 불러오기
                 receiveServerCardData()
             }?:throw SocketTimeoutException()
         }
@@ -150,11 +159,9 @@ class MainViewModel @Inject constructor(
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime){
                 val gap = retrofitUseCase.receiveDataUseCase()
-                Log.e("TAG", "receiveAllServerData: ${gap.forEach{it.file}}")
                 _serverData.postValue(gap)
                 _connectedState.postValue(ConnectedState.DISCONNECTED)
             } ?: throw SocketTimeoutException()
-
         }
     }
 
@@ -165,11 +172,18 @@ class MainViewModel @Inject constructor(
                 val gap = retrofitUseCase.receiveCardDataUseCase()
                 Log.e("TAG", "receiveCardData: $gap")
                 _cardData.postValue(gap)
-//            _cardData.value = retrofitUseCase.receiveCardDataUseCase()
-                // 통신 끝나면 커넥트 풀어주기
                 _connectedState.postValue(ConnectedState.DISCONNECTED)
-                // 라이브데이터로 관리하기!
-                // 결과값을 분기문으로 관리 + 커넥트 풀어주기
+            }?:throw SocketTimeoutException()
+        })
+    }
+
+    fun receiveServerPictureData(uid:String){
+        _connectedState.postValue(ConnectedState.CONNECTING)
+        _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
+            withTimeoutOrNull(waitTime) {
+                val gap = retrofitUseCase.receivePictureDataUseCase(uid)
+                _picture.postValue(gap)
+                _connectedState.postValue(ConnectedState.DISCONNECTED)
             }?:throw SocketTimeoutException()
         })
     }

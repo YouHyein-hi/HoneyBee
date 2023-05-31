@@ -18,7 +18,6 @@ data class ReceiveData(
     val amount: String,
     val date: String,
     val storeName: String,
-    val file: String
 )
 
 fun ReceiveData.toDomainReceiveData(): DomainReceiveAllData{
@@ -35,9 +34,9 @@ fun ReceiveData.toDomainReceiveData(): DomainReceiveAllData{
     Log.e("TAG", "toDomainReceiveData: $myData", )
 
 
-    val gap = file.toByteArray()
-    val decode = Base64.decode(gap, Base64.DEFAULT)
-    val myBitmap = BitmapFactory.decodeByteArray(decode, 0, decode.size)
+//    val gap = file.toByteArray()
+//    val decode = Base64.decode(gap, Base64.DEFAULT)
+//    val myBitmap = BitmapFactory.decodeByteArray(decode, 0, decode.size)
 
-    return DomainReceiveAllData(uid, cardName, amount, myData, storeName, myBitmap)
+    return DomainReceiveAllData(uid, cardName, amount, myData, storeName)
 }

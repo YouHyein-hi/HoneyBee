@@ -101,16 +101,6 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             }
         }
 
-//        //서버 연결 안될 시 배경에 보여주기
-//        activityViewModel.serverState.observe(viewLifecycleOwner){
-//            Log.e("TAG", "onViewCreated: inin! $it", )
-//            if(it==ServerState.FALSE) {
-//                setTextAndVisible("서버 연결 실패!", true)
-//            }else{
-//                setTextAndVisible("", false)
-//            }
-//        }
-
         // 하단 바텀시트 버튼
         binding.bottomNavigationView.setOnItemSelectedListener{
             setTextAndVisible("",false)
@@ -136,24 +126,28 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         //서버 목록에서 리스트를 누를 경우
         serverAdapter.onServerSaveClick = {
+            activityViewModel.nullPicture()
+            activityViewModel.receiveServerPictureData(it.uid)
             fragmentViewModel.myShowServerData(it)
-            findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
             fragmentViewModel.changeStartGap("server")
         }
 
 
         //로컬 목록에서 리스트를 누를경우
         localAdapter.onLocalSaveClic = {
-            Log.e("TAG", "localAdapter.onLocalSaveClic: $it", )
-            fragmentViewModel.myShowLocalData(it)
-            findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
+            activityViewModel.nullPicture()
+            activityViewModel.receiveServerPictureData(it.uid)
             fragmentViewModel.changeStartGap("local")
         }
 
+        //서버에서 사진데이터를 받아왔을 경우 showPage로 넘기기.
+        activityViewModel.picture.observe(viewLifecycleOwner){
+            Log.e("TAG", "받아온 사진: $it", )
+            findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
+        }
 
         //뒤로가기 버튼
         binding.backBtn.setOnClickListener{
-//            onAttach(requireContext())
             findNavController().popBackStack()
         }
     }

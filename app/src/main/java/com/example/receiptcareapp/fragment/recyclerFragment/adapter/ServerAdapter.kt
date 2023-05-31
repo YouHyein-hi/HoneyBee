@@ -27,13 +27,11 @@ class ServerAdapter(
 
     inner class MyAdapter(private val binding: ServerItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list: DomainReceiveAllData){
-
-            val myDate = list.date.split("-","T",":")
             binding.storeName.text = "${list.storeName}, "
             binding.cardName.text = "${list.cardName}카드 :"
             binding.amount.text = " ${list.amount}원"
             binding.date.text = "${list.date}"
-            binding.picture.setImageBitmap(list.file)
+//            binding.picture.setImageBitmap(list.file)
             binding.listLayout.setOnClickListener{ onServerSaveClick(list) }
         }
     }

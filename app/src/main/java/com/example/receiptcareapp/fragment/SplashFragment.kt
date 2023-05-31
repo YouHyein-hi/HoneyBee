@@ -13,7 +13,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentSplashBinding
-import com.example.receiptcareapp.fragment.base.BaseFragment
+import com.example.receiptcareapp.viewModel.base.BaseFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.log
@@ -41,5 +41,17 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             duration = 1500
             start()
         }
+    }
+
+    override fun initUI() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initListener() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initObserver() {
+        TODO("Not yet implemented")
     }
 }

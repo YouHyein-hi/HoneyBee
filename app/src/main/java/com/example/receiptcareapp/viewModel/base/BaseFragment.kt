@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment.base
+package com.example.receiptcareapp.viewModel.base
 
 import android.os.Bundle
 import android.util.Log
@@ -32,10 +32,17 @@ abstract class BaseFragment<VB: ViewBinding>(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        initUI()
+        initListener()
+        initObserver()
         _binding = inflate.invoke(inflater, container, false)
         Log.e("TAG", "Basefragment : $_binding: ", )
         return binding.root
     }
+
+    abstract fun initUI()
+    abstract fun initListener()
+    abstract fun initObserver()
 
     //viewBinding으로 인한 메모리 누수 방지
     override fun onDestroyView() {

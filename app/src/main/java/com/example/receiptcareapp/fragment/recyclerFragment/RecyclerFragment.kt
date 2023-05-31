@@ -14,11 +14,11 @@ import com.example.domain.model.local.toRecyclerShowData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
-import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.recyclerFragment.adapter.LocalAdapter
 import com.example.receiptcareapp.fragment.recyclerFragment.adapter.ServerAdapter
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
+import com.example.receiptcareapp.viewModel.base.BaseFragment
 
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
@@ -195,5 +195,17 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     override fun onDetach() {
         super.onDetach()
         callback.remove()
+    }
+
+    override fun initUI() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initListener() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initObserver() {
+        TODO("Not yet implemented")
     }
 }

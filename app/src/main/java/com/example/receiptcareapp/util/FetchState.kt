@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.viewModel.base
+package com.example.receiptcareapp.util
 
 /**
  * 2023-01-31

@@ -26,15 +26,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.databinding.FragmentGalleryBinding
-import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
-import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
+import com.example.receiptcareapp.viewModel.base.BaseFragment
 import java.io.File
 import kotlin.math.log
 
-class GalleryFragment : Fragment() {
+class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 
-    private val binding by lazy { FragmentGalleryBinding.inflate(layoutInflater) }
+//    private val binding by lazy { FragmentGalleryBinding.inflate(layoutInflater) }
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
     private val GALLERY_CODE = 101
 
@@ -117,4 +116,16 @@ class GalleryFragment : Fragment() {
             }
         }
     }
+
+    override fun initUI() {
+        TODO("Not yet implemented")
     }
+
+    override fun initListener() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initObserver() {
+        TODO("Not yet implemented")
+    }
+}

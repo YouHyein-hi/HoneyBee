@@ -12,7 +12,7 @@ import androidx.activity.viewModels
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.ActivityMainBinding
 import com.example.receiptcareapp.viewModel.MainViewModel
-import com.example.receiptcareapp.viewModel.base.FetchState
+import com.example.receiptcareapp.util.FetchState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

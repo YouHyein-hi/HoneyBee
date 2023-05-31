@@ -53,6 +53,8 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             findNavController().popBackStack()
         }
 
+        Log.e("TAG", "RecyclerShowFragment onViewCreated uid : ${myData.uid}", )
+
         binding.pictureName.text = myData.storeName
         binding.imageView.clipToOutline = true
         binding.date.text = myData.date
@@ -111,6 +113,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             .setNegativeButton("보내기"){dialog,id->
 //                    activityViewModel.sendData(
 //                        SendData(id = myData.id, cardName = myData.cardName, amount = myData.date, date = myData.date, picture = myData.picture, storeName = myData.pictureName))
+                // TODO 로컬에서 서버로 재전송하는 부분 구현 안되어있음!!
                 dialog.dismiss()
             }
             .create().show()

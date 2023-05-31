@@ -1,10 +1,10 @@
 package com.example.receiptcareapp.fragment.recyclerFragment.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.RecyclerShowData
-import com.example.domain.model.local.DomainRoomData
 import com.example.receiptcareapp.databinding.LocalItemBinding
 
 /**
@@ -23,6 +23,7 @@ class LocalAdapter: RecyclerView.Adapter<LocalAdapter.MyAdapter>(){
 
     inner class MyAdapter(private val binding: LocalItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:RecyclerShowData){
+            Log.e("TAG", "LocalAdapter uid : ${list.uid}", )
             binding.storeName.text = "${list.storeName}, "
             binding.cardName.text = "${list.cardName}카드 :"
             binding.amount.text = " ${list.amount}원"

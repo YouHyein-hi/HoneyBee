@@ -15,8 +15,9 @@ data class DomainRoomData(
     val amount: String,
     val date: String,
     val storeName: String,
-    val file: String
+    val file: String,
+    val uid: String
 )
 
-fun DomainRoomData.toRecyclerShowData(): RecyclerShowData = RecyclerShowData("0", cardName, amount, date, storeName, file.toUri())
+fun DomainRoomData.toRecyclerShowData(): RecyclerShowData = RecyclerShowData(uid, cardName, amount, date, storeName, file.toUri())
 

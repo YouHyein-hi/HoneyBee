@@ -20,10 +20,10 @@ class ServerAdapter(
     lateinit var onServerSaveClick : (DomainReceiveAllData)->Unit
     private lateinit var serverBinding:ServerItemBinding
     var dataList = mutableListOf<DomainReceiveAllData>()
-    set(value){
-        field = value.reversed().toMutableList()
-        notifyDataSetChanged()
-    }
+        set(value){
+            field = value.reversed().toMutableList()
+            notifyDataSetChanged()
+        }
 
     inner class MyAdapter(private val binding: ServerItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list: DomainReceiveAllData){

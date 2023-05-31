@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.receive.DomainResendAllData
 import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendCardData
@@ -111,7 +112,8 @@ class MainViewModel @Inject constructor(
                             amount = sendData.amount,
                             storeName = sendData.storeName,
                             date = sendData.date,
-                            file = sendData.picture.toString()
+                            file = sendData.picture.toString(),
+                            uid = "0"
 //                            file = fileToBitmap(file)
 //                            file = sendData.picture
                         )
@@ -152,10 +154,12 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    // Server 데이터 불러오는 부분
     fun receiveServerAllData() {
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime){
+                Log.e("TAG", "이게 데이터 불러오는 건가?2", )
                 val gap = retrofitUseCase.receiveDataUseCase()
                 _serverData.postValue(gap)
                 _connectedState.postValue(ConnectedState.DISCONNECTED)
@@ -199,6 +203,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun deleteServerData(id: Long) {
+        Log.e("TAG", "deleteServerData: 들어감", )
         CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
                 val gap = retrofitUseCase.deleteServerData(id)
@@ -207,13 +212,57 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun changeServerData(sendData: AppSendData) {
+    fun changeServerData(sendData: AppSendData, uid : String) {
+/*
         CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
                 val gap = roomUseCase.getAllData()
                 Log.e("TAG", "changeServerData: $gap")
 //            retrofitUseCase.resendDataUseCase(DomainSendData(sendData.))
             }?:throw SocketTimeoutException()
+        }
+*/
+        Log.e("TAG", "changeServerData: $sendData", )
+        Log.e("TAG", "changeServerData: $uid", )
+        _connectedState.value = ConnectedState.CONNECTING
+        _serverJob.value = CoroutineScope(exceptionHandler).launch {
+            withTimeoutOrNull(waitTime) {
+                val file = File(absolutelyPath(sendData.picture, myCotext))
+                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
+                val result = retrofitUseCase.resendDataUseCase(
+                    DomainResendAllData(
+                        id = MultipartBody.Part.createFormData("id", uid),    // id 값을 찾아서 알려줘야됨
+                        cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
+                        amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
+                        date = MultipartBody.Part.createFormData("date", sendData.date),
+                        storeName = MultipartBody.Part.createFormData("storeName", sendData.storeName),
+                        picture = myPicture
+                    )
+                )
+                Log.e("TAG", "sendData 응답 : $result ")
+
+                if (result == "add success") {
+                    _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
+                    insertRoomData(
+                        DomainRoomData(
+                            cardName = sendData.cardName,
+                            amount = sendData.amount,
+                            storeName = sendData.storeName,
+                            date = sendData.date,
+                            file = sendData.picture.toString(),
+                            uid = uid
+//                            file = fileToBitmap(file)
+//                            file = sendData.picture
+                        )
+                    )
+                }
+                else {
+                    Log.e("TAG", "sendData: 실패입니다!")
+                    _connectedState.postValue(ConnectedState.CONNECTING_FALSE)
+                    Exception("오류! 전송 실패.")
+                }
+            } ?: throw SocketTimeoutException()
         }
     }
 

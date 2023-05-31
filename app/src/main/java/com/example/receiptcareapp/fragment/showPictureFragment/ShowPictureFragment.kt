@@ -23,7 +23,7 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
-import com.example.receiptcareapp.viewModel.base.BaseFragment
+import com.example.receiptcareapp.base.BaseFragment
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime

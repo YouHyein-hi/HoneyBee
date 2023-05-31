@@ -2,16 +2,13 @@ package com.example.receiptcareapp.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,12 +21,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.databinding.FragmentGalleryBinding
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
-import com.example.receiptcareapp.viewModel.base.BaseFragment
-import java.io.File
-import kotlin.math.log
+import com.example.receiptcareapp.base.BaseFragment
 
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 

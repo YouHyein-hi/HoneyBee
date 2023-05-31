@@ -3,7 +3,6 @@ package com.example.receiptcareapp.viewModel
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -19,7 +18,7 @@ import com.example.domain.model.send.DomainSendData
 import com.example.domain.usecase.RetrofitUseCase
 import com.example.domain.usecase.RoomUseCase
 import com.example.receiptcareapp.State.ConnectedState
-import com.example.receiptcareapp.viewModel.base.BaseViewModel
+import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -28,7 +27,6 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
-import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 
 /**

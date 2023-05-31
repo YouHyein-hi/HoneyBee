@@ -1,17 +1,12 @@
 package com.example.receiptcareapp.fragment.recyclerFragment
 
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -22,11 +17,9 @@ import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.databinding.FragmentRecyclerShowBinding
 import com.example.receiptcareapp.dto.ShowData
 import com.example.receiptcareapp.fragment.recyclerFragment.adapter.ChangeDialog
-import com.example.receiptcareapp.fragment.showPictureFragment.SpinnerCustomAdapter
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
-import com.example.receiptcareapp.viewModel.base.BaseFragment
-import java.io.File
+import com.example.receiptcareapp.base.BaseFragment
 
 class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})

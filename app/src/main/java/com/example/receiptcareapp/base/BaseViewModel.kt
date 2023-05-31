@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.viewModel.base
+package com.example.receiptcareapp.base
 
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log

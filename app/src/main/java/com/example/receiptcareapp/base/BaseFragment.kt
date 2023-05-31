@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.viewModel.base
+package com.example.receiptcareapp.base
 
 import android.os.Bundle
 import android.util.Log
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
 
 /**

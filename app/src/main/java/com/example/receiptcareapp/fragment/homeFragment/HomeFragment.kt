@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.viewModel.MainViewModel
-import com.example.receiptcareapp.viewModel.base.BaseFragment
+import com.example.receiptcareapp.base.BaseFragment
 
 //메인 프레그먼트/
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {

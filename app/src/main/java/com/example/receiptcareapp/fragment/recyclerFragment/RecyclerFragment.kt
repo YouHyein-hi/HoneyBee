@@ -18,7 +18,7 @@ import com.example.receiptcareapp.fragment.recyclerFragment.adapter.LocalAdapter
 import com.example.receiptcareapp.fragment.recyclerFragment.adapter.ServerAdapter
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
-import com.example.receiptcareapp.viewModel.base.BaseFragment
+import com.example.receiptcareapp.base.BaseFragment
 
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {

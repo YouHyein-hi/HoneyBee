@@ -23,9 +23,9 @@ import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
-import com.example.receiptcareapp.fragment.base.BaseFragment
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
+import com.example.receiptcareapp.base.BaseFragment
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -382,5 +382,17 @@ class ShowPictureFragment :
     override fun onDetach() {
         super.onDetach()
         callback.remove()
+    }
+
+    override fun initUI() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initListener() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initObserver() {
+        TODO("Not yet implemented")
     }
 }

@@ -1,5 +1,6 @@
 package com.example.domain.usecase
 
+import android.graphics.Bitmap
 import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.receive.DomainResendAllData
@@ -23,6 +24,14 @@ class RetrofitUseCase(
         return retrofitRepo.receiveDataRepo()
     }
 
+    suspend fun receiveCardDataUseCase() : MutableList<DomainReceiveCardData>{
+        return retrofitRepo.receiveCardDataRepo()
+    }
+
+    suspend fun receivePictureDataUseCase(uid:String) : Bitmap{
+        return retrofitRepo.receivePictureDataRepo(uid)
+    }
+
     suspend fun deleteServerData(id:Long): String {
         return retrofitRepo.deleteServerData(id)
     }
@@ -31,9 +40,7 @@ class RetrofitUseCase(
         return retrofitRepo.sendCardDataRepo(domainSendCardData)
     }
 
-    suspend fun receiveCardDataUseCase() : MutableList<DomainReceiveCardData>{
-        return retrofitRepo.receiveCardDataRepo()
-    }
+
 
     suspend fun deleteCardDataUseCase(id:Long):String {
         return retrofitRepo.deleteCardDataRepo(id)

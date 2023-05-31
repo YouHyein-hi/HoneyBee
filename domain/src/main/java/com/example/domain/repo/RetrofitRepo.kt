@@ -1,5 +1,6 @@
 package com.example.domain.repo
 
+import android.graphics.Bitmap
 import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.receive.DomainResendAllData
@@ -17,11 +18,13 @@ interface RetrofitRepo {
 
     suspend fun receiveDataRepo():MutableList<DomainReceiveAllData>
 
+    suspend fun receiveCardDataRepo():MutableList<DomainReceiveCardData>
+
+    suspend fun receivePictureDataRepo(uid:String):Bitmap
+
     suspend fun deleteServerData(id: Long):String
 
     suspend fun sendCardDataRepo(dataDomainSendCardData: DomainSendCardData): String
-
-    suspend fun receiveCardDataRepo():MutableList<DomainReceiveCardData>
 
     suspend fun deleteCardDataRepo(id: Long):String
 

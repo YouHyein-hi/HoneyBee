@@ -27,9 +27,8 @@ class LocalAdapter: RecyclerView.Adapter<LocalAdapter.MyAdapter>(){
             binding.storeName.text = "${list.storeName}, "
             binding.cardName.text = "${list.cardName}카드 :"
             binding.amount.text = " ${list.amount}원"
-//            binding.date.text = "${myDate[0]}.${myDate[1]}.${myDate[2]}.  ${myDate[3]}:${myDate[4]}"
             binding.date.text = list.date.toString()
-            binding.picture.setImageURI(list.file)
+//            binding.picture.setImageURI(list.file)
             binding.listLayout.setOnClickListener{ onLocalSaveClic(list) }
         }
     }

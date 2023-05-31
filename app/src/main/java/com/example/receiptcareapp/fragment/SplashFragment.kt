@@ -2,21 +2,15 @@ package com.example.receiptcareapp.fragment
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.transition.ChangeBounds
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentSplashBinding
-import com.example.receiptcareapp.fragment.base.BaseFragment
+import com.example.receiptcareapp.base.BaseFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding::inflate) {
 
@@ -41,5 +35,17 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             duration = 1500
             start()
         }
+    }
+
+    override fun initUI() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initListener() {
+        TODO("Not yet implemented")
+    }
+
+    override fun initObserver() {
+        TODO("Not yet implemented")
     }
 }

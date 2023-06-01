@@ -41,10 +41,6 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
         CallGallery()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return binding.root
-    }
-
     /** 갤러리 관련 코드 **/
     /* 갤러리 호출 */
     fun CallGallery() {
@@ -112,14 +108,11 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
     }
 
     override fun initUI() {
-        TODO("Not yet implemented")
     }
 
     override fun initListener() {
-        TODO("Not yet implemented")
     }
 
     override fun initObserver() {
-        TODO("Not yet implemented")
     }
 }

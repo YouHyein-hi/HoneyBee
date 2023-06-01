@@ -138,14 +138,11 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     }
 
     override fun initUI() {
-        TODO("Not yet implemented")
     }
 
     override fun initListener() {
-        TODO("Not yet implemented")
     }
 
     override fun initObserver() {
-        TODO("Not yet implemented")
     }
 }

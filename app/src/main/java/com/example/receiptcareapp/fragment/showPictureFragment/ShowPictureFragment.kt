@@ -139,11 +139,6 @@ class ShowPictureFragment :
             cardAddDialog()
         }
 
-        /** 카드 삭제 관련 코드 **/
-        binding.cardminusBtn.setOnClickListener(){
-            cardMinusDialog()
-        }
-
         binding.btnPrice.setOnClickListener {
             if (binding.btnPrice.text.contains(",")) {
                 binding.btnPrice.setText(binding.btnPrice.text.toString().replace(",", ""))
@@ -288,46 +283,6 @@ class ShowPictureFragment :
         cardAddDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
             .setTextColor(Color.BLACK)
     }
-
-    fun cardMinusDialog(){
-        val array : Map<String, Int>? = viewModel.card.value
-        Log.e("TAG", "minusDialog: ${array}", )
-        val ArrayCard : Array<String>
-
-        if (array != null) {
-            for(i in array){
-//                arrayCardList.add("${i.key} : ${i.value}")
-                Log.e("TAG", "minusDialog: ${arrayCardList}", )
-            }
-        }
-
-        ArrayCard = myArray.toTypedArray()
-        val checkedItemIndex = 0
-
-        val cardMinusDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
-            .setTitle("카드 삭제")
-            .setSingleChoiceItems(ArrayCard, checkedItemIndex) { dialog_, which ->
-                Log.e("TAG", "minusDialog: ${which}", )
-            }
-            .setPositiveButton("삭제"){dialog, id->
-                // 카드 삭제 event 넣기
-                Log.e("TAG", "getSpinner: 카드 삭제 성공", )
-//                activityViewModel.deleteCardData(minusCard)
-                newCard = 1
-                dialog.dismiss()   // 예비
-            }
-            .setNegativeButton("취소"){dialog, id->
-                Log.e("TAG", "getSpinner: 카드 삭제 취소", )
-                dialog.dismiss()
-            }
-            .show()
-
-        cardMinusDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-            .setTextColor(Color.RED)
-        cardMinusDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
-            .setTextColor(Color.BLACK)
-    }
-
 
     private fun getSpinner() {
         activityViewModel.receiveServerCardData()

@@ -31,11 +31,11 @@ abstract class BaseFragment<VB: ViewBinding>(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = inflate.invoke(inflater, container, false)
+        Log.e("TAG", "Basefragment : $_binding: ", )
         initUI()
         initListener()
         initObserver()
-        _binding = inflate.invoke(inflater, container, false)
-        Log.e("TAG", "Basefragment : $_binding: ", )
         return binding.root
     }
 

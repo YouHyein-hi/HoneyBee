@@ -22,7 +22,7 @@ import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.base.BaseFragment
 
 class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
-    private val fragmentViewModel : FragmentViewModel by activityViewModels()
+    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val activityViewModel : MainViewModel by activityViewModels()
     private lateinit var myData: ShowData
     private lateinit var callback:OnBackPressedCallback

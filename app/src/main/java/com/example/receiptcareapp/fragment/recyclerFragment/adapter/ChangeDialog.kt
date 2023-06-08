@@ -1,8 +1,5 @@
 package com.example.receiptcareapp.fragment.recyclerFragment.adapter
 
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,25 +9,23 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import com.example.domain.model.RecyclerShowData
-import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnectedState
-import com.example.receiptcareapp.State.ShowType
+import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.databinding.DialogChangeBinding
-import com.example.receiptcareapp.dto.ShowData
 import com.example.receiptcareapp.fragment.showPictureFragment.SpinnerCustomAdapter
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
-import java.util.*
+import java.time.LocalDateTime
 
 class ChangeDialog : DialogFragment() {
 
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val activityViewModel: MainViewModel by activityViewModels()
-    private var myArray = arrayListOf<String>()
     private lateinit var binding : DialogChangeBinding
     private lateinit var myData: RecyclerShowData
+    private var myArray = arrayListOf<String>()
+    private var checked = ""
+    private var cardId = 0
     private var settingYear = 0
     private var settingMonth = 0
     private var settingDay = 0
@@ -42,12 +37,6 @@ class ChangeDialog : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DialogChangeBinding.inflate(layoutInflater)
-
-        //val spinner = view.findViewById<Spinner>(R.id.change_spinner)
-        //val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, myArray)
-            //SpinnerCustomAdapter(requireContext(), myArray)
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        //spinner.adapter = adapter
 
         activityViewModel.cardData.observe(viewLifecycleOwner) {
             myArray.clear()
@@ -64,23 +53,11 @@ class ChangeDialog : DialogFragment() {
         }
 
 
-        return binding.root
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = DialogChangeBinding.inflate(layoutInflater)
-        val builder = AlertDialog.Builder(requireContext())
-
-//        myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, data.file)
         myData = fragmentViewModel.showLocalData.value!!
         val newDate = myData.date.split("년","월","일","시","분","초")
 
-        // 다이얼로그 타이틀, 메세지, 뷰를 설정합니다.
-        builder.setTitle("")
-        builder.setMessage("데이터를 수정하시겠어요?")
-        builder.setView(binding.root)
-
         // 수정 전 로컬 데이터 화면에 띄우기
+        // Spinner은 아직 설정 안함
         binding.changeBtnStore.setText(myData.storeName)
         binding.changeBtnPrice.setText(myData.amount)
         try {
@@ -95,65 +72,89 @@ class ChangeDialog : DialogFragment() {
         binding.changeDatepicker.init(settingYear, settingMonth-1, settingDay, null)
         Log.e("TAG", "onCreateView: ${settingYear}, ${settingMonth}, ${settingYear}", )
 
-        getSpinner()
 
-
-        // PositiveButton과 NegativeButton을 설정합니다.
-        builder.setPositiveButton("수정해서 보내기") { _, _ ->
+        binding.changeBtnPositive.setOnClickListener{
 //                activityViewModel.changeServerData(SendData(
 //                    id = myData.id, cardName = myData.cardName, amount = myData.date, date = myData.date, picture = myData.picture, storeName = myData.pictureName))
-        //                    findNavController().popBackStack()
+            //                    findNavController().popBackStack()
             myYear = binding.changeDatepicker.year
             myMonth = binding.changeDatepicker.month + 1
             myDay = binding.changeDatepicker.dayOfMonth
             Log.e("TAG", "onCreateDialog: $myYear, $myMonth, $myDay")
-        }
 
-        builder.setNegativeButton("닫기") { _,  _ ->
-            // Cancel 버튼을 클릭했을 때 처리하는 코드를 작성합니다.
-        }
+            val myLocalDateTime = LocalDateTime.of(
+                myYear, myMonth, myDay,
+                LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second
+            )
 
+            Log.e("TAG", "onCreateView: ${myData.uid}", )
+            Log.e("TAG", "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${checked}, ${binding.changeBtnStore.text}, ${myData.file}", )
 
+            val data = fragmentViewModel.showLocalData.value
 
-        //myArray.add("하아히어ㅣㅇ")
-        /*
-        activityViewModel.receiveServerCardData()
-        val adapter = SpinnerCustomAdapter(requireContext(), myArray)
-            // SpinnerCustomAdapter(requireContext(), myArray)
-            // ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, myArray)
-
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.changeCardspinner?.adapter = adapter
-        binding.changeCardspinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                //Log.e("TAG", "onItemSelected: ${myArray[position]}", )
-                Log.e("TAG", "onItemSelected: ${myArray[position]}", )
+            if(checked == " "){
+                Log.e("TAG", "onCreateView: 카드가 비어있습니다.", )
+            }
+            else if(binding.changeBtnStore.text!!.isEmpty()){
+                Log.e("TAG", "onCreateView: 가게 이름이 비어있습니다.", )
+            }
+            else if(binding.changeBtnPrice.text!!.isEmpty()){
+                Log.e("TAG", "onCreateView: 금액이 비어있습니다.", )
+            }
+            else if(myLocalDateTime.toString() == ""){
+                Log.e("TAG", "onCreateView: 날짜가 비어있습니다.", )
+            }
+            else if(data?.file == null){
+                Log.e("TAG", "onCreateView: 이미지가 비어있습니다.", )
+            }
+            else{
+                Log.e("TAG", "onCreateView: 다 있음!", )
+                activityViewModel.changeServerData(
+                    AppSendData(
+                        date = myLocalDateTime.toString(), amount = binding.changeBtnPrice.text.toString(), cardName = checked, picture = data!!.file, storeName = binding.changeBtnStore.text.toString())
+                    , myData.uid
+                )
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
+            dismiss()
         }
-        */
 
+        binding.changeBtnNegative.setOnClickListener{
+            dismiss()
+        }
 
-        // 다이얼로그를 생성하고 반환합니다.
-        return builder.create()
+        getSpinner()
+
+        return binding.root
     }
 
     private fun getSpinner(){
         Log.e("TAG", "getSpinner", )
-        activityViewModel.receiveServerCardData()
-        var adapter = SpinnerCustomAdapter(requireContext(), myArray)
 
-        binding.changeCardspinner.adapter = adapter
-        binding.changeCardspinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long
-            ) {
-                Log.e("TAG", "onItemSelected: ${myArray[position]}", )
+        activityViewModel.receiveServerCardData()
+        val adapter = SpinnerCustomAdapter(requireContext(), myArray)
+
+        binding.changeCardspinner?.adapter = adapter
+        binding.changeCardspinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // 여기서 position은 0부터 시작함
+                Log.e("TAG", "getSpinner onItemSelected: ${position}", )
+                Log.e("TAG", "getSpinner onItemSelected: ${myArray[position]}", )
+                val spiltCard = myArray[position].split(" : ")
+                cardId = position
+                checked = spiltCard[0]
+                Log.e("TAG", "onItemSelected: ${checked}", )
             }
+
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
+
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val width = resources.displayMetrics.widthPixels
+        dialog?.window?.setLayout((width * 0.9).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 }

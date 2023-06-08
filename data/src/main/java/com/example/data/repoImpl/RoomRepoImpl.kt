@@ -18,7 +18,8 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao):RoomRepo{
             cardName = list.cardName,
             amount = list.amount,
             pictureName = list.storeName,
-            picture = list.file
+            picture = list.file,
+            uid = list.uid
         )
         roomDao.insertData(myList)
     }
@@ -30,8 +31,8 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao):RoomRepo{
             amount = it.amount,
             date = it.date,
             storeName = it.pictureName,
-            file = it.picture
-
+            file = it.picture,
+            uid = it.uid
         )) }
         return myList
     }

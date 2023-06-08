@@ -73,6 +73,7 @@ class MainViewModel @Inject constructor(
     val picture: LiveData<Bitmap?>
         get() = _picture
     fun nullPicture(){
+        Log.e("TAG", "nullPicture: null", )
         _picture.value=null
     }
 
@@ -180,6 +181,7 @@ class MainViewModel @Inject constructor(
         _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
                 val gap = retrofitUseCase.receivePictureDataUseCase(uid)
+                Log.e("TAG", "receiveServerPictureData gap : $gap", )
                 _picture.postValue(gap)
                 _connectedState.postValue(ConnectedState.DISCONNECTED)
             }?:throw SocketTimeoutException()

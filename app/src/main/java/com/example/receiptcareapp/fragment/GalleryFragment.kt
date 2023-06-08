@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -27,23 +28,17 @@ import com.example.receiptcareapp.base.BaseFragment
 
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 
-//    private val binding by lazy { FragmentGalleryBinding.inflate(layoutInflater) }
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
     private val GALLERY_CODE = 101
+    private val viewModel : FragmentViewModel by activityViewModels()
 
-    private val viewModel : FragmentViewModel by viewModels({requireActivity()})
+    override fun initData() {CallGallery()}
 
+    override fun initUI() {}
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun initListener() {}
 
-        Log.e("TAG", "onCreate: GalleryFragment", )
-        CallGallery()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return binding.root
-    }
+    override fun initObserver() {}
 
     /** 갤러리 관련 코드 **/
     /* 갤러리 호출 */
@@ -52,7 +47,6 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
 
         if(checkPermission(GALLERY)){
             Log.e("TAG", "파일 권한 있음", )
-
             val intent = Intent(Intent.ACTION_PICK)
             intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             intent.type = "image/*"
@@ -81,7 +75,6 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
         }
     }
 
-
     /*** 권한 관련 코드 ***/
     fun checkPermission(permissions : Array<out String>) : Boolean{         // 실제 권한을 확인하는 곳
         Log.e("TAG", "checkPermission 실행", )
@@ -96,6 +89,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
         }
         return true
     }
+
     @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {  // 권한 확인 직후 바로 호출됨
         Log.e("TAG", "onRequestPermissionsResult 실행", )
@@ -109,17 +103,5 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
                 }
             }
         }
-    }
-
-    override fun initUI() {
-        TODO("Not yet implemented")
-    }
-
-    override fun initListener() {
-        TODO("Not yet implemented")
-    }
-
-    override fun initObserver() {
-        TODO("Not yet implemented")
     }
 }

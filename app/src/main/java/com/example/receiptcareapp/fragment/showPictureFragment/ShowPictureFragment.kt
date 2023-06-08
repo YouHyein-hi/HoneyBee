@@ -43,12 +43,23 @@ class ShowPictureFragment :
     private var arrayCardList : MutableList<DomainReceiveCardData> = mutableListOf()
     private var myArray = arrayListOf<String>()
 
+
+    override fun initUI() {
+    }
+
+    override fun initListener() {
+    }
+
+    override fun initObserver() {
+    }
+
+    override fun initData() {
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         /** Spinner 호출 **/
         getSpinner()
-
-        Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
         binding.pictureView.setImageURI(viewModel.image.value)
         binding.pictureView.clipToOutline = true
 
@@ -358,17 +369,5 @@ class ShowPictureFragment :
     override fun onDetach() {
         super.onDetach()
         callback.remove()
-    }
-
-    override fun initUI() {
-        TODO("Not yet implemented")
-    }
-
-    override fun initListener() {
-        TODO("Not yet implemented")
-    }
-
-    override fun initObserver() {
-        TODO("Not yet implemented")
     }
 }

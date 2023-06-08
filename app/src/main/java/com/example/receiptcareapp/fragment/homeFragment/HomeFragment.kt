@@ -27,12 +27,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val ALBUM = android.Manifest.permission.READ_EXTERNAL_STORAGE
     private val ALBUM_CODE = 101
     private lateinit var callback: OnBackPressedCallback
-    private val activityViewModel : MainViewModel by activityViewModels()
 
+    override fun initData() { checkPermission() }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        checkPermission()
+    override fun initUI() {
         binding.cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
         binding.galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
         binding.storageBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
@@ -41,6 +39,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             bottomDialogFragment.show(parentFragmentManager,"tag")
         }
     }
+
+    override fun initListener() {}
+
+    override fun initObserver() {}
 
     /*** 권한 관련 코드 ***/
     fun checkPermission() : Boolean{         // 실제 권한을 확인하는 곳
@@ -78,7 +80,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-    /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
@@ -97,22 +98,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
+    // 이부분이 여기있는게 맞나
     override fun onDetach() {
         super.onDetach()
         callback.remove()
     }
-
-    override fun initUI() {
-        TODO("Not yet implemented")
-    }
-
-    override fun initListener() {
-        TODO("Not yet implemented")
-    }
-
-    override fun initObserver() {
-        TODO("Not yet implemented")
-    }
-
-
 }

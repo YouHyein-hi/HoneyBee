@@ -51,7 +51,7 @@ class RetrofitSourceImpl @Inject constructor(
         return retrofit.create(RetrofitSource::class.java).receiveCardDataSource()
     }
 
-    override suspend fun receivePictureDataSource(uid:String): ByteArray {
+    override suspend fun receivePictureDataSource(uid:String): String {
         return retrofit.create(RetrofitSource::class.java).receivePictureDataSource(uid)
     }
 

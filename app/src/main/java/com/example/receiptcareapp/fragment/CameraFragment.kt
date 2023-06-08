@@ -18,6 +18,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -33,19 +34,16 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
     private var photoURI : Uri? = null
-    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
+    private val fragmentViewModel : FragmentViewModel by viewModels()
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        CallCamera()
-    }
+    override fun initData() { CallCamera() }
 
+    override fun initUI() {}
 
-    override fun onResume() {
-        Log.e("TAG", "onResume: ", )
-        super.onResume()
-    }
+    override fun initListener() {}
+
+    override fun initObserver() {}
 
     /** 카메라 관련 코드 **/
     /* 카메라 호출 */
@@ -81,7 +79,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         return getActivity()?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
     }
 
-
     //카메라 촬영 후 확인 시
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
@@ -100,15 +97,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         }
     }
 
-    fun absolutelyPath(path: Uri?, context : Context): String {
-        var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        var c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
-        var index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        c?.moveToFirst()
-        var result = c?.getString(index!!)
-        return result!!
-    }
-
     /*** 권한 관련 코드 ***/
     fun checkPermission(permissions : Array<out String>) : Boolean{         // 실제 권한을 확인하는 곳
         Log.e("TAG", "checkPermission 실행", )
@@ -122,6 +110,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         }
         return true
     }
+
     @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {  // 권한 확인 직후 바로 호출됨
         Log.e("TAG", "onRequestPermissionsResult 실행", )
@@ -135,17 +124,5 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
                 }
             }
         }
-    }
-
-    override fun initUI() {
-        TODO("Not yet implemented")
-    }
-
-    override fun initListener() {
-        TODO("Not yet implemented")
-    }
-
-    override fun initObserver() {
-        TODO("Not yet implemented")
     }
 }

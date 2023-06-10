@@ -78,7 +78,6 @@ class MainViewModel @Inject constructor(
         _picture.value=null
     }
 
-
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
 

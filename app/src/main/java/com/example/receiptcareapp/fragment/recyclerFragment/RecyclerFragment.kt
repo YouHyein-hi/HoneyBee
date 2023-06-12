@@ -34,6 +34,23 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     private lateinit var callback : OnBackPressedCallback
 
 
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.e("TAG", "handleOnBackPressed: 뒤로가기", )
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                    activityViewModel.serverCoroutineStop()
+                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
+                } else {
+                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
     override fun initData() {
         fragmentViewModel.changeStartGap("server")
         //init
@@ -43,6 +60,10 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         //넘겨받는 데이터의 값을 초기화시키기.
         fragmentViewModel.myShowLocalData(null)
         fragmentViewModel.myShowServerData(null)
+
+        //어뎁터 데이터 리스트 비워주기
+        serverAdapter.dataList.clear()
+        localAdapter.dataList.clear()
     }
 
     override fun initUI() {
@@ -87,8 +108,6 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         //서버 목록에서 리스트를 누를 경우
         serverAdapter.onServerSaveClick = {
-            Log.e("TAG", "onViewCreated: 눌렀다", )
-            Log.e("TAG", "onViewCreated onViewCreated: $it", )
             activityViewModel.nullPicture()
             activityViewModel.receiveServerPictureData(it.uid)
             fragmentViewModel.myShowServerData(it)
@@ -97,11 +116,15 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         //로컬 목록에서 리스트를 누를경우
         localAdapter.onLocalSaveClic = {
-            Log.e("TAG", "onViewCreated: 눌렀다", )
             activityViewModel.nullPicture()
             activityViewModel.receiveServerPictureData(it.uid)
             fragmentViewModel.myShowLocalData(it)
             fragmentViewModel.changeStartGap("local")
+        }
+
+        //뒤로가기 버튼
+        binding.backBtn.setOnClickListener{
+            findNavController().popBackStack()
         }
     }
 
@@ -121,6 +144,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         }
 
         //프로그래스 바 컨트롤
+        //when
         activityViewModel.connectedState.observe(viewLifecycleOwner){
             Log.e("TAG", "progress bar: $it", )
             if(it==ConnectedState.DISCONNECTED) {
@@ -143,17 +167,9 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         }
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.e("TAG", "onViewCreated: ", )
-        super.onViewCreated(view, savedInstanceState)
-        //서버에서 사진데이터를 받아왔을 경우 showPage로 넘기기.
-
-
-        //뒤로가기 버튼
-        binding.backBtn.setOnClickListener{
-            findNavController().popBackStack()
-        }
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 
     fun initServerRecyclerView(){
@@ -170,34 +186,5 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     fun setTextAndVisible(text:String, state:Boolean){
         binding.backgroundText.text = text
         binding.backgroundText.isVisible = state
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        serverAdapter.dataList.clear()
-        localAdapter.dataList.clear()
-    }
-
-    /** Fragment 뒤로가기 **/
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Log.e("TAG", "handleOnBackPressed: 뒤로가기", )
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    activityViewModel.serverCoroutineStop()
-                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
-                } else {
-                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
     }
 }

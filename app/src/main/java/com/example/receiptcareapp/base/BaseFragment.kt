@@ -40,7 +40,8 @@ abstract class BaseFragment<VB: ViewBinding>(
     // 세로, 가로 모드로 변환 시 oncreate 함수가 다시 호출됨
     // 이때 해당 프래그먼트의 값들은 모두 초기화되기 때문에
     // 값을 유지하고 싶을 경우 savedInstanceState 를 이용하는게 좋음.
-    //리소스들을 초기화해주는 단계
+    // 리소스들을 초기화해주는 단계,
+    // 데이터 관련 친구들여기서 관리
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.e("TAG", "onCreate: ", )
         super.onCreate(savedInstanceState)
@@ -57,15 +58,18 @@ abstract class BaseFragment<VB: ViewBinding>(
         _binding = inflate.invoke(inflater, container, false)
         Log.e("TAG", "Basefragment : $_binding: ", )
         return binding.root
+        //null 케이즈
     }
+
     //view 반환을 보장받는 위치
+    // 확정적으로 view 보장받을 수 있는 단계
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.e("TAG", "onViewCreated: ", )
         initUI()
         super.onViewCreated(view, savedInstanceState)
-
     }
 
+    // 사용자랑 상호작용하기 직전에 호출단계
     override fun onResume() {
         Log.e("TAG", "onResume: ", )
         super.onResume()
@@ -82,5 +86,13 @@ abstract class BaseFragment<VB: ViewBinding>(
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
     }
 }

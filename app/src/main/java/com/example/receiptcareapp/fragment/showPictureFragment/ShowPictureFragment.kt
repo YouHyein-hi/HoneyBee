@@ -46,24 +46,6 @@ class ShowPictureFragment :
     private var myArray = arrayListOf<String>()
     private var newCard = 0
 
-
-    override fun initUI() {
-    }
-
-    override fun initListener() {
-    }
-
-    override fun initObserver() {
-    }
-
-    override fun initData() {
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
-    }
-
     /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -82,9 +64,9 @@ class ShowPictureFragment :
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
+    override fun initData() {
+        // 서버와 연결 상태 초기화.
+        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
     }
 
     override fun initUI() {
@@ -99,7 +81,6 @@ class ShowPictureFragment :
             myMonth = dateNow.monthValue
             myDay = dateNow.dayOfMonth
         }
-
         /** Spinner 호출 **/
         getSpinner()
     }
@@ -201,9 +182,6 @@ class ShowPictureFragment :
 
     // initData와 같은 거라고 생각하자
     override fun initObserver() {
-        // 서버와 연결 상태 초기화.
-        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
-
         with(binding){
             /** CardData 관련 **/
             activityViewModel.cardData.observe(viewLifecycleOwner){
@@ -247,7 +225,6 @@ class ShowPictureFragment :
                     }
                 }
             }
-
         }
     }
 
@@ -347,7 +324,7 @@ class ShowPictureFragment :
         activityViewModel.receiveServerCardData()
         Log.e("TAG", "getSpinner: getSpinner",)
         cardArray?.let { viewModel.takeCardData(it) }
-        var adapter = SpinnerCustomAdapter(requireContext(), arrayListOf<String>())
+        var adapter = SpinnerCustomAdapter(requireContext(), arrayListOf())
         binding.spinner.adapter = adapter
         Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -368,23 +345,7 @@ class ShowPictureFragment :
         }
     }
 
-    /** Fragment 뒤로가기 **/
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    Log.e("TAG", "handleOnBackPressed: stop")
-                    activityViewModel.serverCoroutineStop()
-                } else {
-                    Log.e("TAG", "handleOnBackPressed: back")
-                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
+
 
     override fun onDetach() {
         super.onDetach()

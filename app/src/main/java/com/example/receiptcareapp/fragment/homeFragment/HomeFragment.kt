@@ -28,17 +28,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val GALLERY_CODE = 101
     private lateinit var callback: OnBackPressedCallback
 
-    override fun initData() { checkPermission() }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
+                    .setTitle("종료")
+                    .setMessage("꿀을 그만 빠시겠어요?")
+                    .setPositiveButton("그만 빤다"){dialog, id->
+                        requireActivity().finish()
+                    }
+                    .setNegativeButton("더 빤다"){dialog, id->
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+                    }.show()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    override fun initListener() {
+    override fun initData() {}
 
-        checkPermission(requireContext(), CAMERA)
-        checkPermission(requireContext(), GALLERY)
-
+    override fun initUI() {
         with(binding){
             cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
             galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
@@ -50,7 +60,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+    override fun initListener() {
+        checkPermission(requireContext(), CAMERA)
+        checkPermission(requireContext(), GALLERY)
+
+
+    }
+
     override fun initObserver() {}
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
 
     /*** 권한 관련 코드 ***/
     fun checkPermission(context: Context, permissions: Array<out String>): Boolean {
@@ -90,29 +112,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
             }
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-                    .setTitle("종료")
-                    .setMessage("꿀을 그만 빠시겠어요?")
-                    .setPositiveButton("그만 빤다"){dialog, id->
-                        requireActivity().finish()
-                    }
-                    .setNegativeButton("더 빤다"){dialog, id->
-
-                    }.show()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-
-    // 이부분이 여기있는게 맞나
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
     }
 }

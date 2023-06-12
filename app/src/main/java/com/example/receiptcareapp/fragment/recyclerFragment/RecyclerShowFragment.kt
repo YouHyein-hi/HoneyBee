@@ -31,9 +31,26 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         Log.e("TAG", "RecyclerShowFragment RecyclerShowFragment RecyclerShowFragment: ", )
     }
 
+
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                    activityViewModel.serverCoroutineStop()
+                } else {
+                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
     override fun initData() {
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
     }
+
     override fun initUI() {
         if(fragmentViewModel.showServerData.value != null){
             binding.resendBtn.isVisible = false
@@ -102,6 +119,11 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         }
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+
     //서버, 로컬 재전송
     private fun resendDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
@@ -142,25 +164,5 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 findNavController().popBackStack()
             }
             .create().show()
-    }
-
-    /** Fragment 뒤로가기 **/
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    activityViewModel.serverCoroutineStop()
-                } else {
-                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
     }
 }

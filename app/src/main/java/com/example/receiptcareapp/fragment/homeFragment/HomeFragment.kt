@@ -32,28 +32,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        checkPermission(requireContext(), CAMERA)
-        checkPermission(requireContext(), GALLERY)
-
-        binding.cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
-        binding.galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
-        binding.storageBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
-        binding.settingBtn.setOnClickListener{
-            val bottomDialogFragment = HomeCardBottomSheet()
-            bottomDialogFragment.show(parentFragmentManager,"tag")
-        }
     }
 
     /*** 권한 관련 코드 ***/
     fun checkPermission(context: Context, permissions: Array<out String>): Boolean {
+        Log.e("TAG", "checkPermission: 실행", )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             for (permission in permissions) {
-                if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED && permissions.contentEquals(GALLERY)) {
+                    Log.e("TAG", "checkPermission: 갤러리", )
                     ActivityCompat.requestPermissions(requireActivity(), permissions, GALLERY_CODE)
                     return false
                 }
-                else if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                else if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED && permissions.contentEquals(CAMERA)) {
+                    Log.e("TAG", "checkPermission: 카메라", )
                     ActivityCompat.requestPermissions(requireActivity(), permissions, CAMERA_CODE)
                     return false;
                 }
@@ -110,6 +102,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun initListener() {
+
+        checkPermission(requireContext(), CAMERA)
+        checkPermission(requireContext(), GALLERY)
+
+        with(binding){
+            cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
+            galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
+            storageBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
+            settingBtn.setOnClickListener{
+                val bottomDialogFragment = HomeCardBottomSheet()
+                bottomDialogFragment.show(parentFragmentManager,"tag")
+            }
+        }
     }
 
     override fun initObserver() {

@@ -38,7 +38,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        CallCamera()
     }
 
 
@@ -63,7 +62,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
 
         //카메라 불러오기
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
         //해당 경로에 사진이 저장될거임
         val uri : Uri? = createImageUri("JPEG_${timeStamp}_", "image/jpeg")
         Log.e("TAG", "dispatchTakePictureIntentEx: my uri : $uri", )
@@ -113,6 +111,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     }
 
     override fun initListener() {
+        CallCamera()
     }
 
     override fun initObserver() {

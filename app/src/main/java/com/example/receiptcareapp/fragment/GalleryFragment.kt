@@ -35,8 +35,6 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("TAG", "onCreate: GalleryFragment", )
-        CallGallery()
     }
 
     /** 갤러리 관련 코드 **/
@@ -53,6 +51,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
             activityResult.launch(intent)
         }
     }
+
     /* 갤러리 사진 관련 함수 */
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
@@ -79,6 +78,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
     }
 
     override fun initListener() {
+        CallGallery()
     }
 
     override fun initObserver() {

@@ -130,9 +130,6 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
                 .setPositiveButton("보내기") { dialog, id ->
 //                    activityViewModel.sendCardData(cardName.text.toString(), cardPrice.text.toString())
                 }
-                .setNeutralButton("삭제"){dialog, id ->
-//                    activityViewModel.deleteCardData()
-                }
                 .setNegativeButton("닫기") { dialog, id -> }
                 .show()
 
@@ -140,8 +137,6 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
                 .setTextColor(Color.RED)
             gap.getButton(DialogInterface.BUTTON_NEGATIVE)
                 .setTextColor(Color.BLACK)
-            gap.getButton(DialogInterface.BUTTON_NEUTRAL)
-                .setTextColor(Color.BLUE)
         }
 
         return binding.root

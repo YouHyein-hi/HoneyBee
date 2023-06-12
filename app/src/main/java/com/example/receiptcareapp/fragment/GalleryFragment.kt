@@ -24,25 +24,17 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentGalleryBinding
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.base.BaseFragment
+import com.example.receiptcareapp.fragment.homeFragment.HomeFragment
 
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 
-//    private val binding by lazy { FragmentGalleryBinding.inflate(layoutInflater) }
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-    private val GALLERY_CODE = 101
 
-    private val viewModel : FragmentViewModel by viewModels({requireActivity()})
-
+    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
+    private val homeFragment : HomeFragment = HomeFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Log.e("TAG", "onCreate: GalleryFragment", )
-        CallGallery()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return binding.root
     }
 
     /** 갤러리 관련 코드 **/
@@ -50,7 +42,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
     fun CallGallery() {
         Log.e("TAG", "CallGallery 실행", )
 
-        if(checkPermission(GALLERY)){
+        if(homeFragment.checkPermission(requireContext(), GALLERY)){
             Log.e("TAG", "파일 권한 있음", )
 
             val intent = Intent(Intent.ACTION_PICK)
@@ -59,6 +51,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
             activityResult.launch(intent)
         }
     }
+
     /* 갤러리 사진 관련 함수 */
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
@@ -68,7 +61,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
             Log.e("TAG", "my URI: $imageUri", )
             if (imageUri != null) {
                 Log.e("TAG", "data 있음", )
-                viewModel.takeImage(imageUri)
+                fragmentViewModel.takeImage(imageUri)
                 NavHostFragment.findNavController(this).navigate(R.id.action_galleryFragment_to_showFragment)
             }
             else{
@@ -81,45 +74,13 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
         }
     }
 
-
-    /*** 권한 관련 코드 ***/
-    fun checkPermission(permissions : Array<out String>) : Boolean{         // 실제 권한을 확인하는 곳
-        Log.e("TAG", "checkPermission 실행", )
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            for (permission in permissions) {
-                if (ContextCompat.checkSelfPermission(requireActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(requireActivity(), permissions, GALLERY_CODE)
-                    return false;
-                }
-            }
-        }
-        return true
-    }
-    @SuppressLint("MissingSuperCall")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {  // 권한 확인 직후 바로 호출됨
-        Log.e("TAG", "onRequestPermissionsResult 실행", )
-
-        when(requestCode) {
-            GALLERY_CODE -> {
-                for (grant in grantResults) {
-                    if (grant != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(getActivity(), "파일 권한을 승인해 주세요.", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-    }
-
     override fun initUI() {
-        TODO("Not yet implemented")
     }
 
     override fun initListener() {
-        TODO("Not yet implemented")
+        CallGallery()
     }
 
     override fun initObserver() {
-        TODO("Not yet implemented")
     }
 }

@@ -19,12 +19,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/pretendardsemibold"
+        android:text="카드"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/change_cardspinner"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
     <Spinner
         android:id="@+id/change_cardspinner"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/spinner_custom"
         android:elevation="3dp"
@@ -33,14 +45,26 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendardsemibold"
+        android:text="가게 이름"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/change_btnStore"
+        app:layout_constraintTop_toBottomOf="@+id/change_cardspinner" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/change_btnStore"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/choice_btn"
         android:elevation="3dp"
@@ -52,14 +76,26 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/change_cardspinner" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendardsemibold"
+        android:text="금액"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/change_btnPrice"
+        app:layout_constraintTop_toBottomOf="@+id/change_btnStore" />
 
     <com.google.android.material.textfield.MaterialAutoCompleteTextView
         android:id="@+id/change_btnPrice"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/choice_btn"
         android:elevation="3dp"
@@ -72,21 +108,33 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/change_btnStore" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendardsemibold"
+        android:text="금액"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/change_datepicker"
+        app:layout_constraintTop_toBottomOf="@+id/change_btnPrice" />
 
     <DatePicker
         android:id="@+id/change_datepicker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="30dp"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/change_btnPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

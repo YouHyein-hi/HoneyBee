@@ -60,15 +60,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/cardminus_btn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/icon_minus"
-            app:layout_constraintEnd_toStartOf="@+id/cardadd_btn"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
             android:id="@+id/cardadd_btn"
             android:layout_width="25dp"
             android:layout_height="25dp"

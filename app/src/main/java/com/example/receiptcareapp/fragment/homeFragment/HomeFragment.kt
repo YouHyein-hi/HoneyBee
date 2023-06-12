@@ -22,44 +22,40 @@ import com.example.receiptcareapp.base.BaseFragment
 //메인 프레그먼트/
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
-    private val CAMERA = android.Manifest.permission.CAMERA
+    private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
-    private val ALBUM = android.Manifest.permission.READ_EXTERNAL_STORAGE
-    private val ALBUM_CODE = 101
+    private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+    private val GALLERY_CODE = 101
     private lateinit var callback: OnBackPressedCallback
     private val activityViewModel : MainViewModel by activityViewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkPermission()
-        binding.cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
-        binding.galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
-        binding.storageBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
-        binding.settingBtn.setOnClickListener{
-            val bottomDialogFragment = HomeCardBottomSheet()
-            bottomDialogFragment.show(parentFragmentManager,"tag")
-        }
     }
 
     /*** 권한 관련 코드 ***/
-    fun checkPermission() : Boolean{         // 실제 권한을 확인하는 곳
-        Log.e("TAG", "MainActivity: checkPermission 실행", )
-        val permissions: Array<String> = arrayOf(CAMERA, ALBUM)
-
+    fun checkPermission(context: Context, permissions: Array<out String>): Boolean {
+        Log.e("TAG", "checkPermission: 실행", )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(requireActivity(), CAMERA) != PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(requireActivity(), ALBUM) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(), permissions, 0)
+            for (permission in permissions) {
+                if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED && permissions.contentEquals(GALLERY)) {
+                    Log.e("TAG", "checkPermission: 갤러리", )
+                    ActivityCompat.requestPermissions(requireActivity(), permissions, GALLERY_CODE)
+                    return false
+                }
+                else if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED && permissions.contentEquals(CAMERA)) {
+                    Log.e("TAG", "checkPermission: 카메라", )
+                    ActivityCompat.requestPermissions(requireActivity(), permissions, CAMERA_CODE)
+                    return false;
+                }
             }
         }
         return true
     }
-
     @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {  // 권한 확인 직후 바로 호출됨
         Log.e("TAG", "MainActivity: onRequestPermissionsResult 실행", )
-
         when(requestCode) {
             CAMERA_CODE -> {
                 for (grant in grantResults) {
@@ -68,7 +64,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     }
                 }
             }
-            ALBUM_CODE -> {
+            GALLERY_CODE -> {
                 for (grant in grantResults) {
                     if (grant != PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(requireActivity(), "갤러리  권한을 승인해 주세요.", Toast.LENGTH_LONG).show()
@@ -103,15 +99,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun initUI() {
-        TODO("Not yet implemented")
     }
 
     override fun initListener() {
-        TODO("Not yet implemented")
+
+        checkPermission(requireContext(), CAMERA)
+        checkPermission(requireContext(), GALLERY)
+
+        with(binding){
+            cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
+            galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
+            storageBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
+            settingBtn.setOnClickListener{
+                val bottomDialogFragment = HomeCardBottomSheet()
+                bottomDialogFragment.show(parentFragmentManager,"tag")
+            }
+        }
     }
 
     override fun initObserver() {
-        TODO("Not yet implemented")
     }
 
 

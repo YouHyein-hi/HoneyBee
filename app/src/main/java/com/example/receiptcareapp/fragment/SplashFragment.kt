@@ -14,26 +14,9 @@ import kotlinx.coroutines.launch
 
 class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding::inflate) {
 
-    override fun initUI() {}
-
-    override fun initListener() {}
-
-    override fun initObserver() {}
-
     override fun initData() {}
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch() {
-            delay(2300L)
-            findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
-        }
-    }
-
-    //애니메이션
-    override fun onResume() {
-        Log.e("TAG", "onResume: ", )
-        super.onResume()
+    override fun initUI() {
         ObjectAnimator.ofFloat(this.binding.title, View.ALPHA, 0f,1f).apply {
             duration = 1500
             start()
@@ -42,5 +25,14 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             duration = 1500
             start()
         }
+
+        lifecycleScope.launch() {
+            delay(2300L)
+            findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+        }
     }
+
+    override fun initListener() {}
+
+    override fun initObserver() {}
 }

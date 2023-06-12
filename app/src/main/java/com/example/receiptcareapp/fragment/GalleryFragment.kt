@@ -35,15 +35,19 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val homeFragment : HomeFragment = HomeFragment()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    override fun initData() {}
+
+    override fun initUI() {}
+
+    override fun initListener() { CallGallery() }
+
+    override fun initObserver() {}
+
 
     /** 갤러리 관련 코드 **/
     /* 갤러리 호출 */
     fun CallGallery() {
         Log.e("TAG", "CallGallery 실행", )
-
         if(homeFragment.checkPermission(requireContext(), GALLERY)){
             Log.e("TAG", "파일 권한 있음", )
             val intent = Intent(Intent.ACTION_PICK)
@@ -65,22 +69,12 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
                 fragmentViewModel.takeImage(imageUri)
                 NavHostFragment.findNavController(this).navigate(R.id.action_galleryFragment_to_showFragment)
             }
-            else{
-                Log.e("TAG", "data 없음", )
-            }
+            else{ Log.e("TAG", "data 없음", ) }
         }
         else{
             Log.e("TAG", "RESULT_OK if: else 진입", )
             findNavController().navigate(R.id.action_galleryFragment_to_homeFragment)
         }
     }
-    override fun initUI() {
-    }
 
-    override fun initListener() {
-        CallGallery()
-    }
-
-    override fun initObserver() {
-    }
 }

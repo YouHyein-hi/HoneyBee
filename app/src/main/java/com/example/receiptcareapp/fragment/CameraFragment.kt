@@ -18,6 +18,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -33,6 +34,8 @@ import java.util.*
 class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding::inflate) {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private var photoURI : Uri? = null
+
+  //예시코드 보면서 callcamera 함수 위치 보완 => 리스너인지 데이터인지
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val homeFragment : HomeFragment = HomeFragment()
 
@@ -40,11 +43,11 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun initUI() {}
 
-    override fun onResume() {
-        Log.e("TAG", "onResume: ", )
-        super.onResume()
-    }
+    override fun initListener() {}
+
+    override fun initObserver() {}
 
     /** 카메라 관련 코드 **/
     /* 카메라 호출 */
@@ -79,7 +82,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         return getActivity()?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
     }
 
-
     //카메라 촬영 후 확인 시
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){
@@ -97,16 +99,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
             findNavController().navigate(R.id.action_cameraFragment_to_homeFragment)
         }
     }
-
-/*    fun absolutelyPath(path: Uri?, context : Context): String {
-        var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        var c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
-        var index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        c?.moveToFirst()
-        var result = c?.getString(index!!)
-        return result!!
-    }*/
-
     override fun initUI() {
     }
 
@@ -115,5 +107,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     }
 
     override fun initObserver() {
+
     }
 }

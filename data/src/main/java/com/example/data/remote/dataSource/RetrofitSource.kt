@@ -38,10 +38,10 @@ interface RetrofitSource {
     suspend fun receiveCardDataSource() : MutableList<ReceiveCardData>
 
     @Streaming
-    @GET("bill/picture/{uid}")
+    @GET("bill/image/{id}")
     suspend fun receivePictureDataSource(
-        @Path("uid") user:String
-    ) : ByteArray
+        @Path("id") user:String
+    ) : String
 
     @DELETE("bill/delete/{uid}")
     suspend fun deleteServerData(

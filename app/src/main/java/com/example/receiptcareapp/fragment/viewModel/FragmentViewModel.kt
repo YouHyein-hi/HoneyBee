@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.model.RecyclerShowData
 import com.example.domain.model.receive.DomainReceiveAllData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import okhttp3.MultipartBody
 
 /**
@@ -14,7 +15,13 @@ import okhttp3.MultipartBody
  * pureum
  */
 
+
 class FragmentViewModel : ViewModel(){
+
+    init {
+        Log.e("TAG", ": FragmentViewModel FragmentViewModel FragmentViewModel", )
+    }
+
 
     private val _image = MutableLiveData<Uri>()
     val image : LiveData<Uri>
@@ -23,13 +30,6 @@ class FragmentViewModel : ViewModel(){
         Log.e("TAG", "takeImage: ${image.value}", )
         _image.value = img
         Log.e("TAG", "takeImage: ${image.value}", )
-    }
-
-    private val _multiPartPicture = MutableLiveData<MultipartBody.Part>()
-    val multiPartPicture : LiveData<MultipartBody.Part>
-        get() = _multiPartPicture
-    fun getMultiPartPicture(img: MultipartBody.Part){
-        _multiPartPicture.value = img
     }
 
     private val _showLocalData = MutableLiveData<RecyclerShowData?>()

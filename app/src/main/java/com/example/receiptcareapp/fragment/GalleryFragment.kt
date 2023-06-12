@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -30,6 +31,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
 
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
 
+  // initListenr인지 initdata인지
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val homeFragment : HomeFragment = HomeFragment()
 
@@ -44,7 +46,6 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
 
         if(homeFragment.checkPermission(requireContext(), GALLERY)){
             Log.e("TAG", "파일 권한 있음", )
-
             val intent = Intent(Intent.ACTION_PICK)
             intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             intent.type = "image/*"
@@ -73,7 +74,6 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
             findNavController().navigate(R.id.action_galleryFragment_to_homeFragment)
         }
     }
-
     override fun initUI() {
     }
 

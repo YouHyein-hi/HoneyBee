@@ -27,12 +27,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
     private val GALLERY_CODE = 101
     private lateinit var callback: OnBackPressedCallback
-    private val activityViewModel : MainViewModel by activityViewModels()
 
+    override fun initData() { checkPermission() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
+
+    override fun initListener() {
+
+        checkPermission(requireContext(), CAMERA)
+        checkPermission(requireContext(), GALLERY)
+
+        with(binding){
+            cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
+            galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
+            storageBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
+            settingBtn.setOnClickListener{
+                val bottomDialogFragment = HomeCardBottomSheet()
+                bottomDialogFragment.show(parentFragmentManager,"tag")
+            }
+        }
+    }
+
+    override fun initObserver() {}
 
     /*** 권한 관련 코드 ***/
     fun checkPermission(context: Context, permissions: Array<out String>): Boolean {
@@ -74,7 +92,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-    /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
@@ -93,32 +110,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
+    // 이부분이 여기있는게 맞나
     override fun onDetach() {
         super.onDetach()
         callback.remove()
     }
-
-    override fun initUI() {
-    }
-
-    override fun initListener() {
-
-        checkPermission(requireContext(), CAMERA)
-        checkPermission(requireContext(), GALLERY)
-
-        with(binding){
-            cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
-            galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
-            storageBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
-            settingBtn.setOnClickListener{
-                val bottomDialogFragment = HomeCardBottomSheet()
-                bottomDialogFragment.show(parentFragmentManager,"tag")
-            }
-        }
-    }
-
-    override fun initObserver() {
-    }
-
-
 }

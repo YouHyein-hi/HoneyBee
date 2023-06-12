@@ -27,36 +27,35 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     private lateinit var myData: ShowData
     private lateinit var callback:OnBackPressedCallback
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
+    init {
+        Log.e("TAG", "RecyclerShowFragment RecyclerShowFragment RecyclerShowFragment: ", )
+    }
 
-        // 서버, 로컬 데이터를 구분하여 맞춰 아트다이알로그를 띄움
-        //서버 데이터일 시
+    override fun initData() {
+        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
+    }
+    override fun initUI() {
         if(fragmentViewModel.showServerData.value != null){
             binding.resendBtn.isVisible = false
             val data = fragmentViewModel.showServerData.value
-            myData = ShowData(ShowType.SERVER, data!!.uid, data.cardName, data.amount, data.date, data.storeName, activityViewModel.picture.value)
+            myData = ShowData(ShowType.SERVER, data!!.uid, data.cardName, data.amount, data.date, data.storeName, null)
             // 로컬 데이터 일 시
         }else if(fragmentViewModel.showLocalData.value != null){
             val data = fragmentViewModel.showLocalData.value
-            myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, activityViewModel.picture.value)
+            myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, null)
         }else{
             binding.backgroundText.text = "데이터가 없어요!"
             Toast.makeText(requireContext(), "데이터가 없어요!", Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()
         }
-        
-        Log.e("TAG", "RecyclerShowFragment onViewCreated uid : ${myData.uid}", )
-        
-        binding.imageView.setImageBitmap(myData.file)
 
         binding.pictureName.text = myData.storeName
         binding.imageView.clipToOutline = true
         binding.date.text = myData.date
         binding.cardAmount.text = "${myData.cardName}카드 : ${myData.amount}원"
+    }
 
-        //재전송 버튼, 서버와 로컬
+    override fun initListener() {
         binding.resendBtn.setOnClickListener{
             resendDialog()
         }
@@ -69,7 +68,22 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             deleteDialog()
         }
 
-        //프로그래스 바 컨트롤
+        // 뒤로가기
+        binding.backBtn.setOnClickListener{
+            if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                activityViewModel.serverCoroutineStop()
+                findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+            } else {
+                findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+            }
+        }
+    }
+
+    override fun initObserver() {
+        activityViewModel.picture.observe(viewLifecycleOwner){
+            binding.imageView.setImageBitmap(it)
+        }
+
         activityViewModel.connectedState.observe(viewLifecycleOwner){
             Log.e("TAG", "onViewCreated: $it", )
             if(it==ConnectedState.DISCONNECTED) {
@@ -86,17 +100,6 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 findNavController().popBackStack()
             }
         }
-
-
-        //뒤로가기 아이콘
-        binding.backBtn.setOnClickListener{
-            if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                activityViewModel.serverCoroutineStop()
-                findNavController().popBackStack()
-            } else {
-                findNavController().popBackStack()
-            }
-        }
     }
 
     //서버, 로컬 재전송
@@ -108,9 +111,6 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 dialog.dismiss()
             }
             .setNegativeButton("보내기"){dialog,id->
-//                    activityViewModel.sendData(
-//                        SendData(id = myData.id, cardName = myData.cardName, amount = myData.date, date = myData.date, picture = myData.picture, storeName = myData.pictureName))
-                // TODO 로컬에서 서버로 재전송하는 부분 구현 안되어있음!!
                 dialog.dismiss()
             }
             .create().show()
@@ -162,14 +162,5 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     override fun onDetach() {
         super.onDetach()
         callback.remove()
-    }
-
-    override fun initUI() {
-    }
-
-    override fun initListener() {
-    }
-
-    override fun initObserver() {
     }
 }

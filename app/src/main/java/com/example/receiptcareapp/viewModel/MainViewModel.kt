@@ -74,9 +74,9 @@ class MainViewModel @Inject constructor(
     val picture: LiveData<Bitmap?>
         get() = _picture
     fun nullPicture(){
+        Log.e("TAG", "nullPicture: null", )
         _picture.value=null
     }
-
 
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
@@ -184,6 +184,7 @@ class MainViewModel @Inject constructor(
         _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
                 val gap = retrofitUseCase.receivePictureDataUseCase(uid)
+                Log.e("TAG", "receiveServerPictureData gap : $gap", )
                 _picture.postValue(gap)
                 _connectedState.postValue(ConnectedState.DISCONNECTED)
             }?:throw SocketTimeoutException()

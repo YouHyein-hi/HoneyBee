@@ -14,9 +14,16 @@ import kotlinx.coroutines.launch
 
 class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding::inflate) {
 
+    override fun initUI() {}
+
+    override fun initListener() {}
+
+    override fun initObserver() {}
+
+    override fun initData() {}
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         lifecycleScope.launch() {
             delay(2300L)
             findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
@@ -35,14 +42,5 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             duration = 1500
             start()
         }
-    }
-
-    override fun initUI() {
-    }
-
-    override fun initListener() {
-    }
-
-    override fun initObserver() {
     }
 }

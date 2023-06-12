@@ -46,6 +46,19 @@ class ShowPictureFragment :
     private var myArray = arrayListOf<String>()
     private var newCard = 0
 
+
+    override fun initUI() {
+    }
+
+    override fun initListener() {
+    }
+
+    override fun initObserver() {
+    }
+
+    override fun initData() {
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
@@ -355,5 +368,26 @@ class ShowPictureFragment :
         }
     }
 
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                    Log.e("TAG", "handleOnBackPressed: stop")
+                    activityViewModel.serverCoroutineStop()
+                } else {
+                    Log.e("TAG", "handleOnBackPressed: back")
+                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
 }

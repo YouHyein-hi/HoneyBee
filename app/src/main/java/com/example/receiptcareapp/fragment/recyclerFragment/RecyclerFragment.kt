@@ -200,8 +200,4 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         super.onDetach()
         callback.remove()
     }
-
-
-
-
 }

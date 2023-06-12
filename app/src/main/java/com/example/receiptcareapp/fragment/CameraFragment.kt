@@ -26,18 +26,22 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
 import com.example.receiptcareapp.base.BaseFragment
+import com.example.receiptcareapp.fragment.homeFragment.HomeFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding::inflate) {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
-    private val CAMERA_CODE = 98
     private var photoURI : Uri? = null
-    private val fragmentViewModel : FragmentViewModel by viewModels()
 
+  //예시코드 보면서 callcamera 함수 위치 보완 => 리스너인지 데이터인지
+    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
+    private val homeFragment : HomeFragment = HomeFragment()
 
-    override fun initData() { CallCamera() }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
 
     override fun initUI() {}
 
@@ -49,7 +53,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     /* 카메라 호출 */
     fun CallCamera() {
         Log.e("TAG", "CallCamera 실행", )
-        if (checkPermission(CAMERA)) {  // 카메라 권한 있을 시 카메라 실행함
+        if (homeFragment.checkPermission(requireContext(), CAMERA)) {  // 카메라 권한 있을 시 카메라 실행함
             Log.e("TAG", "카메라 권한 있음", )
             dispatchTakePictureIntentEx()
         }
@@ -61,7 +65,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
 
         //카메라 불러오기
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
         //해당 경로에 사진이 저장될거임
         val uri : Uri? = createImageUri("JPEG_${timeStamp}_", "image/jpeg")
         Log.e("TAG", "dispatchTakePictureIntentEx: my uri : $uri", )
@@ -96,33 +99,14 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
             findNavController().navigate(R.id.action_cameraFragment_to_homeFragment)
         }
     }
-
-    /*** 권한 관련 코드 ***/
-    fun checkPermission(permissions : Array<out String>) : Boolean{         // 실제 권한을 확인하는 곳
-        Log.e("TAG", "checkPermission 실행", )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            for (permission in permissions) {
-                if (ContextCompat.checkSelfPermission(requireActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(requireActivity(), permissions, CAMERA_CODE)
-                    return false;
-                }
-            }
-        }
-        return true
+    override fun initUI() {
     }
 
-    @SuppressLint("MissingSuperCall")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {  // 권한 확인 직후 바로 호출됨
-        Log.e("TAG", "onRequestPermissionsResult 실행", )
+    override fun initListener() {
+        CallCamera()
+    }
 
-        when(requestCode) {
-            CAMERA_CODE -> {
-                for (grant in grantResults) {
-                    if (grant != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(getActivity(), "카메라 권한을 승인해 주세요.", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
+    override fun initObserver() {
+
     }
 }

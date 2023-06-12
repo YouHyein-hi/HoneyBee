@@ -163,8 +163,4 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         super.onDetach()
         callback.remove()
     }
-
-
-
-
 }

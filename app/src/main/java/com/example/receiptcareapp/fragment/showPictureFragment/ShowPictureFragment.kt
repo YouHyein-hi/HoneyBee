@@ -61,156 +61,198 @@ class ShowPictureFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("TAG", "viewModel.image.value : ${viewModel.image.value}")
+    }
+
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                    Log.e("TAG", "handleOnBackPressed: stop")
+                    activityViewModel.serverCoroutineStop()
+                } else {
+                    Log.e("TAG", "handleOnBackPressed: back")
+                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+
+    override fun initUI() {
+        with(binding){
+            pictureView.setImageURI(viewModel.image.value)
+            pictureView.clipToOutline = true
+
+            val dateNow = LocalDate.now()
+            val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+            btnDate.text = "${dateNow.format(formatterDate)}"
+            myYear = dateNow.year
+            myMonth = dateNow.monthValue
+            myDay = dateNow.dayOfMonth
+        }
+
         /** Spinner 호출 **/
         getSpinner()
-        binding.pictureView.setImageURI(viewModel.image.value)
-        binding.pictureView.clipToOutline = true
+    }
 
+    override fun initListener() {
+        with(binding){
+            /** Date Button -> DatePickerDialog 생성 **/
+            btnDate.setOnClickListener {
+                val cal = Calendar.getInstance()
+                val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                    var myMonthSt : String
+                    var mydaySt : String
+                    myYear = year
+                    myMonth = month
+                    myDay = day
+
+                    if(month < 10)
+                        myMonthSt = "0${month + 1}"
+                    else myMonthSt = "${month + 1}"
+                    Log.e("TAG", "onViewCreated: month else~", )
+                    myMonth = month + 1
+                    if(day < 10)
+                        mydaySt = "0${day}"
+                    else mydaySt = "${day}"
+
+                    btnDate.text = "${myYear}/${myMonthSt}/${mydaySt}"
+                }
+                val dataDialog = DatePickerDialog(requireContext(), data, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)
+                )
+                dataDialog.show()
+                dataDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                    .setTextColor(Color.RED)
+                dataDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                    .setTextColor(Color.BLACK)
+            }
+
+            /** Card 추가 Button -> Card 추가 Dialog 생성 **/
+            cardaddBtn.setOnClickListener{
+                cardAddDialog()
+            }
+
+            /** 금액 EidtText , 추가 **/
+            btnPrice.setOnClickListener {
+                if (btnPrice.text.contains(",")) {
+                    btnPrice.setText(btnPrice.text.toString().replace(",", ""))
+                    btnPrice.setSelection(btnPrice.text.length)
+                }
+            }
+
+            /** 금액 EidtText , 추가 **/
+            btnPrice.setOnEditorActionListener { v, actionId, event ->
+                var handled = false
+                if (actionId == EditorInfo.IME_ACTION_DONE && btnPrice.text.isNotEmpty()) {
+                    val gap = DecimalFormat("#,###")
+                    btnPrice.setText(gap.format(btnPrice.text.toString().replace(",","").toInt()))
+                }
+                handled
+            }
+
+            /** 완료 Button **/
+            sendBtn.setOnClickListener {
+                Log.e("TAG", "onViewCreated: iinin")
+                if (checked == "") {
+                    Toast.makeText(requireContext(), "카드를 입력하세요.", Toast.LENGTH_SHORT).show()
+                } else if (btnStore.text!!.isEmpty()) {
+                    Toast.makeText(requireContext(), "가게 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
+                } else if (btnDate.text.isEmpty()) {
+                    Toast.makeText(requireContext(), "날짜를 입력하세요.", Toast.LENGTH_SHORT).show()
+                } else if (btnPrice.text.isEmpty()) {
+                    Toast.makeText(requireContext(), "금액을 입력하세요.", Toast.LENGTH_SHORT).show()
+                } else if (viewModel.image.value == null) {
+                    Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT)
+                        .show()
+                    NavHostFragment.findNavController(this@ShowPictureFragment)
+                        .navigate(R.id.action_showFragment_to_homeFragment)
+                } else {
+                    Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}", )
+                    val myLocalDateTime = LocalDateTime.of(
+                        myYear,
+                        myMonth,
+                        myDay,
+                        LocalDateTime.now().hour,
+                        LocalDateTime.now().minute,
+                        LocalDateTime.now().second
+                    )
+                    activityViewModel.sendData(
+                        AppSendData(
+                            date = myLocalDateTime.toString(), amount = btnPrice.text.toString(), cardName = checked, picture = viewModel.image.value!!, storeName = binding.btnStore.text.toString())
+                    )
+                }
+            }
+
+            /** 취소 Button **/
+            cancleBtn.setOnClickListener {
+                findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+            }
+        }
+    }
+
+    // initData와 같은 거라고 생각하자
+    override fun initObserver() {
         // 서버와 연결 상태 초기화.
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
 
-        val dateNow = LocalDate.now()
-        val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-        binding.btnDate.text = "${dateNow.format(formatterDate)}"
-        myYear = dateNow.year
-        myMonth = dateNow.monthValue
-        myDay = dateNow.dayOfMonth
-
-
-        activityViewModel.cardData.observe(viewLifecycleOwner){
-            //val myArray = arrayListOf<String>()
-            if(myArray.isEmpty()){
-                it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
+        with(binding){
+            /** CardData 관련 **/
+            activityViewModel.cardData.observe(viewLifecycleOwner){
+                //val myArray = arrayListOf<String>()
+                if(myArray.isEmpty()){
+                    it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
+                }
+                if(newCard == 1){
+                    myArray.clear()
+                    it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
+                    newCard = 0
+                }
+                val adapter = SpinnerCustomAdapter(requireContext(), myArray)
+                spinner.adapter = adapter
             }
-            if(newCard == 1){
-                myArray.clear()
-                it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
-                newCard = 0
+
+            /** 프로그래스바 컨트롤 **/
+            activityViewModel.connectedState.observe(viewLifecycleOwner){
+                Log.e("TAG", "onViewCreated: $it", )
+                when (it) {
+                    ConnectedState.CONNECTING -> {
+                        waitingView.visibility = View.VISIBLE
+                        progressBar.visibility = View.VISIBLE
+                    }
+                    ConnectedState.DISCONNECTED -> {
+                        waitingView.visibility = View.INVISIBLE
+                        progressBar.visibility = View.INVISIBLE
+                    }
+                    ConnectedState.CONNECTING_SUCCESS -> {
+                        Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
+                        NavHostFragment.findNavController(this@ShowPictureFragment).navigate(R.id.action_showFragment_to_homeFragment)
+                    }
+                    ConnectedState.CARD_CONNECTING_SUCCESS -> {
+                        waitingView.visibility = View.INVISIBLE
+                        progressBar.visibility = View.INVISIBLE
+                        Toast.makeText(requireContext(), "카드 추가 완료!", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        waitingView.visibility = View.INVISIBLE
+                        progressBar.visibility = View.INVISIBLE
+                    }
+                }
             }
-            val adapter = SpinnerCustomAdapter(requireContext(), myArray)
-            binding.spinner.adapter = adapter
+
         }
-
-        //날짜 관리
-        binding.btnDate.setOnClickListener {
-            val cal = Calendar.getInstance()
-            val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
-                var myMonthSt : String
-                var mydaySt : String
-                myYear = year
-                myMonth = month
-                myDay = day
-
-                if(month < 10)
-                    myMonthSt = "0${month + 1}"
-                else myMonthSt = "${month + 1}"
-                    Log.e("TAG", "onViewCreated: month else~", )
-                    myMonth = month + 1
-                if(day < 10)
-                    mydaySt = "0${day}"
-                else mydaySt = "${day}"
-
-                binding.btnDate.text = "${myYear}/${myMonthSt}/${mydaySt}"
-            }
-            val dataDialog = DatePickerDialog(requireContext(), data, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)
-            )
-            dataDialog.show()
-            dataDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-                .setTextColor(Color.RED)
-            dataDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
-                .setTextColor(Color.BLACK)
-        }
-
-        //프로그래스 바 컨트롤
-        activityViewModel.connectedState.observe(viewLifecycleOwner){
-            Log.e("TAG", "onViewCreated: $it", )
-            if(it==ConnectedState.CONNECTING) {
-                binding.waitingView.visibility = View.VISIBLE
-                binding.progressBar.visibility = View.VISIBLE
-            }
-            else if(it==ConnectedState.DISCONNECTED){
-                binding.waitingView.visibility = View.INVISIBLE
-                binding.progressBar.visibility = View.INVISIBLE
-            }
-            else if(it==ConnectedState.CONNECTING_SUCCESS){
-                Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this).navigate(R.id.action_showFragment_to_homeFragment)
-            }else if(it == ConnectedState.CARD_CONNECTING_SUCCESS){
-                binding.waitingView.visibility = View.INVISIBLE
-                binding.progressBar.visibility = View.INVISIBLE
-                Toast.makeText(requireContext(), "카드 추가 완료!", Toast.LENGTH_SHORT).show()
-            } else{
-                binding.waitingView.visibility = View.INVISIBLE
-                binding.progressBar.visibility = View.INVISIBLE
-            }
-        }
-
-
-        binding.cardaddBtn.setOnClickListener{
-            cardAddDialog()
-        }
-
-        /** 카드 삭제 관련 코드 **/
-        binding.cardminusBtn.setOnClickListener(){
-            cardMinusDialog()
-        }
-
-        binding.btnPrice.setOnClickListener {
-            if (binding.btnPrice.text.contains(",")) {
-                binding.btnPrice.setText(binding.btnPrice.text.toString().replace(",", ""))
-                binding.btnPrice.setSelection(binding.btnPrice.text.length)
-            }
-        }
-
-        binding.btnPrice.setOnEditorActionListener { v, actionId, event ->
-            var handled = false
-            if (actionId == EditorInfo.IME_ACTION_DONE && binding.btnPrice.text.isNotEmpty()) {
-                val gap = DecimalFormat("#,###")
-                binding.btnPrice.setText(gap.format(binding.btnPrice.text.toString().replace(",","").toInt()))
-            }
-            handled
-        }
-
-
-        binding.sendBtn.setOnClickListener {
-            Log.e("TAG", "onViewCreated: iinin")
-            if (checked == "") {
-                Toast.makeText(requireContext(), "카드를 입력하세요.", Toast.LENGTH_SHORT).show()
-            } else if (binding.btnStore.text!!.isEmpty()) {
-                Toast.makeText(requireContext(), "가게 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
-            } else if (binding.btnDate.text.isEmpty()) {
-                Toast.makeText(requireContext(), "날짜를 입력하세요.", Toast.LENGTH_SHORT).show()
-            } else if (binding.btnPrice.text.isEmpty()) {
-                Toast.makeText(requireContext(), "금액을 입력하세요.", Toast.LENGTH_SHORT).show()
-            } else if (viewModel.image.value == null) {
-                Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT)
-                    .show()
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_showFragment_to_homeFragment)
-            } else {
-                Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}", )
-                val myLocalDateTime = LocalDateTime.of(
-                    myYear,
-                    myMonth,
-                    myDay,
-                    LocalDateTime.now().hour,
-                    LocalDateTime.now().minute,
-                    LocalDateTime.now().second
-                )
-                activityViewModel.sendData(
-                    AppSendData(
-                        date = myLocalDateTime.toString(), amount = binding.btnPrice.text.toString(), cardName = checked, picture = viewModel.image.value!!, storeName = binding.btnStore.text.toString())
-                )
-            }
-        }
-
-        //취소버튼
-        binding.cancleBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_showFragment_to_homeFragment)
-        }
-
     }
 
+
+    /** Card 추가 Dialog **/
     fun cardAddDialog(){
         val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
         val editText_cardName = dialogView.findViewById<EditText>(R.id.dialog_cardname)
@@ -300,58 +342,12 @@ class ShowPictureFragment :
             .setTextColor(Color.BLACK)
     }
 
-    fun cardMinusDialog(){
-        val array : Map<String, Int>? = viewModel.card.value
-        Log.e("TAG", "minusDialog: ${array}", )
-        val ArrayCard : Array<String>
-
-        if (array != null) {
-            for(i in array){
-//                arrayCardList.add("${i.key} : ${i.value}")
-                Log.e("TAG", "minusDialog: ${arrayCardList}", )
-            }
-        }
-
-        ArrayCard = myArray.toTypedArray()
-        val checkedItemIndex = 0
-
-        val cardMinusDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
-            .setTitle("카드 삭제")
-            .setSingleChoiceItems(ArrayCard, checkedItemIndex) { dialog_, which ->
-                Log.e("TAG", "minusDialog: ${which}", )
-            }
-            .setPositiveButton("삭제"){dialog, id->
-                // 카드 삭제 event 넣기
-                Log.e("TAG", "getSpinner: 카드 삭제 성공", )
-//                activityViewModel.deleteCardData(minusCard)
-                newCard = 1
-                dialog.dismiss()   // 예비
-            }
-            .setNegativeButton("취소"){dialog, id->
-                Log.e("TAG", "getSpinner: 카드 삭제 취소", )
-                dialog.dismiss()
-            }
-            .show()
-
-        cardMinusDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-            .setTextColor(Color.RED)
-        cardMinusDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
-            .setTextColor(Color.BLACK)
-    }
-
-
+    /** Spinner 관련 **/
     private fun getSpinner() {
         activityViewModel.receiveServerCardData()
         Log.e("TAG", "getSpinner: getSpinner",)
         cardArray?.let { viewModel.takeCardData(it) }
         var adapter = SpinnerCustomAdapter(requireContext(), arrayListOf<String>())
-        /*
-        var adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            arrayListOf<String>()
-        )
-        */
         binding.spinner.adapter = adapter
         Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

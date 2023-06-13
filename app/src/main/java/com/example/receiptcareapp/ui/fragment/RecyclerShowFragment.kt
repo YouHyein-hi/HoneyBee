@@ -1,7 +1,6 @@
-package com.example.receiptcareapp.fragment.recyclerFragment
+package com.example.receiptcareapp.ui.fragment
 
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -16,8 +15,8 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.databinding.FragmentRecyclerShowBinding
 import com.example.receiptcareapp.dto.ShowData
-import com.example.receiptcareapp.fragment.recyclerFragment.adapter.ChangeDialog
-import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
+import com.example.receiptcareapp.ui.adapter.ChangeDialog
+import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.base.BaseFragment
 

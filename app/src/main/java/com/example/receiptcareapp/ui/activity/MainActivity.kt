@@ -1,4 +1,4 @@
-package com.example.receiptcareapp
+package com.example.receiptcareapp.ui.activity
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity

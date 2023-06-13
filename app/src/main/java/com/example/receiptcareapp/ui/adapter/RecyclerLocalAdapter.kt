@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment.recyclerFragment.adapter
+package com.example.receiptcareapp.ui.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import com.example.receiptcareapp.databinding.LocalItemBinding
  * 2023-03-16
  * pureum
  */
-class LocalAdapter: RecyclerView.Adapter<LocalAdapter.MyAdapter>(){
+class RecyclerLocalAdapter: RecyclerView.Adapter<RecyclerLocalAdapter.MyAdapter>(){
 
     lateinit var onLocalSaveClic : (RecyclerShowData)->Unit
     private lateinit var localBinding: LocalItemBinding

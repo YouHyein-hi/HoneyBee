@@ -1,17 +1,20 @@
-package com.example.receiptcareapp.fragment.showPictureFragment
+package com.example.receiptcareapp.ui.fragment
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.DialogInterface
-import android.graphics.Color
 import android.content.Context
+import android.content.DialogInterface
 import android.content.res.ColorStateList
-import android.os.Bundle
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.ImageDecoder
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -22,10 +25,12 @@ import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
-import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
-import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
-import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.base.BaseFragment
+import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
+import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
+import com.example.receiptcareapp.viewModel.FragmentViewModel
+import com.example.receiptcareapp.viewModel.MainViewModel
+import java.io.FileOutputStream
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -34,7 +39,7 @@ import java.util.*
 
 class ShowPictureFragment :
     BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
-    private val viewModel: FragmentViewModel by viewModels({ requireActivity() })
+    private val viewModel: FragmentViewModel by viewModels({requireActivity()})
     private val activityViewModel: MainViewModel by activityViewModels()
     private var checked = ""
     private var myYear = 0
@@ -69,8 +74,17 @@ class ShowPictureFragment :
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun initUI() {
         with(binding){
+            try {
+                pictureView.setImageURI(viewModel.image.value)
+            }catch (E:Exception){
+                Log.e("TAG", "11: ")
+                val gap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver,viewModel.image.value!!))
+                pictureView.setImageBitmap(gap)
+                Log.e("TAG", "11: ")
+            }
             pictureView.setImageURI(viewModel.image.value)
             pictureView.clipToOutline = true
 
@@ -100,7 +114,7 @@ class ShowPictureFragment :
                     if(month < 10)
                         myMonthSt = "0${month + 1}"
                     else myMonthSt = "${month + 1}"
-                    Log.e("TAG", "onViewCreated: month else~", )
+                    Log.e("TAG", "onViewCreated: month else~")
                     myMonth = month + 1
                     if(day < 10)
                         mydaySt = "0${day}"
@@ -157,7 +171,7 @@ class ShowPictureFragment :
                     NavHostFragment.findNavController(this@ShowPictureFragment)
                         .navigate(R.id.action_showFragment_to_homeFragment)
                 } else {
-                    Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}", )
+                    Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}")
                     val myLocalDateTime = LocalDateTime.of(
                         myYear,
                         myMonth,
@@ -194,13 +208,13 @@ class ShowPictureFragment :
                     it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
                     newCard = 0
                 }
-                val adapter = SpinnerCustomAdapter(requireContext(), myArray)
+                val adapter = ShowPictureAdapter(requireContext(), myArray)
                 spinner.adapter = adapter
             }
 
             /** 프로그래스바 컨트롤 **/
             activityViewModel.connectedState.observe(viewLifecycleOwner){
-                Log.e("TAG", "onViewCreated: $it", )
+                Log.e("TAG", "onViewCreated: $it")
                 when (it) {
                     ConnectedState.CONNECTING -> {
                         waitingView.visibility = View.VISIBLE
@@ -286,17 +300,17 @@ class ShowPictureFragment :
             .setView(dialogView)
             .setPositiveButton("확인") { dialog, id ->
                 if(editText_cardName.text.toString() == ""){
-                    Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요", )
+                    Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요")
                     dialog.dismiss()
                     Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
                 }
                 else if(editText_cardPrice.text.toString() == ""){
-                    Log.e("TAG", "onViewCreated: 초기 금액을 입력해주세요", )
+                    Log.e("TAG", "onViewCreated: 초기 금액을 입력해주세요")
                     dialog.dismiss()
                     Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
                 }
                 else{
-                    Log.e("TAG", "cardAddDialog: ${editText_cardName.text}", )
+                    Log.e("TAG", "cardAddDialog: ${editText_cardName.text}")
                     newCard = 1
                     activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
                     activityViewModel.sendCardData(AppSendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt()))
@@ -306,7 +320,7 @@ class ShowPictureFragment :
 
             }
             .setNegativeButton("취소"){dialog, id->
-                Log.e("TAG", "getSpinner: 카드 추가 취소", )
+                Log.e("TAG", "getSpinner: 카드 추가 취소")
                 dialog.dismiss()
             }
             .setCancelable(false)
@@ -322,9 +336,9 @@ class ShowPictureFragment :
     /** Spinner 관련 **/
     private fun getSpinner() {
         activityViewModel.receiveServerCardData()
-        Log.e("TAG", "getSpinner: getSpinner",)
+        Log.e("TAG", "getSpinner: getSpinner")
         cardArray?.let { viewModel.takeCardData(it) }
-        var adapter = SpinnerCustomAdapter(requireContext(), arrayListOf())
+        var adapter = ShowPictureAdapter(requireContext(), arrayListOf())
         binding.spinner.adapter = adapter
         Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -334,11 +348,11 @@ class ShowPictureFragment :
                 position: Int,
                 id: Long
             ) {
-                Log.e("TAG", "onItemSelected: ${myArray[position]}", )
-                Log.e("TAG", "onItemSelected: ${position}", )
+                Log.e("TAG", "onItemSelected: ${myArray[position]}")
+                Log.e("TAG", "onItemSelected: ${position}")
                 val spiltCard = myArray[position].split(" : ")
                 checked = spiltCard[0]
-                Log.e("TAG", "onItemSelected: ${checked}", )
+                Log.e("TAG", "onItemSelected: ${checked}")
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }

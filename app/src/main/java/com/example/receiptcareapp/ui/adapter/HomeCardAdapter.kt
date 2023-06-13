@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment.homeFragment
+package com.example.receiptcareapp.ui.adapter
 
 import android.util.Log
 import android.view.LayoutInflater

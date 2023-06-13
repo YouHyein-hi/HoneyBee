@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment.recyclerFragment.adapter
+package com.example.receiptcareapp.ui.adapter
 
 import android.os.Bundle
 import android.util.Log
@@ -12,15 +12,19 @@ import androidx.fragment.app.viewModels
 import com.example.domain.model.RecyclerShowData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.databinding.DialogChangeBinding
-import com.example.receiptcareapp.fragment.showPictureFragment.SpinnerCustomAdapter
-import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
+import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.time.LocalDateTime
 
 class ChangeDialog : DialogFragment() {
 
-    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
+    //viewModels 뷰모델의 객체를 생성주는것?
+    private val fragmentViewModel : FragmentViewModel by viewModels()
+
+    //엑티비티를 따라가는 뷰모델이니까
+    // 엑티비티의 생명주기 따라가는 뷰모델이 뭘까?
     private val activityViewModel: MainViewModel by activityViewModels()
+
     private lateinit var binding : DialogChangeBinding
     private lateinit var myData: RecyclerShowData
     private var myArray = arrayListOf<String>()
@@ -41,7 +45,7 @@ class ChangeDialog : DialogFragment() {
         activityViewModel.cardData.observe(viewLifecycleOwner) {
             myArray.clear()
             it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
-            val adapter = SpinnerCustomAdapter(requireContext(), myArray)
+            val adapter = ShowPictureAdapter(requireContext(), myArray)
             binding.changeCardspinner.adapter = adapter
             //binding.spinner.adapter = adapter
             //adapter.notifyDataSetChanged()
@@ -132,7 +136,7 @@ class ChangeDialog : DialogFragment() {
         Log.e("TAG", "getSpinner", )
 
         activityViewModel.receiveServerCardData()
-        val adapter = SpinnerCustomAdapter(requireContext(), myArray)
+        val adapter = ShowPictureAdapter(requireContext(), myArray)
 
         binding.changeCardspinner?.adapter = adapter
         binding.changeCardspinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{

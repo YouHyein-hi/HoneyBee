@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment.viewModel
+package com.example.receiptcareapp.viewModel
 
 import android.net.Uri
 import android.util.Log
@@ -61,5 +61,4 @@ class FragmentViewModel : ViewModel(){
     fun takeCardData(card: Map<String, Int>){
         _card.value = card
     }
-
 }

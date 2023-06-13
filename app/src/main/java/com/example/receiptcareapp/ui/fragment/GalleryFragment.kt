@@ -1,31 +1,19 @@
-package com.example.receiptcareapp.fragment
+package com.example.receiptcareapp.ui.fragment
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentGalleryBinding
-import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
+import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.fragment.homeFragment.HomeFragment
 
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 

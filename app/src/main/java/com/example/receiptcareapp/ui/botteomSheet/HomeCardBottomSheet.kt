@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.fragment.homeFragment
+package com.example.receiptcareapp.ui.botteomSheet
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -19,11 +19,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
+import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

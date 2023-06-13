@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.receiptcareapp.fragment.SplashFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.SplashFragment"
         android:label="splashFragment"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.receiptcareapp.fragment.homeFragment.HomeFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home"
         >
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.example.receiptcareapp.fragment.CameraFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" >
         <action
@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/galleryFragment"
-        android:name="com.example.receiptcareapp.fragment.GalleryFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.GalleryFragment"
         android:label="fragment_gallery"
         tools:layout="@layout/fragment_gallery" >
         <action
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/recyclerFragment"
-        android:name="com.example.receiptcareapp.fragment.recyclerFragment.RecyclerFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.RecyclerFragment"
         android:label="fragment_recycler"
         tools:layout="@layout/fragment_recycler" >
         <action
@@ -85,7 +85,7 @@
     </fragment>
     <fragment
         android:id="@+id/recyclerShowFragment"
-        android:name="com.example.receiptcareapp.fragment.recyclerFragment.RecyclerShowFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.RecyclerShowFragment"
         android:label="fragment_recycler_show"
         tools:layout="@layout/fragment_recycler_show" >
         <action
@@ -97,7 +97,7 @@
     </fragment>
     <fragment
         android:id="@+id/showFragment"
-        android:name="com.example.receiptcareapp.fragment.showPictureFragment.ShowPictureFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.ShowPictureFragment"
         android:label="fragment_success"
         tools:layout="@layout/fragment_show_picture" >
         <action

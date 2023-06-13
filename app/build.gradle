@@ -53,7 +53,7 @@ dependencies {
     //코루틴
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
-    //activity, fragment viewModel을 메인엑티비티에서 쓸수있게해줌
+    //activity, fragment viewModels, activityViewModels을 메인엑티비티에서 쓸수있게해줌
     def  activity_version = "1.5.1"
     implementation "androidx.activity:activity-ktx:$activity_version"
     implementation "androidx.fragment:fragment-ktx:$activity_version"

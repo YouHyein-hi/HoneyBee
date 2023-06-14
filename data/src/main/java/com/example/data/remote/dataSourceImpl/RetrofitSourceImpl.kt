@@ -38,9 +38,7 @@ class RetrofitSourceImpl @Inject constructor(
         cardName: String?,
         amount: Int?
     ): String {
-        var gap = retrofit.create(RetrofitSource::class.java).sendCardDataSource(cardName = cardName, amount = amount)
-        Log.e("TAG", "sendCardDataSource: $gap", )
-        return gap
+        return retrofit.create(RetrofitSource::class.java).sendCardDataSource(cardName = cardName, amount = amount)
     }
 
     override suspend fun receiveDataSource(): MutableList<ReceiveData> {

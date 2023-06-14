@@ -23,12 +23,10 @@ class RecyclerLocalAdapter: RecyclerView.Adapter<RecyclerLocalAdapter.MyAdapter>
 
     inner class MyAdapter(private val binding: LocalItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:RecyclerShowData){
-            Log.e("TAG", "LocalAdapter uid : ${list.uid}", )
-            binding.storeName.text = "${list.storeName}, "
-            binding.cardName.text = "${list.cardName}카드 :"
-            binding.amount.text = " ${list.amount}원"
-            binding.date.text = list.date.toString()
-//            binding.picture.setImageURI(list.file)
+            binding.storeName.text = "${list.storeName}"
+            binding.cardName.text = "${list.cardName}"
+            binding.amount.text = " ${list.amount}"
+            binding.date.text = list.date
             binding.listLayout.setOnClickListener{ onLocalSaveClic(list) }
         }
     }

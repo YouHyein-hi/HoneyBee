@@ -3,6 +3,9 @@ package com.example.receiptcareapp.viewModel
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -25,9 +28,10 @@ import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
-import java.io.InterruptedIOException
+import java.io.*
 import java.net.SocketTimeoutException
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 import javax.inject.Inject
 
 /**
@@ -81,6 +85,9 @@ class MainViewModel @Inject constructor(
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
 
+
+
+
     //서버에 데이터 전송 기능
     fun sendData(sendData: AppSendData) {
         Log.e("TAG", "sendData: $sendData", )
@@ -89,7 +96,8 @@ class MainViewModel @Inject constructor(
             withTimeoutOrNull(waitTime) {
                 var uid = "0"
                 val file = File(absolutelyPath(sendData.picture, myCotext))
-                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val compressFile = compressImageFile(file)
+                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 val result = retrofitUseCase.sendDataUseCase(
                     DomainSendData(
@@ -317,5 +325,53 @@ class MainViewModel @Inject constructor(
     fun hideServerCoroutineStop() {
         _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소"))
         _connectedState.postValue(ConnectedState.DISCONNECTED)
+    }
+
+
+
+    fun rotateImageIfRequired(bitmap: Bitmap, imagePath: String): Bitmap {
+        val exif = ExifInterface(imagePath)
+        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+
+        return when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270f)
+            else -> bitmap
+        }
+    }
+
+    fun rotateBitmap(bitmap: Bitmap, degree: Float): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(degree)
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
+    fun compressImageFile(inputFile: File): File {
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+
+        BitmapFactory.decodeFile(inputFile.absolutePath, options)
+
+        val resize = if(inputFile.length() > 1000000) 7 else 1
+
+        options.inJustDecodeBounds = false
+        options.inSampleSize = resize
+
+        val bitmap = BitmapFactory.decodeFile(inputFile.absolutePath, options)
+
+        val rotatedBitmap = rotateImageIfRequired(bitmap, inputFile.absolutePath)
+
+        val outputFile = File.createTempFile("compressed_", ".jpg")
+
+        try {
+            val outputStream = FileOutputStream(outputFile)
+            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            outputStream.flush()
+            outputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return outputFile
     }
 }

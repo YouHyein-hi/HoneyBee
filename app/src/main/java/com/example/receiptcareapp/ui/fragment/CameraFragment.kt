@@ -3,6 +3,8 @@ package com.example.receiptcareapp.ui.fragment
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -15,6 +17,9 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.base.BaseFragment
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -60,6 +65,9 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
 //        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
         activityResult.launch(takePictureIntent)
+
+
+
     }
 
     fun createImageUri(filename:String, mimeType:String):Uri? {
@@ -75,6 +83,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         if (it.resultCode == Activity.RESULT_OK){
             Log.e("TAG", "onActivityResult: if 진입", )
             if(photoURI != null) {
+//                fragmentViewModel.takeImage(compressImage(photoURI!!))
                 fragmentViewModel.takeImage(photoURI!!)
                 photoURI = null
                 NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
@@ -85,7 +94,4 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
             findNavController().navigate(R.id.action_cameraFragment_to_homeFragment)
         }
     }
-
-
-
 }

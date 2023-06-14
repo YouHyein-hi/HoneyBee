@@ -31,20 +31,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     }
 
 
-    /** Fragment 뒤로가기 **/
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    activityViewModel.serverCoroutineStop()
-                } else {
-                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
+
 
     override fun initData() {
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
@@ -118,10 +105,6 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
-    }
 
     //서버, 로컬 재전송
     private fun resendDialog(){
@@ -163,5 +146,25 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 findNavController().popBackStack()
             }
             .create().show()
+    }
+
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                    activityViewModel.serverCoroutineStop()
+                } else {
+                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 }

@@ -5,18 +5,12 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.res.ColorStateList
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -33,8 +27,6 @@ import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -55,40 +47,22 @@ class ShowPictureFragment :
     private var myArray = arrayListOf<String>()
     private var newCard = 0
 
-    /** Fragment 뒤로가기 **/
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    Log.e("TAG", "handleOnBackPressed: stop")
-                    activityViewModel.serverCoroutineStop()
-                } else {
-                    Log.e("TAG", "handleOnBackPressed: back")
-                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-
     override fun initData() {
         // 서버와 연결 상태 초기화.
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
     }
 
+
+
+
     override fun initUI() {
-
         with(binding){
-
-            //글라이드!
+            //글라이드
             Glide.with(pictureView)
-                .load(viewModel.image.value)
+                .load(viewModel.image.value!!)
                 .into(pictureView)
 
             pictureView.clipToOutline = true
-
             val dateNow = LocalDate.now()
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
             btnDate.text = "${dateNow.format(formatterDate)}"
@@ -200,7 +174,6 @@ class ShowPictureFragment :
         with(binding){
             /** CardData 관련 **/
             activityViewModel.cardData.observe(viewLifecycleOwner){
-                //val myArray = arrayListOf<String>()
                 if(myArray.isEmpty()){
                     it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
                 }
@@ -242,43 +215,6 @@ class ShowPictureFragment :
             }
         }
     }
-
-    private fun resizeBitMap(uri: Uri, resize: Int): Bitmap? {
-        var resizeBitmap: Bitmap? = null
-        val ratioTemp = 2
-
-        val options = BitmapFactory.Options()
-        try {
-            BitmapFactory.decodeStream(
-                requireContext().contentResolver.openInputStream(uri),
-                null,
-                options
-            )
-            var width = options.outWidth
-            var height = options.outHeight
-            var sampleSize = 1
-
-            while (true) {
-                if (width / ratioTemp < resize || height / ratioTemp < resize) break
-                width /= ratioTemp
-                height /= ratioTemp
-                sampleSize *= ratioTemp
-            }
-
-            options.inSampleSize = sampleSize
-            val bitmap = BitmapFactory.decodeStream(
-                requireContext().contentResolver.openInputStream(uri),
-                null,
-                options
-            )
-            resizeBitmap = bitmap
-
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        }
-        return resizeBitmap
-    }
-
 
     /** Card 추가 Dialog **/
     fun cardAddDialog(){
@@ -396,7 +332,23 @@ class ShowPictureFragment :
         }
     }
 
-
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                    Log.e("TAG", "handleOnBackPressed: stop")
+                    activityViewModel.serverCoroutineStop()
+                } else {
+                    Log.e("TAG", "handleOnBackPressed: back")
+                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     override fun onDetach() {
         super.onDetach()

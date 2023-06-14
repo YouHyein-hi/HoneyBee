@@ -58,6 +58,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         Log.e("TAG", "dispatchTakePictureIntentEx: my uri : $uri", )
         photoURI = uri
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+//        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
         activityResult.launch(takePictureIntent)
     }
 
@@ -84,4 +85,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
             findNavController().navigate(R.id.action_cameraFragment_to_homeFragment)
         }
     }
+
+
+
 }

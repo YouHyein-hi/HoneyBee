@@ -6,8 +6,10 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.ImageDecoder
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.view.View
@@ -20,6 +22,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.AppSendData
@@ -30,6 +33,7 @@ import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.text.DecimalFormat
 import java.time.LocalDate
@@ -74,18 +78,15 @@ class ShowPictureFragment :
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun initUI() {
+
         with(binding){
-            try {
-                pictureView.setImageURI(viewModel.image.value)
-            }catch (E:Exception){
-                Log.e("TAG", "11: ")
-                val gap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver,viewModel.image.value!!))
-                pictureView.setImageBitmap(gap)
-                Log.e("TAG", "11: ")
-            }
-            pictureView.setImageURI(viewModel.image.value)
+
+            //글라이드!
+            Glide.with(pictureView)
+                .load(viewModel.image.value)
+                .into(pictureView)
+
             pictureView.clipToOutline = true
 
             val dateNow = LocalDate.now()
@@ -240,6 +241,42 @@ class ShowPictureFragment :
                 }
             }
         }
+    }
+
+    private fun resizeBitMap(uri: Uri, resize: Int): Bitmap? {
+        var resizeBitmap: Bitmap? = null
+        val ratioTemp = 2
+
+        val options = BitmapFactory.Options()
+        try {
+            BitmapFactory.decodeStream(
+                requireContext().contentResolver.openInputStream(uri),
+                null,
+                options
+            )
+            var width = options.outWidth
+            var height = options.outHeight
+            var sampleSize = 1
+
+            while (true) {
+                if (width / ratioTemp < resize || height / ratioTemp < resize) break
+                width /= ratioTemp
+                height /= ratioTemp
+                sampleSize *= ratioTemp
+            }
+
+            options.inSampleSize = sampleSize
+            val bitmap = BitmapFactory.decodeStream(
+                requireContext().contentResolver.openInputStream(uri),
+                null,
+                options
+            )
+            resizeBitmap = bitmap
+
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+        return resizeBitmap
     }
 
 

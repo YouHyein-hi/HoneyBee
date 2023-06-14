@@ -87,6 +87,7 @@ class MainViewModel @Inject constructor(
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
+                var uid = "0"
                 val file = File(absolutelyPath(sendData.picture, myCotext))
                 val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
@@ -103,8 +104,9 @@ class MainViewModel @Inject constructor(
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
+                uid = result
 
-                if (result == "add success") {
+                if (uid != "0") {
                     _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
                     insertRoomData(
                         DomainRoomData(
@@ -113,7 +115,7 @@ class MainViewModel @Inject constructor(
                             storeName = sendData.storeName,
                             date = sendData.date,
                             file = sendData.picture.toString(),
-                            uid = "0"
+                            uid = uid
 //                            file = fileToBitmap(file)
 //                            file = sendData.picture
                         )

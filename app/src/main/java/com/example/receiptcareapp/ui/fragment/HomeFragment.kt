@@ -1,31 +1,28 @@
-package com.example.receiptcareapp.fragment.homeFragment
+package com.example.receiptcareapp.ui.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
-import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.base.BaseFragment
+import com.example.receiptcareapp.ui.botteomSheet.HomeCardBottomSheet
 
 //메인 프레그먼트/
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
-    private val CAMERA_CODE = 98
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-    private val GALLERY_CODE = 101
+    private val CAMERA_CODE = 98
+    private val GALLERY_CODE = 1010
     private lateinit var callback: OnBackPressedCallback
 
     override fun onAttach(context: Context) {
@@ -49,6 +46,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun initData() {}
 
     override fun initUI() {
+
+
         with(binding){
             cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
             galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}

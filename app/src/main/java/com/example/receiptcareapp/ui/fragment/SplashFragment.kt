@@ -1,8 +1,6 @@
-package com.example.receiptcareapp.fragment
+package com.example.receiptcareapp.ui.fragment
 
 import android.animation.ObjectAnimator
-import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController

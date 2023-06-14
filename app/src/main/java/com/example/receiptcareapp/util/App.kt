@@ -1,4 +1,4 @@
-package com.example.receiptcareapp
+package com.example.receiptcareapp.util
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

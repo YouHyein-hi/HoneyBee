@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.recyclerFragment.RecyclerShowFragment"
+    tools:context=".ui.fragment.RecyclerShowFragment"
     android:background="@color/back_yellow">
 
     <ImageView

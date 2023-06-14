@@ -1,8 +1,5 @@
-package com.example.receiptcareapp.fragment.recyclerFragment.adapter
+package com.example.receiptcareapp.ui.adapter
 
-import android.graphics.BitmapFactory
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,9 +10,9 @@ import com.example.receiptcareapp.databinding.ServerItemBinding
  * 2023-02-06
  * pureum
  */
-class ServerAdapter(
+class RecyclerServerAdapter(
 
-) :RecyclerView.Adapter<ServerAdapter.MyAdapter>(){
+) :RecyclerView.Adapter<RecyclerServerAdapter.MyAdapter>(){
 
     lateinit var onServerSaveClick : (DomainReceiveAllData)->Unit
     private lateinit var serverBinding:ServerItemBinding

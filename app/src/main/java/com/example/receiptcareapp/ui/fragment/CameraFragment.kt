@@ -1,32 +1,20 @@
-package com.example.receiptcareapp.fragment
+package com.example.receiptcareapp.ui.fragment
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
-import com.example.receiptcareapp.fragment.viewModel.FragmentViewModel
+import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.fragment.homeFragment.HomeFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,6 +25,9 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
 
   //예시코드 보면서 callcamera 함수 위치 보완 => 리스너인지 데이터인지
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
+
+    // 이렇게 코드짜면 권한 확인하기 위해 프래그먼트를 통쨰로 만들어버리는거나 마찬가지인것같은데..
+    // 수정이 필요할듯
     private val homeFragment : HomeFragment = HomeFragment()
 
     override fun initData() {}
@@ -79,8 +70,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     }
 
     //카메라 촬영 후 확인 시
-    private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()){
+    private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK){
             Log.e("TAG", "onActivityResult: if 진입", )
             if(photoURI != null) {

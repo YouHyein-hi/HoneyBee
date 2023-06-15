@@ -128,10 +128,10 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
             .setMessage("서버에 보내시겠어요?")
-            .setPositiveButton("닫기"){dialog,id->
+            .setNegativeButton("보내기"){dialog,id->
                 dialog.dismiss()
             }
-            .setNegativeButton("보내기"){dialog,id->
+            .setPositiveButton("닫기"){dialog,id->
                 dialog.dismiss()
             }
             .create().show()
@@ -149,10 +149,6 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
             .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")
-            .setPositiveButton("닫기"){dialog,id->
-                //findNavController().popBackStack()
-                dialog.dismiss()
-            }
             .setNegativeButton("삭제하기"){dialog,id->
                 Log.e("TAG", "deleteDialog: ${myData}", )
                 if(myData.type == ShowType.SERVER){
@@ -161,6 +157,10 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                     activityViewModel.deleteRoomData(myData.date)
                 }
                 findNavController().popBackStack()
+            }
+            .setPositiveButton("닫기"){dialog,id->
+                //findNavController().popBackStack()
+                dialog.dismiss()
             }
             .create().show()
     }

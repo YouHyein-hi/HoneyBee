@@ -8,15 +8,12 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -30,11 +27,12 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
+import com.example.receiptcareapp.ui.adapter.CardAddDialog_Bottom
+import com.example.receiptcareapp.ui.adapter.CardAddDialog_ShowPicture
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.io.FileNotFoundException
-import java.io.FileOutputStream
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -101,6 +99,10 @@ class ShowPictureFragment :
     }
 
     override fun initListener() {
+        //TODO 이 코드가 과연 괜찮은 코드일까? (CardAddDialog_ShowPicture 관련)
+        val fragmentManager = requireActivity().supportFragmentManager
+        fragmentManager.beginTransaction().add(this, "showPictureFragment").commit()
+
         with(binding){
             /** Date Button -> DatePickerDialog 생성 **/
             btnDate.setOnClickListener {
@@ -134,7 +136,8 @@ class ShowPictureFragment :
 
             /** Card 추가 Button -> Card 추가 Dialog 생성 **/
             cardaddBtn.setOnClickListener{
-                cardAddDialog()
+                val cardadddialogShowpicture = CardAddDialog_ShowPicture()
+                cardadddialogShowpicture.show(parentFragmentManager, "CardAddDialog")
             }
 
             /** 금액 EidtText , 추가 **/
@@ -243,135 +246,14 @@ class ShowPictureFragment :
         }
     }
 
-    private fun resizeBitMap(uri: Uri, resize: Int): Bitmap? {
-        var resizeBitmap: Bitmap? = null
-        val ratioTemp = 2
-
-        val options = BitmapFactory.Options()
-        try {
-            BitmapFactory.decodeStream(
-                requireContext().contentResolver.openInputStream(uri),
-                null,
-                options
-            )
-            var width = options.outWidth
-            var height = options.outHeight
-            var sampleSize = 1
-
-            while (true) {
-                if (width / ratioTemp < resize || height / ratioTemp < resize) break
-                width /= ratioTemp
-                height /= ratioTemp
-                sampleSize *= ratioTemp
-            }
-
-            options.inSampleSize = sampleSize
-            val bitmap = BitmapFactory.decodeStream(
-                requireContext().contentResolver.openInputStream(uri),
-                null,
-                options
-            )
-            resizeBitmap = bitmap
-
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        }
-        return resizeBitmap
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 
-
-    /** Card 추가 Dialog **/
-    fun cardAddDialog(){
-        val dialogView = layoutInflater.inflate(R.layout.dialog_card, null)
-        val editText_cardName = dialogView.findViewById<EditText>(R.id.dialog_cardname)
-        val editText_cardPrice = dialogView.findViewById<EditText>(R.id.dialog_cardprice)
-
-        editText_cardPrice.setOnClickListener {
-            if (editText_cardPrice.text.contains(",")) {
-                editText_cardPrice.setText(editText_cardPrice.text.toString().replace(",", ""))
-                editText_cardPrice.setSelection(editText_cardPrice.text.length)
-            }
-        }
-        editText_cardPrice.setOnEditorActionListener { v, actionId, event ->
-            var handled = false
-            if (actionId == EditorInfo.IME_ACTION_DONE && editText_cardPrice.text.isNotEmpty()) {
-                val gap = DecimalFormat("#,###")
-                editText_cardPrice.setText(gap.format(editText_cardPrice.text.toString().toInt()))
-            }
-            handled
-        }
-
-        // EditText 비어있을 시 나타나는 style 이벤트
-        val hintCardNmae = editText_cardName.hint
-        val emphasis_yellow = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.emphasis_yellow))
-        editText_cardName.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus && editText_cardName.text.isEmpty()) {
-                editText_cardName.hint = "카드 이름을 꼭 적어주세요!"
-                editText_cardName.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            } else if(hasFocus && !editText_cardName.text.isEmpty())  {
-                editText_cardName.hint = hintCardNmae // 초기 hint로 되돌리기
-                editText_cardName.backgroundTintList = emphasis_yellow
-            }
-            else if(!hasFocus && !editText_cardName.text.isEmpty()){
-                editText_cardName.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-            }
-        }
-        val hintCardPrice = editText_cardPrice.hint
-        editText_cardPrice.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus && editText_cardPrice.text.isEmpty()) {
-                // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
-                editText_cardPrice.hint = "초기 금액을 꼭 적어주세요!"
-                editText_cardPrice.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            } else if(hasFocus && !editText_cardPrice.text.isEmpty()) {
-                editText_cardPrice.hint = hintCardPrice // 초기 hint로 되돌리기
-                editText_cardPrice.backgroundTintList = emphasis_yellow
-            }
-            else if(!hasFocus && !editText_cardPrice.text.isEmpty()){
-                editText_cardPrice.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-            }
-        }
-
-        val cardAddDialog = AlertDialog.Builder(requireContext(), R.style.AppCompatAlertDialog)
-            .setTitle("카드 추가")
-            .setMessage("추가할 카드 이름과 초기 금액을 입력해주세요.")
-            .setView(dialogView)
-            .setPositiveButton("확인") { dialog, id ->
-                if(editText_cardName.text.toString() == ""){
-                    Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요")
-                    dialog.dismiss()
-                    Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
-                }
-                else if(editText_cardPrice.text.toString() == ""){
-                    Log.e("TAG", "onViewCreated: 초기 금액을 입력해주세요")
-                    dialog.dismiss()
-                    Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    Log.e("TAG", "cardAddDialog: ${editText_cardName.text}")
-                    newCard = 1
-                    activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
-                    activityViewModel.sendCardData(AppSendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt()))
-                    getSpinner()
-                    dialog.dismiss()
-                }
-
-            }
-            .setNegativeButton("취소"){dialog, id->
-                Log.e("TAG", "getSpinner: 카드 추가 취소")
-                dialog.dismiss()
-            }
-            .setCancelable(false)
-            .create()
-
-        cardAddDialog.show()
-        cardAddDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-            .setTextColor(Color.RED)
-        cardAddDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
-            .setTextColor(Color.BLACK)
-    }
 
     /** Spinner 관련 **/
-    private fun getSpinner() {
+    fun getSpinner() {
         activityViewModel.receiveServerCardData()
         Log.e("TAG", "getSpinner: getSpinner")
         cardArray?.let { viewModel.takeCardData(it) }
@@ -396,10 +278,8 @@ class ShowPictureFragment :
         }
     }
 
-
-
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
+    //TODO 이 코드가 과연 괜찮은 코드일까? (CardAddDialog_ShowPicture 관련)
+    fun setNewCardValue(value: Int) {
+        newCard = value
     }
 }

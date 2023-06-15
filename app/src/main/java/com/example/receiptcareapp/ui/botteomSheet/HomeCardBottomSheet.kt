@@ -3,7 +3,6 @@ package com.example.receiptcareapp.ui.botteomSheet
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -15,14 +14,13 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
+import com.example.receiptcareapp.ui.adapter.CardAddDialog_Bottom
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -96,7 +94,8 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
 
         //서버 카드 추가 다이얼로그
         binding.addBtn.setOnClickListener{
-            cardAddDialog()
+            val cardAddDialogBottom = CardAddDialog_Bottom()
+            cardAddDialogBottom.show(parentFragmentManager, "CardAddDialog")
         }
 
         //서버 카드 수정 및 삭제 다이알로그
@@ -155,70 +154,5 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
     override fun onDestroy() {
         super.onDestroy()
         activityViewModel.serverCoroutineStop()
-    }
-
-    fun cardAddDialog(){
-        val dialogView = layoutInflater.inflate(R.layout.dialog_server_add_card, null)
-        val editText_cardName  = dialogView.findViewById<EditText>(R.id.addCardName)
-        val editText_cardPrice = dialogView.findViewById<EditText>(R.id.addCardAmount)
-
-        // EditText 비어있을 시 나타나는 style 이벤트
-        val hintCardNmae = editText_cardName.hint
-        val emphasis_yellow = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.emphasis_yellow))
-        editText_cardName.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus && editText_cardName.text.isEmpty()) {
-                editText_cardName.hint = "카드 이름을 꼭 적어주세요!"
-                editText_cardName.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            } else if(hasFocus && !editText_cardName.text.isEmpty())  {
-                editText_cardName.hint = hintCardNmae // 초기 hint로 되돌리기
-                editText_cardName.backgroundTintList = emphasis_yellow
-            }
-            else if(!hasFocus && !editText_cardName.text.isEmpty()){
-                editText_cardName.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-            }
-        }
-        val hintCardPrice = editText_cardPrice.hint
-        editText_cardPrice.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus && editText_cardPrice.text.isEmpty()) {
-                // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
-                editText_cardPrice.hint = "초기 금액을 꼭 적어주세요!"
-                editText_cardPrice.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            } else if(hasFocus && !editText_cardPrice.text.isEmpty()) {
-                editText_cardPrice.hint = hintCardPrice // 초기 hint로 되돌리기
-                editText_cardPrice.backgroundTintList = emphasis_yellow
-            }
-            else if(!hasFocus && !editText_cardPrice.text.isEmpty()){
-                editText_cardPrice.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-            }
-        }
-
-        var cardAddDialog = AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-            .setTitle("서버 카드 데이터 추가")
-            .setView(dialogView)
-            .setPositiveButton("보내기") { dialog, id ->
-                if(editText_cardName.text.toString() == ""){
-                    //Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
-                    Log.e("TAG", "onViewCreated: 카드 이름을 입력해주세요", )
-                    dialog.dismiss()
-                    Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
-                }
-                else if(editText_cardPrice.text.toString() == ""){
-                    //Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
-                    Log.e("TAG", "onViewCreated: 초기 금액을 입력해주세요", )
-                    dialog.dismiss()
-                    Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    activityViewModel.sendCardData(AppSendCardData(editText_cardName.text.toString(), editText_cardPrice.text.toString().toInt()))
-                }
-            }
-            .setNegativeButton("닫기") { dialog, id -> }
-            .setCancelable(false)
-            .show()
-
-        cardAddDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-            .setTextColor(Color.RED)
-        cardAddDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
-            .setTextColor(Color.BLACK)
     }
 }

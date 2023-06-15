@@ -61,7 +61,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, null)
         }else{
             binding.backgroundText.text = "데이터가 없어요!"
-            Toast.makeText(requireContext(), "데이터가 없어요!", Toast.LENGTH_SHORT).show()
+            showShortToast("데이터가 없어요!")
             findNavController().popBackStack()
         }
 
@@ -109,10 +109,10 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 binding.progressBar.visibility = View.VISIBLE
             }
             else if(it==ConnectedState.CONNECTING_SUCCESS){
-                Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
+                showShortToast("전송 완료!")
                 findNavController().popBackStack()
             }else{
-                Toast.makeText(requireContext(), "전송 실패..", Toast.LENGTH_SHORT).show()
+                showShortToast("전송 실패...")
                 findNavController().popBackStack()
             }
         }

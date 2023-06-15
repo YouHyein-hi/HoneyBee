@@ -99,13 +99,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             CAMERA_CODE -> {
                 for (grant in grantResults) {
                     if (grant != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(requireActivity(), "카메라 권한을 승인해 주세요.", Toast.LENGTH_LONG).show()
+                        showLongToast("카메라 권한을 승인해 주세요.")
                     }
                 }
             }
             GALLERY_CODE -> {
                 for (grant in grantResults) {
                     if (grant != PackageManager.PERMISSION_GRANTED) {
+                        showLongToast("갤러리 권한을 승인해 주세요.")
                         Toast.makeText(requireActivity(), "갤러리  권한을 승인해 주세요.", Toast.LENGTH_LONG).show()
                     }
                 }

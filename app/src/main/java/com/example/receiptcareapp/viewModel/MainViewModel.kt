@@ -106,7 +106,7 @@ class MainViewModel @Inject constructor(
                 Log.e("TAG", "sendData 응답 : $result ")
                 uid = result
 
-                if (uid != "0") {
+                if (uid != "0") {  //TODO uid != "0"이 아니라 실패했을 때 서버에서 받아오는 메세지로 조건식 바꾸자!!
                     _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
                     insertRoomData(
                         DomainRoomData(

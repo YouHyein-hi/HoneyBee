@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 
@@ -94,5 +95,17 @@ abstract class BaseFragment<VB: ViewBinding>(
 
     override fun onDetach() {
         super.onDetach()
+    }
+
+    fun showShortToast(message: String?){
+        context?.let {
+            Toast.makeText(it, message ?: "", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun showLongToast(message: String?){
+        context?.let {
+            Toast.makeText(it, message ?: "", Toast.LENGTH_LONG).show()
+        }
     }
 }

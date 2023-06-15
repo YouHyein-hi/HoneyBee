@@ -162,16 +162,15 @@ class ShowPictureFragment :
             sendBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
                 if (checked == "") {
-                    Toast.makeText(requireContext(), "카드를 입력하세요.", Toast.LENGTH_SHORT).show()
+                    showShortToast("카드를 입력하세요.")
                 } else if (btnStore.text!!.isEmpty()) {
-                    Toast.makeText(requireContext(), "가게 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
+                    showShortToast("가게 이름을 입력하세요.")
                 } else if (btnDate.text.isEmpty()) {
-                    Toast.makeText(requireContext(), "날짜를 입력하세요.", Toast.LENGTH_SHORT).show()
+                    showShortToast("날짜를 입력하세요.")
                 } else if (btnPrice.text.isEmpty()) {
-                    Toast.makeText(requireContext(), "금액을 입력하세요.", Toast.LENGTH_SHORT).show()
+                    showShortToast("금액을 입력하세요.")
                 } else if (viewModel.image.value == null) {
-                    Toast.makeText(requireContext(), "사진이 비었습니다.\n초기화면으로 돌아갑니다.", Toast.LENGTH_SHORT)
-                        .show()
+                    showShortToast("사진이 비었습니다.\n초기화면으로 돌아갑니다.")
                     NavHostFragment.findNavController(this@ShowPictureFragment)
                         .navigate(R.id.action_showFragment_to_homeFragment)
                 } else {
@@ -229,13 +228,13 @@ class ShowPictureFragment :
                         progressBar.visibility = View.INVISIBLE
                     }
                     ConnectedState.CONNECTING_SUCCESS -> {
-                        Toast.makeText(requireContext(), "전송 완료!", Toast.LENGTH_SHORT).show()
+                        showShortToast("전송 완료!")
                         NavHostFragment.findNavController(this@ShowPictureFragment).navigate(R.id.action_showFragment_to_homeFragment)
                     }
                     ConnectedState.CARD_CONNECTING_SUCCESS -> {
                         waitingView.visibility = View.INVISIBLE
                         progressBar.visibility = View.INVISIBLE
-                        Toast.makeText(requireContext(), "카드 추가 완료!", Toast.LENGTH_SHORT).show()
+                        showShortToast("카드 추가 완료!")
                     }
                     else -> {
                         waitingView.visibility = View.INVISIBLE

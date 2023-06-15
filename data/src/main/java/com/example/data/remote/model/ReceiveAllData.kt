@@ -22,20 +22,14 @@ data class ReceiveData(
 )
 
 fun ReceiveData.toDomainReceiveData(): DomainReceiveAllData{
-    var myAmount = amount
-    Log.e("TAG", "toDomainReceiveData amount: $myAmount", )
-    if(amount.toInt()>=1000){
-        val format = DecimalFormat("#,###")
-        myAmount = format.format(amount.toInt()).toString()
-    }
+    val myAmount = DecimalFormat("#,###").format(amount.toInt()).toString()
+
     var myData = date
     if(date.contains("-") && date.contains("T") && date.contains(":")){
         val myList = myData.split("-","T",":")
-        Log.e("TAG", "toDomainReceiveData: $myList", )
         if(myList.size == 6)
             myData = "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
     }
-    Log.e("TAG", "toDomainReceiveData amount: $myAmount", )
 
     return DomainReceiveAllData(uid, cardName, myAmount, myData, storeName)
 }

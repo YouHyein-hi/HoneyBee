@@ -30,8 +30,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.*
 import java.net.SocketTimeoutException
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
 import javax.inject.Inject
 
 /**
@@ -115,17 +113,21 @@ class MainViewModel @Inject constructor(
                 uid = result
 
                 if (uid != "0") {
+                    var splitData =""
+                    if(sendData.date.contains("-") && sendData.date.contains("T") && sendData.date.contains(":")){
+                        val myList = sendData.date.split("-","T",":")
+                        if(myList.size == 6) splitData = "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
+                    }
+                    
                     _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
                     insertRoomData(
                         DomainRoomData(
                             cardName = sendData.cardName,
                             amount = sendData.amount,
                             storeName = sendData.storeName,
-                            date = sendData.date,
+                            date = splitData,
                             file = sendData.picture.toString(),
                             uid = uid
-//                            file = fileToBitmap(file)
-//                            file = sendData.picture
                         )
                     )
                 } else {
@@ -315,7 +317,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
     fun serverCoroutineStop() {
         _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소"))
         this.setFetchStateStop()
@@ -326,8 +327,6 @@ class MainViewModel @Inject constructor(
         _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소"))
         _connectedState.postValue(ConnectedState.DISCONNECTED)
     }
-
-
 
     fun rotateImageIfRequired(bitmap: Bitmap, imagePath: String): Bitmap {
         val exif = ExifInterface(imagePath)

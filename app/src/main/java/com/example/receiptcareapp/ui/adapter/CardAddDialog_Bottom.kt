@@ -14,25 +14,20 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
+import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardBinding
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.text.DecimalFormat
 
-class CardAddDialog_Bottom : DialogFragment() {
+class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {
 
     //viewModels 뷰모델의 객체를 생성주는것?
     private val fragmentViewModel : FragmentViewModel by activityViewModels()
     //엑티비티를 따라가는 뷰모델이니까
     // 엑티비티의 생명주기 따라가는 뷰모델이 뭘까?
     private val activityViewModel: MainViewModel by activityViewModels()
-    private lateinit var binding : DialogCardBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DialogCardBinding.inflate(layoutInflater)
-
-        return binding.root
-    }
 
     override fun onResume() {
         super.onResume()
@@ -90,12 +85,12 @@ class CardAddDialog_Bottom : DialogFragment() {
                 if(dialogcardEditCardname.text.toString() == ""){
                     Log.e("TAG", "onResume: 카드 이름을 입력해주세요.", )
                     dismiss()
-                    Toast.makeText(requireContext(), "카드 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
+                    showLongToast("카드 이름을 입력하세요.")
                 }
                 else if(dialogcardEditCardname.text.toString() == ""){
                     Log.e("TAG", "onResume: 초기 금액을 입력해주세요")
                     dismiss()
-                    Toast.makeText(requireContext(), "초기 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
+                    showLongToast("추가 금액을 입력하세요.")
                 }
                 else{
                     var price = dialogcardEditCardprice.text.toString()
@@ -116,6 +111,18 @@ class CardAddDialog_Bottom : DialogFragment() {
 
 
         }
+    }
+
+    override fun initData() {
+    }
+
+    override fun initUI() {
+    }
+
+    override fun initListener() {
+    }
+
+    override fun initObserver() {
     }
 
 

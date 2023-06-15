@@ -11,21 +11,20 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.domain.model.RecyclerShowData
 import com.example.domain.model.send.AppSendData
+import com.example.receiptcareapp.base.BaseDialog
+import com.example.receiptcareapp.databinding.DialogCardBinding
 import com.example.receiptcareapp.databinding.DialogChangeBinding
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.time.LocalDateTime
 
-class ChangeDialog : DialogFragment() {
+class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
 
     //viewModels 뷰모델의 객체를 생성주는것?
     private val fragmentViewModel : FragmentViewModel by activityViewModels()
-
     //엑티비티를 따라가는 뷰모델이니까
     // 엑티비티의 생명주기 따라가는 뷰모델이 뭘까?
     private val activityViewModel: MainViewModel by activityViewModels()
-
-    private lateinit var binding : DialogChangeBinding
     private lateinit var myData: RecyclerShowData
     private var myArray = arrayListOf<String>()
     private var checked = ""
@@ -39,20 +38,6 @@ class ChangeDialog : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*val cardData = activityViewModel.cardData.value
-
-        if (cardData != null) {
-            myArray.clear()
-            cardData.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
-            val adapter = ShowPictureAdapter(requireContext(), myArray)
-            binding.changeCardspinner.adapter = adapter
-        }*/
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DialogChangeBinding.inflate(layoutInflater)
-
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -176,5 +161,17 @@ class ChangeDialog : DialogFragment() {
             }
 
         }
+    }
+
+    override fun initData() {
+    }
+
+    override fun initUI() {
+    }
+
+    override fun initListener() {
+    }
+
+    override fun initObserver() {
     }
 }

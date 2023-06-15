@@ -1,23 +1,33 @@
 package com.example.receiptcareapp.base
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
 
+
 abstract class BaseDialog<VB: ViewBinding>(
-    @LayoutRes val layoutRes: Int
+    private val inflate:Inflate<VB>
 ): DialogFragment() {
 
     init {
         Log.e("TAG", "BaseDialog : start", )
+        Log.e("TAG", "BaseDialog : $inflate: ", )
     }
 
-    protected lateinit var binding: VB
+    private var _binding: VB? = null
+    val binding get() = _binding!!
+
+    override fun onAttach(context: Context) {
+        Log.e("TAG", "onAttach: ", )
+        super.onAttach(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +39,9 @@ abstract class BaseDialog<VB: ViewBinding>(
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        //binding = DataBindingUtil.inflate(inflater, layoutRes, container, false)
+        Log.e("TAG", "onCreateView: ", )
+        _binding = inflate.invoke(inflater, container, false)
+        Log.e("TAG", "BaseDialog : $_binding: ", )
         return binding.root
     }
 
@@ -44,9 +56,34 @@ abstract class BaseDialog<VB: ViewBinding>(
         initObserver()
     }
 
+    //viewBinding으로 인한 메모리 누수 방지
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+    }
+
     abstract fun initData()
     abstract fun initUI()
     abstract fun initListener()
     abstract fun initObserver()
 
+    fun showShortToast(message: String?){
+        context?.let {
+            Toast.makeText(it, message ?: "", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun showLongToast(message: String?){
+        context?.let {
+            Toast.makeText(it, message ?: "", Toast.LENGTH_LONG).show()
+        }
+    }
 }

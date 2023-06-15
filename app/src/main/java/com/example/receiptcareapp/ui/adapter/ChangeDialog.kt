@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.example.domain.model.DialogData
 import com.example.domain.model.RecyclerShowData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.databinding.DialogChangeBinding
@@ -18,15 +19,12 @@ import java.time.LocalDateTime
 
 class ChangeDialog : DialogFragment() {
 
-    //viewModels 뷰모델의 객체를 생성주는것?
-    private val fragmentViewModel : FragmentViewModel by viewModels()
+    private val fragmentViewModel : FragmentViewModel by viewModels({ requireActivity() })
 
-    //엑티비티를 따라가는 뷰모델이니까
-    // 엑티비티의 생명주기 따라가는 뷰모델이 뭘까?
     private val activityViewModel: MainViewModel by activityViewModels()
 
     private lateinit var binding : DialogChangeBinding
-    private lateinit var myData: RecyclerShowData
+    private lateinit var myData: DialogData
     private var myArray = arrayListOf<String>()
     private var checked = ""
     private var cardId = 0
@@ -47,8 +45,6 @@ class ChangeDialog : DialogFragment() {
             it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
             val adapter = ShowPictureAdapter(requireContext(), myArray)
             binding.changeCardspinner.adapter = adapter
-            //binding.spinner.adapter = adapter
-            //adapter.notifyDataSetChanged()
         }
 
         //프로그래스 바 컨트롤
@@ -56,8 +52,15 @@ class ChangeDialog : DialogFragment() {
             Log.e("TAG", "onViewCreated: $it", )
         }
 
+        if(fragmentViewModel.showLocalData.value != null) {
+            val gap = fragmentViewModel.showLocalData.value
+            myData = DialogData(gap!!.uid, gap.cardName, gap.amount, gap.date, gap.storeName, gap.file)
+        }
+        else {
+            val gap = fragmentViewModel.showServerData.value
+            myData = DialogData(gap!!.uid, gap.cardName, gap.amount, gap.date, gap.storeName, null)
+        }
 
-        myData = fragmentViewModel.showLocalData.value!!
         val newDate = myData.date.split("년","월","일","시","분","초")
 
         // 수정 전 로컬 데이터 화면에 띄우기
@@ -78,9 +81,6 @@ class ChangeDialog : DialogFragment() {
 
 
         binding.changeBtnPositive.setOnClickListener{
-//                activityViewModel.changeServerData(SendData(
-//                    id = myData.id, cardName = myData.cardName, amount = myData.date, date = myData.date, picture = myData.picture, storeName = myData.pictureName))
-            //                    findNavController().popBackStack()
             myYear = binding.changeDatepicker.year
             myMonth = binding.changeDatepicker.month + 1
             myDay = binding.changeDatepicker.dayOfMonth
@@ -119,7 +119,6 @@ class ChangeDialog : DialogFragment() {
                     , myData.uid
                 )
             }
-
             dismiss()
         }
 

@@ -31,24 +31,6 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     private val recyclerLocalAdapter: RecyclerLocalAdapter = RecyclerLocalAdapter()
     private lateinit var callback : OnBackPressedCallback
 
-
-    /** Fragment 뒤로가기 **/
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Log.e("TAG", "handleOnBackPressed: 뒤로가기", )
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    activityViewModel.serverCoroutineStop()
-                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
-                } else {
-                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-
     override fun initData() {
         fragmentViewModel.changeStartGap("server")
         //init
@@ -115,9 +97,10 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         //로컬 목록에서 리스트를 누를경우
         recyclerLocalAdapter.onLocalSaveClic = {
             activityViewModel.nullPicture()
-            activityViewModel.receiveServerPictureData(it.uid)
+//            activityViewModel.receiveServerPictureData(it.uid)
             fragmentViewModel.myShowLocalData(it)
             fragmentViewModel.changeStartGap("local")
+            findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
 
         //뒤로가기 버튼
@@ -184,5 +167,22 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     fun setTextAndVisible(text:String, state:Boolean){
         binding.backgroundText.text = text
         binding.backgroundText.isVisible = state
+    }
+
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.e("TAG", "handleOnBackPressed: 뒤로가기", )
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                    activityViewModel.serverCoroutineStop()
+                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
+                } else {
+                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 }

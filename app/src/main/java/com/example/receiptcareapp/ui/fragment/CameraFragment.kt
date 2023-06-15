@@ -83,7 +83,6 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         if (it.resultCode == Activity.RESULT_OK){
             Log.e("TAG", "onActivityResult: if 진입", )
             if(photoURI != null) {
-//                fragmentViewModel.takeImage(compressImage(photoURI!!))
                 fragmentViewModel.takeImage(photoURI!!)
                 photoURI = null
                 NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)

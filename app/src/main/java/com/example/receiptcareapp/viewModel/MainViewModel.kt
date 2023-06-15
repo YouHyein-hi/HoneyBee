@@ -203,17 +203,17 @@ class MainViewModel @Inject constructor(
         })
     }
 
-    fun deleteCardData(id: Long) {
-        _connectedState.value = ConnectedState.CONNECTING
-        _serverJob.value = CoroutineScope(exceptionHandler).launch {
-            withTimeoutOrNull(waitTime) {
-                retrofitUseCase.deleteCardDataUseCase(id)
-                // 결과값을 분기문으로 관리 + 커넥트 풀어주기
-                // 성공하면 값을 불러오기
-                receiveServerCardData()
-            }?:throw SocketTimeoutException()
-        }
-    }
+//    fun deleteCardData(id: Long) {
+//        _connectedState.value = ConnectedState.CONNECTING
+//        _serverJob.value = CoroutineScope(exceptionHandler).launch {
+//            withTimeoutOrNull(waitTime) {
+//                retrofitUseCase.deleteCardDataUseCase(id)
+//                // 결과값을 분기문으로 관리 + 커넥트 풀어주기
+//                // 성공하면 값을 불러오기
+//                receiveServerCardData()
+//            }?:throw SocketTimeoutException()
+//        }
+//    }
 
     fun deleteServerData(id: Long) {
         Log.e("TAG", "deleteServerData: 들어감", )
@@ -226,23 +226,14 @@ class MainViewModel @Inject constructor(
     }
 
     fun changeServerData(sendData: AppSendData, uid : String) {
-/*
-        CoroutineScope(exceptionHandler).launch {
-            withTimeoutOrNull(waitTime) {
-                val gap = roomUseCase.getAllData()
-                Log.e("TAG", "changeServerData: $gap")
-//            retrofitUseCase.resendDataUseCase(DomainSendData(sendData.))
-            }?:throw SocketTimeoutException()
-        }
-*/
         Log.e("TAG", "changeServerData: $sendData", )
         Log.e("TAG", "changeServerData: $uid", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
-                val file = File(absolutelyPath(sendData.picture, myCotext))
-                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
+//                val file = File(absolutelyPath(sendData.picture, myCotext))
+//                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+//                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 val result = retrofitUseCase.resendDataUseCase(
                     DomainResendAllData(
                         id = MultipartBody.Part.createFormData("id", uid),    // id 값을 찾아서 알려줘야됨
@@ -250,7 +241,7 @@ class MainViewModel @Inject constructor(
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
                         date = MultipartBody.Part.createFormData("date", sendData.date),
                         storeName = MultipartBody.Part.createFormData("storeName", sendData.storeName),
-                        picture = myPicture
+//                        picture = myPicture
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
@@ -279,15 +270,15 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun changeCardData(id: Long) {
-        CoroutineScope(exceptionHandler).launch {
-            withTimeoutOrNull(waitTime) {
-                val gap = roomUseCase.getAllData()
-                Log.e("TAG", "changeCardData: $gap")
-//            retrofitUseCase.resendCardDataUseCase()
-            }?:throw SocketTimeoutException()
-        }
-    }
+//    fun changeCardData(id: Long) {
+//        CoroutineScope(exceptionHandler).launch {
+//            withTimeoutOrNull(waitTime) {
+//                val gap = roomUseCase.getAllData()
+//                Log.e("TAG", "changeCardData: $gap")
+////            retrofitUseCase.resendCardDataUseCase()
+//            }?:throw SocketTimeoutException()
+//        }
+//    }
 
     fun deleteRoomData(date: String) {
         CoroutineScope(exceptionHandler).launch {

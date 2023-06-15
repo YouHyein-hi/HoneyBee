@@ -18,8 +18,6 @@ import com.example.receiptcareapp.base.BaseFragment
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-
-  // initListenr인지 initdata인지
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val homeFragment : HomeFragment = HomeFragment()
 

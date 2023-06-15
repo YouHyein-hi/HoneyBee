@@ -50,7 +50,7 @@ class RetrofitUseCase(
         return retrofitRepo.resendDataRepo(domainResendData)
     }
 
-    suspend fun resendCardDataUseCase(domainResendCardData: DomainResendCardData):String {
-        return retrofitRepo.resendCardDataRepo(domainResendCardData)
-    }
+//    suspend fun resendCardDataUseCase(domainResendCardData: DomainResendCardData):String {
+//        return retrofitRepo.resendCardDataRepo(domainResendCardData)
+//    }
 }

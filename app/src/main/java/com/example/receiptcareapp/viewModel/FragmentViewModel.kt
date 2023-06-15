@@ -20,7 +20,7 @@ import okhttp3.MultipartBody
 class FragmentViewModel : ViewModel(){
 
     init {
-        Log.e("TAG", ": FragmentViewModel FragmentViewModel FragmentViewModel", )
+        Log.e("TAG", ": FragmentViewModel FragmentViewModel FragmentViewModel FragmentViewModel FragmentViewModel FragmentViewModel", )
     }
 
 

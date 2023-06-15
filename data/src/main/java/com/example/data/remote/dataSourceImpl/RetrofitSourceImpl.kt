@@ -67,7 +67,6 @@ class RetrofitSourceImpl @Inject constructor(
         amount: MultipartBody.Part,
         storeName: MultipartBody.Part,
         date: MultipartBody.Part,
-        file: MultipartBody.Part
     ): String {
         return retrofit.create(RetrofitSource::class.java).resendDataSource(
             id = id,
@@ -75,7 +74,6 @@ class RetrofitSourceImpl @Inject constructor(
             amount = amount,
             storeName = storeName,
             date = date,
-            file = file
         )
     }
 

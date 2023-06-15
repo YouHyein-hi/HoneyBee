@@ -1,6 +1,8 @@
 package com.example.receiptcareapp.ui.fragment
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -10,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.State.ShowType
@@ -19,6 +22,8 @@ import com.example.receiptcareapp.ui.adapter.ChangeDialog
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.base.BaseFragment
+import java.io.File
+import java.io.FileOutputStream
 
 class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
     private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
@@ -45,6 +50,8 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             // 로컬 데이터 일 시
         }else if(fragmentViewModel.showLocalData.value != null){
             val data = fragmentViewModel.showLocalData.value
+            Log.e("TAG", "initUI: ${data!!.file}", )
+            binding.imageView.setImageURI(data!!.file)
             myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, null)
         }else{
             binding.backgroundText.text = "데이터가 없어요!"
@@ -84,7 +91,9 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
     override fun initObserver() {
         activityViewModel.picture.observe(viewLifecycleOwner){
+            Log.e("TAG", "initObserver: initObserver", )
             binding.imageView.setImageBitmap(it)
+            myData.file = it
         }
 
         activityViewModel.connectedState.observe(viewLifecycleOwner){
@@ -115,10 +124,25 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 dialog.dismiss()
             }
             .setNegativeButton("보내기"){dialog,id->
+                resendData()
                 dialog.dismiss()
             }
             .create().show()
     }
+    //재전송
+    fun resendData(){
+        val bitmap = myData.file
+        val file = File(requireContext().cacheDir, "temp_image.jpg")
+        val outputStream = FileOutputStream(file)
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        outputStream.flush()
+        outputStream.close()
+        val myUri = Uri.fromFile(file)
+        activityViewModel.sendData(
+            AppSendData(myData.cardName,myData.amount, myData.date, myData.storeName,myUri)
+        )
+    }
+
 
     //수정
     private fun changeDialog(){
@@ -133,15 +157,16 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             .setTitle("")
             .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")
             .setPositiveButton("닫기"){dialog,id->
-                //findNavController().popBackStack()
                 dialog.dismiss()
             }
             .setNegativeButton("삭제하기"){dialog,id->
                 Log.e("TAG", "deleteDialog: ${myData}", )
                 if(myData.type == ShowType.SERVER){
                     activityViewModel.deleteServerData(myData.uid.toLong())
+                    findNavController().popBackStack()
                 }else{
                     activityViewModel.deleteRoomData(myData.date)
+                    findNavController().popBackStack()
                 }
                 findNavController().popBackStack()
             }

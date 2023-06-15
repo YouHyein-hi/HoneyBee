@@ -1,18 +1,16 @@
-package com.example.domain.model.receive
+package com.example.domain.model
 
-import android.graphics.Bitmap
 import android.net.Uri
 
 /**
- * 2023-02-02
+ * 2023-06-15
  * pureum
  */
-data class DomainReceiveAllData(
+data class DialogData(
     val uid: String,
     val cardName: String,
     val amount: String,
     val date: String,
     val storeName: String,
-//    val file: Bitmap
+    val file: Uri?
 )
-

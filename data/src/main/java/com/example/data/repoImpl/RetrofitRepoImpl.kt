@@ -71,7 +71,6 @@ class RetrofitRepoImpl @Inject constructor(
             amount = domainResendData.amount,
             storeName = domainResendData.storeName,
             date = domainResendData.date,
-            file = domainResendData.picture
         )
     }
 

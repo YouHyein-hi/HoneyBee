@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.viewModel
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -19,7 +20,7 @@ import okhttp3.MultipartBody
 class FragmentViewModel : ViewModel(){
 
     init {
-        Log.e("TAG", ": FragmentViewModel FragmentViewModel FragmentViewModel", )
+        Log.e("TAG", ": FragmentViewModel FragmentViewModel FragmentViewModel FragmentViewModel FragmentViewModel FragmentViewModel", )
     }
 
 
@@ -27,9 +28,7 @@ class FragmentViewModel : ViewModel(){
     val image : LiveData<Uri>
         get() = _image
     fun takeImage(img: Uri){
-        Log.e("TAG", "takeImage: ${image.value}", )
         _image.value = img
-        Log.e("TAG", "takeImage: ${image.value}", )
     }
 
     private val _showLocalData = MutableLiveData<RecyclerShowData?>()

@@ -38,9 +38,7 @@ class RetrofitSourceImpl @Inject constructor(
         cardName: String?,
         amount: Int?
     ): String {
-        var gap = retrofit.create(RetrofitSource::class.java).sendCardDataSource(cardName = cardName, amount = amount)
-        Log.e("TAG", "sendCardDataSource: $gap", )
-        return gap
+        return retrofit.create(RetrofitSource::class.java).sendCardDataSource(cardName = cardName, amount = amount)
     }
 
     override suspend fun receiveDataSource(): MutableList<ReceiveData> {
@@ -69,7 +67,6 @@ class RetrofitSourceImpl @Inject constructor(
         amount: MultipartBody.Part,
         storeName: MultipartBody.Part,
         date: MultipartBody.Part,
-        file: MultipartBody.Part
     ): String {
         return retrofit.create(RetrofitSource::class.java).resendDataSource(
             id = id,
@@ -77,7 +74,6 @@ class RetrofitSourceImpl @Inject constructor(
             amount = amount,
             storeName = storeName,
             date = date,
-            file = file
         )
     }
 

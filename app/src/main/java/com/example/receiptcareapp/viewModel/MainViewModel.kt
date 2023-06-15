@@ -3,6 +3,9 @@ package com.example.receiptcareapp.viewModel
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -25,8 +28,7 @@ import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
-import java.io.InterruptedIOException
+import java.io.*
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
@@ -81,6 +83,9 @@ class MainViewModel @Inject constructor(
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
 
+
+
+
     //서버에 데이터 전송 기능
     fun sendData(sendData: AppSendData) {
         Log.e("TAG", "sendData: $sendData", )
@@ -89,7 +94,8 @@ class MainViewModel @Inject constructor(
             withTimeoutOrNull(waitTime) {
                 var uid = "0"
                 val file = File(absolutelyPath(sendData.picture, myCotext))
-                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val compressFile = compressImageFile(file)
+                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 val result = retrofitUseCase.sendDataUseCase(
                     DomainSendData(
@@ -106,18 +112,21 @@ class MainViewModel @Inject constructor(
                 Log.e("TAG", "sendData 응답 : $result ")
                 uid = result
 
-                if (uid != "0") {  //TODO uid != "0"이 아니라 실패했을 때 서버에서 받아오는 메세지로 조건식 바꾸자!!
+                if (uid != "0") { //TODO uid != "0"이 아니라 실패했을 때 서버에서 받아오는 메세지로 조건식 바꾸자!!
+                    var splitData =""
+                    if(sendData.date.contains("-") && sendData.date.contains("T") && sendData.date.contains(":")){
+                        val myList = sendData.date.split("-","T",":")
+                        if(myList.size == 6) splitData = "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
+                    }
                     _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
                     insertRoomData(
                         DomainRoomData(
                             cardName = sendData.cardName,
                             amount = sendData.amount,
                             storeName = sendData.storeName,
-                            date = sendData.date,
+                            date = splitData,
                             file = sendData.picture.toString(),
                             uid = uid
-//                            file = fileToBitmap(file)
-//                            file = sendData.picture
                         )
                     )
                 } else {
@@ -193,17 +202,17 @@ class MainViewModel @Inject constructor(
         })
     }
 
-    fun deleteCardData(id: Long) {
-        _connectedState.value = ConnectedState.CONNECTING
-        _serverJob.value = CoroutineScope(exceptionHandler).launch {
-            withTimeoutOrNull(waitTime) {
-                retrofitUseCase.deleteCardDataUseCase(id)
-                // 결과값을 분기문으로 관리 + 커넥트 풀어주기
-                // 성공하면 값을 불러오기
-                receiveServerCardData()
-            }?:throw SocketTimeoutException()
-        }
-    }
+//    fun deleteCardData(id: Long) {
+//        _connectedState.value = ConnectedState.CONNECTING
+//        _serverJob.value = CoroutineScope(exceptionHandler).launch {
+//            withTimeoutOrNull(waitTime) {
+//                retrofitUseCase.deleteCardDataUseCase(id)
+//                // 결과값을 분기문으로 관리 + 커넥트 풀어주기
+//                // 성공하면 값을 불러오기
+//                receiveServerCardData()
+//            }?:throw SocketTimeoutException()
+//        }
+//    }
 
     fun deleteServerData(id: Long) {
         Log.e("TAG", "deleteServerData: 들어감", )
@@ -216,23 +225,14 @@ class MainViewModel @Inject constructor(
     }
 
     fun changeServerData(sendData: AppSendData, uid : String) {
-/*
-        CoroutineScope(exceptionHandler).launch {
-            withTimeoutOrNull(waitTime) {
-                val gap = roomUseCase.getAllData()
-                Log.e("TAG", "changeServerData: $gap")
-//            retrofitUseCase.resendDataUseCase(DomainSendData(sendData.))
-            }?:throw SocketTimeoutException()
-        }
-*/
         Log.e("TAG", "changeServerData: $sendData", )
         Log.e("TAG", "changeServerData: $uid", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
-                val file = File(absolutelyPath(sendData.picture, myCotext))
-                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
+//                val file = File(absolutelyPath(sendData.picture, myCotext))
+//                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+//                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 val result = retrofitUseCase.resendDataUseCase(
                     DomainResendAllData(
                         id = MultipartBody.Part.createFormData("id", uid),    // id 값을 찾아서 알려줘야됨
@@ -240,7 +240,7 @@ class MainViewModel @Inject constructor(
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
                         date = MultipartBody.Part.createFormData("date", sendData.date),
                         storeName = MultipartBody.Part.createFormData("storeName", sendData.storeName),
-                        picture = myPicture
+//                        picture = myPicture
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
@@ -269,15 +269,15 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun changeCardData(id: Long) {
-        CoroutineScope(exceptionHandler).launch {
-            withTimeoutOrNull(waitTime) {
-                val gap = roomUseCase.getAllData()
-                Log.e("TAG", "changeCardData: $gap")
-//            retrofitUseCase.resendCardDataUseCase()
-            }?:throw SocketTimeoutException()
-        }
-    }
+//    fun changeCardData(id: Long) {
+//        CoroutineScope(exceptionHandler).launch {
+//            withTimeoutOrNull(waitTime) {
+//                val gap = roomUseCase.getAllData()
+//                Log.e("TAG", "changeCardData: $gap")
+////            retrofitUseCase.resendCardDataUseCase()
+//            }?:throw SocketTimeoutException()
+//        }
+//    }
 
     fun deleteRoomData(date: String) {
         CoroutineScope(exceptionHandler).launch {
@@ -307,7 +307,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
     fun serverCoroutineStop() {
         _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소"))
         this.setFetchStateStop()
@@ -317,5 +316,51 @@ class MainViewModel @Inject constructor(
     fun hideServerCoroutineStop() {
         _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소"))
         _connectedState.postValue(ConnectedState.DISCONNECTED)
+    }
+
+    fun rotateImageIfRequired(bitmap: Bitmap, imagePath: String): Bitmap {
+        val exif = ExifInterface(imagePath)
+        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+
+        return when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270f)
+            else -> bitmap
+        }
+    }
+
+    fun rotateBitmap(bitmap: Bitmap, degree: Float): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(degree)
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
+    fun compressImageFile(inputFile: File): File {
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+
+        BitmapFactory.decodeFile(inputFile.absolutePath, options)
+
+        val resize = if(inputFile.length() > 1000000) 7 else 1
+
+        options.inJustDecodeBounds = false
+        options.inSampleSize = resize
+
+        val bitmap = BitmapFactory.decodeFile(inputFile.absolutePath, options)
+
+        val rotatedBitmap = rotateImageIfRequired(bitmap, inputFile.absolutePath)
+
+        val outputFile = File.createTempFile("compressed_", ".jpg")
+
+        try {
+            val outputStream = FileOutputStream(outputFile)
+            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            outputStream.flush()
+            outputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return outputFile
     }
 }

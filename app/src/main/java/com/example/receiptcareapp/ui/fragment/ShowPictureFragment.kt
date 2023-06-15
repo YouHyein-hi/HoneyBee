@@ -5,8 +5,6 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.res.ColorStateList
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.util.Log
@@ -53,40 +51,19 @@ class ShowPictureFragment :
     private var myArray = arrayListOf<String>()
     private var newCard = 0
 
-    /** Fragment 뒤로가기 **/
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    Log.e("TAG", "handleOnBackPressed: stop")
-                    activityViewModel.serverCoroutineStop()
-                } else {
-                    Log.e("TAG", "handleOnBackPressed: back")
-                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-
     override fun initData() {
         // 서버와 연결 상태 초기화.
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
     }
 
     override fun initUI() {
-
         with(binding){
-
-            //글라이드!
+            //글라이드
             Glide.with(pictureView)
-                .load(viewModel.image.value)
+                .load(viewModel.image.value!!)
                 .into(pictureView)
 
             pictureView.clipToOutline = true
-
             val dateNow = LocalDate.now()
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
             btnDate.text = "${dateNow.format(formatterDate)}"
@@ -202,7 +179,6 @@ class ShowPictureFragment :
         with(binding){
             /** CardData 관련 **/
             activityViewModel.cardData.observe(viewLifecycleOwner){
-                //val myArray = arrayListOf<String>()
                 if(myArray.isEmpty()){
                     it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
                 }
@@ -244,13 +220,6 @@ class ShowPictureFragment :
             }
         }
     }
-
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
-    }
-
-
     /** Spinner 관련 **/
     fun getSpinner() {
         activityViewModel.receiveServerCardData()
@@ -275,6 +244,28 @@ class ShowPictureFragment :
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
+    }
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                    Log.e("TAG", "handleOnBackPressed: stop")
+                    activityViewModel.serverCoroutineStop()
+                } else {
+                    Log.e("TAG", "handleOnBackPressed: back")
+                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 
     //TODO 이 코드가 과연 괜찮은 코드일까? (CardAddDialog_ShowPicture 관련)

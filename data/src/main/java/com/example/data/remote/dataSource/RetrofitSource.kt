@@ -10,8 +10,6 @@ import retrofit2.http.*
  * pureum
  */
 interface RetrofitSource {
-
-    //multipart에 쓰이는 모든 요소들은 @Part를 붙여줘야 함
     @Multipart
     @POST("bill/add")
     suspend fun sendDataSource(
@@ -55,14 +53,13 @@ interface RetrofitSource {
 
 
     @Multipart
-    @POST("")
+    @POST("bill/update/{id}/{cardName}/{storeName}/{date}/{amount}")
     suspend fun resendDataSource(
         @Part id : MultipartBody.Part,
         @Part cardName : MultipartBody.Part,
-        @Part amount : MultipartBody.Part,
         @Part storeName : MultipartBody.Part,
         @Part date : MultipartBody.Part,
-        @Part file : MultipartBody.Part,
+        @Part amount : MultipartBody.Part,
     ):String
 
     @FormUrlEncoded

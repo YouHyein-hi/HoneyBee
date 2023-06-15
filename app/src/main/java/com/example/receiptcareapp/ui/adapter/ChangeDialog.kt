@@ -11,21 +11,20 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.domain.model.RecyclerShowData
 import com.example.domain.model.send.AppSendData
+import com.example.receiptcareapp.base.BaseDialog
+import com.example.receiptcareapp.databinding.DialogCardBinding
 import com.example.receiptcareapp.databinding.DialogChangeBinding
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.time.LocalDateTime
 
-class ChangeDialog : DialogFragment() {
+class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
 
     //viewModels 뷰모델의 객체를 생성주는것?
-    private val fragmentViewModel : FragmentViewModel by viewModels()
-
+    private val fragmentViewModel : FragmentViewModel by activityViewModels()
     //엑티비티를 따라가는 뷰모델이니까
     // 엑티비티의 생명주기 따라가는 뷰모델이 뭘까?
     private val activityViewModel: MainViewModel by activityViewModels()
-
-    private lateinit var binding : DialogChangeBinding
     private lateinit var myData: RecyclerShowData
     private var myArray = arrayListOf<String>()
     private var checked = ""
@@ -37,11 +36,12 @@ class ChangeDialog : DialogFragment() {
     private var myMonth = 0
     private var myDay = 0
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DialogChangeBinding.inflate(layoutInflater)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         activityViewModel.cardData.observe(viewLifecycleOwner) {
             myArray.clear()
             it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
@@ -60,8 +60,11 @@ class ChangeDialog : DialogFragment() {
         myData = fragmentViewModel.showLocalData.value!!
         val newDate = myData.date.split("년","월","일","시","분","초")
 
+        Log.e("TAG", "onCreateView: ${myData.cardName}", )
+
         // 수정 전 로컬 데이터 화면에 띄우기
         // Spinner은 아직 설정 안함
+        binding.changeCardspinner
         binding.changeBtnStore.setText(myData.storeName)
         binding.changeBtnPrice.setText(myData.amount)
         try {
@@ -128,8 +131,12 @@ class ChangeDialog : DialogFragment() {
         }
 
         getSpinner()
+    }
 
-        return binding.root
+    override fun onResume() {
+        super.onResume()
+        val width = resources.displayMetrics.widthPixels
+        dialog?.window?.setLayout((width * 1).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     private fun getSpinner(){
@@ -156,9 +163,15 @@ class ChangeDialog : DialogFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        val width = resources.displayMetrics.widthPixels
-        dialog?.window?.setLayout((width * 0.9).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+    override fun initData() {
+    }
+
+    override fun initUI() {
+    }
+
+    override fun initListener() {
+    }
+
+    override fun initObserver() {
     }
 }

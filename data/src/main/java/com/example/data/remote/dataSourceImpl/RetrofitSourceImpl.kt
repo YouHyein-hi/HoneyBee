@@ -5,9 +5,7 @@ import com.example.data.remote.dataSource.RetrofitSource
 import com.example.data.remote.model.ReceiveCardData
 import com.example.data.remote.model.ReceiveData
 import okhttp3.MultipartBody
-import okio.utf8Size
 import retrofit2.Retrofit
-import retrofit2.create
 import javax.inject.Inject
 
 /**
@@ -61,14 +59,14 @@ class RetrofitSourceImpl @Inject constructor(
         return retrofit.create(RetrofitSource::class.java).deleteCardDataSource(uid)
     }
 
-    override suspend fun resendDataSource(
+    override suspend fun updateDataSource(
         id: MultipartBody.Part,
         cardName: MultipartBody.Part,
         amount: MultipartBody.Part,
         storeName: MultipartBody.Part,
         date: MultipartBody.Part,
     ): String {
-        return retrofit.create(RetrofitSource::class.java).resendDataSource(
+        return retrofit.create(RetrofitSource::class.java).updateDataSource(
             id = id,
             cardName = cardName,
             amount = amount,
@@ -77,10 +75,10 @@ class RetrofitSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun resendCardDataSource(
+    override suspend fun updateCardDataSource(
         cardName: String, cardAmount: Int
     ): String {
-        return retrofit.create(RetrofitSource::class.java).resendCardDataSource(
+        return retrofit.create(RetrofitSource::class.java).updateCardDataSource(
             cardName = cardName,
             cardAmount = cardAmount
         )

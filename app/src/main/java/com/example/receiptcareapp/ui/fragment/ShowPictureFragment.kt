@@ -1,36 +1,29 @@
 package com.example.receiptcareapp.ui.fragment
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
-import com.example.receiptcareapp.ui.adapter.CardAddDialog_Bottom
-import com.example.receiptcareapp.ui.adapter.CardAddDialog_ShowPicture
+import com.example.receiptcareapp.ui.dialog.CardAddDialog_ShowPicture
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
-import java.io.FileNotFoundException
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -137,7 +130,6 @@ class ShowPictureFragment :
 
             /** 완료 Button **/
             sendBtn.setOnClickListener {
-                Log.e("TAG", "onViewCreated: iinin")
                 if (checked == "") {
                     showShortToast("카드를 입력하세요.")
                 } else if (btnStore.text!!.isEmpty()) {
@@ -162,7 +154,11 @@ class ShowPictureFragment :
                     )
                     activityViewModel.sendData(
                         AppSendData(
-                            date = myLocalDateTime.toString(), amount = btnPrice.text.toString(), cardName = checked, picture = viewModel.image.value!!, storeName = binding.btnStore.text.toString())
+                            date = myLocalDateTime.toString(),
+                            amount = btnPrice.text.toString(),
+                            cardName = checked,
+                            picture = viewModel.image.value!!,
+                            storeName = binding.btnStore.text.toString())
                     )
                 }
             }

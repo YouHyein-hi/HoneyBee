@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.ui.activity
 
+import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,25 +10,30 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
+import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
+import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityMainBinding
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.util.FetchState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-    private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+class MainActivity : BaseActivity<ActivityMainBinding>({ActivityMainBinding.inflate(it)}) {
+//    private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val activityViewModel: MainViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-
+    override fun initData() {
         activityViewModel.myCotext = applicationContext
+    }
 
+    override fun initUI() {
         supportActionBar?.hide()
+    }
 
+    override fun initListener() {}
+
+    override fun initObserver() {
         activityViewModel.fetchState.observe(this) {
             //프로그래스 바 풀어주기
             activityViewModel.changeConnectedState(ConnectedState.CONNECTING_FALSE)
@@ -51,9 +57,9 @@ class MainActivity : AppCompatActivity() {
         val imm: InputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-        if (currentFocus is EditText) {
-            currentFocus!!.clearFocus()
-        }
+        if (currentFocus is EditText) { currentFocus!!.clearFocus() }
         return super.dispatchTouchEvent(ev)
     }
+
+
 }

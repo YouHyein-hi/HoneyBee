@@ -16,5 +16,5 @@ data class ShowData(
     val amount: String,
     var date: String,
     val storeName: String,
-    var file: Bitmap?
+    var file: Uri?
 )

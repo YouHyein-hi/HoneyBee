@@ -1,29 +1,21 @@
-package com.example.receiptcareapp.ui.adapter
+package com.example.receiptcareapp.ui.dialog
 
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardBinding
-import com.example.receiptcareapp.ui.fragment.HomeFragment
-import com.example.receiptcareapp.ui.fragment.ShowPictureFragment
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.text.DecimalFormat
 
-class CardAddDialog_ShowPicture : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {
+class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {
 
     //viewModels 뷰모델의 객체를 생성주는것?
     private val fragmentViewModel : FragmentViewModel by activityViewModels()
@@ -31,13 +23,12 @@ class CardAddDialog_ShowPicture : BaseDialog<DialogCardBinding>(DialogCardBindin
     // 엑티비티의 생명주기 따라가는 뷰모델이 뭘까?
     private val activityViewModel: MainViewModel by activityViewModels()
 
+
     override fun onResume() {
         super.onResume()
 
-        var newCard = 0
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout((width * 1).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
-
 
         with(binding){
             dialogcardEditCardprice.setOnClickListener {
@@ -102,15 +93,7 @@ class CardAddDialog_ShowPicture : BaseDialog<DialogCardBinding>(DialogCardBindin
                     if(price.contains(",")){
                         price = price.replace(",", "")
                     }
-
-                    activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
                     activityViewModel.sendCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
-                    newCard = 1
-                    //TODO 이 코드가 과연 괜찮은 코드일까? 일단 해두고 다른 방법 찾아보기!
-                    /// 카드를 추가했을 때 ShowPictureFragment에 변화된 것으로 알려주며 Observer할 때 myArray를 clear하고 새로 불러줘야됨!
-                    val fragmentManager = requireActivity().supportFragmentManager
-                    val showPictureFragment = fragmentManager.findFragmentByTag("showPictureFragment") as ShowPictureFragment?
-                    showPictureFragment?.setNewCardValue(newCard)
                     dismiss()
                 }
             }
@@ -119,6 +102,9 @@ class CardAddDialog_ShowPicture : BaseDialog<DialogCardBinding>(DialogCardBindin
                 Log.e("TAG", "onResume: 카드 추가 취소", )
                 dismiss()
             }
+
+
+
         }
     }
 
@@ -133,4 +119,6 @@ class CardAddDialog_ShowPicture : BaseDialog<DialogCardBinding>(DialogCardBindin
 
     override fun initObserver() {
     }
+
+
 }

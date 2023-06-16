@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.receive.DomainResendAllData
-import com.example.domain.model.receive.DomainResendCardData
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.model.send.DomainSendData
 import com.example.domain.repo.RetrofitRepo
@@ -46,8 +45,8 @@ class RetrofitUseCase(
         return retrofitRepo.deleteCardDataRepo(id)
     }
 
-    suspend fun resendDataUseCase(domainResendData: DomainResendAllData):String {
-        return retrofitRepo.resendDataRepo(domainResendData)
+    suspend fun updateDataUseCase(domainResendData: DomainResendAllData):String {
+        return retrofitRepo.updateDataRepo(domainResendData)
     }
 
 //    suspend fun resendCardDataUseCase(domainResendCardData: DomainResendCardData):String {

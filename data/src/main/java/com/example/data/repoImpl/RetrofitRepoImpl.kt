@@ -64,8 +64,8 @@ class RetrofitRepoImpl @Inject constructor(
         return retrofitSource.deleteCardDataSource(id)
     }
 
-    override suspend fun resendDataRepo(domainResendData: DomainResendAllData): String {
-        return retrofitSource.resendDataSource(
+    override suspend fun updateDataRepo(domainResendData: DomainResendAllData): String {
+        return retrofitSource.updateDataSource(
             id = domainResendData.id,
             cardName = domainResendData.cardName,
             amount = domainResendData.amount,
@@ -74,8 +74,8 @@ class RetrofitRepoImpl @Inject constructor(
         )
     }
 
-    override suspend fun resendCardDataRepo(domainResendCardData: DomainResendCardData): String {
-        return retrofitSource.resendCardDataSource(
+    override suspend fun updateCardDataRepo(domainResendCardData: DomainResendCardData): String {
+        return retrofitSource.updateCardDataSource(
             cardName = domainResendCardData.cardName,
             cardAmount = domainResendCardData.cardAmount
         )

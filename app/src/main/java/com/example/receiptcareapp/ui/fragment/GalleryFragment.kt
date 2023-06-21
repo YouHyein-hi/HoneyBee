@@ -7,6 +7,7 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -14,12 +15,16 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentGalleryBinding
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.base.BaseFragment
+import com.example.receiptcareapp.viewModel.CameraViewModel
+import com.example.receiptcareapp.viewModel.GalleryViewModel
+import com.example.receiptcareapp.viewModel.HomeViewModel
 
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
-    private val homeFragment : HomeFragment = HomeFragment()
+    private val GALLERY_CODE = 1010
+    private val fragmentViewModel : FragmentViewModel by activityViewModels()
+    private val galleryViewModel : GalleryViewModel by viewModels()
 
     override fun initData() {}
 
@@ -34,12 +39,9 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
     /* 갤러리 호출 */
     fun CallGallery() {
         Log.e("TAG", "CallGallery 실행", )
-        if(homeFragment.checkPermission(requireContext(), GALLERY)){
+        if(galleryViewModel.checkPermission(requireContext(), requireActivity(), GALLERY, GALLERY_CODE)){
             Log.e("TAG", "파일 권한 있음", )
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            intent.type = "image/*"
-            activityResult.launch(intent)
+            activityResult.launch(galleryViewModel.CallGallery())
         }
     }
 
@@ -49,7 +51,6 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
         if (it.resultCode == Activity.RESULT_OK){
             Log.e("TAG", "onActivityResult: if 진입", )
             val imageUri: Uri? = it.data?.data
-            Log.e("TAG", "my URI: $imageUri", )
             if (imageUri != null) {
                 Log.e("TAG", "data 있음", )
                 fragmentViewModel.takeImage(imageUri)

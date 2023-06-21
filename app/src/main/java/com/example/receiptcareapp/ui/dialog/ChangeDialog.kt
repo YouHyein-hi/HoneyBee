@@ -52,8 +52,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             myData = DialogData(gap!!.uid, gap.cardName, gap.amount, gap.date, gap.storeName, null)
         }
 
-        val newDate = myData.date.split("년","월","일","시","분","초")
-
+        val newDate = myData.date.replace(" ", ""). split("년","월","일","시","분","초")
         Log.e("TAG", "onCreateView: ${myData.cardName}", )
 
         // 수정 전 로컬 데이터 화면에 띄우기
@@ -61,15 +60,9 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
         binding.changeCardspinner
         binding.changeBtnStore.setText(myData.storeName)
         binding.changeBtnPrice.setText(myData.amount)
-        try {
-            settingYear = newDate[0].toInt()
-            settingMonth = newDate[1].toInt()
-            settingDay = newDate[2].toInt()
-        }catch (E:Exception){
-            settingYear = 2023
-            settingMonth = 5
-            settingDay = 16
-        }
+        settingYear = newDate[0].toInt()
+        settingMonth = newDate[1].toInt()
+        settingDay = newDate[2].toInt()
         binding.changeDatepicker.init(settingYear, settingMonth-1, settingDay, null)
         Log.e("TAG", "onCreateView: ${settingYear}, ${settingMonth}, ${settingYear}", )
 

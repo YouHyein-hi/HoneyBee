@@ -7,21 +7,20 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardBinding
+import com.example.receiptcareapp.viewModel.CardAddBottomViewModel
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.text.DecimalFormat
 
 class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {
 
-    //viewModels 뷰모델의 객체를 생성주는것?
-    private val fragmentViewModel : FragmentViewModel by activityViewModels()
-    //엑티비티를 따라가는 뷰모델이니까
-    // 엑티비티의 생명주기 따라가는 뷰모델이 뭘까?
     private val activityViewModel: MainViewModel by activityViewModels()
+    private val cardAddBottomViewModel : CardAddBottomViewModel by viewModels()
 
 
     override fun onResume() {
@@ -33,20 +32,20 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
         with(binding){
             dialogcardEditCardprice.setOnClickListener {
                 if (dialogcardEditCardprice.text.contains(",")) {
-                    dialogcardEditCardprice.setText(dialogcardEditCardprice.text.toString().replace(",", ""))
+                    dialogcardEditCardprice.setText(cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
                     dialogcardEditCardprice.setSelection(dialogcardEditCardprice.text.length)
                 }
             }
             dialogcardEditCardprice.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_DONE && dialogcardEditCardprice.text.isNotEmpty()) {
-                    val gap = DecimalFormat("#,###")
-                    dialogcardEditCardprice.setText(gap.format(dialogcardEditCardprice.text.toString().toInt()))
+                    dialogcardEditCardprice.setText(
+                        cardAddBottomViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
                 }
                 handled
             }
 
-            // EditText 비어있을 시 나타나는 style 이벤트
+            // EditText 비어있을 시 나타나는 style 이벤트 (UI 관련)
             val hintCardNmae = dialogcardEditCardname.hint
             val emphasis_yellow = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.emphasis_yellow))
             dialogcardEditCardname.setOnFocusChangeListener { view, hasFocus ->
@@ -88,11 +87,7 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
                     showLongToast("추가 금액을 입력하세요.")
                 }
                 else{
-                    var price = dialogcardEditCardprice.text.toString()
-
-                    if(price.contains(",")){
-                        price = price.replace(",", "")
-                    }
+                    var price = cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())
                     activityViewModel.sendCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
                     dismiss()
                 }
@@ -102,8 +97,6 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
                 Log.e("TAG", "onResume: 카드 추가 취소", )
                 dismiss()
             }
-
-
 
         }
     }

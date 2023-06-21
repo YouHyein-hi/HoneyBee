@@ -54,10 +54,5 @@ class FragmentViewModel : ViewModel(){
         _startGap.value = gap
     }
 
-    private val _card = MutableLiveData<Map<String, Int>>()
-    val card : LiveData<Map<String, Int>>
-        get() = _card
-    fun takeCardData(card: Map<String, Int>){
-        _card.value = card
-    }
+
 }

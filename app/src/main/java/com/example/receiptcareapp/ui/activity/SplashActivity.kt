@@ -1,12 +1,42 @@
 package com.example.receiptcareapp.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.example.receiptcareapp.R
+import android.animation.ObjectAnimator
+import android.content.Intent
+import android.view.View
+import androidx.lifecycle.lifecycleScope
+import com.example.receiptcareapp.base.BaseActivity
+import com.example.receiptcareapp.databinding.ActivitySplashBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class SplashActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+@AndroidEntryPoint
+class SplashActivity : BaseActivity<ActivitySplashBinding>({ActivitySplashBinding.inflate(it)}) {
+
+    override fun initData() {
+    }
+
+    override fun initUI() {
+        supportActionBar?.hide()
+
+        ObjectAnimator.ofFloat(this.binding.title, View.ALPHA, 0f,1f).apply {
+            duration = 1500
+            start()
+        }
+        ObjectAnimator.ofFloat(this.binding.background, View.ALPHA, 0f,1f).apply {
+            duration = 1500
+            start()
+        }
+
+        lifecycleScope.launch() {
+            delay(2300L)
+            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+        }
+    }
+
+    override fun initListener() {
+    }
+
+    override fun initObserver() {
     }
 }

@@ -15,5 +15,4 @@ class CardAddBottomViewModel : ViewModel(){
     fun PriceFormat(price : String): String? {
         return DecimalFormat("#,###").format(price.toInt())
     }
-
 }

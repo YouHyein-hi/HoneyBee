@@ -1,27 +1,23 @@
 package com.example.receiptcareapp.ui.activity
 
-import android.app.Activity
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityMainBinding
-import com.example.receiptcareapp.viewModel.MainViewModel
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.util.FetchState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>({ActivityMainBinding.inflate(it)}) {
 //    private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val activityViewModel: MainViewModel by viewModels()
+    private val activityViewModel: MainActivityViewModel by viewModels()
 
     override fun initData() {
         activityViewModel.myCotext = applicationContext

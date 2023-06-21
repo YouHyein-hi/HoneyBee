@@ -15,12 +15,11 @@ import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardBinding
 import com.example.receiptcareapp.ui.fragment.ShowPictureFragment
 import com.example.receiptcareapp.viewModel.CardAddShowPictureViewModel
-import com.example.receiptcareapp.viewModel.MainViewModel
-import java.text.DecimalFormat
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 
 class CardAddDialog_ShowPicture : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {
 
-    private val activityViewModel: MainViewModel by activityViewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val cardAddShowPictureViewModel : CardAddShowPictureViewModel by viewModels()
 
     override fun onResume() {

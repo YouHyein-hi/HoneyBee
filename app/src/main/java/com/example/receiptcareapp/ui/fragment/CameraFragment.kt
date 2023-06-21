@@ -8,21 +8,19 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.viewModel.CameraViewModel
-import com.example.receiptcareapp.viewModel.MainViewModel
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 
 class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding::inflate) {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val CAMERA_CODE = 98
     private var photoURI : Uri? = null
-
   //예시코드 보면서 callcamera 함수 위치 보완 => 리스너인지 데이터인지
-    private val activityViewModel : MainViewModel by activityViewModels()
+    private val activityViewModel : MainActivityViewModel by activityViewModels()
     private val cameraViewModel : CameraViewModel by viewModels()
 
     override fun initData() {}
@@ -58,7 +56,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
                 Log.e("TAG", "data 있음", )
                 activityViewModel.takeImage(photoURI!!)
                 photoURI = null
-                NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
+                findNavController().navigate(R.id.action_cameraFragment_to_showFragment)
             }
         }
         else {

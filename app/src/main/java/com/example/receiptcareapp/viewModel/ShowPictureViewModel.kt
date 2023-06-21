@@ -35,15 +35,14 @@ class ShowPictureViewModel : ViewModel(){
             LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second)
     }
 
-    private val _card = MutableLiveData<Map<String, Int>>()
-    val card : LiveData<Map<String, Int>>
-        get() = _card
-    fun takeCardData(card: Map<String, Int>){
-        _card.value = card
-    }
-
-    fun spiltCardSplit(myPostion: String) : ArrayList<String>{
-        return myPostion.split(" : ") as ArrayList<String>
-    }
+//    private val _card = MutableLiveData<Map<String, Int>>()
+//    val card : LiveData<Map<String, Int>>
+//        get() = _card
+//    fun takeCardData(card: Map<String, Int>){
+//        _card.value = card
+//    }
+//    fun spiltCardSplit(myPostion: String) : ArrayList<String>{
+//        return myPostion.split(" : ") as ArrayList<String>
+//    }
 
 }

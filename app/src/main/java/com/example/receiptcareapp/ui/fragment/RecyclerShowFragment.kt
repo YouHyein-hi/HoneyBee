@@ -1,9 +1,6 @@
 package com.example.receiptcareapp.ui.fragment
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -19,23 +16,19 @@ import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.databinding.FragmentRecyclerShowBinding
 import com.example.receiptcareapp.dto.ShowData
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
-import com.example.receiptcareapp.viewModel.MainViewModel
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
-import java.io.File
-import java.io.FileOutputStream
+import com.example.receiptcareapp.viewModel.RecyclerShowFragment
 
 class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
-//    private val fragmentViewModel : MainViewModel by viewModels({requireActivity()})
-    private val activityViewModel : MainViewModel by activityViewModels()
+    private val activityViewModel : MainActivityViewModel by activityViewModels()
+    private val viewModel : RecyclerShowFragment by viewModels()
     private lateinit var myData: ShowData
     private lateinit var callback:OnBackPressedCallback
 
     init {
         Log.e("TAG", "RecyclerShowFragment RecyclerShowFragment RecyclerShowFragment: ", )
     }
-
-
-
 
     override fun initData() {
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
@@ -46,7 +39,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             binding.resendBtn.isVisible = false
             val data = activityViewModel.showServerData.value
             val picture = activityViewModel.picture.value
-            myData = ShowData(ShowType.SERVER, data!!.uid, data.cardName, data.amount, data.date, data.storeName, bitmapToUri(picture!!))
+            myData = ShowData(ShowType.SERVER, data!!.uid, data.cardName, data.amount, data.date, data.storeName, viewModel.bitmapToUri(requireActivity(),picture!!))
             binding.imageView.setImageBitmap(picture)
 
         }else if(activityViewModel.showLocalData.value != null){
@@ -66,19 +59,13 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     }
 
     override fun initListener() {
-        binding.resendBtn.setOnClickListener{
-            resendDialog()
-        }
-        //수정 버튼, 서버
-        binding.changeBtn.setOnClickListener{
-            changeDialog()
-        }
-        //삭제 버튼, 서버와 로컬
-        binding.removeBtn.setOnClickListener{
-            deleteDialog()
-        }
-
-        // 뒤로가기
+        //재전송 버튼
+        binding.resendBtn.setOnClickListener{ resendDialog() }
+        //수정 후 재전송 버튼
+        binding.changeBtn.setOnClickListener{ changeDialog() }
+        //삭제 버튼
+        binding.removeBtn.setOnClickListener{ deleteDialog() }
+        //뒤로가기 버튼
         binding.backBtn.setOnClickListener{
             if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                 activityViewModel.serverCoroutineStop()
@@ -90,7 +77,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     }
 
     override fun initObserver() {
-
+        //서버 연결 상태 옵져버
         activityViewModel.connectedState.observe(viewLifecycleOwner){
             Log.e("TAG", "onViewCreated: $it", )
             if(it==ConnectedState.DISCONNECTED) {
@@ -109,19 +96,6 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         }
     }
 
-
-    private fun uriToBitmap(uri:Uri):Bitmap{
-        return ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireActivity().contentResolver,uri))
-    }
-
-    private fun bitmapToUri(bitmap:Bitmap):Uri{
-        val file = File(requireContext().cacheDir, "temp_image.jpg")
-        val outputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        outputStream.flush()
-        outputStream.close()
-        return Uri.fromFile(file)
-    }
     //서버, 로컬 재전송
     private fun resendDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
@@ -178,7 +152,8 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                     activityViewModel.serverCoroutineStop()
                 } else {
-                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)                }
+                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+                }
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)

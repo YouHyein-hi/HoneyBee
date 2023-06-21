@@ -1,36 +1,30 @@
 package com.example.receiptcareapp.ui.fragment
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
-import com.example.receiptcareapp.ui.adapter.CardAddDialog_Bottom
 import com.example.receiptcareapp.ui.adapter.CardAddDialog_ShowPicture
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
-import java.io.FileNotFoundException
+import com.example.receiptcareapp.viewModel.ShowPictureViewModel
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -39,8 +33,9 @@ import java.util.*
 
 class ShowPictureFragment :
     BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
-    private val viewModel: FragmentViewModel by viewModels({requireActivity()})
+    private val fragmentViewModel: FragmentViewModel by activityViewModels()
     private val activityViewModel: MainViewModel by activityViewModels()
+    private val showPictureViewModel : ShowPictureViewModel by viewModels()
     private var checked = ""
     private var myYear = 0
     private var myMonth = 0
@@ -51,6 +46,23 @@ class ShowPictureFragment :
     private var myArray = arrayListOf<String>()
     private var newCard = 0
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                    Log.e("TAG", "handleOnBackPressed: stop")
+                    activityViewModel.serverCoroutineStop()
+                } else {
+                    Log.e("TAG", "handleOnBackPressed: back")
+                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
     override fun initData() {
         // 서버와 연결 상태 초기화.
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
@@ -60,16 +72,15 @@ class ShowPictureFragment :
         with(binding){
             //글라이드
             Glide.with(pictureView)
-                .load(viewModel.image.value!!)
+                .load(fragmentViewModel.image.value!!)
                 .into(pictureView)
 
             pictureView.clipToOutline = true
-            val dateNow = LocalDate.now()
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-            btnDate.text = "${dateNow.format(formatterDate)}"
-            myYear = dateNow.year
-            myMonth = dateNow.monthValue
-            myDay = dateNow.dayOfMonth
+            btnDate.text = "${showPictureViewModel.DateNow().format(formatterDate)}"
+            myYear = showPictureViewModel.DateNow().year
+            myMonth = showPictureViewModel.DateNow().monthValue
+            myDay = showPictureViewModel.DateNow().dayOfMonth
         }
         /** Spinner 호출 **/
         getSpinner()
@@ -85,25 +96,15 @@ class ShowPictureFragment :
             btnDate.setOnClickListener {
                 val cal = Calendar.getInstance()
                 val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
-                    var myMonthSt : String
-                    var mydaySt : String
                     myYear = year
-                    myMonth = month
+                    myMonth = month + 1
                     myDay = day
 
-                    if(month < 10)
-                        myMonthSt = "0${month + 1}"
-                    else myMonthSt = "${month + 1}"
-                    Log.e("TAG", "onViewCreated: month else~")
-                    myMonth = month + 1
-                    if(day < 10)
-                        mydaySt = "0${day}"
-                    else mydaySt = "${day}"
-
-                    btnDate.text = "${myYear}/${myMonthSt}/${mydaySt}"
+                    btnDate.text =
+                        "${myYear}/${showPictureViewModel.DatePickerMonth(month)}/${showPictureViewModel.DatePickerDay(day)}"
                 }
-                val dataDialog = DatePickerDialog(requireContext(), data, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)
-                )
+                val dataDialog = DatePickerDialog(requireContext(), data,
+                    cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
                 dataDialog.show()
                 dataDialog.getButton(DialogInterface.BUTTON_POSITIVE)
                     .setTextColor(Color.RED)
@@ -113,14 +114,13 @@ class ShowPictureFragment :
 
             /** Card 추가 Button -> Card 추가 Dialog 생성 **/
             cardaddBtn.setOnClickListener{
-                val cardadddialogShowpicture = CardAddDialog_ShowPicture()
-                cardadddialogShowpicture.show(parentFragmentManager, "CardAddDialog")
+                CardAddDialog_ShowPicture().show(parentFragmentManager, "CardAddDialog")
             }
 
             /** 금액 EidtText , 추가 **/
             btnPrice.setOnClickListener {
                 if (btnPrice.text.contains(",")) {
-                    btnPrice.setText(btnPrice.text.toString().replace(",", ""))
+                    btnPrice.setText(showPictureViewModel.CommaReplaceSpace(btnPrice.text.toString()))
                     btnPrice.setSelection(btnPrice.text.length)
                 }
             }
@@ -146,23 +146,16 @@ class ShowPictureFragment :
                     showShortToast("날짜를 입력하세요.")
                 } else if (btnPrice.text.isEmpty()) {
                     showShortToast("금액을 입력하세요.")
-                } else if (viewModel.image.value == null) {
+                } else if (fragmentViewModel.image.value == null) {
                     showShortToast("사진이 비었습니다.\n초기화면으로 돌아갑니다.")
                     NavHostFragment.findNavController(this@ShowPictureFragment)
                         .navigate(R.id.action_showFragment_to_homeFragment)
                 } else {
                     Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}")
-                    val myLocalDateTime = LocalDateTime.of(
-                        myYear,
-                        myMonth,
-                        myDay,
-                        LocalDateTime.now().hour,
-                        LocalDateTime.now().minute,
-                        LocalDateTime.now().second
-                    )
+                    val myLocalDateTime = showPictureViewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
                     activityViewModel.sendData(
                         AppSendData(
-                            date = myLocalDateTime.toString(), amount = btnPrice.text.toString(), cardName = checked, picture = viewModel.image.value!!, storeName = binding.btnStore.text.toString())
+                            date = myLocalDateTime.toString(), amount = btnPrice.text.toString(), cardName = checked, picture = fragmentViewModel.image.value!!, storeName = binding.btnStore.text.toString())
                     )
                 }
             }
@@ -222,22 +215,18 @@ class ShowPictureFragment :
     }
     /** Spinner 관련 **/
     fun getSpinner() {
+        Log.e("TAG", "getSpinner: ")
+
         activityViewModel.receiveServerCardData()
-        Log.e("TAG", "getSpinner: getSpinner")
-        cardArray?.let { viewModel.takeCardData(it) }
+        cardArray?.let { showPictureViewModel.takeCardData(it) }  // TODO 이 부분 빼도 될 듯?
         var adapter = ShowPictureAdapter(requireContext(), arrayListOf())
         binding.spinner.adapter = adapter
         Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                adapterView: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 Log.e("TAG", "onItemSelected: ${myArray[position]}")
                 Log.e("TAG", "onItemSelected: ${position}")
-                val spiltCard = myArray[position].split(" : ")
+                val spiltCard = showPictureViewModel.spiltCardSplit(myArray[position])
                 checked = spiltCard[0]
                 Log.e("TAG", "onItemSelected: ${checked}")
             }
@@ -245,23 +234,7 @@ class ShowPictureFragment :
             }
         }
     }
-    /** Fragment 뒤로가기 **/
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    Log.e("TAG", "handleOnBackPressed: stop")
-                    activityViewModel.serverCoroutineStop()
-                } else {
-                    Log.e("TAG", "handleOnBackPressed: back")
-                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
+
 
     override fun onDetach() {
         super.onDetach()

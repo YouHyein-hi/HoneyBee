@@ -23,14 +23,11 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_ShowPicture
-import com.example.receiptcareapp.ui.adapter.CardAddDialog_ShowPicture
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.viewModel.ShowPictureViewModel
 import java.text.DecimalFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -210,7 +207,7 @@ class ShowPictureFragment :
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 Log.e("TAG", "onItemSelected: ${myArray[position]}")
                 Log.e("TAG", "onItemSelected: ${position}")
-                val spiltCard = showPictureViewModel.spiltCardSplit(myArray[position])
+                val spiltCard = myArray[position].split(" : ")
                 checked = spiltCard[0]
                 Log.e("TAG", "onItemSelected: ${checked}")
             }

@@ -10,11 +10,13 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.ui.botteomSheet.HomeCardBottomSheet
+import com.example.receiptcareapp.viewModel.HomeViewModel
 
 //메인 프레그먼트/
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -24,12 +26,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val CAMERA_CODE = 98
     private val GALLERY_CODE = 1010
     private lateinit var callback: OnBackPressedCallback
+    private val homeViewModel: HomeViewModel by viewModels()
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
+                    .setTitle("종료")
+                    .setMessage("꿀을 그만 빠시겠어요?")
+                    .setPositiveButton("그만 빤다"){dialog, id->
+                        requireActivity().finish()
+                    }
+                    .setNegativeButton("더 빤다"){dialog, id->
+
+                    }.show()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     override fun initData() {}
 
     override fun initUI() {
-
-
         with(binding){
             cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
             galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
@@ -42,33 +62,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun initListener() {
-        checkPermission(requireContext(), CAMERA)
-        checkPermission(requireContext(), GALLERY)
-
-
+        homeViewModel.checkPermission(requireContext(), requireActivity(), CAMERA, CAMERA_CODE)
+        homeViewModel.checkPermission(requireContext(), requireActivity(), GALLERY, GALLERY_CODE)
     }
 
     override fun initObserver() {}
 
     /*** 권한 관련 코드 ***/
-    fun checkPermission(context: Context, permissions: Array<out String>): Boolean {
-        Log.e("TAG", "checkPermission: 실행", )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            for (permission in permissions) {
-                if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED && permissions.contentEquals(GALLERY)) {
-                    Log.e("TAG", "checkPermission: 갤러리", )
-                    ActivityCompat.requestPermissions(requireActivity(), permissions, GALLERY_CODE)
-                    return false
-                }
-                else if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED && permissions.contentEquals(CAMERA)) {
-                    Log.e("TAG", "checkPermission: 카메라", )
-                    ActivityCompat.requestPermissions(requireActivity(), permissions, CAMERA_CODE)
-                    return false;
-                }
-            }
-        }
-        return true
-    }
     @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {  // 권한 확인 직후 바로 호출됨
         Log.e("TAG", "MainActivity: onRequestPermissionsResult 실행", )
@@ -89,24 +89,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
             }
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-                    .setTitle("종료")
-                    .setMessage("꿀을 그만 빠시겠어요?")
-                    .setPositiveButton("그만 빤다"){dialog, id->
-                        requireActivity().finish()
-                    }
-                    .setNegativeButton("더 빤다"){dialog, id->
-
-                    }.show()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onDetach() {

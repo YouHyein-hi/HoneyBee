@@ -22,7 +22,7 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_Bottom
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
-import com.example.receiptcareapp.viewModel.MainViewModel
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.text.DecimalFormat
@@ -36,7 +36,7 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
         FragmentHomeCardBottomsheetBinding.inflate(layoutInflater)
     }
     private val adapter: HomeCardAdapter = HomeCardAdapter()
-    private val activityViewModel: MainViewModel by activityViewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var callback : OnBackPressedCallback
 
     override fun onCreateView(

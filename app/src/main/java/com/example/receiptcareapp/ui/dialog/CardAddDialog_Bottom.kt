@@ -13,12 +13,11 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardBinding
 import com.example.receiptcareapp.viewModel.CardAddBottomViewModel
-import com.example.receiptcareapp.viewModel.MainViewModel
-import java.text.DecimalFormat
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 
 class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {
 
-    private val activityViewModel: MainViewModel by activityViewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val cardAddBottomViewModel : CardAddBottomViewModel by viewModels()
 
 

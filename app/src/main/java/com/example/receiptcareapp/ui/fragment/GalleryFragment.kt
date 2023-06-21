@@ -14,12 +14,13 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentGalleryBinding
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.viewModel.*
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
     private val GALLERY_CODE = 1010
-    private val activityViewModel : MainViewModel by activityViewModels()
+    private val activityViewModel : MainActivityViewModel by activityViewModels()
     private val galleryViewModel : GalleryViewModel by viewModels()
 
     override fun initData() {}

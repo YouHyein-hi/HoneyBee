@@ -14,7 +14,7 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
 import com.example.receiptcareapp.ui.adapter.RecyclerLocalAdapter
 import com.example.receiptcareapp.ui.adapter.RecyclerServerAdapter
-import com.example.receiptcareapp.viewModel.MainViewModel
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
 
 
@@ -23,8 +23,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         Log.e("TAG", ": RecyclerFragment RecyclerFragment RecyclerFragment", )
     }
 
-    private val activityViewModel: MainViewModel by activityViewModels()
-//    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val recyclerServerAdapter: RecyclerServerAdapter = RecyclerServerAdapter()
     private val recyclerLocalAdapter: RecyclerLocalAdapter = RecyclerLocalAdapter()
     private lateinit var callback : OnBackPressedCallback
@@ -97,12 +96,10 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         recyclerLocalAdapter.onLocalSaveClic = {
             Log.e("TAG", "initListener: local", )
             activityViewModel.changePicture()
-//            activityViewModel.receiveServerPictureData(it.uid)
             activityViewModel.myShowLocalData(it)
             activityViewModel.changeStartGap("local")
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
-
         //뒤로가기 버튼
         binding.backBtn.setOnClickListener{ findNavController().popBackStack() }
     }
@@ -123,18 +120,12 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         }
 
         //프로그래스 바 컨트롤
-        //when
         activityViewModel.connectedState.observe(viewLifecycleOwner){
             Log.e("TAG", "progress bar: $it", )
-            if(it==ConnectedState.DISCONNECTED) {
-                binding.progressBar.visibility = View.INVISIBLE
-            }
-            else if(it==ConnectedState.CONNECTING){
-                binding.progressBar.visibility = View.VISIBLE
-            }
-            else if(it==ConnectedState.CONNECTING_SUCCESS){
-                setTextAndVisible("", false)
-            }else{
+            if(it==ConnectedState.DISCONNECTED) { binding.progressBar.visibility = View.INVISIBLE }
+            else if(it==ConnectedState.CONNECTING){ binding.progressBar.visibility = View.VISIBLE }
+            else if(it==ConnectedState.CONNECTING_SUCCESS){ setTextAndVisible("", false) }
+            else{
                 binding.progressBar.visibility = View.INVISIBLE
                 setTextAndVisible("서버 연결 실패!", true)
             }

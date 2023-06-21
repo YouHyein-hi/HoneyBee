@@ -22,7 +22,7 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_ShowPicture
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
-import com.example.receiptcareapp.viewModel.MainViewModel
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.ShowPictureViewModel
 import java.text.DecimalFormat
 import java.time.format.DateTimeFormatter
@@ -30,8 +30,7 @@ import java.util.*
 
 class ShowPictureFragment :
     BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
-//    private val fragmentViewModel: FragmentViewModel by activityViewModels()
-    private val activityViewModel: MainViewModel by activityViewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val showPictureViewModel : ShowPictureViewModel by viewModels()
     private var checked = ""
     private var myYear = 0
@@ -194,7 +193,7 @@ class ShowPictureFragment :
     /** Spinner 관련 **/
     fun getSpinner() {
         activityViewModel.receiveServerCardData()
-        cardArray?.let { showPictureViewModel.takeCardData(it) }  // TODO 이 부분 빼도 될 듯?
+//        cardArray?.let { showPictureViewModel.takeCardData(it) }  // TODO 이 부분 빼도 될 듯?
         var adapter = ShowPictureAdapter(requireContext(), arrayListOf())
         binding.spinner.adapter = adapter
         Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")

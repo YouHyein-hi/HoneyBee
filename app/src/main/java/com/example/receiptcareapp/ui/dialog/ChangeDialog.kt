@@ -11,11 +11,11 @@ import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
-import com.example.receiptcareapp.viewModel.MainViewModel
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import java.time.LocalDateTime
 
 class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
-    private val activityViewModel: MainViewModel by activityViewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var myData: DialogData
     private var myArray = arrayListOf<String>()
     private var checked = ""

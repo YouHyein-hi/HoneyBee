@@ -21,6 +21,9 @@ class CameraViewModel : ViewModel(){
 
     init { Log.e("TAG", "CameraViewModel", ) }
 
+    private val _photoUri = MutableLiveData<Uri>()
+    val photoUri: LiveData<Uri> = _photoUri
+
     fun checkPermission(context: Context, activity : Activity, permissions: Array<out String>, requestCode : Int): Boolean {
         Log.e("TAG", "checkPermission: CameraViewModel", )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -33,9 +36,6 @@ class CameraViewModel : ViewModel(){
         }
         return true
     }
-
-    private val _photoUri = MutableLiveData<Uri>()
-    val photoUri: LiveData<Uri> = _photoUri
 
     fun dispatchTakePictureIntentExViewModel(activity : Activity): Intent {
         Log.e("TAG", "dispatchTakePictureIntentExViewModel: CameraViewModel", )

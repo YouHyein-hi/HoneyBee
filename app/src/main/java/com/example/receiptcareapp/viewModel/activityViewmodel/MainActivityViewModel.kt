@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.viewModel
+package com.example.receiptcareapp.viewModel.activityViewmodel
 
 import android.content.Context
 import android.database.Cursor
@@ -40,7 +40,7 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class MainActivityViewModel @Inject constructor(
     private val retrofitUseCase: RetrofitUseCase,
     private val roomUseCase: RoomUseCase
 ) : BaseViewModel() {
@@ -300,8 +300,6 @@ class MainViewModel @Inject constructor(
                             date = sendData.date,
                             file = sendData.picture.toString(),
                             uid = uid
-//                            file = fileToBitmap(file)
-//                            file = sendData.picture
                         )
                     )
                 }

@@ -1,8 +1,10 @@
 package com.example.receiptcareapp.ui.fragment
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.Log
 import android.view.View
@@ -20,14 +22,12 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
-import com.example.receiptcareapp.ui.adapter.CardAddDialog_ShowPicture
+import com.example.receiptcareapp.ui.dialog.CardAddDialog_ShowPicture
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.viewModel.ShowPictureViewModel
 import java.text.DecimalFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -45,23 +45,6 @@ class ShowPictureFragment :
     private var arrayCardList : MutableList<DomainReceiveCardData> = mutableListOf()
     private var myArray = arrayListOf<String>()
     private var newCard = 0
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    Log.e("TAG", "handleOnBackPressed: stop")
-                    activityViewModel.serverCoroutineStop()
-                } else {
-                    Log.e("TAG", "handleOnBackPressed: back")
-                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
 
     override fun initData() {
         // 서버와 연결 상태 초기화.
@@ -215,8 +198,6 @@ class ShowPictureFragment :
     }
     /** Spinner 관련 **/
     fun getSpinner() {
-        Log.e("TAG", "getSpinner: ")
-
         activityViewModel.receiveServerCardData()
         cardArray?.let { showPictureViewModel.takeCardData(it) }  // TODO 이 부분 빼도 될 듯?
         var adapter = ShowPictureAdapter(requireContext(), arrayListOf())
@@ -226,7 +207,7 @@ class ShowPictureFragment :
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 Log.e("TAG", "onItemSelected: ${myArray[position]}")
                 Log.e("TAG", "onItemSelected: ${position}")
-                val spiltCard = showPictureViewModel.spiltCardSplit(myArray[position])
+                val spiltCard = myArray[position].split(" : ")
                 checked = spiltCard[0]
                 Log.e("TAG", "onItemSelected: ${checked}")
             }
@@ -234,7 +215,23 @@ class ShowPictureFragment :
             }
         }
     }
-
+    /** Fragment 뒤로가기 **/
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
+                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
+                    Log.e("TAG", "handleOnBackPressed: stop")
+                    activityViewModel.serverCoroutineStop()
+                } else {
+                    Log.e("TAG", "handleOnBackPressed: back")
+                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     override fun onDetach() {
         super.onDetach()

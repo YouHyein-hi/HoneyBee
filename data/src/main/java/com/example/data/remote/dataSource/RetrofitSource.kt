@@ -54,7 +54,7 @@ interface RetrofitSource {
 
     @Multipart
     @POST("bill/update/{id}/{cardName}/{storeName}/{date}/{amount}")
-    suspend fun resendDataSource(
+    suspend fun updateDataSource(
         @Part id : MultipartBody.Part,
         @Part cardName : MultipartBody.Part,
         @Part storeName : MultipartBody.Part,
@@ -64,7 +64,7 @@ interface RetrofitSource {
 
     @FormUrlEncoded
     @POST("")
-    suspend fun resendCardDataSource(
+    suspend fun updateCardDataSource(
         @Field("cardName") cardName : String,
         @Field("cardAmount") cardAmount : Int
     ):String

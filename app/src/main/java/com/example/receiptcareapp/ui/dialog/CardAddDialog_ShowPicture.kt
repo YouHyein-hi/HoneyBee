@@ -1,63 +1,67 @@
-package com.example.receiptcareapp.ui.adapter
+package com.example.receiptcareapp.ui.dialog
 
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
+import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardBinding
-import com.example.receiptcareapp.viewModel.CardAddBottomViewModel
+import com.example.receiptcareapp.ui.fragment.ShowPictureFragment
+import com.example.receiptcareapp.viewModel.CardAddShowPictureViewModel
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.text.DecimalFormat
 
-class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {
+class CardAddDialog_ShowPicture : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {
 
     private val activityViewModel: MainViewModel by activityViewModels()
-    private val cardAddBottomViewModel : CardAddBottomViewModel by viewModels()
-
+    private val cardAddShowPictureViewModel : CardAddShowPictureViewModel by viewModels()
 
     override fun onResume() {
         super.onResume()
 
+        var newCard = 0
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout((width * 1).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+
 
         with(binding){
             dialogcardEditCardprice.setOnClickListener {
                 if (dialogcardEditCardprice.text.contains(",")) {
-                    dialogcardEditCardprice.setText(cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
+                    dialogcardEditCardprice.setText(cardAddShowPictureViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
                     dialogcardEditCardprice.setSelection(dialogcardEditCardprice.text.length)
                 }
             }
             dialogcardEditCardprice.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_DONE && dialogcardEditCardprice.text.isNotEmpty()) {
+/*                    val gap = DecimalFormat("#,###")
                     dialogcardEditCardprice.setText(
-                        cardAddBottomViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
+                        gap.format(dialogcardEditCardprice.text.toString().toInt()))
+*/
+                    dialogcardEditCardprice.setText(
+                        cardAddShowPictureViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
+
                 }
                 handled
             }
 
-            // EditText 비어있을 시 나타나는 style 이벤트 (UI 관련)
+            // EditText 비어있을 시 나타나는 style 이벤트
             val hintCardNmae = dialogcardEditCardname.hint
             val emphasis_yellow = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.emphasis_yellow))
             dialogcardEditCardname.setOnFocusChangeListener { view, hasFocus ->
                 if (!hasFocus && dialogcardEditCardname.text.isEmpty()) {
                     dialogcardEditCardname.hint = "카드 이름을 꼭 적어주세요!"
                     dialogcardEditCardname.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                } else if(hasFocus && !dialogcardEditCardname.text.isEmpty())  {
+                }
+                else if(hasFocus && !dialogcardEditCardname.text.isEmpty())  {
                     dialogcardEditCardname.hint = hintCardNmae // 초기 hint로 되돌리기
                     dialogcardEditCardname.backgroundTintList = emphasis_yellow
                 }
@@ -71,7 +75,8 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
                     // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
                     dialogcardEditCardprice.hint = "초기 금액을 꼭 적어주세요!"
                     dialogcardEditCardprice.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                } else if(hasFocus && !dialogcardEditCardprice.text.isEmpty()) {
+                }
+                else if(hasFocus && !dialogcardEditCardprice.text.isEmpty()) {
                     dialogcardEditCardprice.hint = hintCardPrice // 초기 hint로 되돌리기
                     dialogcardEditCardprice.backgroundTintList = emphasis_yellow
                 }
@@ -92,8 +97,16 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
                     showLongToast("추가 금액을 입력하세요.")
                 }
                 else{
-                    var price = cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())
+                    var price = cardAddShowPictureViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())
+
+                    activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
                     activityViewModel.sendCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
+                    newCard = 1
+
+                    /// 카드를 추가했을 때 ShowPictureFragment에 변화된 것으로 알려주며 Observer할 때 myArray를 clear하고 새로 불러줘야됨!
+                    val fragmentManager = requireActivity().supportFragmentManager
+                    val showPictureFragment = fragmentManager.findFragmentByTag("showPictureFragment") as ShowPictureFragment?
+                    showPictureFragment?.setNewCardValue(newCard)
                     dismiss()
                 }
             }
@@ -102,7 +115,6 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
                 Log.e("TAG", "onResume: 카드 추가 취소", )
                 dismiss()
             }
-
         }
     }
 
@@ -117,6 +129,4 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
 
     override fun initObserver() {
     }
-
-
 }

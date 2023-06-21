@@ -34,7 +34,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     override fun initData() {
         fragmentViewModel.changeStartGap("server")
         //init
-        activityViewModel.nullPicture()
+        activityViewModel.changePicture()
         // 통신연결, 서버상태 값 초기화
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
         //넘겨받는 데이터의 값을 초기화시키기.
@@ -88,7 +88,8 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         //서버 목록에서 리스트를 누를 경우
         recyclerServerAdapter.onServerSaveClick = {
-            activityViewModel.nullPicture()
+            Log.e("TAG", "initListener: server", )
+            activityViewModel.changePicture()
             activityViewModel.receiveServerPictureData(it.uid)
             fragmentViewModel.myShowServerData(it)
             fragmentViewModel.changeStartGap("server")
@@ -96,7 +97,8 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
 
         //로컬 목록에서 리스트를 누를경우
         recyclerLocalAdapter.onLocalSaveClic = {
-            activityViewModel.nullPicture()
+            Log.e("TAG", "initListener: local", )
+            activityViewModel.changePicture()
 //            activityViewModel.receiveServerPictureData(it.uid)
             fragmentViewModel.myShowLocalData(it)
             fragmentViewModel.changeStartGap("local")

@@ -30,6 +30,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.*
 import java.net.SocketTimeoutException
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 /**
@@ -75,16 +76,14 @@ class MainViewModel @Inject constructor(
     private var _picture = MutableLiveData<Bitmap?>()
     val picture: LiveData<Bitmap?>
         get() = _picture
-    fun nullPicture(){
+    fun changePicture(){
         Log.e("TAG", "nullPicture: null", )
         _picture.value=null
     }
 
+
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
-
-
-
 
     //서버에 데이터 전송 기능
     fun sendData(sendData: AppSendData) {
@@ -138,6 +137,54 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun resendData(sendData:AppSendData){
+        _connectedState.value = ConnectedState.CONNECTING
+        _serverJob.value = CoroutineScope(exceptionHandler).launch {
+            withTimeoutOrNull(waitTime) {
+                var uid = "0"
+                val file = File(absolutelyPath(sendData.picture, myCotext))
+                val compressFile = compressImageFile(file)
+                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
+                val result = retrofitUseCase.sendDataUseCase(
+                    DomainSendData(
+                        cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
+                        storeName = MultipartBody.Part.createFormData(
+                            "storeName",
+                            sendData.storeName
+                        ),
+                        date = MultipartBody.Part.createFormData("date", stringToDateTime(sendData.date)),
+                        amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
+                        picture = myPicture
+                    )
+                )
+                Log.e("TAG", "sendData 응답 : $result ")
+                uid = result
+
+                if (uid != "0") {
+                    _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
+                } else {
+                    Log.e("TAG", "sendData: 실패입니다!")
+                    _connectedState.postValue(ConnectedState.CONNECTING_FALSE)
+                    Exception("오류! 전송 실패.")
+                }
+            } ?: throw SocketTimeoutException()
+        }
+    }
+
+    fun stringToDateTime(date:String):String{
+        val format = date.replace(" ","").split("년","월","일","시","분")
+        val myLocalDateTime = LocalDateTime.of(
+            format[0].toInt(),
+            format[1].toInt(),
+            format[2].toInt(),
+            format[3].toInt(),
+            format[4].toInt(),
+            LocalDateTime.now().second
+        )
+        return myLocalDateTime.toString()
+    }
+
     //절대경로로 변환
     fun absolutelyPath(path: Uri?, context: Context?): String {
         val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
@@ -170,7 +217,6 @@ class MainViewModel @Inject constructor(
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime){
-                Log.e("TAG", "이게 데이터 불러오는 건가?2", )
                 val gap = retrofitUseCase.receiveDataUseCase()
                 _serverData.postValue(gap)
                 _connectedState.postValue(ConnectedState.DISCONNECTED)
@@ -230,10 +276,7 @@ class MainViewModel @Inject constructor(
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
-//                val file = File(absolutelyPath(sendData.picture, myCotext))
-//                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
-                val result = retrofitUseCase.resendDataUseCase(
+                val result = retrofitUseCase.updateDataUseCase(
                     DomainResendAllData(
                         id = MultipartBody.Part.createFormData("id", uid),    // id 값을 찾아서 알려줘야됨
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
@@ -342,7 +385,7 @@ class MainViewModel @Inject constructor(
 
         BitmapFactory.decodeFile(inputFile.absolutePath, options)
 
-        val resize = if(inputFile.length() > 1000000) 7 else 1
+        val resize = if(inputFile.length() > 1000000) 6 else 1
 
         options.inJustDecodeBounds = false
         options.inSampleSize = resize

@@ -2,10 +2,10 @@ package com.example.receiptcareapp.ui.fragment
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
@@ -18,7 +18,7 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.databinding.FragmentRecyclerShowBinding
 import com.example.receiptcareapp.dto.ShowData
-import com.example.receiptcareapp.ui.adapter.ChangeDialog
+import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.base.BaseFragment
@@ -46,13 +46,14 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
         if(fragmentViewModel.showServerData.value != null){
             binding.resendBtn.isVisible = false
             val data = fragmentViewModel.showServerData.value
-            myData = ShowData(ShowType.SERVER, data!!.uid, data.cardName, data.amount, data.date, data.storeName, null)
-            // 로컬 데이터 일 시
+            val picture = activityViewModel.picture.value
+            myData = ShowData(ShowType.SERVER, data!!.uid, data.cardName, data.amount, data.date, data.storeName, bitmapToUri(picture!!))
+            binding.imageView.setImageBitmap(picture)
+
         }else if(fragmentViewModel.showLocalData.value != null){
             val data = fragmentViewModel.showLocalData.value
-            Log.e("TAG", "initUI: ${data!!.file}", )
-            binding.imageView.setImageURI(data!!.file)
-            myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, null)
+            myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, data.file)
+            binding.imageView.setImageURI(myData.file)
         }else{
             binding.backgroundText.text = "데이터가 없어요!"
             showShortToast("데이터가 없어요!")
@@ -90,11 +91,6 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     }
 
     override fun initObserver() {
-        activityViewModel.picture.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: initObserver", )
-            binding.imageView.setImageBitmap(it)
-            myData.file = it
-        }
 
         activityViewModel.connectedState.observe(viewLifecycleOwner){
             Log.e("TAG", "onViewCreated: $it", )
@@ -115,6 +111,18 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     }
 
 
+    private fun uriToBitmap(uri:Uri):Bitmap{
+        return ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireActivity().contentResolver,uri))
+    }
+
+    private fun bitmapToUri(bitmap:Bitmap):Uri{
+        val file = File(requireContext().cacheDir, "temp_image.jpg")
+        val outputStream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        outputStream.flush()
+        outputStream.close()
+        return Uri.fromFile(file)
+    }
     //서버, 로컬 재전송
     private fun resendDialog(){
         AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
@@ -129,20 +137,12 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             }
             .create().show()
     }
-    //재전송
-    fun resendData(){
-        val bitmap = myData.file
-        val file = File(requireContext().cacheDir, "temp_image.jpg")
-        val outputStream = FileOutputStream(file)
-        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        outputStream.flush()
-        outputStream.close()
-        val myUri = Uri.fromFile(file)
-        activityViewModel.sendData(
-            AppSendData(myData.cardName,myData.amount, myData.date, myData.storeName,myUri)
+    //로컬재전송
+    private fun resendData(){
+        activityViewModel.resendData(
+            AppSendData(myData.cardName,myData.amount, myData.date, myData.storeName,myData.file!!)
         )
     }
-
 
     //수정
     private fun changeDialog(){
@@ -160,12 +160,10 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 Log.e("TAG", "deleteDialog: ${myData}", )
                 if(myData.type == ShowType.SERVER){
                     activityViewModel.deleteServerData(myData.uid.toLong())
-                    findNavController().popBackStack()
                 }else{
                     activityViewModel.deleteRoomData(myData.date)
-                    findNavController().popBackStack()
                 }
-                findNavController().popBackStack()
+                findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
             }
             .setPositiveButton("닫기"){dialog,id->
                 dialog.dismiss()
@@ -181,8 +179,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
                     activityViewModel.serverCoroutineStop()
                 } else {
-                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
-                }
+                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)                }
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)

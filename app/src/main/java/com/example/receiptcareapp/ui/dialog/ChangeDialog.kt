@@ -1,20 +1,16 @@
-package com.example.receiptcareapp.ui.adapter
+package com.example.receiptcareapp.ui.dialog
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.example.domain.model.DialogData
-import com.example.domain.model.RecyclerShowData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.base.BaseDialog
-import com.example.receiptcareapp.databinding.DialogCardBinding
 import com.example.receiptcareapp.databinding.DialogChangeBinding
+import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
 import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.time.LocalDateTime
@@ -32,10 +28,6 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
     private var myYear = 0
     private var myMonth = 0
     private var myDay = 0
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

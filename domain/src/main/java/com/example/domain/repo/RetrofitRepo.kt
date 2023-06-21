@@ -28,9 +28,9 @@ interface RetrofitRepo {
 
     suspend fun deleteCardDataRepo(id: Long):String
 
-    suspend fun resendDataRepo(domainResendData: DomainResendAllData):String
+    suspend fun updateDataRepo(domainResendData: DomainResendAllData):String
 
-    suspend fun resendCardDataRepo(domainResendCardData: DomainResendCardData):String
+    suspend fun updateCardDataRepo(domainResendCardData: DomainResendCardData):String
 
     suspend fun myTest(file:MultipartBody.Part):String
 }

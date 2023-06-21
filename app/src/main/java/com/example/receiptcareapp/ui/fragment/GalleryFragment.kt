@@ -3,7 +3,6 @@ package com.example.receiptcareapp.ui.fragment
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,17 +12,14 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentGalleryBinding
-import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.viewModel.CameraViewModel
-import com.example.receiptcareapp.viewModel.GalleryViewModel
-import com.example.receiptcareapp.viewModel.HomeViewModel
+import com.example.receiptcareapp.viewModel.*
 
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
     private val GALLERY_CODE = 1010
-    private val fragmentViewModel : FragmentViewModel by activityViewModels()
+    private val activityViewModel : MainViewModel by activityViewModels()
     private val galleryViewModel : GalleryViewModel by viewModels()
 
     override fun initData() {}
@@ -53,7 +49,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
             val imageUri: Uri? = it.data?.data
             if (imageUri != null) {
                 Log.e("TAG", "data 있음", )
-                fragmentViewModel.takeImage(imageUri)
+                activityViewModel.takeImage(imageUri)
                 NavHostFragment.findNavController(this).navigate(R.id.action_galleryFragment_to_showFragment)
             }
             else{ Log.e("TAG", "data 없음", ) }

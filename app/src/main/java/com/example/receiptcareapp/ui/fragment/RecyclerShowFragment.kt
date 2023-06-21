@@ -19,14 +19,13 @@ import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.databinding.FragmentRecyclerShowBinding
 import com.example.receiptcareapp.dto.ShowData
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
-import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.base.BaseFragment
 import java.io.File
 import java.io.FileOutputStream
 
 class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
-    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
+//    private val fragmentViewModel : MainViewModel by viewModels({requireActivity()})
     private val activityViewModel : MainViewModel by activityViewModels()
     private lateinit var myData: ShowData
     private lateinit var callback:OnBackPressedCallback
@@ -43,15 +42,15 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     }
 
     override fun initUI() {
-        if(fragmentViewModel.showServerData.value != null){
+        if(activityViewModel.showServerData.value != null){
             binding.resendBtn.isVisible = false
-            val data = fragmentViewModel.showServerData.value
+            val data = activityViewModel.showServerData.value
             val picture = activityViewModel.picture.value
             myData = ShowData(ShowType.SERVER, data!!.uid, data.cardName, data.amount, data.date, data.storeName, bitmapToUri(picture!!))
             binding.imageView.setImageBitmap(picture)
 
-        }else if(fragmentViewModel.showLocalData.value != null){
-            val data = fragmentViewModel.showLocalData.value
+        }else if(activityViewModel.showLocalData.value != null){
+            val data = activityViewModel.showLocalData.value
             myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, data.file)
             binding.imageView.setImageURI(myData.file)
         }else{

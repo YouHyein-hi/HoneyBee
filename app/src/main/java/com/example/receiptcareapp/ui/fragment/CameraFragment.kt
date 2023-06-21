@@ -1,12 +1,8 @@
 package com.example.receiptcareapp.ui.fragment
 
 import android.app.Activity
-import android.content.ContentValues
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,17 +12,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
-import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.viewModel.CameraViewModel
-import com.example.receiptcareapp.viewModel.HomeViewModel
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.math.log
-
+import com.example.receiptcareapp.viewModel.MainViewModel
 
 class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding::inflate) {
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
@@ -34,7 +22,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     private var photoURI : Uri? = null
 
   //예시코드 보면서 callcamera 함수 위치 보완 => 리스너인지 데이터인지
-    private val fragmentViewModel : FragmentViewModel by activityViewModels()
+    private val activityViewModel : MainViewModel by activityViewModels()
     private val cameraViewModel : CameraViewModel by viewModels()
 
     override fun initData() {}
@@ -68,7 +56,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
             photoURI = cameraViewModel.photoUri.value
             if(photoURI != null) {
                 Log.e("TAG", "data 있음", )
-                fragmentViewModel.takeImage(photoURI!!)
+                activityViewModel.takeImage(photoURI!!)
                 photoURI = null
                 NavHostFragment.findNavController(this).navigate(R.id.action_cameraFragment_to_showFragment)
             }

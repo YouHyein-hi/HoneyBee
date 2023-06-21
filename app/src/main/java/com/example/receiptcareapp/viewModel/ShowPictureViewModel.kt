@@ -12,28 +12,21 @@ class ShowPictureViewModel : ViewModel(){
 
     init { Log.e("TAG", "ShowPictureViewModel", ) }
 
-    fun CommaReplaceSpace(text : String): String {
-        return text.replace(",", "")
-    }
+    fun CommaReplaceSpace(text : String): String { return text.replace(",", "") }
 
-    fun DateNow(): LocalDate{
-        return LocalDate.now()
-    }
+    fun DateNow(): LocalDate{ return LocalDate.now() }
 
     fun DatePickerMonth(month : Int): String {
         var myMonth : String
-
         if(month < 10) myMonth = "0${month + 1}"
         else myMonth = "${month + 1}"
-
         return myMonth
     }
+
     fun DatePickerDay(day : Int): String {
         var myDay : String
-
         if(day < 10) myDay = "0${day}"
         else myDay = "${day}"
-
         return myDay
     }
 

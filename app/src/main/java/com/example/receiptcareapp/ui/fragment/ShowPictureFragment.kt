@@ -1,10 +1,8 @@
 package com.example.receiptcareapp.ui.fragment
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.Log
 import android.view.View
@@ -24,7 +22,6 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_ShowPicture
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
-import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.viewModel.ShowPictureViewModel
 import java.text.DecimalFormat
@@ -33,7 +30,7 @@ import java.util.*
 
 class ShowPictureFragment :
     BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate) {
-    private val fragmentViewModel: FragmentViewModel by activityViewModels()
+//    private val fragmentViewModel: FragmentViewModel by activityViewModels()
     private val activityViewModel: MainViewModel by activityViewModels()
     private val showPictureViewModel : ShowPictureViewModel by viewModels()
     private var checked = ""
@@ -55,7 +52,7 @@ class ShowPictureFragment :
         with(binding){
             //글라이드
             Glide.with(pictureView)
-                .load(fragmentViewModel.image.value!!)
+                .load(activityViewModel.image.value!!)
                 .into(pictureView)
 
             pictureView.clipToOutline = true
@@ -82,9 +79,7 @@ class ShowPictureFragment :
                     myYear = year
                     myMonth = month + 1
                     myDay = day
-
-                    btnDate.text =
-                        "${myYear}/${showPictureViewModel.DatePickerMonth(month)}/${showPictureViewModel.DatePickerDay(day)}"
+                    btnDate.text = "${myYear}/${showPictureViewModel.DatePickerMonth(month)}/${showPictureViewModel.DatePickerDay(day)}"
                 }
                 val dataDialog = DatePickerDialog(requireContext(), data,
                     cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
@@ -129,7 +124,7 @@ class ShowPictureFragment :
                     showShortToast("날짜를 입력하세요.")
                 } else if (btnPrice.text.isEmpty()) {
                     showShortToast("금액을 입력하세요.")
-                } else if (fragmentViewModel.image.value == null) {
+                } else if (activityViewModel.image.value == null) {
                     showShortToast("사진이 비었습니다.\n초기화면으로 돌아갑니다.")
                     NavHostFragment.findNavController(this@ShowPictureFragment)
                         .navigate(R.id.action_showFragment_to_homeFragment)
@@ -138,7 +133,7 @@ class ShowPictureFragment :
                     val myLocalDateTime = showPictureViewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
                     activityViewModel.sendData(
                         AppSendData(
-                            date = myLocalDateTime.toString(), amount = btnPrice.text.toString(), cardName = checked, picture = fragmentViewModel.image.value!!, storeName = binding.btnStore.text.toString())
+                            date = myLocalDateTime.toString(), amount = btnPrice.text.toString(), cardName = checked, picture = activityViewModel.image.value!!, storeName = binding.btnStore.text.toString())
                     )
                 }
             }

@@ -13,7 +13,6 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardBinding
 import com.example.receiptcareapp.viewModel.CardAddBottomViewModel
-import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.text.DecimalFormat
 

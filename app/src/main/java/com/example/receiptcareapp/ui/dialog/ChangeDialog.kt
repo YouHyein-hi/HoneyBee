@@ -11,12 +11,10 @@ import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
-import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.time.LocalDateTime
 
 class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
-    private val fragmentViewModel : FragmentViewModel by activityViewModels()
     private val activityViewModel: MainViewModel by activityViewModels()
     private lateinit var myData: DialogData
     private var myArray = arrayListOf<String>()
@@ -43,12 +41,12 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             Log.e("TAG", "onViewCreated: $it", )
         }
 
-        if(fragmentViewModel.showLocalData.value != null) {
-            val gap = fragmentViewModel.showLocalData.value
+        if(activityViewModel.showLocalData.value != null) {
+            val gap = activityViewModel.showLocalData.value
             myData = DialogData(gap!!.uid, gap.cardName, gap.amount, gap.date, gap.storeName, gap.file)
         }
         else {
-            val gap = fragmentViewModel.showServerData.value
+            val gap = activityViewModel.showServerData.value
             myData = DialogData(gap!!.uid, gap.cardName, gap.amount, gap.date, gap.storeName, null)
         }
 
@@ -81,7 +79,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             Log.e("TAG", "onCreateView: ${myData.uid}", )
             Log.e("TAG", "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${checked}, ${binding.changeBtnStore.text}, ${myData.file}", )
 
-            val data = fragmentViewModel.showLocalData.value
+            val data = activityViewModel.showLocalData.value
 
             if(checked == " "){
                 Log.e("TAG", "onCreateView: 카드가 비어있습니다.", )

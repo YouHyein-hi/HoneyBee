@@ -15,7 +15,6 @@ import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardBinding
 import com.example.receiptcareapp.ui.fragment.ShowPictureFragment
 import com.example.receiptcareapp.viewModel.CardAddShowPictureViewModel
-import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import java.text.DecimalFormat
 

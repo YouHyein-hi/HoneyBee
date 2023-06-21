@@ -6,7 +6,6 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.local.toRecyclerShowData
@@ -15,7 +14,6 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
 import com.example.receiptcareapp.ui.adapter.RecyclerLocalAdapter
 import com.example.receiptcareapp.ui.adapter.RecyclerServerAdapter
-import com.example.receiptcareapp.viewModel.FragmentViewModel
 import com.example.receiptcareapp.viewModel.MainViewModel
 import com.example.receiptcareapp.base.BaseFragment
 
@@ -26,20 +24,20 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     }
 
     private val activityViewModel: MainViewModel by activityViewModels()
-    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
+//    private val fragmentViewModel : FragmentViewModel by viewModels({requireActivity()})
     private val recyclerServerAdapter: RecyclerServerAdapter = RecyclerServerAdapter()
     private val recyclerLocalAdapter: RecyclerLocalAdapter = RecyclerLocalAdapter()
     private lateinit var callback : OnBackPressedCallback
 
     override fun initData() {
-        fragmentViewModel.changeStartGap("server")
+        activityViewModel.changeStartGap("server")
         //init
         activityViewModel.changePicture()
         // 통신연결, 서버상태 값 초기화
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
         //넘겨받는 데이터의 값을 초기화시키기.
-        fragmentViewModel.myShowLocalData(null)
-        fragmentViewModel.myShowServerData(null)
+        activityViewModel.myShowLocalData(null)
+        activityViewModel.myShowServerData(null)
 
         //어뎁터 데이터 리스트 비워주기
         recyclerServerAdapter.dataList.clear()
@@ -47,13 +45,13 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     }
 
     override fun initUI() {
-        if(fragmentViewModel.startGap.value == "server"){
+        if(activityViewModel.startGap.value == "server"){
             Log.e("TAG", "서버부분!", )
             activityViewModel.receiveServerAllData()
             initServerRecyclerView()
             binding.explain.text = "서버의 데이터 입니다."
         }
-        else if(fragmentViewModel.startGap.value == "local"){
+        else if(activityViewModel.startGap.value == "local"){
             Log.e("TAG", "로컬부분!", )
             binding.bottomNavigationView.menu.findItem(R.id.local).isChecked = true
             initLocalRecyclerView()
@@ -91,8 +89,8 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             Log.e("TAG", "initListener: server", )
             activityViewModel.changePicture()
             activityViewModel.receiveServerPictureData(it.uid)
-            fragmentViewModel.myShowServerData(it)
-            fragmentViewModel.changeStartGap("server")
+            activityViewModel.myShowServerData(it)
+            activityViewModel.changeStartGap("server")
         }
 
         //로컬 목록에서 리스트를 누를경우
@@ -100,15 +98,13 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             Log.e("TAG", "initListener: local", )
             activityViewModel.changePicture()
 //            activityViewModel.receiveServerPictureData(it.uid)
-            fragmentViewModel.myShowLocalData(it)
-            fragmentViewModel.changeStartGap("local")
+            activityViewModel.myShowLocalData(it)
+            activityViewModel.changeStartGap("local")
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
 
         //뒤로가기 버튼
-        binding.backBtn.setOnClickListener{
-            findNavController().popBackStack()
-        }
+        binding.backBtn.setOnClickListener{ findNavController().popBackStack() }
     }
 
     override fun initObserver() {

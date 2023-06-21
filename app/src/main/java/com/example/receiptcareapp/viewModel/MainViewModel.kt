@@ -11,6 +11,7 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.domain.model.RecyclerShowData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.domain.model.receive.DomainReceiveCardData
@@ -48,6 +49,26 @@ class MainViewModel @Inject constructor(
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
     var myCotext: Context? = null
 
+    private val _image = MutableLiveData<Uri>()
+    val image : LiveData<Uri>
+        get() = _image
+    fun takeImage(img: Uri){ _image.value = img }
+
+    private val _showLocalData = MutableLiveData<RecyclerShowData?>()
+    val showLocalData : LiveData<RecyclerShowData?>
+        get() = _showLocalData
+    fun myShowLocalData(data: RecyclerShowData?){ _showLocalData.value = data }
+
+    private val _showServerData = MutableLiveData<DomainReceiveAllData?>()
+    val showServerData : LiveData<DomainReceiveAllData?>
+        get() = _showServerData
+    fun myShowServerData(data: DomainReceiveAllData?){ _showServerData.value = data }
+
+    private var _startGap = MutableLiveData<String>()
+    val startGap : LiveData<String>
+        get() = _startGap
+    fun changeStartGap(gap:String){ _startGap.value = gap }
+
     //서버에서 받은 데이터 담는 박스
     private val _serverData = MutableLiveData<MutableList<DomainReceiveAllData>>()
     val serverData: LiveData<MutableList<DomainReceiveAllData>>
@@ -62,10 +83,7 @@ class MainViewModel @Inject constructor(
     private var _connectedState = MutableLiveData<ConnectedState>()
     val connectedState: LiveData<ConnectedState>
         get() = _connectedState
-    fun changeConnectedState(connectedState: ConnectedState) {
-        Log.e("TAG", "changeConnectedState: $connectedState")
-        _connectedState.value = connectedState
-    }
+    fun changeConnectedState(connectedState: ConnectedState) { _connectedState.value = connectedState }
 
     // 서버 카드 전달받은 값 관리
     private var _cardData = MutableLiveData<MutableList<DomainReceiveCardData>>()
@@ -76,11 +94,7 @@ class MainViewModel @Inject constructor(
     private var _picture = MutableLiveData<Bitmap?>()
     val picture: LiveData<Bitmap?>
         get() = _picture
-    fun changePicture(){
-        Log.e("TAG", "nullPicture: null", )
-        _picture.value=null
-    }
-
+    fun changePicture(){ _picture.value=null }
 
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
@@ -248,18 +262,6 @@ class MainViewModel @Inject constructor(
         })
     }
 
-//    fun deleteCardData(id: Long) {
-//        _connectedState.value = ConnectedState.CONNECTING
-//        _serverJob.value = CoroutineScope(exceptionHandler).launch {
-//            withTimeoutOrNull(waitTime) {
-//                retrofitUseCase.deleteCardDataUseCase(id)
-//                // 결과값을 분기문으로 관리 + 커넥트 풀어주기
-//                // 성공하면 값을 불러오기
-//                receiveServerCardData()
-//            }?:throw SocketTimeoutException()
-//        }
-//    }
-
     fun deleteServerData(id: Long) {
         Log.e("TAG", "deleteServerData: 들어감", )
         CoroutineScope(exceptionHandler).launch {
@@ -311,16 +313,6 @@ class MainViewModel @Inject constructor(
             } ?: throw SocketTimeoutException()
         }
     }
-
-//    fun changeCardData(id: Long) {
-//        CoroutineScope(exceptionHandler).launch {
-//            withTimeoutOrNull(waitTime) {
-//                val gap = roomUseCase.getAllData()
-//                Log.e("TAG", "changeCardData: $gap")
-////            retrofitUseCase.resendCardDataUseCase()
-//            }?:throw SocketTimeoutException()
-//        }
-//    }
 
     fun deleteRoomData(date: String) {
         CoroutineScope(exceptionHandler).launch {
@@ -407,3 +399,26 @@ class MainViewModel @Inject constructor(
         return outputFile
     }
 }
+
+
+//    fun deleteCardData(id: Long) {
+//        _connectedState.value = ConnectedState.CONNECTING
+//        _serverJob.value = CoroutineScope(exceptionHandler).launch {
+//            withTimeoutOrNull(waitTime) {
+//                retrofitUseCase.deleteCardDataUseCase(id)
+//                // 결과값을 분기문으로 관리 + 커넥트 풀어주기
+//                // 성공하면 값을 불러오기
+//                receiveServerCardData()
+//            }?:throw SocketTimeoutException()
+//        }
+//    }
+
+//    fun changeCardData(id: Long) {
+//        CoroutineScope(exceptionHandler).launch {
+//            withTimeoutOrNull(waitTime) {
+//                val gap = roomUseCase.getAllData()
+//                Log.e("TAG", "changeCardData: $gap")
+////            retrofitUseCase.resendCardDataUseCase()
+//            }?:throw SocketTimeoutException()
+//        }
+//    }

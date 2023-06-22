@@ -13,8 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentGalleryBinding
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.viewModel.*
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.GalleryViewModel
 
 class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate) {
 

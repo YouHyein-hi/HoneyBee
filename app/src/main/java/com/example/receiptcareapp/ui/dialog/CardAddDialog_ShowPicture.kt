@@ -14,7 +14,7 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardBinding
 import com.example.receiptcareapp.ui.fragment.ShowPictureFragment
-import com.example.receiptcareapp.viewModel.CardAddShowPictureViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.CardAddShowPictureViewModel
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 
 class CardAddDialog_ShowPicture : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {

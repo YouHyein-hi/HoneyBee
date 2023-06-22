@@ -18,7 +18,7 @@ import com.example.receiptcareapp.dto.ShowData
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.viewModel.RecyclerShowViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerShowViewModel
 
 class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
     private val activityViewModel : MainActivityViewModel by activityViewModels()
@@ -54,7 +54,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
         binding.pictureName.text = myData.storeName
         binding.imageView.clipToOutline = true
-        binding.date.text = myData.date
+        binding.date.text = myData.billSubmitTime
         binding.cardAmount.text = "${myData.cardName}카드 : ${myData.amount}원"
     }
 
@@ -113,7 +113,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     //로컬재전송
     private fun resendData(){
         activityViewModel.resendData(
-            AppSendData(myData.cardName,myData.amount, myData.date, myData.storeName,myData.file!!)
+            AppSendData(myData.cardName,myData.amount, myData.billSubmitTime, myData.storeName,myData.file!!)
         )
     }
 
@@ -134,7 +134,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 if(myData.type == ShowType.SERVER){
                     activityViewModel.deleteServerData(myData.uid.toLong())
                 }else{
-                    activityViewModel.deleteRoomData(myData.date)
+                    activityViewModel.deleteRoomData(myData.billSubmitTime)
                 }
                 findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
             }

@@ -1,13 +1,9 @@
-package com.example.receiptcareapp.viewModel
+package com.example.receiptcareapp.viewModel.fragmentViewModel
 
-import android.net.Uri
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
-import kotlin.collections.ArrayList
 
 class ShowPictureViewModel : ViewModel() {
 

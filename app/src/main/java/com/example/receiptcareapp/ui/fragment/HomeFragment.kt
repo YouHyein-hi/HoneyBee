@@ -3,20 +3,17 @@ package com.example.receiptcareapp.ui.fragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.ui.botteomSheet.HomeCardBottomSheet
-import com.example.receiptcareapp.viewModel.HomeViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 
 //메인 프레그먼트/
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {

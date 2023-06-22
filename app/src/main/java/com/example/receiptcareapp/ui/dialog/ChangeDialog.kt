@@ -100,7 +100,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                 Log.e("TAG", "onCreateView: 다 있음!", )
                 activityViewModel.changeServerData(
                     AppSendData(
-                        date = myLocalDateTime.toString(), amount = binding.changeBtnPrice.text.toString(), cardName = checked, picture = data!!.file, storeName = binding.changeBtnStore.text.toString())
+                        billSubmitTime = myLocalDateTime.toString(), amount = binding.changeBtnPrice.text.toString(), cardName = checked, picture = data!!.file, storeName = binding.changeBtnStore.text.toString())
                     , myData.uid
                 )
             }

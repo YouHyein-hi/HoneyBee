@@ -30,6 +30,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
 //            startActivity(Intent(this, MainActivity::class.java))
 //            viewModel.requestLogin(binding.editEmail.text.toString(), binding.editPw.text.toString())
             viewModel.requestLogin("1234@email.com", "1234")
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 

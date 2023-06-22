@@ -14,7 +14,7 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao):RoomRepo{
 
     override suspend fun insertData(list: DomainRoomData) {
         val myList = MyEntity(
-            date = list.date,
+            date = list.billSubmitTime,
             cardName = list.cardName,
             amount = list.amount,
             pictureName = list.storeName,
@@ -29,7 +29,7 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao):RoomRepo{
         roomDao.getAllData().map { myList.add(DomainRoomData(
             cardName = it.cardName,
             amount = it.amount,
-            date = it.date,
+            billSubmitTime = it.date,
             storeName = it.pictureName,
             file = it.picture,
             uid = it.uid

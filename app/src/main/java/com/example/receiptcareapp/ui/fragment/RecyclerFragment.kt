@@ -7,10 +7,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.local.toRecyclerShowData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
@@ -19,7 +17,7 @@ import com.example.receiptcareapp.ui.adapter.RecyclerLocalAdapter
 import com.example.receiptcareapp.ui.adapter.RecyclerServerAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.viewModel.RecyclerShowViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerShowViewModel
 
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {

@@ -15,7 +15,7 @@ interface RetrofitSource {
     suspend fun sendDataSource(
         @Part cardName : MultipartBody.Part,
         @Part storeName : MultipartBody.Part,
-        @Part date : MultipartBody.Part,
+        @Part billSubmitTime : MultipartBody.Part,
         @Part amount : MultipartBody.Part,
         @Part file : MultipartBody.Part,
     ): String
@@ -58,7 +58,7 @@ interface RetrofitSource {
         @Part id : MultipartBody.Part,
         @Part cardName : MultipartBody.Part,
         @Part storeName : MultipartBody.Part,
-        @Part date : MultipartBody.Part,
+        @Part billSubmitTime : MultipartBody.Part,
         @Part amount : MultipartBody.Part,
     ):String
 

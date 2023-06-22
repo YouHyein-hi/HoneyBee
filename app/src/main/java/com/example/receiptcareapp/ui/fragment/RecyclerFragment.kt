@@ -6,8 +6,11 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.local.toRecyclerShowData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
@@ -16,6 +19,7 @@ import com.example.receiptcareapp.ui.adapter.RecyclerLocalAdapter
 import com.example.receiptcareapp.ui.adapter.RecyclerServerAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
+import com.example.receiptcareapp.viewModel.RecyclerShowViewModel
 
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
@@ -24,12 +28,13 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     }
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: RecyclerShowViewModel by viewModels()
     private val recyclerServerAdapter: RecyclerServerAdapter = RecyclerServerAdapter()
     private val recyclerLocalAdapter: RecyclerLocalAdapter = RecyclerLocalAdapter()
     private lateinit var callback : OnBackPressedCallback
 
     override fun initData() {
-        activityViewModel.changeStartGap("server")
+        viewModel.changeStartGap("server")
         //init
         activityViewModel.changePicture()
         // 통신연결, 서버상태 값 초기화
@@ -44,13 +49,13 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     }
 
     override fun initUI() {
-        if(activityViewModel.startGap.value == "server"){
+        if(viewModel.startGap.value == "server"){
             Log.e("TAG", "서버부분!", )
             activityViewModel.receiveServerAllData()
             initServerRecyclerView()
             binding.explain.text = "서버의 데이터 입니다."
         }
-        else if(activityViewModel.startGap.value == "local"){
+        else if(viewModel.startGap.value == "local"){
             Log.e("TAG", "로컬부분!", )
             binding.bottomNavigationView.menu.findItem(R.id.local).isChecked = true
             initLocalRecyclerView()
@@ -89,7 +94,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             activityViewModel.changePicture()
             activityViewModel.receiveServerPictureData(it.uid)
             activityViewModel.myShowServerData(it)
-            activityViewModel.changeStartGap("server")
+            viewModel.changeStartGap("server")
         }
 
         //로컬 목록에서 리스트를 누를경우
@@ -97,7 +102,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             Log.e("TAG", "initListener: local", )
             activityViewModel.changePicture()
             activityViewModel.myShowLocalData(it)
-            activityViewModel.changeStartGap("local")
+            viewModel.changeStartGap("local")
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
         //뒤로가기 버튼

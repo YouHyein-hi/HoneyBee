@@ -18,11 +18,11 @@ import com.example.receiptcareapp.dto.ShowData
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.viewModel.RecyclerShowFragment
+import com.example.receiptcareapp.viewModel.RecyclerShowViewModel
 
 class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
     private val activityViewModel : MainActivityViewModel by activityViewModels()
-    private val viewModel : RecyclerShowFragment by viewModels()
+    private val viewModel : RecyclerShowViewModel by viewModels()
     private lateinit var myData: ShowData
     private lateinit var callback:OnBackPressedCallback
 

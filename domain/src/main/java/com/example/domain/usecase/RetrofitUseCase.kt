@@ -39,17 +39,18 @@ class RetrofitUseCase(
         return retrofitRepo.sendCardDataRepo(domainSendCardData)
     }
 
-
-
-    suspend fun deleteCardDataUseCase(id:Long):String {
-        return retrofitRepo.deleteCardDataRepo(id)
-    }
-
     suspend fun updateDataUseCase(domainResendData: DomainResendAllData):String {
         return retrofitRepo.updateDataRepo(domainResendData)
     }
 
+    suspend fun requestLoginUseCase(email:String, password:String):String{
+        return retrofitRepo.requestLogin(email = email, password = password)
+    }
+
 //    suspend fun resendCardDataUseCase(domainResendCardData: DomainResendCardData):String {
 //        return retrofitRepo.resendCardDataRepo(domainResendCardData)
+//    }
+//suspend fun deleteCardDataUseCase(id:Long):String {
+//        return retrofitRepo.deleteCardDataRepo(id)
 //    }
 }

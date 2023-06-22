@@ -69,6 +69,12 @@ interface RetrofitSource {
         @Field("cardAmount") cardAmount : Int
     ):String
 
+    @FormUrlEncoded
+    @POST("bill/login")
+    suspend fun requestLogin(
+        @Field("email") email : String,
+        @Field("password") password : String,
+    ): String
 
     @Multipart
     @POST("bill/test")

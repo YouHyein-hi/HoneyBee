@@ -29,7 +29,7 @@ class RetrofitRepoImpl @Inject constructor(
             cardName = domainSendData.cardName,
             amount = domainSendData.amount,
             storeName = domainSendData.storeName,
-            date = domainSendData.date,
+            billSubmitTime = domainSendData.date,
             file = domainSendData.picture
         )
     }
@@ -70,7 +70,7 @@ class RetrofitRepoImpl @Inject constructor(
             cardName = domainResendData.cardName,
             amount = domainResendData.amount,
             storeName = domainResendData.storeName,
-            date = domainResendData.date,
+            billSubmitTime = domainResendData.date,
         )
     }
 

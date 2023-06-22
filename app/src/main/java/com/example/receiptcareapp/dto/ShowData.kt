@@ -14,7 +14,7 @@ data class ShowData(
     val uid : String,
     val cardName: String,
     val amount: String,
-    var date: String,
+    var billSubmitTime: String,
     val storeName: String,
     var file: Uri?
 )

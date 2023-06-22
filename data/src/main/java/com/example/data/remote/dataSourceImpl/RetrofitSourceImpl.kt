@@ -28,7 +28,7 @@ class RetrofitSourceImpl @Inject constructor(
             cardName = cardName,
             amount = amount,
             storeName = pictureName,
-            date = timestmap,
+            billSubmitTime = timestmap,
             file = bill
         )
     }
@@ -64,14 +64,14 @@ class RetrofitSourceImpl @Inject constructor(
         cardName: MultipartBody.Part,
         amount: MultipartBody.Part,
         storeName: MultipartBody.Part,
-        date: MultipartBody.Part,
+        billSubmitTime: MultipartBody.Part,
     ): String {
         return retrofit.create(RetrofitSource::class.java).updateDataSource(
             id = id,
             cardName = cardName,
             amount = amount,
             storeName = storeName,
-            date = date,
+            billSubmitTime = billSubmitTime,
         )
     }
 

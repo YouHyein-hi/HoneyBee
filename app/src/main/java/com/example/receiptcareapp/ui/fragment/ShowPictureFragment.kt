@@ -23,7 +23,7 @@ import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_ShowPicture
 import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import com.example.receiptcareapp.viewModel.ShowPictureViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.ShowPictureViewModel
 import java.text.DecimalFormat
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -36,7 +36,6 @@ class ShowPictureFragment :
     private var myYear = 0
     private var myMonth = 0
     private var myDay = 0
-    private var cardArray: MutableMap<String, Int>? = mutableMapOf()
     private lateinit var callback: OnBackPressedCallback
     private var arrayCardList : MutableList<DomainReceiveCardData> = mutableListOf()
     private var myArray = arrayListOf<String>()
@@ -132,7 +131,7 @@ class ShowPictureFragment :
                     val myLocalDateTime = showPictureViewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
                     activityViewModel.sendData(
                         AppSendData(
-                            date = myLocalDateTime.toString(), amount = btnPrice.text.toString(), cardName = checked, picture = activityViewModel.image.value!!, storeName = binding.btnStore.text.toString())
+                            billSubmitTime = myLocalDateTime.toString(), amount = btnPrice.text.toString(), cardName = checked, picture = activityViewModel.image.value!!, storeName = binding.btnStore.text.toString())
                     )
                 }
             }
@@ -193,7 +192,6 @@ class ShowPictureFragment :
     /** Spinner 관련 **/
     fun getSpinner() {
         activityViewModel.receiveServerCardData()
-//        cardArray?.let { showPictureViewModel.takeCardData(it) }  // TODO 이 부분 빼도 될 듯?
         var adapter = ShowPictureAdapter(requireContext(), arrayListOf())
         binding.spinner.adapter = adapter
         Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")

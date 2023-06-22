@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.viewModel
+package com.example.receiptcareapp.viewModel.fragmentViewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

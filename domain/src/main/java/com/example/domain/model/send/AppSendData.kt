@@ -9,7 +9,7 @@ import android.net.Uri
 data class AppSendData(
     val cardName: String,
     val amount: String,
-    var date: String,
+    var billSubmitTime: String,
     val storeName: String,
     val picture: Uri
 )

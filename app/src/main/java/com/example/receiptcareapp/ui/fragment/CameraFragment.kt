@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentCameraBinding
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.viewModel.CameraViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.CameraViewModel
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 
 class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding::inflate) {

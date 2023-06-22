@@ -44,8 +44,7 @@ class MainActivityViewModel @Inject constructor(
     private val retrofitUseCase: RetrofitUseCase,
     private val roomUseCase: RoomUseCase
 ) : BaseViewModel() {
-
-    private var waitTime = 10000L
+    private var waitTime = 5000L
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
     var myCotext: Context? = null
 
@@ -114,7 +113,7 @@ class MainActivityViewModel @Inject constructor(
                             "storeName",
                             sendData.storeName
                         ),
-                        date = MultipartBody.Part.createFormData("date", sendData.date),
+                        date = MultipartBody.Part.createFormData("billSubmitTime", sendData.billSubmitTime),
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
                         picture = myPicture
                     )
@@ -124,8 +123,8 @@ class MainActivityViewModel @Inject constructor(
 
                 if (uid != "0") { //TODO uid != "0"이 아니라 실패했을 때 서버에서 받아오는 메세지로 조건식 바꾸자!!
                     var splitData =""
-                    if(sendData.date.contains("-") && sendData.date.contains("T") && sendData.date.contains(":")){
-                        val myList = sendData.date.split("-","T",":")
+                    if(sendData.billSubmitTime.contains("-") && sendData.billSubmitTime.contains("T") && sendData.billSubmitTime.contains(":")){
+                        val myList = sendData.billSubmitTime.split("-","T",":")
                         if(myList.size == 6) splitData = "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
                     }
                     _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
@@ -134,7 +133,7 @@ class MainActivityViewModel @Inject constructor(
                             cardName = sendData.cardName,
                             amount = sendData.amount,
                             storeName = sendData.storeName,
-                            date = splitData,
+                            billSubmitTime = splitData,
                             file = sendData.picture.toString(),
                             uid = uid
                         )
@@ -164,7 +163,7 @@ class MainActivityViewModel @Inject constructor(
                             "storeName",
                             sendData.storeName
                         ),
-                        date = MultipartBody.Part.createFormData("date", stringToDateTime(sendData.date)),
+                        date = MultipartBody.Part.createFormData("date", stringToDateTime(sendData.billSubmitTime)),
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
                         picture = myPicture
                     )
@@ -280,7 +279,7 @@ class MainActivityViewModel @Inject constructor(
                         id = MultipartBody.Part.createFormData("id", uid),    // id 값을 찾아서 알려줘야됨
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
-                        date = MultipartBody.Part.createFormData("date", sendData.date),
+                        date = MultipartBody.Part.createFormData("date", sendData.billSubmitTime),
                         storeName = MultipartBody.Part.createFormData("storeName", sendData.storeName),
 //                        picture = myPicture
                     )
@@ -294,7 +293,7 @@ class MainActivityViewModel @Inject constructor(
                             cardName = sendData.cardName,
                             amount = sendData.amount,
                             storeName = sendData.storeName,
-                            date = sendData.date,
+                            billSubmitTime = sendData.billSubmitTime,
                             file = sendData.picture.toString(),
                             uid = uid
                         )

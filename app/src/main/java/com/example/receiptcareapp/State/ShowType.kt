@@ -5,5 +5,5 @@ package com.example.receiptcareapp.State
  * pureum
  */
 enum class ShowType {
-    SERVER, LOCAL, NONE
+    SERVER, LOCAL
 }

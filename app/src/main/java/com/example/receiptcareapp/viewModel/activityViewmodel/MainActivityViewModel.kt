@@ -11,7 +11,6 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.domain.model.RecyclerShowData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.domain.model.receive.DomainReceiveCardData
@@ -24,6 +23,7 @@ import com.example.domain.usecase.RetrofitUseCase
 import com.example.domain.usecase.RoomUseCase
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
+import com.example.receiptcareapp.dto.RecyclerData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -55,15 +55,21 @@ class MainActivityViewModel @Inject constructor(
         _image.value = img
     }
 
-    private val _showLocalData = MutableLiveData<RecyclerShowData?>()
-    val showLocalData : LiveData<RecyclerShowData?>
-        get() = _showLocalData
-    fun myShowLocalData(data: RecyclerShowData?){ _showLocalData.value = data }
+//    private val _showLocalData = MutableLiveData<RecyclerShowData?>()
+//    val showLocalData : LiveData<RecyclerShowData?>
+//        get() = _showLocalData
+//    fun myShowLocalData(data: RecyclerShowData?){ _showLocalData.value = data }
+//
+//    private val _showServerData = MutableLiveData<DomainReceiveAllData?>()
+//    val showServerData : LiveData<DomainReceiveAllData?>
+//        get() = _showServerData
+//    fun myShowServerData(data: DomainReceiveAllData?){ _showServerData.value = data }
 
-    private val _showServerData = MutableLiveData<DomainReceiveAllData?>()
-    val showServerData : LiveData<DomainReceiveAllData?>
-        get() = _showServerData
-    fun myShowServerData(data: DomainReceiveAllData?){ _showServerData.value = data }
+    private val _selectedData = MutableLiveData<RecyclerData?>()
+    val selectedData : LiveData<RecyclerData?>
+        get() = _selectedData
+    fun changeSelectedData(data: RecyclerData?){ _selectedData.value = data }
+    fun putPictureData(uri: Uri?){ _selectedData.value!!.file = uri }
 
     //서버에서 받은 데이터 담는 박스
     private val _serverData = MutableLiveData<MutableList<DomainReceiveAllData>>()
@@ -90,7 +96,7 @@ class MainActivityViewModel @Inject constructor(
     private var _picture = MutableLiveData<Bitmap?>()
     val picture: LiveData<Bitmap?>
         get() = _picture
-    fun changePicture(){ _picture.value=null }
+    fun changeNullPicture(){ _picture.value=null }
 
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
@@ -246,7 +252,7 @@ class MainActivityViewModel @Inject constructor(
         })
     }
 
-    fun receiveServerPictureData(uid:String){
+    fun requestServerPictureData(uid:String){
         _connectedState.postValue(ConnectedState.CONNECTING)
         _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
@@ -268,36 +274,42 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun changeServerData(sendData: AppSendData, uid : String) {
+    fun updateServerData(sendData: AppSendData, uid : String, beforeDate: String) {
         Log.e("TAG", "changeServerData: $sendData", )
         Log.e("TAG", "changeServerData: $uid", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
+                val file = File(absolutelyPath(sendData.picture, myCotext))
+                val compressFile = compressImageFile(file)
+                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 val result = retrofitUseCase.updateDataUseCase(
                     DomainResendAllData(
-                        id = MultipartBody.Part.createFormData("id", uid),    // id 값을 찾아서 알려줘야됨
+                        id = MultipartBody.Part.createFormData("id", uid),
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
-                        date = MultipartBody.Part.createFormData("date", sendData.billSubmitTime),
+                        date = MultipartBody.Part.createFormData("billSubmitTime", sendData.billSubmitTime),
                         storeName = MultipartBody.Part.createFormData("storeName", sendData.storeName),
-//                        picture = myPicture
+                        picture = myPicture
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
-
                 if (result == "add success") {
                     _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
-                    insertRoomData(
-                        DomainRoomData(
-                            cardName = sendData.cardName,
-                            amount = sendData.amount,
-                            storeName = sendData.storeName,
-                            billSubmitTime = sendData.billSubmitTime,
-                            file = sendData.picture.toString(),
-                            uid = uid
-                        )
-                    )
+
+                    //TODO 룸 업데이트 기능 만들어서 적용하기
+//                    deleteRoomData(beforeDate)
+//                    insertRoomData(
+//                        DomainRoomData(
+//                            cardName = sendData.cardName,
+//                            amount = sendData.amount,
+//                            storeName = sendData.storeName,
+//                            billSubmitTime = sendData.billSubmitTime,
+//                            file = sendData.picture.toString(),
+//                            uid = uid
+//                        )
+//                    )
                 }
                 else {
                     Log.e("TAG", "sendData: 실패입니다!")
@@ -311,9 +323,10 @@ class MainActivityViewModel @Inject constructor(
     fun deleteRoomData(date: String) {
         CoroutineScope(exceptionHandler).launch {
             _connectedState.postValue(ConnectedState.CONNECTING)
-            roomUseCase.deleteData(date)
+            val result = roomUseCase.deleteData(date)
+            Log.e("TAG", "deleteRoomData result : $result", )
             //삭제 후에 데이터 끌어오기 위한 구성
-            receiveAllRoomData()
+            receiveAllLocalData()
             _connectedState.postValue(ConnectedState.DISCONNECTED)
         }
     }
@@ -326,7 +339,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun receiveAllRoomData() {
+    fun receiveAllLocalData() {
         CoroutineScope(exceptionHandler).launch {
             _connectedState.postValue(ConnectedState.CONNECTING)
             val gap = roomUseCase.getAllData()

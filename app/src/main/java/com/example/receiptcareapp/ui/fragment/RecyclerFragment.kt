@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.local.toRecyclerShowData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
+import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.databinding.FragmentRecyclerBinding
 import com.example.receiptcareapp.ui.adapter.RecyclerLocalAdapter
 import com.example.receiptcareapp.ui.adapter.RecyclerServerAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
+import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerShowViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerViewModel
 
 
 class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
@@ -26,20 +29,21 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     }
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val viewModel: RecyclerShowViewModel by viewModels()
+    private val viewModel: RecyclerViewModel by viewModels()
     private val recyclerServerAdapter: RecyclerServerAdapter = RecyclerServerAdapter()
     private val recyclerLocalAdapter: RecyclerLocalAdapter = RecyclerLocalAdapter()
     private lateinit var callback : OnBackPressedCallback
+    private lateinit var myData : RecyclerData
 
     override fun initData() {
-        viewModel.changeStartGap("server")
+        viewModel.changeStartGap(ShowType.SERVER)
         //init
-        activityViewModel.changePicture()
+        activityViewModel.changeNullPicture()
         // 통신연결, 서버상태 값 초기화
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
         //넘겨받는 데이터의 값을 초기화시키기.
-        activityViewModel.myShowLocalData(null)
-        activityViewModel.myShowServerData(null)
+        activityViewModel.changeSelectedData(null)
+//        activityViewModel.myShowServerData(null)
 
         //어뎁터 데이터 리스트 비워주기
         recyclerServerAdapter.dataList.clear()
@@ -47,18 +51,18 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     }
 
     override fun initUI() {
-        if(viewModel.startGap.value == "server"){
+        if(viewModel.startGap.value == ShowType.LOCAL){
+            Log.e("TAG", "로컬부분!", )
+            binding.bottomNavigationView.menu.findItem(R.id.local).isChecked = true
+            initLocalRecyclerView()
+            activityViewModel.receiveAllLocalData()
+            binding.explain.text = "휴대폰의 데이터 입니다."
+        }
+        else {
             Log.e("TAG", "서버부분!", )
             activityViewModel.receiveServerAllData()
             initServerRecyclerView()
             binding.explain.text = "서버의 데이터 입니다."
-        }
-        else if(viewModel.startGap.value == "local"){
-            Log.e("TAG", "로컬부분!", )
-            binding.bottomNavigationView.menu.findItem(R.id.local).isChecked = true
-            initLocalRecyclerView()
-            activityViewModel.receiveAllRoomData()
-            binding.explain.text = "휴대폰의 데이터 입니다."
         }
     }
 
@@ -78,7 +82,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
                     binding.explain.text = "휴대폰의 데이터 입니다."
                     activityViewModel.hideServerCoroutineStop()
                     setTextAndVisible("",false)
-                    activityViewModel.receiveAllRoomData()
+                    activityViewModel.receiveAllLocalData()
                     initLocalRecyclerView()
                     true
                 }
@@ -89,22 +93,47 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         //서버 목록에서 리스트를 누를 경우
         recyclerServerAdapter.onServerSaveClick = {
             Log.e("TAG", "initListener: server", )
-            activityViewModel.changePicture()
-            activityViewModel.receiveServerPictureData(it.uid)
-            activityViewModel.myShowServerData(it)
-            viewModel.changeStartGap("server")
+            myData = RecyclerData(
+                type = ShowType.SERVER,
+                uid = it.uid,
+                cardName = it.cardName,
+                amount = it.amount,
+                billSubmitTime = it.date,
+                storeName = it.storeName,
+                file = null
+            )
+            activityViewModel.changeSelectedData(myData)
+
+            activityViewModel.changeNullPicture()
+            activityViewModel.requestServerPictureData(it.uid)
+
+            viewModel.changeStartGap(ShowType.SERVER)
         }
 
         //로컬 목록에서 리스트를 누를경우
         recyclerLocalAdapter.onLocalSaveClic = {
             Log.e("TAG", "initListener: local", )
-            activityViewModel.changePicture()
-            activityViewModel.myShowLocalData(it)
-            viewModel.changeStartGap("local")
+            myData = RecyclerData(
+                type = ShowType.LOCAL,
+                uid = it.uid,
+                cardName = it.cardName,
+                amount = it.amount,
+                billSubmitTime = it.date,
+                storeName = it.storeName,
+                file = it.file
+            )
+            activityViewModel.changeSelectedData(myData)
+
+            activityViewModel.changeNullPicture()
+
+            viewModel.changeStartGap(ShowType.LOCAL)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
+
         //뒤로가기 버튼
-        binding.backBtn.setOnClickListener{ findNavController().popBackStack() }
+        binding.backBtn.setOnClickListener{
+            findNavController().popBackStack()
+        }
     }
 
     override fun initObserver() {
@@ -134,9 +163,14 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             }
         }
 
+            //화면 전환
         activityViewModel.picture.observe(viewLifecycleOwner){
             Log.e("TAG", "받아온 사진: $it", )
-            if(it!=null) findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
+            if(it != null){
+                // 서버통신을 통해 받아온 사진 추가
+                activityViewModel.putPictureData(viewModel.bitmapToUri(requireActivity(),it))
+                findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
+            }
         }
     }
 

@@ -51,19 +51,7 @@ class MainActivityViewModel @Inject constructor(
     private val _image = MutableLiveData<Uri>()
     val image: LiveData<Uri>
         get() = _image
-    fun takeImage(img: Uri) {
-        _image.value = img
-    }
-
-//    private val _showLocalData = MutableLiveData<RecyclerShowData?>()
-//    val showLocalData : LiveData<RecyclerShowData?>
-//        get() = _showLocalData
-//    fun myShowLocalData(data: RecyclerShowData?){ _showLocalData.value = data }
-//
-//    private val _showServerData = MutableLiveData<DomainReceiveAllData?>()
-//    val showServerData : LiveData<DomainReceiveAllData?>
-//        get() = _showServerData
-//    fun myShowServerData(data: DomainReceiveAllData?){ _showServerData.value = data }
+    fun takeImage(img: Uri) { _image.value = img }
 
     private val _selectedData = MutableLiveData<RecyclerData?>()
     val selectedData : LiveData<RecyclerData?>
@@ -108,10 +96,10 @@ class MainActivityViewModel @Inject constructor(
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
                 var uid = "0"
-                val file = File(absolutelyPath(sendData.picture, myCotext))
-                val compressFile = compressImageFile(file)
-                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
+//                val file = File(absolutelyPath(sendData.picture, myCotext))
+//                val compressFile = compressImageFile(file)
+//                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+//                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 val result = retrofitUseCase.sendDataUseCase(
                     DomainSendData(
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
@@ -121,7 +109,7 @@ class MainActivityViewModel @Inject constructor(
                         ),
                         date = MultipartBody.Part.createFormData("billSubmitTime", sendData.billSubmitTime),
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
-                        picture = myPicture
+                        picture = encodePicture(sendData.picture)
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
@@ -158,10 +146,10 @@ class MainActivityViewModel @Inject constructor(
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
                 var uid = "0"
-                val file = File(absolutelyPath(sendData.picture, myCotext))
-                val compressFile = compressImageFile(file)
-                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
+//                val file = File(absolutelyPath(sendData.picture, myCotext))
+//                val compressFile = compressImageFile(file)
+//                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+//                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 val result = retrofitUseCase.sendDataUseCase(
                     DomainSendData(
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
@@ -171,7 +159,7 @@ class MainActivityViewModel @Inject constructor(
                         ),
                         date = MultipartBody.Part.createFormData("date", stringToDateTime(sendData.billSubmitTime)),
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
-                        picture = myPicture
+                        picture = encodePicture(sendData.picture)
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
@@ -280,10 +268,10 @@ class MainActivityViewModel @Inject constructor(
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
-                val file = File(absolutelyPath(sendData.picture, myCotext))
-                val compressFile = compressImageFile(file)
-                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
+//                val file = File(absolutelyPath(sendData.picture, myCotext))
+//                val compressFile = compressImageFile(file)
+//                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+//                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 val result = retrofitUseCase.updateDataUseCase(
                     DomainResendAllData(
                         id = MultipartBody.Part.createFormData("id", uid),
@@ -291,7 +279,7 @@ class MainActivityViewModel @Inject constructor(
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
                         date = MultipartBody.Part.createFormData("billSubmitTime", sendData.billSubmitTime),
                         storeName = MultipartBody.Part.createFormData("storeName", sendData.storeName),
-                        picture = myPicture
+                        picture = encodePicture(sendData.picture)
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
@@ -404,6 +392,13 @@ class MainActivityViewModel @Inject constructor(
             e.printStackTrace()
         }
         return outputFile
+    }
+
+    fun encodePicture(uri:Uri): MultipartBody.Part{
+        val file = File(absolutelyPath(uri, myCotext))
+        val compressFile = compressImageFile(file)
+        val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        return MultipartBody.Part.createFormData("file", file.name, requestFile)
     }
 }
 

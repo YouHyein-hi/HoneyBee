@@ -81,6 +81,11 @@ class RetrofitRepoImpl @Inject constructor(
         )
     }
 
+    override suspend fun requestLogin(email: String, password: String): String {
+        return retrofitSource.requestLogin(email = email, password = password)
+    }
+
+
     override suspend fun myTest(file: MultipartBody.Part): String {
         return retrofitSource.myTest(file)
     }

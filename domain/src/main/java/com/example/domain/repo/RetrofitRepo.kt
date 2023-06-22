@@ -32,5 +32,8 @@ interface RetrofitRepo {
 
     suspend fun updateCardDataRepo(domainResendCardData: DomainResendCardData):String
 
+    suspend fun requestLogin(email:String, password:String):String
+
     suspend fun myTest(file:MultipartBody.Part):String
+
 }

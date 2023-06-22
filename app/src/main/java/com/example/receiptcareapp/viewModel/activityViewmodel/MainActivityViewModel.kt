@@ -50,9 +50,11 @@ class MainActivityViewModel @Inject constructor(
     var myCotext: Context? = null
 
     private val _image = MutableLiveData<Uri>()
-    val image : LiveData<Uri>
+    val image: LiveData<Uri>
         get() = _image
-    fun takeImage(img: Uri){ _image.value = img }
+    fun takeImage(img: Uri) {
+        _image.value = img
+    }
 
     private val _showLocalData = MutableLiveData<RecyclerShowData?>()
     val showLocalData : LiveData<RecyclerShowData?>
@@ -63,11 +65,6 @@ class MainActivityViewModel @Inject constructor(
     val showServerData : LiveData<DomainReceiveAllData?>
         get() = _showServerData
     fun myShowServerData(data: DomainReceiveAllData?){ _showServerData.value = data }
-
-    private var _startGap = MutableLiveData<String>()
-    val startGap : LiveData<String>
-        get() = _startGap
-    fun changeStartGap(gap:String){ _startGap.value = gap }
 
     //서버에서 받은 데이터 담는 박스
     private val _serverData = MutableLiveData<MutableList<DomainReceiveAllData>>()

@@ -31,6 +31,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>({ActivitySplashBindin
         lifecycleScope.launch() {
             delay(2300L)
             startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+            finish()
         }
     }
 

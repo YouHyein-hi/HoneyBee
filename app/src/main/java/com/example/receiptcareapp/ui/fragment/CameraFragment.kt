@@ -21,7 +21,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     private var photoURI : Uri? = null
   //예시코드 보면서 callcamera 함수 위치 보완 => 리스너인지 데이터인지
     private val activityViewModel : MainActivityViewModel by activityViewModels()
-    private val cameraViewModel : CameraViewModel by viewModels()
+    private val viewModel : CameraViewModel by viewModels()
 
     override fun initData() {}
 
@@ -35,7 +35,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
     /* 카메라 호출 */
     fun CallCamera() {
         Log.e("TAG", "CallCamera", )
-        if (cameraViewModel.checkPermission(requireContext(), requireActivity(), CAMERA, CAMERA_CODE)) {  // 카메라 권한 있을 시 카메라 실행함
+        if (viewModel.checkPermission(requireContext(), requireActivity(), CAMERA, CAMERA_CODE)) {  // 카메라 권한 있을 시 카메라 실행함
             Log.e("TAG", "카메라 권한 있음", )
             dispatchTakePictureIntentEx()
         }
@@ -43,7 +43,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
 
     private fun dispatchTakePictureIntentEx() {
         Log.e("TAG", "dispatchTakePictureIntentEx: ", )
-        activityResult.launch(cameraViewModel.dispatchTakePictureIntentExViewModel(requireActivity()))
+        activityResult.launch(viewModel.dispatchTakePictureIntentExViewModel(requireActivity()))
     }
 
     //카메라 촬영 후 확인 시
@@ -51,7 +51,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding
         Log.e("TAG", "activityResult: ", )
         if (it.resultCode == Activity.RESULT_OK){
             Log.e("TAG", "onActivityResult: if 진입", )
-            photoURI = cameraViewModel.photoUri.value
+            photoURI = viewModel.photoUri.value
             if(photoURI != null) {
                 Log.e("TAG", "data 있음", )
                 activityViewModel.takeImage(photoURI!!)

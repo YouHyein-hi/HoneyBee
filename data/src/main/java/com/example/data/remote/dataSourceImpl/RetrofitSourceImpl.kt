@@ -84,6 +84,13 @@ class RetrofitSourceImpl @Inject constructor(
         )
     }
 
+    override suspend fun requestLogin(email: String, password: String): String {
+        return retrofit.create(RetrofitSource::class.java).requestLogin(
+            email = email,
+            password = password
+        )
+    }
+
 
     override suspend fun myTest(file: MultipartBody.Part): String {
         Log.e("TAG", "myTest: test $file")

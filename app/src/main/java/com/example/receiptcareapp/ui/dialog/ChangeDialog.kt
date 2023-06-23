@@ -29,12 +29,6 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activityViewModel.cardData.observe(viewLifecycleOwner) {
-            myArray.clear()
-            it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
-            val adapter = ShowPictureAdapter(requireContext(), myArray)
-            binding.changeCardspinner.adapter = adapter
-        }
 
         //프로그래스 바 컨트롤
         activityViewModel.connectedState.observe(viewLifecycleOwner){
@@ -48,6 +42,31 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
         else {
             val gap = activityViewModel.showServerData.value
             myData = DialogData(gap!!.uid, gap.cardName, gap.amount, gap.date, gap.storeName, null)
+        }
+
+        val dataCardName = myData.cardName
+
+        activityViewModel.cardData.observe(viewLifecycleOwner) {
+            myArray.clear()
+            it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
+            val adapter = ShowPictureAdapter(requireContext(), myArray)
+            binding.changeCardspinner.adapter = adapter
+
+            var position = -1
+            for (i in 0 until adapter.count) {
+                val item = adapter.getItem(i)
+                if (item!!.startsWith("$dataCardName ")) {
+                    position = i
+                    break
+                }
+            }
+            if (position != -1) {
+                binding.changeCardspinner.setSelection(position)
+            }
+            else{
+                dismiss()
+                showShortToast("카드 불러오기 실패!")
+            }
         }
 
         val newDate = myData.date.replace(" ", ""). split("년","월","일","시","분","초")
@@ -142,6 +161,9 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             }
 
         }
+
+
+
     }
 
     override fun initData() {

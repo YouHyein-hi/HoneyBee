@@ -45,30 +45,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
 
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout((width * 1), ViewGroup.LayoutParams.WRAP_CONTENT)
-        val dataCardName = myData.cardName
 
-        activityViewModel.cardData.observe(viewLifecycleOwner) {
-            myArray.clear()
-            it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
-            val adapter = ShowPictureAdapter(requireContext(), myArray)
-            binding.changeCardspinner.adapter = adapter
-
-            var position = -1
-            for (i in 0 until adapter.count) {
-                val item = adapter.getItem(i)
-                if (item!!.startsWith("$dataCardName ")) {
-                    position = i
-                    break
-                }
-            }
-            if (position != -1) {
-                binding.changeCardspinner.setSelection(position)
-            }
-            else{
-                dismiss()
-                showShortToast("카드 불러오기 실패!")
-            }
-        }
 
         val newDate = myData.billSubmitTime.replace(" ", ""). split("년","월","일","시","분","초")
         Log.e("TAG", "onCreateView: ${myData.cardName}", )
@@ -108,18 +85,18 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                 myLocalDateTime.toString() == "" -> { showShortToast("날짜를 입력하세요.") }
                 data?.file == null -> { showShortToast("사진이 비었습니다.") }
                 else -> {
-                                   Log.e("TAG", "onCreateView: 다 있음!")
-                activityViewModel.updateServerData(
-                    sendData = AppSendData(
-                        billSubmitTime = myLocalDateTime.toString(),
-                        amount = binding.changeBtnPrice.text.toString(),
-                        cardName = checked,
-                        picture = myData.file!!,
-                        storeName = binding.changeBtnStore.text.toString()
-                    ),
-                    uid = myData.uid,
-                    beforeDate = myData.billSubmitTime
-                )
+                    Log.e("TAG", "onCreateView: 다 있음!")
+                    activityViewModel.updateServerData(
+                        sendData = AppSendData(
+                            billSubmitTime = myLocalDateTime.toString(),
+                            amount = binding.changeBtnPrice.text.toString(),
+                            cardName = checked,
+                            picture = myData.file!!,
+                            storeName = binding.changeBtnStore.text.toString()
+                        ),
+                        uid = myData.uid,
+                        beforeDate = myData.billSubmitTime
+                    )
                 }
             }
             dismiss()
@@ -131,11 +108,29 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
     }
 
     override fun initObserver() {
+        val dataCardName = myData.cardName
+
         activityViewModel.cardData.observe(viewLifecycleOwner) {
             myArray.clear()
             it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
             val adapter = ShowPictureAdapter(requireContext(), myArray)
             binding.changeCardspinner.adapter = adapter
+
+            var position = -1
+            for (i in 0 until adapter.count) {
+                val item = adapter.getItem(i)
+                if (item!!.startsWith("$dataCardName ")) {
+                    position = i
+                    break
+                }
+            }
+            if (position != -1) {
+                binding.changeCardspinner.setSelection(position)
+            }
+            else{
+                dismiss()
+                showShortToast("카드 불러오기 실패!")
+            }
         }
 
         //프로그래스 바 컨트롤

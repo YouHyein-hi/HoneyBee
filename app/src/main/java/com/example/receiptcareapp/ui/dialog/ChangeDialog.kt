@@ -70,7 +70,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             }
         }
 
-        val newDate = myData.date.replace(" ", ""). split("년","월","일","시","분","초")
+        val newDate = myData.billSubmitTime.replace(" ", ""). split("년","월","일","시","분","초")
         Log.e("TAG", "onCreateView: ${myData.cardName}", )
 
         // 수정 전 로컬 데이터 화면에 띄우기
@@ -99,7 +99,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             Log.e("TAG", "onCreateView: ${myData.uid}", )
             Log.e("TAG", "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${checked}, ${binding.changeBtnStore.text}, ${myData.file}", )
 
-            val data = activityViewModel.showLocalData.value
+            val data = activityViewModel.selectedData.value
 
             when {
                 checked == " " -> { showShortToast("카드를 입력하세요.") }
@@ -166,8 +166,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                     Log.e("TAG", "onItemSelected: ${checked}")
                 }
 
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
     }
 }

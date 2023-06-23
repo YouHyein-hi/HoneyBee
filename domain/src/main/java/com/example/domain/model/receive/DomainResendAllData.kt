@@ -12,5 +12,5 @@ data class DomainResendAllData(
     val amount: MultipartBody.Part,
     var date: MultipartBody.Part,
     val storeName: MultipartBody.Part,
-//    val picture: MultipartBody.Part
+    val picture: MultipartBody.Part
 )

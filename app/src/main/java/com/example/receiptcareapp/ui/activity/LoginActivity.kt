@@ -13,10 +13,10 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it)}) {
+class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }) {
 
-    private val viewModel : LoginActivityViewModel by viewModels()
-    var backPressedTime : Long = 0
+    private val viewModel: LoginActivityViewModel by viewModels()
+    var backPressedTime: Long = 0
 
     override fun initData() {
     }
@@ -30,19 +30,31 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
 //            startActivity(Intent(this, MainActivity::class.java))
 //            viewModel.requestLogin(binding.editEmail.text.toString(), binding.editPw.text.toString())
             viewModel.requestLogin("1234@email.com", "1234")
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+//            startActivity(Intent(this, MainActivity::class.java))
+//            finish()
         }
     }
 
     override fun initObserver() {
-        viewModel.response.observe(this){response->
-            Log.e("TAG", "initObserver: $response", )
-            if(response=="success") {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+        viewModel.response.observe(this) { response ->
+            Log.e("TAG", "initObserver: $response")
+            when (response) {
+                "로그인 성공" -> {
+                    showShortToast("로그인 성공.")
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
+                "존재하지 않는 계정입니다." -> {
+                    showShortToast("존재하지 않는 계정입니다.")
+                }
+                "이메일 또는 비밀번호가 틀립니다." -> {
+                    showShortToast("이메일 또는 비밀번호가 틀립니다.")
+                }
+                else -> {
+                    showShortToast("알 수 없는 오류입니다.")
+                }
             }
-            else showShortToast("로그인에 실패하였습니다.")
+
         }
     }
 

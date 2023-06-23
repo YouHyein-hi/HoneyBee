@@ -35,27 +35,26 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     }
 
     override fun initUI() {
-        if(activityViewModel.showServerData.value != null){
+        //selectedData가 서버인 경우
+        if(activityViewModel.selectedData.value != null){
             binding.resendBtn.isVisible = false
-            val data = activityViewModel.showServerData.value
+            val data = activityViewModel.selectedData.value
             val picture = activityViewModel.picture.value
-            myData = ShowData(ShowType.SERVER, data!!.uid, data.cardName, data.amount, data.date, data.storeName, viewModel.bitmapToUri(requireActivity(),picture!!))
+            myData = ShowData(data!!.type, data.uid, data.cardName, data.amount, data.billSubmitTime, data.storeName, data.file)
             binding.imageView.setImageBitmap(picture)
-
-        }else if(activityViewModel.showLocalData.value != null){
-            val data = activityViewModel.showLocalData.value
-            myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.date, data.storeName, data.file)
-            binding.imageView.setImageURI(myData.file)
+            binding.pictureName.text = myData.storeName
+            binding.imageView.clipToOutline = true
+            binding.date.text = myData.billSubmitTime
+            binding.cardAmount.text = "${myData.cardName}카드 : ${myData.amount}원"
+//        }else if(activityViewModel.selectedData.value!!.type == ShowType.LOCAL){
+//            val data = activityViewModel.selectedData.value
+//            myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.billSubmitTime, data.storeName, data.file)
+//            binding.imageView.setImageURI(myData.file)
         }else{
             binding.backgroundText.text = "데이터가 없어요!"
             showShortToast("데이터가 없어요!")
             findNavController().popBackStack()
         }
-
-        binding.pictureName.text = myData.storeName
-        binding.imageView.clipToOutline = true
-        binding.date.text = myData.billSubmitTime
-        binding.cardAmount.text = "${myData.cardName}카드 : ${myData.amount}원"
     }
 
     override fun initListener() {

@@ -100,28 +100,25 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
 
             val data = activityViewModel.showLocalData.value
 
-            if(checked == " "){
-                showShortToast("카드를 입력하세요.")
-            }
-            else if(binding.changeBtnStore.text!!.isEmpty()){
-                showShortToast("가게 이름을 입력하세요.")
-            }
-            else if(binding.changeBtnPrice.text!!.isEmpty()){
-                showShortToast("금액을 입력하세요.")
-            }
-            else if(myLocalDateTime.toString() == ""){
-                showShortToast("날짜를 입력하세요.")
-            }
-            else if(data?.file == null){
-                showShortToast("사진이 비었습니다.")
-            }
-            else{
-                Log.e("TAG", "onCreateView: 다 있음!", )
-                activityViewModel.changeServerData(
-                    AppSendData(
-                        billSubmitTime = myLocalDateTime.toString(), amount = binding.changeBtnPrice.text.toString(), cardName = checked, picture = data!!.file, storeName = binding.changeBtnStore.text.toString())
-                    , myData.uid
-                )
+            when {
+                checked == " " -> { showShortToast("카드를 입력하세요.") }
+                binding.changeBtnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
+                binding.changeBtnPrice.text!!.isEmpty() -> { showShortToast("금액을 입력하세요.") }
+                myLocalDateTime.toString() == "" -> { showShortToast("날짜를 입력하세요.") }
+                data?.file == null -> { showShortToast("사진이 비었습니다.") }
+                else -> {
+                    Log.e("TAG", "onCreateView: 다 있음!")
+                    activityViewModel.changeServerData(
+                        AppSendData(
+                            billSubmitTime = myLocalDateTime.toString(),
+                            amount = binding.changeBtnPrice.text.toString(),
+                            cardName = checked,
+                            picture = data!!.file,
+                            storeName = binding.changeBtnStore.text.toString()
+                        ),
+                        myData.uid
+                    )
+                }
             }
             dismiss()
         }

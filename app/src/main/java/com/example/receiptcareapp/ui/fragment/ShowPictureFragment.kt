@@ -114,25 +114,30 @@ class ShowPictureFragment :
             /** 완료 Button **/
             sendBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
-                if (checked == "") {
-                    showShortToast("카드를 입력하세요.")
-                } else if (btnStore.text!!.isEmpty()) {
-                    showShortToast("가게 이름을 입력하세요.")
-                } else if (btnDate.text.isEmpty()) {
-                    showShortToast("날짜를 입력하세요.")
-                } else if (btnPrice.text.isEmpty()) {
-                    showShortToast("금액을 입력하세요.")
-                } else if (activityViewModel.image.value == null) {
-                    showShortToast("사진이 비었습니다.\n초기화면으로 돌아갑니다.")
-                    NavHostFragment.findNavController(this@ShowPictureFragment)
-                        .navigate(R.id.action_showFragment_to_homeFragment)
-                } else {
-                    Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}")
-                    val myLocalDateTime = showPictureViewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
-                    activityViewModel.sendData(
-                        AppSendData(
-                            billSubmitTime = myLocalDateTime.toString(), amount = btnPrice.text.toString(), cardName = checked, picture = activityViewModel.image.value!!, storeName = binding.btnStore.text.toString())
-                    )
+                when {
+                    checked == "" -> { showShortToast("카드를 입력하세요.") }
+                    btnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
+                    btnDate.text.isEmpty() -> { showShortToast("날짜를 입력하세요.") }
+                    btnPrice.text.isEmpty() -> { showShortToast("금액을 입력하세요.") }
+                    activityViewModel.image.value == null -> {
+                        showShortToast("사진이 비었습니다.\n초기화면으로 돌아갑니다.")
+                        NavHostFragment.findNavController(this@ShowPictureFragment)
+                            .navigate(R.id.action_showFragment_to_homeFragment)
+                    }
+                    else -> {
+                        Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}")
+                        val myLocalDateTime = showPictureViewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
+                        activityViewModel.sendData(
+                            AppSendData(
+                                billSubmitTime = myLocalDateTime.toString(),
+                                amount = btnPrice.text.toString(),
+                                cardName = checked,
+                                picture = activityViewModel.image.value!!,
+                                storeName = binding.btnStore.text.toString()
+                            )
+                        )
+                    }
+
                 }
             }
 

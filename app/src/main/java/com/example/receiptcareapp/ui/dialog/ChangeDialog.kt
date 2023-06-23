@@ -35,14 +35,43 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
         } else {
             showShortToast("데이터가 없습니다!")
             dismiss()
+
         }
     }
 
     override fun initUI() {
         getSpinner()
 
+
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout((width * 1), ViewGroup.LayoutParams.WRAP_CONTENT)
+        val dataCardName = myData.cardName
+
+        activityViewModel.cardData.observe(viewLifecycleOwner) {
+            myArray.clear()
+            it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
+            val adapter = ShowPictureAdapter(requireContext(), myArray)
+            binding.changeCardspinner.adapter = adapter
+
+            var position = -1
+            for (i in 0 until adapter.count) {
+                val item = adapter.getItem(i)
+                if (item!!.startsWith("$dataCardName ")) {
+                    position = i
+                    break
+                }
+            }
+            if (position != -1) {
+                binding.changeCardspinner.setSelection(position)
+            }
+            else{
+                dismiss()
+                showShortToast("카드 불러오기 실패!")
+            }
+        }
+
+        val newDate = myData.date.replace(" ", ""). split("년","월","일","시","분","초")
+        Log.e("TAG", "onCreateView: ${myData.cardName}", )
 
         // 수정 전 로컬 데이터 화면에 띄우기
         // Spinner은 아직 설정 안함
@@ -67,12 +96,19 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                 LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second
             )
 
-            if (checked == " ") { showShortToast("카드를 선택해 주세요.") }
-            else if (binding.changeBtnStore.text!!.isEmpty()) { showShortToast("가게 이름을 입력해 주세요.") }
-            else if (binding.changeBtnPrice.text!!.isEmpty()) { showShortToast("금액을 입력해 주세요.") }
-            else if (myLocalDateTime.toString() == "") { showShortToast("날짜를 입력해 주세요.") }
-            else {
-                Log.e("TAG", "onCreateView: 다 있음!")
+            Log.e("TAG", "onCreateView: ${myData.uid}", )
+            Log.e("TAG", "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${checked}, ${binding.changeBtnStore.text}, ${myData.file}", )
+
+            val data = activityViewModel.showLocalData.value
+
+            when {
+                checked == " " -> { showShortToast("카드를 입력하세요.") }
+                binding.changeBtnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
+                binding.changeBtnPrice.text!!.isEmpty() -> { showShortToast("금액을 입력하세요.") }
+                myLocalDateTime.toString() == "" -> { showShortToast("날짜를 입력하세요.") }
+                data?.file == null -> { showShortToast("사진이 비었습니다.") }
+                else -> {
+                                   Log.e("TAG", "onCreateView: 다 있음!")
                 activityViewModel.updateServerData(
                     sendData = AppSendData(
                         billSubmitTime = myLocalDateTime.toString(),
@@ -84,6 +120,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                     uid = myData.uid,
                     beforeDate = myData.billSubmitTime
                 )
+                }
             }
             dismiss()
         }

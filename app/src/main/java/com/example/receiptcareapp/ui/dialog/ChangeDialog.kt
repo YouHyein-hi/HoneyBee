@@ -101,19 +101,19 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             val data = activityViewModel.showLocalData.value
 
             if(checked == " "){
-                Log.e("TAG", "onCreateView: 카드가 비어있습니다.", )
+                showShortToast("카드를 입력하세요.")
             }
             else if(binding.changeBtnStore.text!!.isEmpty()){
-                Log.e("TAG", "onCreateView: 가게 이름이 비어있습니다.", )
+                showShortToast("가게 이름을 입력하세요.")
             }
             else if(binding.changeBtnPrice.text!!.isEmpty()){
-                Log.e("TAG", "onCreateView: 금액이 비어있습니다.", )
+                showShortToast("금액을 입력하세요.")
             }
             else if(myLocalDateTime.toString() == ""){
-                Log.e("TAG", "onCreateView: 날짜가 비어있습니다.", )
+                showShortToast("날짜를 입력하세요.")
             }
             else if(data?.file == null){
-                Log.e("TAG", "onCreateView: 이미지가 비어있습니다.", )
+                showShortToast("사진이 비었습니다.")
             }
             else{
                 Log.e("TAG", "onCreateView: 다 있음!", )

@@ -35,7 +35,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>({ActivityMainBinding.infl
             activityViewModel.changeConnectedState(ConnectedState.CONNECTING_FALSE)
             // 에러라는것을 알리기
             val message = when (it.second) {
-                FetchState.BAD_INTERNET -> "BAD_INTERNET 오류"
+                FetchState.BAD_INTERNET -> "인터넷 연결 실패"
                 FetchState.PARSE_ERROR -> "PARSE_ERROR 오류"
                 FetchState.WRONG_CONNECTION -> "WRONG_CONNECTION 오류"
                 FetchState.SQLITE_CONSTRAINT_PRIMARYKEY -> "이미 값이 저장되어있습니다."

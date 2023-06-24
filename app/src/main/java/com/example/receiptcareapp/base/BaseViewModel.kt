@@ -31,7 +31,7 @@ abstract class BaseViewModel  : ViewModel(){
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
-        Log.e("TAG", "$throwable: ", )
+        Log.e("TAG", "base : $throwable", )
         when(throwable){
             is SocketException -> _fetchState.postValue(Pair(throwable, FetchState.BAD_INTERNET))
             is HttpException -> _fetchState.postValue(Pair(throwable, FetchState.PARSE_ERROR))

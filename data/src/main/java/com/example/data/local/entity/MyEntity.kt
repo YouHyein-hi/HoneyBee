@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "MyDataTable")
 data class MyEntity(
     @PrimaryKey
-    val date : String,
+    val billSubmitTime : String,
     @ColumnInfo
     val cardName: String,
     @ColumnInfo

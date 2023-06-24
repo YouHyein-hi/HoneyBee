@@ -23,7 +23,7 @@ abstract class BaseFragment<VB: ViewBinding>(
 
     init {
         Log.e("TAG", "Basefragment : start", )
-        Log.e("TAG", "Basefragment : $inflate: ", )
+        Log.e("TAG", "Basefragment : $inflate ", )
     }
 
     private var _binding: VB? = null
@@ -33,7 +33,7 @@ abstract class BaseFragment<VB: ViewBinding>(
     // lifeCycle 1
     // 가장 먼저 호출
     override fun onAttach(context: Context) {
-        Log.e("TAG", "onAttach: ", )
+        Log.e("TAG", "fragment onAttach: ", )
         super.onAttach(context)
     }
 
@@ -44,7 +44,7 @@ abstract class BaseFragment<VB: ViewBinding>(
     // 리소스들을 초기화해주는 단계,
     // 데이터 관련 친구들여기서 관리
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.e("TAG", "onCreate: ", )
+        Log.e("TAG", "fragment onCreate: ", )
         super.onCreate(savedInstanceState)
         initData()
     }
@@ -55,7 +55,7 @@ abstract class BaseFragment<VB: ViewBinding>(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.e("TAG", "onCreateView: ", )
+        Log.e("TAG", "fragment onCreateView: ", )
         _binding = inflate.invoke(inflater, container, false)
         Log.e("TAG", "Basefragment : $_binding: ", )
         return binding.root
@@ -65,14 +65,14 @@ abstract class BaseFragment<VB: ViewBinding>(
     //view 반환을 보장받는 위치
     // 확정적으로 view 보장받을 수 있는 단계
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.e("TAG", "onViewCreated: ", )
+        Log.e("TAG", "fragment onViewCreated: ", )
         initUI()
         super.onViewCreated(view, savedInstanceState)
     }
 
     // 사용자랑 상호작용하기 직전에 호출단계
     override fun onResume() {
-        Log.e("TAG", "onResume: ", )
+        Log.e("TAG", "fragment onResume: ", )
         super.onResume()
         initListener()
         initObserver()
@@ -85,15 +85,18 @@ abstract class BaseFragment<VB: ViewBinding>(
 
     //viewBinding으로 인한 메모리 누수 방지
     override fun onDestroyView() {
+        Log.e("TAG", "fragment onDestroyView: ", )
         super.onDestroyView()
         _binding = null
     }
 
     override fun onDestroy() {
+        Log.e("TAG", "fragment onDestroy: ", )
         super.onDestroy()
     }
 
     override fun onDetach() {
+        Log.e("TAG", "fragment onDetach: ", )
         super.onDetach()
     }
 

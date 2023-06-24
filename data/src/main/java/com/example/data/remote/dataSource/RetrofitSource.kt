@@ -1,9 +1,11 @@
 package com.example.data.remote.dataSource
 
+import com.example.data.remote.model.ServerResponse
 import com.example.data.remote.model.ReceiveCardData
 import com.example.data.remote.model.ReceiveData
 import okhttp3.MultipartBody
 import retrofit2.http.*
+import java.time.LocalDateTime
 
 /**
  * 2023-02-02
@@ -52,15 +54,17 @@ interface RetrofitSource {
     ): String
 
 
-    @Multipart
-    @POST("bill/update/{id}/{cardName}/{storeName}/{date}/{amount}")
+
+//    @PUT("bill/update/{id}/{cardName}/{storeName}/{date}/{amount}")
+    @FormUrlEncoded
+    @PUT("bill/update/{id}")
     suspend fun updateDataSource(
-        @Part id : MultipartBody.Part,
-        @Part cardName : MultipartBody.Part,
-        @Part storeName : MultipartBody.Part,
-        @Part billSubmitTime : MultipartBody.Part,
-        @Part amount : MultipartBody.Part,
-    ):String
+        @Path("id") id: Long,
+        @Field("cardName") cardName: String,
+        @Field("storeName") storeName: String,
+        @Field("billSubmitTime") billSubmitTime: LocalDateTime,
+        @Field("amount") amount: String,
+    ):ServerResponse
 
     @FormUrlEncoded
     @POST("")
@@ -74,7 +78,7 @@ interface RetrofitSource {
     suspend fun requestLogin(
         @Field("email") email : String,
         @Field("password") password : String,
-    ): String
+    ): ServerResponse
 
     @Multipart
     @POST("bill/test")

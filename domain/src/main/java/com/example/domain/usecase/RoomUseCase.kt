@@ -21,4 +21,14 @@ class RoomUseCase(
     suspend fun deleteData(date:String):Int{
         return roomRepo.deleteData(date)
     }
+
+    suspend fun updateData(
+        beforeTime: String,
+        cardName: String,
+        amount: String,
+        pictureName: String,
+        billSubmitTime: String
+    ): Int{
+        return roomRepo.updateData(beforeTime, cardName, amount, pictureName, billSubmitTime)
+    }
 }

@@ -12,7 +12,7 @@ import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardBinding
-import com.example.receiptcareapp.viewModel.fragmentViewModel.CardAddBottomViewModel
+import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddBottomViewModel
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 
 class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {

@@ -1,10 +1,6 @@
 package com.example.receiptcareapp.ui.fragment
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
@@ -40,34 +36,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun initListener() {
-        homeViewModel.checkPermission(requireContext(), requireActivity(), CAMERA, CAMERA_CODE)
-        homeViewModel.checkPermission(requireContext(), requireActivity(), GALLERY, GALLERY_CODE)
     }
 
     override fun initObserver() {}
-
-    /*** 권한 관련 코드 ***/
-    @SuppressLint("MissingSuperCall")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {  // 권한 확인 직후 바로 호출됨
-        Log.e("TAG", "MainActivity: onRequestPermissionsResult 실행", )
-        when(requestCode) {
-            CAMERA_CODE -> {
-                for (grant in grantResults) {
-                    if (grant != PackageManager.PERMISSION_GRANTED) {
-                        showLongToast("카메라 권한을 승인해 주세요.")
-                    }
-                }
-            }
-            GALLERY_CODE -> {
-                for (grant in grantResults) {
-                    if (grant != PackageManager.PERMISSION_GRANTED) {
-                        showLongToast("갤러리 권한을 승인해 주세요.")
-                        Toast.makeText(requireActivity(), "갤러리  권한을 승인해 주세요.", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

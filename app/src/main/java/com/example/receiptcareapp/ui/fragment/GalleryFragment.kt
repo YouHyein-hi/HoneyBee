@@ -36,10 +36,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
     /* 갤러리 호출 */
     fun CallGallery() {
         Log.e("TAG", "CallGallery 실행", )
-        if(galleryViewModel.checkPermission(requireContext(), requireActivity(), GALLERY, GALLERY_CODE)){
-            Log.e("TAG", "파일 권한 있음", )
-            activityResult.launch(galleryViewModel.CallGallery())
-        }
+        activityResult.launch(galleryViewModel.CallGallery())
     }
 
     /* 갤러리 사진 관련 함수 */

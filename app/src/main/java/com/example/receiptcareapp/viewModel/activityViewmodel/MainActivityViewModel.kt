@@ -89,6 +89,7 @@ class MainActivityViewModel @Inject constructor(
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
 
+    // TODO ShowPictureFragment에만 들어가는 코드인데 ShowPictureViewModel에 옮길까
     //서버에 데이터 전송 기능
     fun sendData(sendData: AppSendData) {
         Log.e("TAG", "sendData: $sendData", )
@@ -141,6 +142,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel에 옮길까
     fun resendData(sendData:AppSendData){
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
@@ -216,6 +218,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    // TODO RecyclerFragment에만 들어가는 코드인데 RecyclerViewModel에 옮길까
     // Server 데이터 불러오는 부분
     fun receiveServerAllData() {
         _connectedState.value = ConnectedState.CONNECTING
@@ -240,6 +243,7 @@ class MainActivityViewModel @Inject constructor(
         })
     }
 
+    // TODO RecyclerFragment에만 들어가는 코드인데 RecyclerViewModel에 옮길까
     fun requestServerPictureData(uid:String){
         _connectedState.postValue(ConnectedState.CONNECTING)
         _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
@@ -252,6 +256,7 @@ class MainActivityViewModel @Inject constructor(
         })
     }
 
+    // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel에 옮길까
     fun deleteServerData(id: Long) {
         Log.e("TAG", "deleteServerData: 들어감", )
         CoroutineScope(exceptionHandler).launch {
@@ -262,6 +267,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
     fun updateServerData(sendData: AppSendData, uid : String, beforeDate: String) {
         Log.e("TAG", "changeServerData: $sendData", )
         Log.e("TAG", "changeServerData: $uid", )
@@ -308,6 +314,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel
     fun deleteRoomData(date: String) {
         CoroutineScope(exceptionHandler).launch {
             _connectedState.postValue(ConnectedState.CONNECTING)

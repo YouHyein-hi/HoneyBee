@@ -15,13 +15,13 @@ import com.example.receiptcareapp.util.FetchState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>({ActivityMainBinding.inflate(it)}) {
-//    private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+class MainActivity : BaseActivity<ActivityMainBinding>(
+    {ActivityMainBinding.inflate(it)},
+    "MainActivity"
+) {
     private val activityViewModel: MainActivityViewModel by viewModels()
 
-    override fun initData() {
-        activityViewModel.myCotext = applicationContext
-    }
+    override fun initData() {}
 
     override fun initUI() {
         supportActionBar?.hide()
@@ -35,7 +35,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>({ActivityMainBinding.infl
             activityViewModel.changeConnectedState(ConnectedState.CONNECTING_FALSE)
             // 에러라는것을 알리기
             val message = when (it.second) {
-                FetchState.BAD_INTERNET -> "BAD_INTERNET 오류"
+                FetchState.BAD_INTERNET -> "인터넷 연결 실패"
                 FetchState.PARSE_ERROR -> "PARSE_ERROR 오류"
                 FetchState.WRONG_CONNECTION -> "WRONG_CONNECTION 오류"
                 FetchState.SQLITE_CONSTRAINT_PRIMARYKEY -> "이미 값이 저장되어있습니다."

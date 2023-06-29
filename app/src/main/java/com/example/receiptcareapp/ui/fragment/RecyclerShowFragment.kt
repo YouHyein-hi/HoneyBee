@@ -20,7 +20,10 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerShowViewModel
 
-class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
+class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(
+    FragmentRecyclerShowBinding::inflate,
+    "RecyclerShowFragment"
+) {
     private val activityViewModel : MainActivityViewModel by activityViewModels()
     private val viewModel : RecyclerShowViewModel by viewModels()
     private lateinit var myData: ShowData
@@ -35,21 +38,15 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     }
 
     override fun initUI() {
-        //selectedData가 서버인 경우
         if(activityViewModel.selectedData.value != null){
             binding.resendBtn.isVisible = false
             val data = activityViewModel.selectedData.value
-            val picture = activityViewModel.picture.value
             myData = ShowData(data!!.type, data.uid, data.cardName, data.amount, data.billSubmitTime, data.storeName, data.file)
-            binding.imageView.setImageBitmap(picture)
+            binding.imageView.setImageURI(myData.file)
             binding.pictureName.text = myData.storeName
             binding.imageView.clipToOutline = true
             binding.date.text = myData.billSubmitTime
             binding.cardAmount.text = "${myData.cardName}카드 : ${myData.amount}원"
-//        }else if(activityViewModel.selectedData.value!!.type == ShowType.LOCAL){
-//            val data = activityViewModel.selectedData.value
-//            myData = ShowData(ShowType.LOCAL, data!!.uid, data.cardName, data.amount, data.billSubmitTime, data.storeName, data.file)
-//            binding.imageView.setImageURI(myData.file)
         }else{
             binding.backgroundText.text = "데이터가 없어요!"
             showShortToast("데이터가 없어요!")
@@ -78,7 +75,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
     override fun initObserver() {
         //서버 연결 상태 옵져버
         activityViewModel.connectedState.observe(viewLifecycleOwner){
-            Log.e("TAG", "onViewCreated: $it", )
+            Log.e("TAG", "show onViewCreated: $it", )
             if(it==ConnectedState.DISCONNECTED) {
                 binding.progressBar.visibility = View.INVISIBLE
             }
@@ -131,16 +128,23 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             .setNegativeButton("삭제하기"){dialog,id->
                 Log.e("TAG", "deleteDialog: ${myData}", )
                 if(myData.type == ShowType.SERVER){
-                    activityViewModel.deleteServerData(myData.uid.toLong())
+                    activityViewModel.deleteServerData(myData.uid.toLong()).toString()
                 }else{
-                    activityViewModel.deleteRoomData(myData.billSubmitTime)
+                    activityViewModel.deleteRoomData(myData.billSubmitTime).toString()
                 }
-                findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+                findNavController().popBackStack()
             }
             .setPositiveButton("닫기"){dialog,id->
                 dialog.dismiss()
             }
             .create().show()
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("TAG", "onDestroy: show destroy", )
     }
 
     /** Fragment 뒤로가기 **/

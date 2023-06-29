@@ -3,6 +3,7 @@ package com.example.receiptcareapp.ui.botteomSheet
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -17,65 +18,69 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.data.manager.PreferenceManager
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
+import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_Bottom
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.text.DecimalFormat
+import javax.inject.Inject
 
 /**
  * 2023-03-22
  * pureum
  */
-class HomeCardBottomSheet : BottomSheetDialogFragment() {
+class HomeCardBottomSheet(
+) : BottomSheetDialogFragment() {
     private val binding: FragmentHomeCardBottomsheetBinding by lazy {
         FragmentHomeCardBottomsheetBinding.inflate(layoutInflater)
     }
+
     private val adapter: HomeCardAdapter = HomeCardAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private lateinit var callback : OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        val list = mutableListOf<DomainReceiveCardData>(
-////            DomainReceiveCardData("나라사랑 카드", 10000),
-////            DomainReceiveCardData("선민사랑 카드", 5555)
-//        )
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
-
         //서버 커넥팅 관리
         activityViewModel.connectedState.observe(viewLifecycleOwner){
-            Log.e("TAG", "onCreateView: $it", )
-            if(it == ConnectedState.CONNECTING){
-                binding.connectingView.isVisible = true
-                binding.serverProgressBar.isVisible = true
-                binding.addBtn.isClickable = false
-                setCenterText("", false)
-            }else if(it == ConnectedState.DISCONNECTED){
-                binding.connectingView.isVisible = false
-                binding.serverProgressBar.isVisible = false
-                binding.addBtn.isClickable = true
-                setCenterText("", false)
-            }else if(it == ConnectedState.CONNECTING_SUCCESS){
-                Toast.makeText(requireContext(), "전송 성공!", Toast.LENGTH_SHORT).show()
-                binding.connectingView.isVisible = false
-                binding.serverProgressBar.isVisible = false
-                binding.addBtn.isClickable = true
-                setCenterText("", false)
-            }else if(it == ConnectedState.CONNECTING_FALSE){
-                binding.connectingView.isVisible = false
-                binding.serverProgressBar.isVisible = false
-                binding.addBtn.isClickable = true
-                setCenterText("", false)
-                setCenterText("서버와 연결 실패!", true)
+            when(it){
+                ConnectedState.CONNECTING -> {
+                    binding.connectingView.isVisible = true
+                    binding.serverProgressBar.isVisible = true
+                    binding.addBtn.isClickable = false
+                    setCenterText("", false)
+                }
+                ConnectedState.DISCONNECTED -> {
+                    binding.connectingView.isVisible = false
+                    binding.serverProgressBar.isVisible = false
+                    binding.addBtn.isClickable = true
+                    setCenterText("", false)
+                }
+                ConnectedState.CONNECTING_SUCCESS -> {
+                    Toast.makeText(requireContext(), "전송 성공!", Toast.LENGTH_SHORT).show()
+                    binding.connectingView.isVisible = false
+                    binding.serverProgressBar.isVisible = false
+                    binding.addBtn.isClickable = true
+                    setCenterText("", false)
+                }
+                ConnectedState.CONNECTING_FALSE -> {
+                    binding.connectingView.isVisible = false
+                    binding.serverProgressBar.isVisible = false
+                    binding.addBtn.isClickable = true
+                    setCenterText("", false)
+                    setCenterText("서버와 연결 실패!", true)
+                }
             }
+            Log.e("TAG", "onCreateView: $it", )
         }
 
         binding.cardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
@@ -96,6 +101,13 @@ class HomeCardBottomSheet : BottomSheetDialogFragment() {
         binding.addBtn.setOnClickListener{
             val cardAddDialogBottom = CardAddDialog_Bottom()
             cardAddDialogBottom.show(parentFragmentManager, "CardAddDialog")
+        }
+
+        binding.logoutBtn.setOnClickListener{
+            activityViewModel.clearAll()
+            activity?.finish()
+            Toast.makeText(requireContext(), "로그아웃 성공.", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
         }
 
         //서버 카드 수정 및 삭제 다이알로그

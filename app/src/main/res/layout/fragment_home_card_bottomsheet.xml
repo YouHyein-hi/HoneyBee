@@ -3,7 +3,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="480dp"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     app:behavior_hideable="true"
     app:behavior_draggable="true"
@@ -38,9 +38,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cardRecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,15 +47,43 @@
         tools:listitem="@layout/card_item" />
 
     <View
-        android:visibility="invisible"
-        android:background="@color/watingColor"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="#818181"
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/logout_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardRecyclerview" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/logout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:fontFamily="@font/pretendardbold"
+        android:text="로그아웃"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <View
         android:id="@+id/connectingView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/watingColor"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ProgressBar
         android:id="@+id/serverProgressBar"
@@ -80,5 +107,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,7 @@
 package com.example.domain.repo
 
 import android.graphics.Bitmap
-import com.example.domain.model.receive.DomainReceiveAllData
-import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.receive.DomainResendAllData
-import com.example.domain.model.receive.DomainResendCardData
+import com.example.domain.model.receive.*
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.model.send.DomainSendData
 import okhttp3.MultipartBody
@@ -28,11 +25,11 @@ interface RetrofitRepo {
 
     suspend fun deleteCardDataRepo(id: Long):String
 
-    suspend fun updateDataRepo(domainResendData: DomainResendAllData):String
+    suspend fun updateDataRepo(domainResendData: DomainUpadateData): DomainServerReponse
 
     suspend fun updateCardDataRepo(domainResendCardData: DomainResendCardData):String
 
-    suspend fun requestLogin(email:String, password:String):String
+    suspend fun requestLogin(email:String, password:String):DomainServerReponse
 
     suspend fun myTest(file:MultipartBody.Part):String
 

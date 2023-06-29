@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.viewModel.activityViewmodel
 
+import android.app.Application
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -11,10 +12,13 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.data.local.dao.MyDao
+import com.example.data.manager.PreferenceManager
+import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.receive.DomainResendAllData
+import com.example.domain.model.receive.DomainUpadateData
 import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendCardData
@@ -23,12 +27,15 @@ import com.example.domain.usecase.RetrofitUseCase
 import com.example.domain.usecase.RoomUseCase
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
+import com.example.receiptcareapp.dto.LoginData
 import com.example.receiptcareapp.dto.RecyclerData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.HttpException
 import java.io.*
 import java.net.SocketTimeoutException
 import java.time.LocalDateTime
@@ -41,12 +48,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
+    application: Application,
     private val retrofitUseCase: RetrofitUseCase,
-    private val roomUseCase: RoomUseCase
-) : BaseViewModel() {
+    private val roomUseCase: RoomUseCase,
+    private val preferenceManager: PreferenceManager
+) : BaseViewModel(application) {
     private var waitTime = 5000L
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
-    var myCotext: Context? = null
+    // viewModel 의 lifecycle은 activity보다 길기 때문에 activity context를 참조하게되면 메모리 누수가 발생함.
+    // activity가 회전할 activity는 초기화가 되고, viewModel은 유지되는데,
+    // 이때 viewModel은 초기화 이전 activity의 context를 참조하고 있기 때문에 충돌 및 예외가 발생할 수 있음.
+    // context를 참조하는것 이외에, 함수로 넘겨받아 사용하는것도 타이밍에 따라 문제 발생 가능함
+    // 따라서 올바른 context 활용법이 필요.
+    // 방법 1. activityViewModel을 상속받아 viewmodel을 구성한는 방법
+    // (기존방법은 activityContext 참조였으나, ActivityContext를 참조하는방법임)
+    // 방법 2. util의 APP클레스에 DI로 Context를 선언해주는 방법
+    //    var myCotext: Context? = application
+
+
 
     private val _image = MutableLiveData<Uri>()
     val image: LiveData<Uri>
@@ -97,10 +116,6 @@ class MainActivityViewModel @Inject constructor(
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
                 var uid = "0"
-//                val file = File(absolutelyPath(sendData.picture, myCotext))
-//                val compressFile = compressImageFile(file)
-//                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 val result = retrofitUseCase.sendDataUseCase(
                     DomainSendData(
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
@@ -110,7 +125,7 @@ class MainActivityViewModel @Inject constructor(
                         ),
                         date = MultipartBody.Part.createFormData("billSubmitTime", sendData.billSubmitTime),
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
-                        picture = encodePicture(sendData.picture)
+                        picture = compressEncodePicture(sendData.picture)
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
@@ -142,16 +157,13 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    //로컬 데이터 재전송
     // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel에 옮길까
     fun resendData(sendData:AppSendData){
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
                 var uid = "0"
-//                val file = File(absolutelyPath(sendData.picture, myCotext))
-//                val compressFile = compressImageFile(file)
-//                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 val result = retrofitUseCase.sendDataUseCase(
                     DomainSendData(
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
@@ -161,7 +173,7 @@ class MainActivityViewModel @Inject constructor(
                         ),
                         date = MultipartBody.Part.createFormData("date", stringToDateTime(sendData.billSubmitTime)),
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
-                        picture = encodePicture(sendData.picture)
+                        picture = compressEncodePicture(sendData.picture)
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
@@ -193,11 +205,16 @@ class MainActivityViewModel @Inject constructor(
 
     //절대경로로 변환
     fun absolutelyPath(path: Uri?, context: Context?): String {
+        Log.e("TAG", "absolutelyPath: $path", )
         val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
         val c: Cursor? = context?.contentResolver?.query(path!!, proj, null, null, null)
         val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
         c?.moveToFirst()
         val result = c?.getString(index!!)
+        Log.e("TAG", "absolutelyPath proj: $proj", )
+        Log.e("TAG", "absolutelyPath c: $c", )
+        Log.e("TAG", "absolutelyPath index: $index", )
+        Log.e("TAG", "absolutelyPath result: $result", )
         return result!!
     }
 
@@ -268,47 +285,30 @@ class MainActivityViewModel @Inject constructor(
     }
 
     // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
-    fun updateServerData(sendData: AppSendData, uid : String, beforeDate: String) {
+    //서버 데이터 업데이트
+    fun updateServerData(sendData: UpdateData, uid : String, beforeTime: String) {
         Log.e("TAG", "changeServerData: $sendData", )
-        Log.e("TAG", "changeServerData: $uid", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
-//                val file = File(absolutelyPath(sendData.picture, myCotext))
-//                val compressFile = compressImageFile(file)
-//                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+                val localData = LocalDateTime.parse(sendData.billSubmitTime)
+                Log.e("TAG", "updateServerData: $localData", )
+
                 val result = retrofitUseCase.updateDataUseCase(
-                    DomainResendAllData(
-                        id = MultipartBody.Part.createFormData("id", uid),
-                        cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
-                        amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
-                        date = MultipartBody.Part.createFormData("billSubmitTime", sendData.billSubmitTime),
-                        storeName = MultipartBody.Part.createFormData("storeName", sendData.storeName),
-                        picture = encodePicture(sendData.picture)
+                    DomainUpadateData(
+                        id = uid.toLong(),
+                        cardName = sendData.cardName,
+                        storeName = sendData.storeName,
+                        billSubmitTime = localData,
+                        amount = sendData.amount.replace(",","")
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
-                if (result == "add success") {
+                if(result.status == "200")
                     _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
-
-                    //TODO 룸 업데이트 기능 만들어서 적용하기
-//                    deleteRoomData(beforeDate)
-//                    insertRoomData(
-//                        DomainRoomData(
-//                            cardName = sendData.cardName,
-//                            amount = sendData.amount,
-//                            storeName = sendData.storeName,
-//                            billSubmitTime = sendData.billSubmitTime,
-//                            file = sendData.picture.toString(),
-//                            uid = uid
-//                        )
-//                    )
-                }
-                else {
-                    Log.e("TAG", "sendData: 실패입니다!")
-                    _connectedState.postValue(ConnectedState.CONNECTING_FALSE)
-                    Exception("오류! 전송 실패.")
+                else{
+                    Exception("오류! 전송 실패")
                 }
             } ?: throw SocketTimeoutException()
         }
@@ -373,23 +373,22 @@ class MainActivityViewModel @Inject constructor(
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
-    fun compressImageFile(inputFile: File): File {
+    fun compressImageFile(file: File): File {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
 
-        BitmapFactory.decodeFile(inputFile.absolutePath, options)
+        BitmapFactory.decodeFile(file.absolutePath, options)
 
-        val resize = if(inputFile.length() > 1000000) 6 else 1
+        val resize = if(file.length() > 1000000) 5 else 1
 
         options.inJustDecodeBounds = false
         options.inSampleSize = resize
 
-        val bitmap = BitmapFactory.decodeFile(inputFile.absolutePath, options)
+        val bitmap = BitmapFactory.decodeFile(file.absolutePath, options)
 
-        val rotatedBitmap = rotateImageIfRequired(bitmap, inputFile.absolutePath)
+        val rotatedBitmap = rotateImageIfRequired(bitmap, file.absolutePath)
 
         val outputFile = File.createTempFile("compressed_", ".jpg")
-
         try {
             val outputStream = FileOutputStream(outputFile)
             rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
@@ -401,33 +400,16 @@ class MainActivityViewModel @Inject constructor(
         return outputFile
     }
 
-    fun encodePicture(uri:Uri): MultipartBody.Part{
-        val file = File(absolutelyPath(uri, myCotext))
+    fun compressEncodePicture(uri:Uri): MultipartBody.Part{
+        val file = File(absolutelyPath(uri, getApplication()))
         val compressFile = compressImageFile(file)
         val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData("file", file.name, requestFile)
     }
+
+
+    fun clearAll(){
+        preferenceManager.clearAll()
+    }
+
 }
-
-
-//    fun deleteCardData(id: Long) {
-//        _connectedState.value = ConnectedState.CONNECTING
-//        _serverJob.value = CoroutineScope(exceptionHandler).launch {
-//            withTimeoutOrNull(waitTime) {
-//                retrofitUseCase.deleteCardDataUseCase(id)
-//                // 결과값을 분기문으로 관리 + 커넥트 풀어주기
-//                // 성공하면 값을 불러오기
-//                receiveServerCardData()
-//            }?:throw SocketTimeoutException()
-//        }
-//    }
-
-//    fun changeCardData(id: Long) {
-//        CoroutineScope(exceptionHandler).launch {
-//            withTimeoutOrNull(waitTime) {
-//                val gap = roomUseCase.getAllData()
-//                Log.e("TAG", "changeCardData: $gap")
-////            retrofitUseCase.resendCardDataUseCase()
-//            }?:throw SocketTimeoutException()
-//        }
-//    }

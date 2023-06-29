@@ -2,10 +2,12 @@ package com.example.data.remote.dataSourceImpl
 
 import android.util.Log
 import com.example.data.remote.dataSource.RetrofitSource
+import com.example.data.remote.model.ServerResponse
 import com.example.data.remote.model.ReceiveCardData
 import com.example.data.remote.model.ReceiveData
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 /**
@@ -60,12 +62,12 @@ class RetrofitSourceImpl @Inject constructor(
     }
 
     override suspend fun updateDataSource(
-        id: MultipartBody.Part,
-        cardName: MultipartBody.Part,
-        amount: MultipartBody.Part,
-        storeName: MultipartBody.Part,
-        billSubmitTime: MultipartBody.Part,
-    ): String {
+        id: Long,
+        cardName: String,
+        storeName: String,
+        billSubmitTime: LocalDateTime,
+        amount: String
+    ): ServerResponse {
         return retrofit.create(RetrofitSource::class.java).updateDataSource(
             id = id,
             cardName = cardName,
@@ -84,7 +86,7 @@ class RetrofitSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun requestLogin(email: String, password: String): String {
+    override suspend fun requestLogin(email: String, password: String): ServerResponse {
         return retrofit.create(RetrofitSource::class.java).requestLogin(
             email = email,
             password = password

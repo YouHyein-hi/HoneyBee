@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.activityViewModels
+import com.example.domain.model.UpdateData
+import com.example.domain.model.send.AppSendData
+import com.example.receiptcareapp.State.ShowType
 import androidx.fragment.app.viewModels
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
@@ -82,7 +85,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             val data = activityViewModel.selectedData.value
 
             when {
-                checked == " " -> { showShortToast("카드를 입력하세요.") }
+                checked == "" -> { showShortToast("카드를 입력하세요.") }
                 binding.changeBtnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
                 binding.changeBtnPrice.text!!.isEmpty() -> { showShortToast("금액을 입력하세요.") }
                 myLocalDateTime.toString() == "" -> { showShortToast("날짜를 입력하세요.") }
@@ -90,19 +93,18 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                 else -> {
                     Log.e("TAG", "onCreateView: 다 있음!")
                     activityViewModel.updateServerData(
-                        sendData = AppSendData(
+                        sendData = UpdateData(
                             billSubmitTime = myLocalDateTime.toString(),
                             amount = binding.changeBtnPrice.text.toString(),
                             cardName = checked,
-                            picture = myData.file!!,
                             storeName = binding.changeBtnStore.text.toString()
                         ),
                         uid = myData.uid,
-                        beforeDate = myData.billSubmitTime
+                        beforeTime = myData.billSubmitTime
                     )
+                    dismiss()
                 }
             }
-            dismiss()
         }
 
         binding.changeBtnNegative.setOnClickListener {
@@ -161,14 +163,11 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     // 여기서 position은 0부터 시작함
-//                    downArrow.visibility = View.INVISIBLE
-
                     Log.e("TAG", "getSpinner onItemSelected: ${position}")
                     Log.e("TAG", "getSpinner onItemSelected: ${myArray[position]}")
                     val spiltCard = changeViewModel.SplitColon(myArray[position])
                     cardId = position
-                    checked = spiltCard[0]
-                    Log.e("TAG", "onItemSelected: ${checked}")
+                    checked = spiltCard[0].replace(" ","")
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}

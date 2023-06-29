@@ -4,12 +4,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import com.example.data.remote.dataSource.RetrofitSource
+import com.example.data.remote.model.ServerResponse
+import com.example.data.remote.model.toDomainLoginResponse
 import com.example.data.remote.model.toDomainReceiveCardData
 import com.example.data.remote.model.toDomainReceiveData
-import com.example.domain.model.receive.DomainReceiveAllData
-import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.receive.DomainResendAllData
-import com.example.domain.model.receive.DomainResendCardData
+import com.example.domain.model.receive.*
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.model.send.DomainSendData
 import com.example.domain.repo.RetrofitRepo
@@ -64,14 +63,14 @@ class RetrofitRepoImpl @Inject constructor(
         return retrofitSource.deleteCardDataSource(id)
     }
 
-    override suspend fun updateDataRepo(domainResendData: DomainResendAllData): String {
+    override suspend fun updateDataRepo(domainResendData: DomainUpadateData): DomainServerReponse {
         return retrofitSource.updateDataSource(
             id = domainResendData.id,
             cardName = domainResendData.cardName,
             amount = domainResendData.amount,
             storeName = domainResendData.storeName,
-            billSubmitTime = domainResendData.date,
-        )
+            billSubmitTime = domainResendData.billSubmitTime,
+        ).toDomainLoginResponse()
     }
 
     override suspend fun updateCardDataRepo(domainResendCardData: DomainResendCardData): String {
@@ -81,8 +80,8 @@ class RetrofitRepoImpl @Inject constructor(
         )
     }
 
-    override suspend fun requestLogin(email: String, password: String): String {
-        return retrofitSource.requestLogin(email = email, password = password)
+    override suspend fun requestLogin(email: String, password: String): DomainServerReponse {
+        return retrofitSource.requestLogin(email = email, password = password).toDomainLoginResponse()
     }
 
 

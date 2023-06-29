@@ -8,6 +8,7 @@
     tools:context=".ui.activity.LoginActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="right"
@@ -17,6 +18,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:textSize="15dp"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="DC Lab 영수증 관리 어플"
+            android:fontFamily="@font/murukmuruk"
+            />
+        <TextView
+            android:textColor="#434343"
+            android:textSize="50dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Honey Bee"
+            android:fontFamily="@font/murukmuruk"
+            android:paddingBottom="30dp"
+            />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,49 +44,46 @@
             android:orientation="horizontal">
 
             <TextView
-                android:textSize="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="email"
                 android:paddingRight="5dp"
-                />
+                android:text="email"
+                android:textSize="20dp" />
 
             <EditText
-                android:inputType="textEmailAddress"
                 android:id="@+id/edit_email"
-                android:textSize="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="7"
-                />
+                android:inputType="textEmailAddress"
+                android:textSize="20dp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:paddingBottom="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="25dp">
 
             <TextView
-                android:textSize="20dp"
-                android:paddingRight="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="pw" />
+                android:paddingRight="5dp"
+                android:text="pw"
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/edit_pw"
-                android:textSize="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="7"
-                />
+                android:textSize="20dp" />
 
         </LinearLayout>
 
@@ -74,8 +91,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button"
@@ -86,7 +103,28 @@
                 android:textColor="@color/black"
                 android:textSize="18dp" />
         </LinearLayout>
-
     </LinearLayout>
+    <View
+        android:visibility="invisible"
+        android:background="#77545454"
+        android:id="@+id/loginView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ProgressBar
+        android:visibility="invisible"
+        android:id="@+id/login_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

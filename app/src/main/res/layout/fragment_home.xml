@@ -48,7 +48,7 @@
             android:layout_marginTop="50dp"
             android:fontFamily="@font/murukmuruk"
             android:text="Honey Bee"
-            android:textColor="@color/black"
+            android:textColor="#434343"
             android:textSize="48sp"
             android:transitionName="title"
             app:layout_constraintEnd_toEndOf="parent"

@@ -23,7 +23,10 @@ import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerShowViewMo
 import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerViewModel
 
 
-class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
+class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(
+    FragmentRecyclerBinding::inflate,
+    "RecyclerFragment"
+) {
     init {
         Log.e("TAG", ": RecyclerFragment RecyclerFragment RecyclerFragment", )
     }
@@ -36,6 +39,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     private lateinit var myData : RecyclerData
 
     override fun initData() {
+        Log.e(TAG, "initData", )
         viewModel.changeStartGap(ShowType.SERVER)
         //init
         activityViewModel.changeNullPicture()
@@ -43,7 +47,6 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
         //넘겨받는 데이터의 값을 초기화시키기.
         activityViewModel.changeSelectedData(null)
-//        activityViewModel.myShowServerData(null)
 
         //어뎁터 데이터 리스트 비워주기
         recyclerServerAdapter.dataList.clear()
@@ -51,6 +54,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
     }
 
     override fun initUI() {
+        Log.e(TAG, "initUI", )
         if(viewModel.startGap.value == ShowType.LOCAL){
             Log.e("TAG", "로컬부분!", )
             binding.bottomNavigationView.menu.findItem(R.id.local).isChecked = true
@@ -63,6 +67,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             activityViewModel.receiveServerAllData()
             initServerRecyclerView()
             binding.explain.text = "서버의 데이터 입니다."
+            activityViewModel.changeNullPicture()
         }
     }
 
@@ -123,9 +128,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
                 file = it.file
             )
             activityViewModel.changeSelectedData(myData)
-
             activityViewModel.changeNullPicture()
-
             viewModel.changeStartGap(ShowType.LOCAL)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
@@ -163,9 +166,9 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             }
         }
 
-            //화면 전환
+        //화면 전환
         activityViewModel.picture.observe(viewLifecycleOwner){
-            Log.e("TAG", "받아온 사진: $it", )
+            Log.e(TAG, "받아온 사진: $it", )
             if(it != null){
                 // 서버통신을 통해 받아온 사진 추가
                 activityViewModel.putPictureData(viewModel.bitmapToUri(requireActivity(),it))
@@ -210,5 +213,8 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+    companion object{
+        private const val TAG = "RecyclerFragment"
     }
 }

@@ -1,6 +1,7 @@
 package com.example.receiptcareapp.ui.dialog
 
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -8,15 +9,20 @@ import androidx.fragment.app.activityViewModels
 import com.example.domain.model.UpdateData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.State.ShowType
+import androidx.fragment.app.viewModels
+import com.example.domain.model.send.AppSendData
+import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
+import com.example.receiptcareapp.databinding.SpinnerCustomItemLayoutBinding
 import com.example.receiptcareapp.dto.RecyclerData
-import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
+import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import java.time.LocalDateTime
+import com.example.receiptcareapp.viewModel.dialogViewModel.ChangeViewModel
 
 class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val changeViewModel : ChangeViewModel by viewModels()
     private lateinit var myData: RecyclerData
     private var myArray = arrayListOf<String>()
     private var checked = ""
@@ -32,7 +38,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
             myData = activityViewModel.selectedData.value!!
-            newDate = myData.billSubmitTime.replace(" ", "").split("년", "월", "일", "시", "분", "초")
+            newDate = changeViewModel.DateReplace(myData.billSubmitTime)
             Log.e("TAG", "initData myData : $myData", )
         } else {
             showShortToast("데이터가 없습니다!")
@@ -44,46 +50,24 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
     override fun initUI() {
         getSpinner()
 
-
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout((width * 1), ViewGroup.LayoutParams.WRAP_CONTENT)
-        val dataCardName = myData.cardName
-
-        activityViewModel.cardData.observe(viewLifecycleOwner) {
-            myArray.clear()
-            it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
-            val adapter = ShowPictureAdapter(requireContext(), myArray)
-            binding.changeCardspinner.adapter = adapter
-
-            var position = -1
-            for (i in 0 until adapter.count) {
-                val item = adapter.getItem(i)
-                if (item!!.startsWith("$dataCardName ")) {
-                    position = i
-                    break
-                }
-            }
-            if (position != -1) {
-                binding.changeCardspinner.setSelection(position)
-            }
-            else{
-                dismiss()
-                showShortToast("카드 불러오기 실패!")
-            }
-        }
-
-        val newDate = myData.billSubmitTime.replace(" ", ""). split("년","월","일","시","분","초")
-        Log.e("TAG", "onCreateView: ${myData.cardName}", )
 
         // 수정 전 로컬 데이터 화면에 띄우기
         // Spinner은 아직 설정 안함
         binding.changeCardspinner
         binding.changeBtnStore.setText(myData.storeName)
         binding.changeBtnPrice.setText(myData.amount)
-        settingYear = newDate[0].toInt()
-        settingMonth = newDate[1].toInt()
-        settingDay = newDate[2].toInt()
-        binding.changeDatepicker.init(settingYear, settingMonth - 1, settingDay, null)
+        try{
+            settingYear = newDate[0].toInt()
+            settingMonth = newDate[1].toInt()
+            settingDay = newDate[2].toInt()
+            binding.changeDatepicker.init(settingYear, settingMonth - 1, settingDay, null)
+        } catch (e: NullPointerException){
+            dismiss()
+            showShortToast("날짜 불러오기를 실패했습니다.")
+        }
+
     }
 
     override fun initListener() {
@@ -93,10 +77,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             myDay = binding.changeDatepicker.dayOfMonth
             Log.e("TAG", "onCreateDialog: $myYear, $myMonth, $myDay")
 
-            val myLocalDateTime = LocalDateTime.of(
-                myYear, myMonth, myDay,
-                LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second
-            )
+            val myLocalDateTime = changeViewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
 
             Log.e("TAG", "onCreateView: ${myData.uid}", )
             Log.e("TAG", "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${checked}, ${binding.changeBtnStore.text}, ${myData.file}", )
@@ -132,11 +113,23 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
     }
 
     override fun initObserver() {
+        val dataCardName = myData.cardName
+
         activityViewModel.cardData.observe(viewLifecycleOwner) {
             myArray.clear()
             it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
-            val adapter = ShowPictureAdapter(requireContext(), myArray)
+            val adapter =
+                SpinnerAdapter(requireContext(), myArray)
             binding.changeCardspinner.adapter = adapter
+
+            var position = changeViewModel.AdapterPosition(adapter, dataCardName)
+            if (position != -1) {
+                binding.changeCardspinner.setSelection(position)
+            }
+            else{
+                dismiss()
+                showShortToast("카드 불러오기 실패!")
+            }
         }
 
         //프로그래스 바 컨트롤
@@ -145,21 +138,34 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
         }
     }
 
+
+    /*
+    *
+        binding.changeCardspinner.setOnClickListener {
+            downArrow.visibility = View.INVISIBLE;
+        }
+    * */
     private fun getSpinner() {
         activityViewModel.receiveServerCardData()
-        val adapter = ShowPictureAdapter(requireContext(), myArray)
+        val adapter = SpinnerAdapter(requireContext(), myArray)
+
+        val inflater = LayoutInflater.from(context)
+//        val view = inflater.inflate(R.layout.spinner_custom_item_layout, null)
+//        val downArrow = view.findViewById<ImageView>(R.id.downArrow)
+
+//        downArrow.visibility = View.VISIBLE
+        /*binding.changeCardspinner.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            downArrow.visibility = View.INVISIBLE
+        }*/
 
         binding.changeCardspinner?.adapter = adapter
         binding.changeCardspinner?.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    adapterView: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
+                override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     // 여기서 position은 0부터 시작함
-                    val spiltCard = myArray[position].split(" : ")
+                    Log.e("TAG", "getSpinner onItemSelected: ${position}")
+                    Log.e("TAG", "getSpinner onItemSelected: ${myArray[position]}")
+                    val spiltCard = changeViewModel.SplitColon(myArray[position])
                     cardId = position
                     checked = spiltCard[0].replace(" ","")
                 }

@@ -16,7 +16,10 @@ import com.example.receiptcareapp.ui.botteomSheet.HomeCardBottomSheet
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 
 //메인 프레그먼트/
-class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(
+    FragmentHomeBinding::inflate,
+    "HomeFragment"
+) {
 
     private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
     private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)

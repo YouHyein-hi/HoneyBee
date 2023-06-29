@@ -1,8 +1,10 @@
 package com.example.receiptcareapp.base
 
+import android.app.Application
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +19,7 @@ import java.net.UnknownHostException
  * 2023-02-15
  * pureum
  */
-abstract class BaseViewModel  : ViewModel(){
+abstract class BaseViewModel(application: Application)  : AndroidViewModel(application){
 
     private val _fetchState = MutableLiveData<Pair<Throwable, FetchState>>()
     val fetchState : LiveData<Pair<Throwable, FetchState>>

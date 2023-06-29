@@ -14,14 +14,19 @@ import androidx.viewbinding.ViewBinding
  * pureum
  */
 abstract class BaseActivity<VB:ViewBinding>(
-    private val inflate: (LayoutInflater) -> VB
+    private val inflate: (LayoutInflater) -> VB,
+    name: String
 ) : AppCompatActivity(){
+
+    init {
+        TAG = name
+    }
 
     private var _binding: VB? = null
     val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.e("TAG", "onCreate: ", )
+        Log.e(TAG, "onCreate", )
         super.onCreate(savedInstanceState)
         _binding = inflate(layoutInflater)
         setContentView(binding.root)
@@ -32,32 +37,32 @@ abstract class BaseActivity<VB:ViewBinding>(
     }
 
     override fun onStart() {
-        Log.e("TAG", "onStart: ", )
+        Log.e(TAG, "onStart", )
         super.onStart()
     }
 
     override fun onResume() {
-        Log.e("TAG", "onResume: ", )
+        Log.e(TAG, "onResume", )
         super.onResume()
     }
 
     override fun onPause() {
-        Log.e("TAG", "onPause: ", )
+        Log.e(TAG, "onPause", )
         super.onPause()
     }
 
     override fun onRestart() {
-        Log.e("TAG", "onRestart: ", )
+        Log.e(TAG, "onRestart", )
         super.onRestart()
     }
 
     override fun onStop() {
-        Log.e("TAG", "onStop: ", )
+        Log.e(TAG, "onStop", )
         super.onStop()
     }
 
     override fun onDestroy() {
-        Log.e("TAG", "onDestroy: ", )
+        Log.e(TAG, "onDestroy", )
         super.onDestroy()
     }
 
@@ -71,4 +76,8 @@ abstract class BaseActivity<VB:ViewBinding>(
 
     protected fun showLongToast(message: String?) =
         Toast.makeText(this, message ?: "", Toast.LENGTH_LONG).show()
+
+    companion object{
+        var TAG = ""
+    }
 }

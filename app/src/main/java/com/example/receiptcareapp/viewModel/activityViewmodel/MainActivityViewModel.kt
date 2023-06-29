@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.viewModel.activityViewmodel
 
+import android.app.Application
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -12,6 +13,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.data.local.dao.MyDao
+import com.example.data.manager.PreferenceManager
 import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveAllData
@@ -25,8 +27,10 @@ import com.example.domain.usecase.RetrofitUseCase
 import com.example.domain.usecase.RoomUseCase
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
+import com.example.receiptcareapp.dto.LoginData
 import com.example.receiptcareapp.dto.RecyclerData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -44,12 +48,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
+    application: Application,
     private val retrofitUseCase: RetrofitUseCase,
-    private val roomUseCase: RoomUseCase
-) : BaseViewModel() {
+    private val roomUseCase: RoomUseCase,
+    private val preferenceManager: PreferenceManager
+) : BaseViewModel(application) {
     private var waitTime = 5000L
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
-    var myCotext: Context? = null
+    // viewModel 의 lifecycle은 activity보다 길기 때문에 activity context를 참조하게되면 메모리 누수가 발생함.
+    // activity가 회전할 activity는 초기화가 되고, viewModel은 유지되는데,
+    // 이때 viewModel은 초기화 이전 activity의 context를 참조하고 있기 때문에 충돌 및 예외가 발생할 수 있음.
+    // context를 참조하는것 이외에, 함수로 넘겨받아 사용하는것도 타이밍에 따라 문제 발생 가능함
+    // 따라서 올바른 context 활용법이 필요.
+    // 방법 1. activityViewModel을 상속받아 viewmodel을 구성한는 방법
+    // (기존방법은 activityContext 참조였으나, ActivityContext를 참조하는방법임)
+    // 방법 2. util의 APP클레스에 DI로 Context를 선언해주는 방법
+    //    var myCotext: Context? = application
+
+
 
     private val _image = MutableLiveData<Uri>()
     val image: LiveData<Uri>
@@ -99,10 +115,6 @@ class MainActivityViewModel @Inject constructor(
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
                 var uid = "0"
-//                val file = File(absolutelyPath(sendData.picture, myCotext))
-//                val compressFile = compressImageFile(file)
-//                val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//                val myPicture = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 val result = retrofitUseCase.sendDataUseCase(
                     DomainSendData(
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
@@ -279,11 +291,6 @@ class MainActivityViewModel @Inject constructor(
 
                 val result = retrofitUseCase.updateDataUseCase(
                     DomainUpadateData(
-//                        id = MultipartBody.Part.createFormData("id", uid),
-//                        cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
-//                        storeName = MultipartBody.Part.createFormData("storeName", sendData.storeName),
-//                        date = MultipartBody.Part.createFormData("billSubmitTime", sendData.billSubmitTime),
-//                        amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",",""))
                         id = uid.toLong(),
                         cardName = sendData.cardName,
                         storeName = sendData.storeName,
@@ -297,22 +304,6 @@ class MainActivityViewModel @Inject constructor(
                 else{
                     Exception("오류! 전송 실패")
                 }
-//                if (result == "add success") {
-//                    _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
-//                    val gap = roomUseCase.updateData(
-//                        beforeTime = beforeTime,
-//                        cardName = sendData.cardName,
-//                        amount = sendData.amount,
-//                        pictureName = sendData.storeName,
-//                        billSubmitTime = sendData.billSubmitTime
-//                    )
-//                    Log.e("TAG", "updateServerData: $gap", )
-//                }
-//                else {
-//                    Log.e("TAG", "sendData: 실패입니다!")
-//                    _connectedState.postValue(ConnectedState.CONNECTING_FALSE)
-//                    Exception("오류! 전송 실패.")
-//                }
             } ?: throw SocketTimeoutException()
         }
     }
@@ -391,7 +382,6 @@ class MainActivityViewModel @Inject constructor(
         val rotatedBitmap = rotateImageIfRequired(bitmap, file.absolutePath)
 
         val outputFile = File.createTempFile("compressed_", ".jpg")
-
         try {
             val outputStream = FileOutputStream(outputFile)
             rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
@@ -404,40 +394,15 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun compressEncodePicture(uri:Uri): MultipartBody.Part{
-
-        val file = File(absolutelyPath(uri, myCotext))
+        val file = File(absolutelyPath(uri, getApplication()))
         val compressFile = compressImageFile(file)
         val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData("file", file.name, requestFile)
     }
 
-//    fun compressEncodePicture(uri:Uri): MultipartBody.Part{
-//        val file = File(absolutelyPath(uri, myCotext))
-//        val compressFile = compressImageFile(file)
-//        val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//        return MultipartBody.Part.createFormData("file", file.name, requestFile)
-//    }
+
+    fun clearAll(){
+        preferenceManager.clearAll()
+    }
+
 }
-
-
-//    fun deleteCardData(id: Long) {
-//        _connectedState.value = ConnectedState.CONNECTING
-//        _serverJob.value = CoroutineScope(exceptionHandler).launch {
-//            withTimeoutOrNull(waitTime) {
-//                retrofitUseCase.deleteCardDataUseCase(id)
-//                // 결과값을 분기문으로 관리 + 커넥트 풀어주기
-//                // 성공하면 값을 불러오기
-//                receiveServerCardData()
-//            }?:throw SocketTimeoutException()
-//        }
-//    }
-
-//    fun changeCardData(id: Long) {
-//        CoroutineScope(exceptionHandler).launch {
-//            withTimeoutOrNull(waitTime) {
-//                val gap = roomUseCase.getAllData()
-//                Log.e("TAG", "changeCardData: $gap")
-////            retrofitUseCase.resendCardDataUseCase()
-//            }?:throw SocketTimeoutException()
-//        }
-//    }

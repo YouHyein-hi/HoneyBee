@@ -23,7 +23,10 @@ import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerShowViewMo
 import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerViewModel
 
 
-class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate) {
+class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(
+    FragmentRecyclerBinding::inflate,
+    "RecyclerFragment"
+) {
     init {
         Log.e("TAG", ": RecyclerFragment RecyclerFragment RecyclerFragment", )
     }

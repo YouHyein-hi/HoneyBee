@@ -1,13 +1,18 @@
 package com.example.receiptcareapp.viewModel.activityViewmodel
 
+import android.app.Application
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.data.manager.PreferenceManager
 import com.example.domain.model.receive.DomainServerReponse
 import com.example.domain.usecase.RetrofitUseCase
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
+import com.example.receiptcareapp.dto.LoginData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
@@ -20,9 +25,11 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class LoginActivityViewModel @Inject constructor(
+    application: Application,
     private val retrofitUseCase: RetrofitUseCase,
+    private val preferenceManager: PreferenceManager
     //sharedpreference 사용해서 로그인한 핸드폰은 자동로그인
-): BaseViewModel() {
+): BaseViewModel(application) {
     private var waitTime = 3000L
 
     init {
@@ -57,6 +64,12 @@ class LoginActivityViewModel @Inject constructor(
         }
     }
 
+    fun putLoginData(id:String, pw:String){
+        preferenceManager.putLogin(id)
+        preferenceManager.putPassword(pw)
+    }
+
+    fun getLoginData(): LoginData = LoginData(preferenceManager.getLogin(), preferenceManager.getPassword())
 
 
     override fun onCleared() {

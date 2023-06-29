@@ -15,13 +15,13 @@ import com.example.receiptcareapp.util.FetchState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>({ActivityMainBinding.inflate(it)}) {
-//    private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+class MainActivity : BaseActivity<ActivityMainBinding>(
+    {ActivityMainBinding.inflate(it)},
+    "MainActivity"
+) {
     private val activityViewModel: MainActivityViewModel by viewModels()
 
-    override fun initData() {
-        activityViewModel.myCotext = applicationContext
-    }
+    override fun initData() {}
 
     override fun initUI() {
         supportActionBar?.hide()

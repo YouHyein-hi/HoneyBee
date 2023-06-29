@@ -11,22 +11,35 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.data.manager.PreferenceManager
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityLoginBinding
 import com.example.receiptcareapp.databinding.ActivityMainBinding
+import com.example.receiptcareapp.dto.LoginData
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.log
 
 @AndroidEntryPoint
-class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }) {
-
+class LoginActivity : BaseActivity<ActivityLoginBinding>(
+    { ActivityLoginBinding.inflate(it) }, 
+    "LoginActivity"
+) {
     private val viewModel: LoginActivityViewModel by viewModels()
-    var backPressedTime: Long = 0
+    private var backPressedTime: Long = 0
+    private val loginData = LoginData(null,null)
 
     override fun initData() {
+//        nextAndFinish()
+        if(viewModel.getLoginData().id != null){
+            nextAndFinish()
+            Log.e("TAG", "initData: ${viewModel.getLoginData()}", )
+        }else{
+            Log.e("TAG", "initData: 로그인 정보가 없음!", )
+        }
     }
 
     override fun initUI() {
@@ -38,12 +51,14 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
 
     override fun initListener() {
         binding.button.setOnClickListener {
+            loginData.id = binding.editEmail.text.toString()
+            loginData.pw = binding.editPw.text.toString()
             downKeyBoard()
-//            startActivity(Intent(this, MainActivity::class.java))
-            viewModel.requestLogin(binding.editEmail.text.toString(), binding.editPw.text.toString())
-//            viewModel.requestLogin("1234@email.com", "12434")
-//            startActivity(Intent(this, MainActivity::class.java))
-//            finish()
+            with(loginData){
+                if(id.isNullOrEmpty()) showShortToast("아이디를 입력해주세요.")
+                else if(pw.isNullOrEmpty()) showShortToast("비밀번호를 입력해주세요.")
+                else viewModel.requestLogin(binding.editEmail.text.toString(), binding.editPw.text.toString())
+            }
         }
     }
 
@@ -59,7 +74,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
                 binding.loginView.visibility = View.INVISIBLE
             }
         }
-
 
         //에러 대응
         viewModel.fetchState.observe(this) {
@@ -83,9 +97,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             Log.e("TAG", "initObserver: $response")
             when (response.status) {
                 "200" -> {
-                    showShortToast("환영합니다.")
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    viewModel.putLoginData(
+                        binding.editEmail.text.toString(), binding.editPw.text.toString()
+                    )
+                    nextAndFinish()
                 }
                 else -> {
                     showShortToast("알 수 없는 오류입니다.")
@@ -108,9 +123,14 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         return true
     }
 
-    fun downKeyBoard(){
+    private fun nextAndFinish(){
+        showShortToast("환영합니다.")
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
+    private fun downKeyBoard(){
         val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
-
 }

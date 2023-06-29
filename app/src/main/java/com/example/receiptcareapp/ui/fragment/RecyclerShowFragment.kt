@@ -20,7 +20,10 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerShowViewModel
 
-class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate) {
+class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(
+    FragmentRecyclerShowBinding::inflate,
+    "RecyclerShowFragment"
+) {
     private val activityViewModel : MainActivityViewModel by activityViewModels()
     private val viewModel : RecyclerShowViewModel by viewModels()
     private lateinit var myData: ShowData

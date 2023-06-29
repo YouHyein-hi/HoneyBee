@@ -8,5 +8,6 @@ import dagger.hilt.android.HiltAndroidApp
  * pureum
  */
 @HiltAndroidApp
+// 액티비티 시작전에 작동함
 class App:Application() {
 }

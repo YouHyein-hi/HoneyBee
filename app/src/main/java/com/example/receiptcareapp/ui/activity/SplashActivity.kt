@@ -2,6 +2,8 @@ package com.example.receiptcareapp.ui.activity
 
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.example.receiptcareapp.base.BaseActivity
@@ -11,10 +13,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SplashActivity : BaseActivity<ActivitySplashBinding>({ActivitySplashBinding.inflate(it)}) {
+class SplashActivity : BaseActivity<ActivitySplashBinding>(
+    {ActivitySplashBinding.inflate(it)},
+    "SplashActivity"
+) {
 
-    override fun initData() {
-    }
+    override fun initData() {}
 
     override fun initUI() {
         supportActionBar?.hide()
@@ -35,9 +39,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>({ActivitySplashBindin
         }
     }
 
-    override fun initListener() {
-    }
+    override fun initListener() {}
 
-    override fun initObserver() {
-    }
+    override fun initObserver() {}
 }

@@ -14,18 +14,12 @@ interface MyDao {
     @Query("Select * From MyDataTable")
     fun getAllData(): List<MyEntity>
 
-    @Insert(onConflict = OnConflictStrategy.ABORT) //err
+    @Insert(onConflict = OnConflictStrategy.REPLACE) //err
     fun insertData(list: MyEntity)
 
     @Query("Delete from MyDataTable where billSubmitTime = :date")
     fun deleteData(date: String): Int
 
-    @Query("Update MyDataTable SET cardName = :cardName And amount = :amount And pictureName = :pictureName And billSubmitTime = :presentTime Where billSubmitTime = :beforeTime")
-    fun updateData(
-        beforeTime: String,
-        cardName: String,
-        amount: String,
-        pictureName: String,
-        presentTime: String
-    ): Int
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateData(list: MyEntity)
 }

@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.viewModel.activityViewmodel
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.database.Cursor
@@ -12,7 +13,6 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.data.local.dao.MyDao
 import com.example.data.manager.PreferenceManager
 import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
@@ -27,15 +27,12 @@ import com.example.domain.usecase.RetrofitUseCase
 import com.example.domain.usecase.RoomUseCase
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
-import com.example.receiptcareapp.dto.LoginData
 import com.example.receiptcareapp.dto.RecyclerData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import retrofit2.HttpException
 import java.io.*
 import java.net.SocketTimeoutException
 import java.time.LocalDateTime
@@ -115,7 +112,6 @@ class MainActivityViewModel @Inject constructor(
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
-                var uid = "0"
                 val result = retrofitUseCase.sendDataUseCase(
                     DomainSendData(
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
@@ -129,13 +125,11 @@ class MainActivityViewModel @Inject constructor(
                     )
                 )
                 Log.e("TAG", "sendData 응답 : $result ")
-                uid = result
 
-                if (uid != "0") { //TODO uid != "0"이 아니라 실패했을 때 서버에서 받아오는 메세지로 조건식 바꾸자!!
+                if (result != "0") { //TODO uid != "0"이 아니라 실패했을 때 서버에서 받아오는 메세지로 조건식 바꾸자!!
                     var splitData =""
                     if(sendData.billSubmitTime.contains("-") && sendData.billSubmitTime.contains("T") && sendData.billSubmitTime.contains(":")){
-                        val myList = sendData.billSubmitTime.split("-","T",":")
-                        if(myList.size == 6) splitData = "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
+                        splitData = dateTimeToString(sendData.billSubmitTime)
                     }
                     _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
                     insertRoomData(
@@ -145,7 +139,7 @@ class MainActivityViewModel @Inject constructor(
                             storeName = sendData.storeName,
                             billSubmitTime = splitData,
                             file = sendData.picture.toString(),
-                            uid = uid
+                            uid = result
                         )
                     )
                 } else {
@@ -158,29 +152,33 @@ class MainActivityViewModel @Inject constructor(
     }
 
     //로컬 데이터 재전송
-    // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel에 옮길까
-    fun resendData(sendData:AppSendData){
+    fun resendData(sendData:AppSendData, beforeUid: String){
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
+            Log.e("TAG", "resendData: $sendData", )
             withTimeoutOrNull(waitTime) {
-                var uid = "0"
-                val result = retrofitUseCase.sendDataUseCase(
+                val serverResult = retrofitUseCase.sendDataUseCase(
                     DomainSendData(
                         cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
-                        storeName = MultipartBody.Part.createFormData(
-                            "storeName",
-                            sendData.storeName
-                        ),
-                        date = MultipartBody.Part.createFormData("date", stringToDateTime(sendData.billSubmitTime)),
+                        storeName = MultipartBody.Part.createFormData("storeName", sendData.storeName),
+                        date = MultipartBody.Part.createFormData("billSubmitTime", sendData.billSubmitTime),
                         amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
                         picture = compressEncodePicture(sendData.picture)
                     )
                 )
-                Log.e("TAG", "sendData 응답 : $result ")
-                uid = result
-
-                if (uid != "0") {
+                Log.e("TAG", "sendData 응답 : $serverResult ")
+                if (serverResult != "0") {
                     _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
+                    val roomResult = roomUseCase.updateData( DomainRoomData(
+                        uid = beforeUid,
+                        cardName = sendData.cardName,
+                        amount = sendData.amount,
+                        billSubmitTime = dateTimeToString(sendData.billSubmitTime),
+                        storeName = sendData.storeName,
+                        file = sendData.picture.toString(),
+                        )
+                    )
+                    Log.e("TAG", "resendData room result : $roomResult", )
                 } else {
                     Log.e("TAG", "sendData: 실패입니다!")
                     _connectedState.postValue(ConnectedState.CONNECTING_FALSE)
@@ -190,7 +188,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun stringToDateTime(date:String):String{
+    private fun stringToDateTime(date:String):String{
         val format = date.replace(" ","").split("년","월","일","시","분")
         val myLocalDateTime = LocalDateTime.of(
             format[0].toInt(),
@@ -201,6 +199,11 @@ class MainActivityViewModel @Inject constructor(
             LocalDateTime.now().second
         )
         return myLocalDateTime.toString()
+    }
+
+    private fun dateTimeToString(date:String): String{
+        val myList = date.split("-","T",":")
+        return "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
     }
 
     //절대경로로 변환
@@ -235,7 +238,6 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    // TODO RecyclerFragment에만 들어가는 코드인데 RecyclerViewModel에 옮길까
     // Server 데이터 불러오는 부분
     fun receiveServerAllData() {
         _connectedState.value = ConnectedState.CONNECTING
@@ -276,17 +278,19 @@ class MainActivityViewModel @Inject constructor(
     // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel에 옮길까
     fun deleteServerData(id: Long) {
         Log.e("TAG", "deleteServerData: 들어감", )
-        CoroutineScope(exceptionHandler).launch {
+        _connectedState.postValue(ConnectedState.CONNECTING)
+        _serverJob.postValue(CoroutineScope(exceptionHandler).async {
             withTimeoutOrNull(waitTime) {
                 val gap = retrofitUseCase.deleteServerData(id)
                 Log.e("TAG", "deleteServerData return: $gap")
+                _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
             }?: throw SocketTimeoutException()
-        }
+        })
     }
 
     // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
     //서버 데이터 업데이트
-    fun updateServerData(sendData: UpdateData, uid : String, beforeTime: String) {
+    fun updateServerData(sendData: UpdateData, uid : String) {
         Log.e("TAG", "changeServerData: $sendData", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
@@ -412,4 +416,13 @@ class MainActivityViewModel @Inject constructor(
         preferenceManager.clearAll()
     }
 
+    fun bitmapToUri(activity: Activity, bitmap: Bitmap?): Uri {
+        Log.e("TAG", "bitmapToUri: $bitmap", )
+        val file = File(activity.cacheDir, "temp_image.jpg")
+        val outputStream = FileOutputStream(file)
+        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        outputStream.flush()
+        outputStream.close()
+        return Uri.fromFile(file)
+    }
 }

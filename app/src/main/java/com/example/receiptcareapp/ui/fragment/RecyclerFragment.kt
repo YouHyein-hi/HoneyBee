@@ -52,7 +52,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(
         recyclerServerAdapter.dataList.clear()
         recyclerLocalAdapter.dataList.clear()
     }
-
+// TODO 이혜인바보
     override fun initUI() {
         Log.e(TAG, "initUI", )
         if(viewModel.startGap.value == ShowType.LOCAL){

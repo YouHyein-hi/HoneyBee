@@ -50,7 +50,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
     private val GALLERY_CODE = 1010
 
     override fun initData() {
-//        nextAndFinish()
         if(viewModel.getLoginData().id != null){
             nextAndFinish()
             Log.e("TAG", "initData: ${viewModel.getLoginData()}", )

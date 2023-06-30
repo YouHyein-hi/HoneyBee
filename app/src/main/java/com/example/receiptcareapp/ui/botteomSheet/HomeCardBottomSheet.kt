@@ -36,6 +36,7 @@ import javax.inject.Inject
  * pureum
  */
 class HomeCardBottomSheet(
+
 ) : BottomSheetDialogFragment() {
     private val binding: FragmentHomeCardBottomsheetBinding by lazy {
         FragmentHomeCardBottomsheetBinding.inflate(layoutInflater)

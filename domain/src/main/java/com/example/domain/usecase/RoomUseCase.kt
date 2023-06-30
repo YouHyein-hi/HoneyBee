@@ -1,5 +1,6 @@
 package com.example.domain.usecase
 
+import android.util.Log
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.repo.RoomRepo
 
@@ -23,12 +24,9 @@ class RoomUseCase(
     }
 
     suspend fun updateData(
-        beforeTime: String,
-        cardName: String,
-        amount: String,
-        pictureName: String,
-        billSubmitTime: String
-    ): Int{
-        return roomRepo.updateData(beforeTime, cardName, amount, pictureName, billSubmitTime)
+        list:DomainRoomData
+    ){
+        Log.e("TAG", "updateData: $list", )
+        roomRepo.updateData(list)
     }
 }

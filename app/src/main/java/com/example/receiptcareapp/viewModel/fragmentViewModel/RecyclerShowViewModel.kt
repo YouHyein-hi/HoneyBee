@@ -15,9 +15,6 @@ import java.io.FileOutputStream
  * pureum
  */
 class RecyclerShowViewModel : ViewModel() {
-
-
-
 //    fun bitmapToUri(activity: Activity, bitmap: Bitmap): Uri {
 //        val file = File(activity.cacheDir, "temp_image.jpg")
 //        val outputStream = FileOutputStream(file)

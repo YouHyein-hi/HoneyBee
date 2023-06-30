@@ -8,13 +8,15 @@ import com.example.domain.model.RecyclerShowData
  * pureum
  */
 data class DomainRoomData(
+    val uid: String,
     val cardName: String,
     val amount: String,
     val billSubmitTime: String,
     val storeName: String,
     val file: String,
-    val uid: String
 )
 
 fun DomainRoomData.toRecyclerShowData(): RecyclerShowData = RecyclerShowData(uid, cardName, amount, billSubmitTime, storeName, file.toUri())
+
+
 

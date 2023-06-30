@@ -108,9 +108,10 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(
     }
     //로컬재전송
     private fun resendData(){
-        activityViewModel.resendData(
-            AppSendData(myData.cardName,myData.amount, myData.billSubmitTime, myData.storeName,myData.file!!)
-        )
+//        activityViewModel.resendData(
+//            AppSendData(myData.cardName,myData.amount, myData.billSubmitTime, myData.storeName,myData.file!!),
+//            myData.billSubmitTime
+//        )
     }
 
     //수정
@@ -131,8 +132,8 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(
                     activityViewModel.deleteServerData(myData.uid.toLong()).toString()
                 }else{
                     activityViewModel.deleteRoomData(myData.billSubmitTime).toString()
+                    findNavController().popBackStack()
                 }
-                findNavController().popBackStack()
             }
             .setPositiveButton("닫기"){dialog,id->
                 dialog.dismiss()

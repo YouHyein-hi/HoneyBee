@@ -44,7 +44,6 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
     override fun initUI() {
         getSpinner()
 
-
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout((width * 1), ViewGroup.LayoutParams.WRAP_CONTENT)
         val dataCardName = myData.cardName
@@ -71,13 +70,17 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                 showShortToast("카드 불러오기 실패!")
             }
         }
-
-        val newDate = myData.billSubmitTime.replace(" ", ""). split("년","월","일","시","분","초")
         Log.e("TAG", "onCreateView: ${myData.cardName}", )
+        Log.e("TAG", "onCreateView: ${myData}", )
+        val newDate = if(myData.billSubmitTime.contains("년"))
+                        myData.billSubmitTime.replace(" ", "").split("년","월","일","시","분","초")
+                    else
+                        myData.billSubmitTime.split("-","T",":")
+
+        Log.e("TAG", "onCreateView: ${newDate}", )
 
         // 수정 전 로컬 데이터 화면에 띄우기
         // Spinner은 아직 설정 안함
-        binding.changeCardspinner
         binding.changeBtnStore.setText(myData.storeName)
         binding.changeBtnPrice.setText(myData.amount)
         settingYear = newDate[0].toInt()
@@ -97,10 +100,6 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                 myYear, myMonth, myDay,
                 LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second
             )
-
-            Log.e("TAG", "onCreateView: ${myData.uid}", )
-            Log.e("TAG", "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${checked}, ${binding.changeBtnStore.text}, ${myData.file}", )
-
             val data = activityViewModel.selectedData.value
 
             when {
@@ -110,17 +109,30 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                 myLocalDateTime.toString() == "" -> { showShortToast("날짜를 입력하세요.") }
                 data?.file == null -> { showShortToast("사진이 비었습니다.") }
                 else -> {
-                    Log.e("TAG", "onCreateView: 다 있음!")
-                    activityViewModel.updateServerData(
-                        sendData = UpdateData(
-                            billSubmitTime = myLocalDateTime.toString(),
-                            amount = binding.changeBtnPrice.text.toString(),
-                            cardName = checked,
-                            storeName = binding.changeBtnStore.text.toString()
-                        ),
-                        uid = myData.uid,
-                        beforeTime = myData.billSubmitTime
-                    )
+                    Log.e("TAG", "initListener myData: $myData", )
+                    if(myData.type == ShowType.SERVER) {
+                        activityViewModel.updateServerData(
+                            sendData = UpdateData(
+                                billSubmitTime = myLocalDateTime.toString(),
+                                amount = binding.changeBtnPrice.text.toString(),
+                                cardName = checked,
+                                storeName = binding.changeBtnStore.text.toString()
+                            ),
+                            uid = myData.uid,
+                        )
+                    }else{
+                        activityViewModel.resendData(
+                            sendData = AppSendData(
+                                billSubmitTime = myLocalDateTime.toString(),
+                                amount = binding.changeBtnPrice.text.toString(),
+                                cardName = checked,
+                                storeName = binding.changeBtnStore.text.toString(),
+//                                picture = activityViewModel.bitmapToUri(requireActivity(),activityViewModel.picture.value)
+                                picture = myData.file!!
+                            ),
+                            myData.uid
+                        )
+                    }
                     dismiss()
                 }
             }

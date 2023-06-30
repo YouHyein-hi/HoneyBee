@@ -45,13 +45,16 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao) : RoomRepo {
         return roomDao.deleteData(date = date)
     }
 
-    override suspend fun updateData(
-        beforeTime: String,
-        cardName: String,
-        amount: String,
-        pictureName: String,
-        billSubmitTime: String
-    ): Int {
-        return roomDao.updateData(beforeTime, cardName, amount, pictureName, billSubmitTime)
+    override suspend fun updateData(list: DomainRoomData) {
+        roomDao.updateData(
+            MyEntity(
+                uid = list.uid,
+                billSubmitTime = list.billSubmitTime,
+                cardName = list.cardName,
+                amount = list.amount,
+                pictureName = list.storeName,
+                picture = list.file
+            )
+        )
     }
 }

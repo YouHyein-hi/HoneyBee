@@ -33,7 +33,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
     private val loginData = LoginData(null,null)
 
     override fun initData() {
-//        nextAndFinish()
         if(viewModel.getLoginData().id != null){
             nextAndFinish()
             Log.e("TAG", "initData: ${viewModel.getLoginData()}", )

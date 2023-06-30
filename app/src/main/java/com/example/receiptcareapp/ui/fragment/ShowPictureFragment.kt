@@ -21,7 +21,7 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_ShowPicture
-import com.example.receiptcareapp.ui.adapter.ShowPictureAdapter
+import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.ShowPictureViewModel
 import java.text.DecimalFormat
@@ -67,7 +67,6 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(
     }
 
     override fun initListener() {
-        //TODO 이 코드가 과연 괜찮은 코드일까? (CardAddDialog_ShowPicture 관련)
         val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager.beginTransaction().add(this, "showPictureFragment").commit()
 
@@ -163,7 +162,8 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(
                     it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
                     newCard = 0
                 }
-                val adapter = ShowPictureAdapter(requireContext(), myArray)
+                val adapter =
+                    SpinnerAdapter(requireContext(), myArray)
                 spinner.adapter = adapter
             }
 
@@ -199,7 +199,8 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(
     /** Spinner 관련 **/
     fun getSpinner() {
         activityViewModel.receiveServerCardData()
-        var adapter = ShowPictureAdapter(requireContext(), arrayListOf())
+        var adapter =
+            SpinnerAdapter(requireContext(), arrayListOf())
         binding.spinner.adapter = adapter
         Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -237,7 +238,6 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(
         callback.remove()
     }
 
-    //TODO 이 코드가 과연 괜찮은 코드일까? (CardAddDialog_ShowPicture 관련)
     fun setNewCardValue(value: Int) {
         newCard = value
     }

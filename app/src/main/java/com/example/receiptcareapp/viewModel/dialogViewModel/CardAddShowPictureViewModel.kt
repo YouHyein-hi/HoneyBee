@@ -1,12 +1,12 @@
-package com.example.receiptcareapp.viewModel.fragmentViewModel
+package com.example.receiptcareapp.viewModel.dialogViewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import java.text.DecimalFormat
 
-class CardAddBottomViewModel : ViewModel(){
+class CardAddShowPictureViewModel : ViewModel(){
 
-    init { Log.e("TAG", "CardAddBottomViewModel", ) }
+    init { Log.e("TAG", "CardAddShowPictureViewModel", ) }
 
     fun CommaReplaceSpace(text : String): String {
         return text.replace(",", "")
@@ -15,4 +15,5 @@ class CardAddBottomViewModel : ViewModel(){
     fun PriceFormat(price : String): String? {
         return DecimalFormat("#,###").format(price.toInt())
     }
+
 }

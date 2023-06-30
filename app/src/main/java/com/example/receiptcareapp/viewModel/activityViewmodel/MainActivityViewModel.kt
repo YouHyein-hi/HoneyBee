@@ -57,10 +57,10 @@ class MainActivityViewModel @Inject constructor(
     // 이때 viewModel은 초기화 이전 activity의 context를 참조하고 있기 때문에 충돌 및 예외가 발생할 수 있음.
     // context를 참조하는것 이외에, 함수로 넘겨받아 사용하는것도 타이밍에 따라 문제 발생 가능함
     // 따라서 올바른 context 활용법이 필요.
-    // 방법 1. androidViewModel을 상속받아 viewmodel을 구성한는 방법
+    // 방법 1. activityViewModel을 상속받아 viewmodel을 구성한는 방법
     // (기존방법은 activityContext 참조였으나, ActivityContext를 참조하는방법임)
     // 방법 2. util의 APP클레스에 DI로 Context를 선언해주는 방법
-//    var myCotext: Context? = application
+    //    var myCotext: Context? = application
 
 
 
@@ -105,6 +105,7 @@ class MainActivityViewModel @Inject constructor(
     // 코루틴 값을 담아두고 원할때 취소하기
     private var _serverJob = MutableLiveData<Job>()
 
+    // TODO ShowPictureFragment에만 들어가는 코드인데 ShowPictureViewModel에 옮길까
     //서버에 데이터 전송 기능
     fun sendData(sendData: AppSendData) {
         Log.e("TAG", "sendData: $sendData", )
@@ -261,6 +262,7 @@ class MainActivityViewModel @Inject constructor(
         })
     }
 
+    // TODO RecyclerFragment에만 들어가는 코드인데 RecyclerViewModel에 옮길까
     fun requestServerPictureData(uid:String){
         _connectedState.postValue(ConnectedState.CONNECTING)
         _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
@@ -273,6 +275,7 @@ class MainActivityViewModel @Inject constructor(
         })
     }
 
+    // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel에 옮길까
     fun deleteServerData(id: Long) {
         Log.e("TAG", "deleteServerData: 들어감", )
         _connectedState.postValue(ConnectedState.CONNECTING)
@@ -285,6 +288,7 @@ class MainActivityViewModel @Inject constructor(
         })
     }
 
+    // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
     //서버 데이터 업데이트
     fun updateServerData(sendData: UpdateData, uid : String) {
         Log.e("TAG", "changeServerData: $sendData", )
@@ -314,6 +318,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel
     fun deleteRoomData(date: String) {
         CoroutineScope(exceptionHandler).launch {
             _connectedState.postValue(ConnectedState.CONNECTING)

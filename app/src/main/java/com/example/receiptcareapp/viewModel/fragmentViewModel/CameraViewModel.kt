@@ -2,15 +2,10 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel
 
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,19 +18,6 @@ class CameraViewModel : ViewModel(){
 
     private val _photoUri = MutableLiveData<Uri>()
     val photoUri: LiveData<Uri> = _photoUri
-
-    fun checkPermission(context: Context, activity : Activity, permissions: Array<out String>, requestCode : Int): Boolean {
-        Log.e("TAG", "checkPermission: CameraViewModel", )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            for (permission in permissions) {
-                if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(activity, permissions, requestCode)
-                    return false
-                }
-            }
-        }
-        return true
-    }
 
     fun dispatchTakePictureIntentExViewModel(activity : Activity): Intent {
         Log.e("TAG", "dispatchTakePictureIntentExViewModel: CameraViewModel", )

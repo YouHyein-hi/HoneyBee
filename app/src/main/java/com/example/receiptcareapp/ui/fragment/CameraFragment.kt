@@ -38,10 +38,7 @@ class CameraFragment : BaseFragment<FragmentCameraBinding>(
     /* 카메라 호출 */
     fun CallCamera() {
         Log.e("TAG", "CallCamera", )
-        if (viewModel.checkPermission(requireContext(), requireActivity(), CAMERA, CAMERA_CODE)) {  // 카메라 권한 있을 시 카메라 실행함
-            Log.e("TAG", "카메라 권한 있음", )
-            dispatchTakePictureIntentEx()
-        }
+        dispatchTakePictureIntentEx()
     }
 
     private fun dispatchTakePictureIntentEx() {

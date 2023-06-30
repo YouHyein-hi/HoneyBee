@@ -67,11 +67,12 @@ interface RetrofitSource {
     ):ServerResponse
 
     @FormUrlEncoded
-    @POST("")
+    @PUT("billCard/update/{id}")
     suspend fun updateCardDataSource(
+        @Path("id") id: Long,
         @Field("cardName") cardName : String,
         @Field("cardAmount") cardAmount : Int
-    ):String
+    ):ServerResponse
 
     @FormUrlEncoded
     @POST("bill/login")

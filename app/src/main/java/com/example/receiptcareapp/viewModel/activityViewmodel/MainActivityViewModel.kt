@@ -14,11 +14,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.data.local.dao.MyDao
 import com.example.data.manager.PreferenceManager
+import com.example.domain.model.UpdateCardData
 import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.receive.DomainUpadateData
+import com.example.domain.model.receive.DomainUpdateCardData
 import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendCardData
@@ -312,6 +314,33 @@ class MainActivityViewModel @Inject constructor(
                 }
             } ?: throw SocketTimeoutException()
         }
+    }
+
+    fun updateCardData(updateCardData : UpdateCardData){
+        Log.e("TAG", "updateCardData: ${updateCardData}", )
+        _connectedState.value = ConnectedState.CONNECTING
+        _serverJob.value = CoroutineScope(exceptionHandler).launch {
+            Log.e("TAG", "updateCardData: 훔냠냠", )
+            withTimeoutOrNull(waitTime) {
+                val result = retrofitUseCase.updateCardDateUseCase(
+                    DomainUpdateCardData(
+                        id = updateCardData.id,
+                        cardName = updateCardData.cardName,
+                        cardAmount = updateCardData.cardAmount
+                    )
+                )
+                Log.e("TAG", "updateCardData result: ${result}",)
+
+                if(result.status == "200")
+                    _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
+                else{
+                    Exception("오류! 전송 실패")
+                }
+
+
+            }?:throw SocketTimeoutException()
+        }
+//        retrofitUseCase.updateCardDateUseCase()
     }
 
     // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel

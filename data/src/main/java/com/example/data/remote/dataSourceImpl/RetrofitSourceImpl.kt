@@ -78,9 +78,10 @@ class RetrofitSourceImpl @Inject constructor(
     }
 
     override suspend fun updateCardDataSource(
-        cardName: String, cardAmount: Int
-    ): String {
+        id : Long, cardName: String, cardAmount: Int
+    ): ServerResponse {
         return retrofit.create(RetrofitSource::class.java).updateCardDataSource(
+            id = id,
             cardName = cardName,
             cardAmount = cardAmount
         )

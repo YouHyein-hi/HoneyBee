@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.data.manager.PreferenceManager
@@ -149,9 +148,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
         finish()
     }
 
-    private fun downKeyBoard(){
-        val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    private fun downKeyBoard() {
+        val imm: InputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
 
     private fun checkPermission(permissions: Array<out String>, requestCode : Int) {
         // 마시멜로 버전 이후

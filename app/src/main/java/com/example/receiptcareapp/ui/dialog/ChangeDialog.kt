@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.UpdateData
-import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.State.ShowType
 import androidx.fragment.app.viewModels
 import com.example.domain.model.send.AppSendData

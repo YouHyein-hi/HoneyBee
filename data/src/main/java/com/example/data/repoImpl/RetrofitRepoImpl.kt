@@ -3,6 +3,7 @@ package com.example.data.repoImpl
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.util.Log
 import com.example.data.remote.dataSource.RetrofitSource
 import com.example.data.remote.model.ServerResponse
 import com.example.data.remote.model.toDomainLoginResponse
@@ -64,6 +65,7 @@ class RetrofitRepoImpl @Inject constructor(
     }
 
     override suspend fun updateDataRepo(domainResendData: DomainUpadateData): DomainServerReponse {
+        Log.e("TAG", "updateDataRepo: ", )
         return retrofitSource.updateDataSource(
             id = domainResendData.id,
             cardName = domainResendData.cardName,
@@ -73,11 +75,13 @@ class RetrofitRepoImpl @Inject constructor(
         ).toDomainLoginResponse()
     }
 
-    override suspend fun updateCardDataRepo(domainResendCardData: DomainResendCardData): String {
+    override suspend fun updateCardDataRepo(domainUpdateCardData: DomainUpdateCardData): DomainServerReponse {
+        Log.e("TAG", "updateCardDataRepo: ", )
         return retrofitSource.updateCardDataSource(
-            cardName = domainResendCardData.cardName,
-            cardAmount = domainResendCardData.cardAmount
-        )
+            id = domainUpdateCardData.id,
+            cardName = domainUpdateCardData.cardName,
+            cardAmount = domainUpdateCardData.cardAmount
+        ).toDomainLoginResponse()
     }
 
     override suspend fun requestLogin(email: String, password: String): DomainServerReponse {

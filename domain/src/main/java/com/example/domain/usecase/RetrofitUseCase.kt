@@ -1,6 +1,7 @@
 package com.example.domain.usecase
 
 import android.graphics.Bitmap
+import android.util.Log
 import com.example.domain.model.receive.*
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.model.send.DomainSendData
@@ -39,6 +40,11 @@ class RetrofitUseCase(
 
     suspend fun updateDataUseCase(domainResendData: DomainUpadateData):DomainServerReponse {
         return retrofitRepo.updateDataRepo(domainResendData)
+    }
+
+    suspend fun updateCardDateUseCase(domainUpdateCardData: DomainUpdateCardData) : DomainServerReponse{
+        Log.e("TAG", "updateCardDateUseCase: ", )
+        return retrofitRepo.updateCardDataRepo(domainUpdateCardData)
     }
 
     suspend fun requestLoginUseCase(email:String, password:String):DomainServerReponse{

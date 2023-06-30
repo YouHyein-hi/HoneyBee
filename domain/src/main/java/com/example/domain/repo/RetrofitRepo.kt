@@ -27,7 +27,7 @@ interface RetrofitRepo {
 
     suspend fun updateDataRepo(domainResendData: DomainUpadateData): DomainServerReponse
 
-    suspend fun updateCardDataRepo(domainResendCardData: DomainResendCardData):String
+    suspend fun updateCardDataRepo(domainUpdateCardData: DomainUpdateCardData):DomainServerReponse
 
     suspend fun requestLogin(email:String, password:String):DomainServerReponse
 

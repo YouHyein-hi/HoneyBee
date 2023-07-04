@@ -100,6 +100,7 @@
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/spinneritem.xml" value="0.212" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/white_btn.xml" value="0.224" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/yellow_btn.xml" value="0.212" />
+        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/activity_login.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/card_item.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/dialog_card.xml" value="0.18518518518518517" />
@@ -131,11 +132,6 @@
         <entry key="..\:/Users/You/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.24947916666666667" />
       </map>
     </option>
-  </component>
-  <component name="EntryPointsManager">
-    <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="dagger.hilt.android.qualifiers.ActivityContext" />
-    </list>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

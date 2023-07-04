@@ -9,15 +9,16 @@ import java.text.DecimalFormat
  * pureum
  */
 data class ReceiveCardData(
-    var uid:Long,
+    var billcardId:Long,
     var cardName:String,
     var cardAmount:Int
 )
 
 fun ReceiveCardData.toDomainReceiveCardData():DomainReceiveCardData{
-    Log.e("TAG", "toDomainReceiveCardData: $cardAmount", )
+    Log.e("TAG", "toDomainReceiveCardData: uid $billcardId", )
+    Log.e("TAG", "toDomainReceiveCardData: cardAmount $cardAmount", )
     val myCardAmount = DecimalFormat("#,###")
     val newCardAmount = myCardAmount.format(cardAmount.toString().toInt())
-    Log.e("TAG", "toDomainReceiveCardData: $newCardAmount", )
-    return DomainReceiveCardData(uid,cardName, newCardAmount)
+    Log.e("TAG", "toDomainReceiveCardData: newCarAmount $newCardAmount", )
+    return DomainReceiveCardData(billcardId,cardName, newCardAmount)
 }

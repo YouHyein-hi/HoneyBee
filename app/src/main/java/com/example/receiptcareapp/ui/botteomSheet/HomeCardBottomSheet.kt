@@ -41,7 +41,6 @@ import javax.inject.Inject
  * pureum
  */
 class HomeCardBottomSheet(
-
 ) : BottomSheetDialogFragment() {
     private val binding: FragmentHomeCardBottomsheetBinding by lazy {
         FragmentHomeCardBottomsheetBinding.inflate(layoutInflater)
@@ -51,15 +50,104 @@ class HomeCardBottomSheet(
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val homeCardAddBottomViewModel : HomeCardBottomSheetViewModel by viewModels()
 
+    private var uid : Long = 0
 
-    private var myArray = arrayListOf<String>()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //initData 부분
+        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
+        //서버 데이터 불러오기
+        activityViewModel.receiveServerCardData()
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
+
+
+        Log.e("TAG", "onCreateView: ${adapter.dataList}", )
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //initUI 부분
+        binding.cardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.cardRecyclerview.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //initListener 부분
+
+        //서버 카드 추가 다이얼로그
+        binding.addBtn.setOnClickListener{
+            val cardAddDialogBottom = CardAddDialog_Bottom()
+            cardAddDialogBottom.show(parentFragmentManager, "CardAddDialog")
+        }
+
+        binding.logoutBtn.setOnClickListener{
+            activityViewModel.clearAll()
+            activity?.finish()
+            Toast.makeText(requireContext(), "로그아웃 성공.", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+        }
+
+        //서버 카드 수정 및 삭제 다이알로그
+        adapter.onLocalSaveClic = {
+            val dialogView = layoutInflater.inflate(R.layout.dialog_server_send_card, null)
+            val cardName  = dialogView.findViewById<TextView>(R.id.dialog_server_cardName)
+            val cardPrice = dialogView.findViewById<EditText>(R.id.dialog_server_cardPrice)
+
+            cardName.text = "${it.cardName}"
+
+            cardPrice.setOnClickListener {
+                if (cardPrice.text.contains(",")) {
+                    cardPrice.setText(cardPrice.text.toString().replace(",", ""))
+                    cardPrice.setSelection(cardPrice.text.length)
+                }
+            }
+
+            cardPrice.setOnEditorActionListener { v, actionId, event ->
+                var handled = false
+                if (actionId == EditorInfo.IME_ACTION_DONE && cardPrice.text.isNotEmpty()) {
+                    val gap = DecimalFormat("#,###")
+                    cardPrice.setText(gap.format(cardPrice.text.toString().toInt()))
+                }
+                handled
+            }
+
+            var gap = AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
+                .setTitle("서버 카드 금액 수정")
+//                .setMessage("${it.name} 금액을 수정하여 서버에 보내시겠어요?")
+                .setView(dialogView)
+                .setPositiveButton("보내기") { dialog, id ->
+                    Log.e("TAG", "onCreateView: 수정 버튼 누름", )
+                    Log.e("TAG", "cardName.text.toString() : ${cardName.text}", )
+                    Log.e("TAG", "adapter.dataList: ${adapter.dataList}", )
+                    Log.e("TAG", "onCreateView uid: $uid", )
+                    var price = homeCardAddBottomViewModel.CommaReplaceSpace(cardPrice.text.toString())
+                    activityViewModel.updateCardData(
+                        updateCardData = UpdateCardData(
+                            id = uid,
+                            cardName = cardName.text.toString(),
+                            cardAmount = price.toInt()
+                        )
+                    )
+                }
+                .setNegativeButton("닫기") { dialog, id -> }
+                .show()
+
+            gap.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(Color.RED)
+            gap.getButton(DialogInterface.BUTTON_NEGATIVE)
+                .setTextColor(Color.BLACK)
+        }
+
+        //initObserver 부분
         //서버 커넥팅 관리
         activityViewModel.connectedState.observe(viewLifecycleOwner){
             when(it){
@@ -93,91 +181,23 @@ class HomeCardBottomSheet(
             Log.e("TAG", "onCreateView: $it", )
         }
 
-        binding.cardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-        binding.cardRecyclerview.adapter = adapter
-
-        //서버 데이터 불러오기
-        activityViewModel.receiveServerCardData()
-        activityViewModel.cardData.observe(viewLifecycleOwner){
-            if(it.isEmpty()) setCenterText("데이터가 비었어요!", true)
-            else{
-                Log.e("TAG", "bottomsheet observe: $it", )
+        activityViewModel.cardData.observe(viewLifecycleOwner) { dataList ->
+            if (dataList.isEmpty()) { setCenterText("데이터가 비었어요!", true)
+            } else {
+                Log.e("TAG", "onCreateView: dataList  ${dataList}", )
+                for (data in dataList) {
+                    Log.e("TAG", "onCreateView: data  ${data}", )
+                    uid = data.uid
+                    // uid 값을 사용하여 원하는 작업 수행
+                    Log.e("TAG", "uid: $uid")
+                }
                 setCenterText("", false)
-                adapter.dataList = it
+                adapter.dataList = dataList
             }
         }
-
-        Log.e("TAG", "onCreateView: ${adapter.dataList}", )
-
-        //서버 카드 추가 다이얼로그
-        binding.addBtn.setOnClickListener{
-            val cardAddDialogBottom = CardAddDialog_Bottom()
-            cardAddDialogBottom.show(parentFragmentManager, "CardAddDialog")
-        }
-
-        binding.logoutBtn.setOnClickListener{
-            activityViewModel.clearAll()
-            activity?.finish()
-            Toast.makeText(requireContext(), "로그아웃 성공.", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
-        }
-
-        //서버 카드 수정 및 삭제 다이알로그
-        adapter.onLocalSaveClic = {
-            val dialogView = layoutInflater.inflate(R.layout.dialog_server_send_card, null)
-            val cardName  = dialogView.findViewById<TextView>(R.id.dialog_server_cardName)
-            val cardPrice = dialogView.findViewById<EditText>(R.id.dialog_server_cardPrice)
-
-            cardName.text = "${it.cardName}"
-            val uid = it.uid
-            Log.e("TAG", "onCreateView: ${uid}", )
-
-            cardPrice.setOnClickListener {
-                if (cardPrice.text.contains(",")) {
-                    cardPrice.setText(cardPrice.text.toString().replace(",", ""))
-                    cardPrice.setSelection(cardPrice.text.length)
-                }
-            }
-
-            cardPrice.setOnEditorActionListener { v, actionId, event ->
-                var handled = false
-                if (actionId == EditorInfo.IME_ACTION_DONE && cardPrice.text.isNotEmpty()) {
-                    val gap = DecimalFormat("#,###")
-                    cardPrice.setText(gap.format(cardPrice.text.toString().toInt()))
-                }
-                handled
-            }
-
-            var gap = AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-                .setTitle("서버 카드 금액 수정")
-//                .setMessage("${it.name} 금액을 수정하여 서버에 보내시겠어요?")
-                .setView(dialogView)
-                .setPositiveButton("보내기") { dialog, id ->
-                    Log.e("TAG", "onCreateView: 수정 버튼 누름", )
-                    Log.e("TAG", "cardName.text.toString() : ${cardName.text}", )
-                    Log.e("TAG", "adapter.dataList: ${adapter.dataList}", )
-                    Log.e("TAG", "onCreateView uid: ${uid}", )
-                    var price = homeCardAddBottomViewModel.CommaReplaceSpace(cardPrice.text.toString())
-                    activityViewModel.updateCardData(
-                        updateCardData = UpdateCardData(
-                            id = uid,
-                            cardName = cardName.text.toString(),
-                            cardAmount = price.toInt()
-                        )
-                    )
-//                    activityViewModel.sendCardData(AppSendCardData(cardName.text.toString(), price.toInt()))
-                }
-                .setNegativeButton("닫기") { dialog, id -> }
-                .show()
-
-            gap.getButton(DialogInterface.BUTTON_POSITIVE)
-                .setTextColor(Color.RED)
-            gap.getButton(DialogInterface.BUTTON_NEGATIVE)
-                .setTextColor(Color.BLACK)
-        }
-
-        return binding.root
     }
+
+
 
     fun setCenterText(text:String, state:Boolean){
         binding.centerStateTxt.text = text
@@ -193,4 +213,6 @@ class HomeCardBottomSheet(
         super.onDestroy()
         activityViewModel.serverCoroutineStop()
     }
+
+
 }

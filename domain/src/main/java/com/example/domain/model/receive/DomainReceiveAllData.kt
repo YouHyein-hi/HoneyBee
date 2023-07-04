@@ -13,6 +13,7 @@ data class DomainReceiveAllData(
     val amount: String,
     val date: String,
     val storeName: String,
+    //청구
 //    val file: Bitmap
 )
 

@@ -53,8 +53,6 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
 
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout((width * 1), ViewGroup.LayoutParams.WRAP_CONTENT)
-
-
         // 수정 전 로컬 데이터 화면에 띄우기
         // Spinner은 아직 설정 안함
         binding.changeCardspinner

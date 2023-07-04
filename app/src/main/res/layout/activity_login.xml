@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/oragne"
+    android:background="@color/main_background_white"
     tools:context=".ui.activity.LoginActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right"
+        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,22 +19,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="13dp"
             android:gravity="left"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="DC Lab 영수증 관리 어플"
-            android:fontFamily="@font/murukmuruk"
+            android:layout_marginBottom="-13dp"
             />
         <TextView
-            android:textColor="#434343"
-            android:textSize="50dp"
+            android:textColor="#333333"
+            android:textSize="55dp"
             android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Honey Bee"
-            android:fontFamily="@font/murukmuruk"
-            android:paddingBottom="30dp"
+            android:fontFamily="@font/my_font"
+            android:layout_marginBottom="15dp"
             />
 
         <LinearLayout
@@ -48,17 +48,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingRight="5dp"
-                android:text="email"
-                android:textSize="20dp" />
+                android:text="id"
+                android:textSize="15dp" />
 
             <EditText
+                android:hint="아이디를 입력해주세요"
                 android:id="@+id/edit_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="7"
+                android:ems="15"
                 android:inputType="textEmailAddress"
-                android:textSize="20dp" />
+                android:textSize="13dp" />
 
         </LinearLayout>
 
@@ -67,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:orientation="horizontal"
-            android:paddingBottom="25dp">
+            android:paddingBottom="15dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -75,15 +76,16 @@
                 android:layout_weight="1"
                 android:paddingRight="5dp"
                 android:text="pw"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
             <EditText
+                android:hint="비밀번호를 입력해주세요."
                 android:id="@+id/edit_pw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="7"
-                android:textSize="20dp" />
+                android:ems="15"
+                android:textSize="13dp" />
 
         </LinearLayout>
 
@@ -96,12 +98,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
                 android:background="@drawable/loginbtn"
                 android:text="Login"
                 android:textColor="@color/black"
-                android:textSize="18dp" />
+                android:textSize="15dp" />
         </LinearLayout>
     </LinearLayout>
     <View

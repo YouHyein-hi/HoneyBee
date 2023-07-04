@@ -50,38 +50,6 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
 
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout((width * 1), ViewGroup.LayoutParams.WRAP_CONTENT)
-        val dataCardName = myData.cardName
-
-        activityViewModel.cardData.observe(viewLifecycleOwner) {
-            myArray.clear()
-            it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
-            val adapter = ShowPictureAdapter(requireContext(), myArray)
-            binding.changeCardspinner.adapter = adapter
-
-            var position = -1
-            for (i in 0 until adapter.count) {
-                val item = adapter.getItem(i)
-                if (item!!.startsWith("$dataCardName ")) {
-                    position = i
-                    break
-                }
-            }
-            if (position != -1) {
-                binding.changeCardspinner.setSelection(position)
-            }
-            else{
-                dismiss()
-                showShortToast("카드 불러오기 실패!")
-            }
-        }
-        Log.e("TAG", "onCreateView: ${myData.cardName}", )
-        Log.e("TAG", "onCreateView: ${myData}", )
-        val newDate = if(myData.billSubmitTime.contains("년"))
-                        myData.billSubmitTime.replace(" ", "").split("년","월","일","시","분","초")
-                    else
-                        myData.billSubmitTime.split("-","T",":")
-
-        Log.e("TAG", "onCreateView: ${newDate}", )
 
         // 수정 전 로컬 데이터 화면에 띄우기
         // Spinner은 아직 설정 안함

@@ -129,7 +129,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
 
                 activityViewModel.cardData.observe(viewLifecycleOwner) {
                     myArray.clear()
-                    it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
+                    it.forEach { myArray.add("${it.cardName} : ${it.cardAmount}") }
                     val adapter =
                         SpinnerAdapter(requireContext(), myArray)
                     binding.changeCardspinner.adapter = adapter
@@ -172,7 +172,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                             val spiltCard = changeViewModel.SplitColon(myArray[position])
                             cardId = position
                             checked = spiltCard[0]
-                            Log.e("TAG", "onItemSelected: ${checked}")
+                            Log.e("TAG", "onItemSelected checked: ${checked}")
                         }
 
                         override fun onNothingSelected(p0: AdapterView<*>?) {}

@@ -28,7 +28,7 @@ class ChangeViewModel : ViewModel(){
     // position, adapter,
         for (i in 0 until adapter.count) {
             val item = adapter.getItem(i)
-            if (item!!.startsWith("$dataCardName ")) {
+            if (item!!.startsWith("$dataCardName")) {
                 return i
             }
         }

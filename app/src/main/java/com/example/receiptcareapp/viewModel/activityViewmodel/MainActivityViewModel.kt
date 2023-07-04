@@ -335,8 +335,10 @@ class MainActivityViewModel @Inject constructor(
                 )
                 Log.e("TAG", "updateCardData result: ${result}",)
 
-                if(result.status == "200")
-                    _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
+                if(result.status == "200"){
+                    _connectedState.postValue(ConnectedState.CARD_CONNECTING_SUCCESS)
+                    receiveServerCardData()
+                }
                 else{
                     Exception("오류! 전송 실패")
                 }

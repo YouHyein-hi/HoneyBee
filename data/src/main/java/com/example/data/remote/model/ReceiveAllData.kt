@@ -13,6 +13,8 @@ data class ReceiveData(
     val amount: String,
     val billSubmitTime: String,
     val storeName: String,
+    var billCheck: Boolean
+
 )
 
 fun ReceiveData.toDomainReceiveData(): DomainReceiveAllData{
@@ -25,5 +27,5 @@ fun ReceiveData.toDomainReceiveData(): DomainReceiveAllData{
             myData = "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
     }
 
-    return DomainReceiveAllData(billId, cardName, myAmount, myData, storeName)
+    return DomainReceiveAllData(billId, cardName, myAmount, myData, storeName, billCheck)
 }

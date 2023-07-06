@@ -246,6 +246,7 @@ class MainActivityViewModel @Inject constructor(
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime){
                 val gap = retrofitUseCase.receiveDataUseCase()
+                Log.e("TAG", "receiveServerAllData: $gap", )
                 _serverData.postValue(gap)
                 _connectedState.postValue(ConnectedState.DISCONNECTED)
             } ?: throw SocketTimeoutException()
@@ -293,7 +294,7 @@ class MainActivityViewModel @Inject constructor(
     // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
     //서버 데이터 업데이트
     fun updateServerData(sendData: UpdateData, uid : String) {
-        Log.e("TAG", "changeServerData: $sendData", )
+        Log.e("TAG", "changeServerData: $sendData $uid", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {

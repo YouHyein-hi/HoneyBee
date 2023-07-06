@@ -9,9 +9,9 @@
                 android:color="@color/black"/>
         </shape>
     </item>
-    <item
-        android:drawable="@drawable/img_camera"
-        android:gravity="center"
-        android:bottom="40dp"
-        />
+<!--    <item-->
+<!--        android:drawable="@drawable/img_camera"-->
+<!--        android:gravity="center"-->
+<!--        android:bottom="40dp"-->
+<!--        />-->
 </layer-list>

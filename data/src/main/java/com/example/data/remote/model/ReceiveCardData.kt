@@ -11,7 +11,7 @@ import java.text.DecimalFormat
 data class ReceiveCardData(
     var billcardId:Long,
     var cardName:String,
-    var cardAmount:Int
+    var cardAmount:Int,
 )
 
 fun ReceiveCardData.toDomainReceiveCardData():DomainReceiveCardData{

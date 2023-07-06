@@ -129,7 +129,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
 
                 activityViewModel.cardData.observe(viewLifecycleOwner) {
                     myArray.clear()
-                    it.forEach { myArray.add("${it.cardName}  :  ${it.cardAmount}") }
+                    it.forEach { myArray.add("${it.cardName} : ${it.cardAmount}") }
                     val adapter =
                         SpinnerAdapter(requireContext(), myArray)
                     binding.changeCardspinner.adapter = adapter

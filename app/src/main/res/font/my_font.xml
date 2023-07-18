@@ -4,3 +4,16 @@
         android:fontWeight="400"
         android:font="@font/murukmuruk"/>
 </font-family>
+
+
+
+<!--
+프리텐타드(Pretendard) 폰트 굵기 순서
+[밑으로 갈 수록 얇아짐]
+extrabold
+bold
+semibold    (앱 내 기본 폰트!)
+medium
+legular
+light
+-->

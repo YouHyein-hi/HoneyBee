@@ -55,7 +55,7 @@
         android:gravity="center"
         android:hint="카드 초기 금액을 입력해주세요."
         android:inputType="number"
-        android:maxLength="7"
+        android:maxLength="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogcard_editCardname" />

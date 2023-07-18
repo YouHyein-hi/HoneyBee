@@ -2,49 +2,58 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.SplashActivity"
-    android:background="@color/oragne"
-    android:id="@+id/background"
-    >
+    android:background="@color/subBackground2"
+    tools:context=".ui.activity.SplashActivity">
 
-    <View
-        android:id="@+id/view"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="15px"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="-14dp"
-        android:layout_marginEnd="80dp"
-        android:background="@color/emphasis_yellow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:transitionName="yellowView"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/murukmuruk"
-        android:text="Honey Bee"
-        android:textColor="@color/black"
-        android:textSize="55sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:transitionName="title"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="-30dp"
-        app:layout_constraintBottom_toTopOf="@+id/title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="bee.json"
-        app:lottie_loop="true" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendardextrabold"
+            android:text="Honey Bee"
+            android:textColor="@color/mainFont"
+            android:textSize="55sp"
+            android:transitionName="title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-5dp"
+            android:layout_marginBottom="-15dp"
+            android:fontFamily="@font/pretendardmedium"
+            android:text="DC LAB 영수증 관리 어플"
+            android:textColor="@color/subFont2"
+            app:layout_constraintBottom_toTopOf="@+id/title"
+            app:layout_constraintStart_toEndOf="@+id/lottieAnimationView" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="-30dp"
+            android:layout_marginBottom="-35dp"
+            app:layout_constraintBottom_toTopOf="@+id/title"
+            app:layout_constraintStart_toStartOf="@+id/title"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="bee.json"
+            app:lottie_loop="true" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

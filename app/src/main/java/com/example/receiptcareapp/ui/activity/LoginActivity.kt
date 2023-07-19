@@ -34,10 +34,7 @@ import kotlin.math.log
 import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
-class LoginActivity : BaseActivity<ActivityLoginBinding>(
-    { ActivityLoginBinding.inflate(it) }, 
-    "LoginActivity"
-) {
+class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
     private val viewModel: LoginActivityViewModel by viewModels()
     private var backPressedTime: Long = 0
     private val loginData = LoginData(null,null)
@@ -59,8 +56,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
 
     override fun initUI() {
         supportActionBar?.hide()
-        binding.editEmail.setText("1234@email.com")
-        binding.editPw.setText("1234")
+        binding.loginEmail.setText("1234@email.com")
+        binding.loginPassword.setText("1234")
 
     }
 
@@ -68,15 +65,17 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
         //TODO 뭔가 카메라, 갤러리 사이의 텀이 이상해!!!!!!!!!
         checkPermission(CAMERA, CAMERA_CODE)
 
-        binding.button.setOnClickListener {
-            loginData.id = binding.editEmail.text.toString()
-            loginData.pw = binding.editPw.text.toString()
+        binding.loginButton.setOnClickListener {
+            loginData.id = binding.loginEmail.text.toString()
+            loginData.pw = binding.loginPassword.text.toString()
             downKeyBoard()
             with(loginData){
                 if(id.isNullOrEmpty()) showShortToast("아이디를 입력해주세요.")
                 else if(pw.isNullOrEmpty()) showShortToast("비밀번호를 입력해주세요.")
-                else viewModel.requestLogin(binding.editEmail.text.toString(), binding.editPw.text.toString())
+                else viewModel.requestLogin(binding.loginEmail.text.toString(), binding.loginPassword.text.toString())
             }
+
+//            nextAndFinish()
         }
     }
 
@@ -116,7 +115,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
             when (response.status) {
                 "200" -> {
                     viewModel.putLoginData(
-                        binding.editEmail.text.toString(), binding.editPw.text.toString()
+                        binding.loginEmail.text.toString(), binding.loginPassword.text.toString()
                     )
                     nextAndFinish()
                 }

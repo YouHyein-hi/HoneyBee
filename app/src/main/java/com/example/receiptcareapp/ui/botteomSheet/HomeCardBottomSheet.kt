@@ -138,7 +138,7 @@ class HomeCardBottomSheet(
                         )
                     )
                 }
-                .setNegativeButton("닫기") { dialog, id -> }
+                .setNegativeButton("취소") { dialog, id -> }
                 .show()
 
             gap.getButton(DialogInterface.BUTTON_POSITIVE)

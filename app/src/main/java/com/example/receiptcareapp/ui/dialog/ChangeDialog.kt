@@ -172,7 +172,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                             val spiltCard = changeViewModel.SplitColon(myArray[position])
                             cardId = position
                             checked = spiltCard[0]
-                            Log.e("TAG", "onItemSelected: ${checked}")
+                            Log.e("TAG", "onItemSelected checked: ${checked}")
                         }
 
                         override fun onNothingSelected(p0: AdapterView<*>?) {}

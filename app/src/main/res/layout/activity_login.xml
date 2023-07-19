@@ -7,41 +7,72 @@
     android:background="@color/main_background_white"
     tools:context=".ui.activity.LoginActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendardextrabold"
+            android:text="Honey Bee"
+            android:textColor="@color/mainFont"
+            android:textSize="55sp"
+            android:transitionName="title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-5dp"
+            android:layout_marginBottom="-15dp"
+            android:fontFamily="@font/pretendardmedium"
+            android:text="DC LAB 영수증 관리 어플"
+            android:textColor="@color/subFont2"
+            app:layout_constraintBottom_toTopOf="@+id/title"
+            app:layout_constraintStart_toEndOf="@+id/lottieAnimationView" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="-30dp"
+            android:layout_marginBottom="-35dp"
+            app:layout_constraintBottom_toTopOf="@+id/title"
+            app:layout_constraintStart_toStartOf="@+id/title"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="bee.json"
+            app:lottie_loop="true" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:textSize="13dp"
-            android:gravity="left"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="DC Lab 영수증 관리 어플"
-            android:layout_marginBottom="-13dp"
-            />
-        <TextView
-            android:textColor="#333333"
-            android:textSize="55dp"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Honey Bee"
-            android:fontFamily="@font/my_font"
-            android:layout_marginBottom="15dp"
-            />
-
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -52,12 +83,12 @@
                 android:textSize="15dp" />
 
             <EditText
-                android:hint="아이디를 입력해주세요"
-                android:id="@+id/edit_email"
+                android:id="@+id/login_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="15"
+                android:hint="아이디를 입력해주세요"
                 android:inputType="textEmailAddress"
                 android:textSize="13dp" />
 
@@ -68,7 +99,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:orientation="horizontal"
-            android:paddingBottom="15dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -79,33 +112,32 @@
                 android:textSize="15dp" />
 
             <EditText
-                android:hint="비밀번호를 입력해주세요."
-                android:id="@+id/edit_pw"
+                android:id="@+id/login_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="15"
+                android:hint="비밀번호를 입력해주세요."
                 android:textSize="13dp" />
 
         </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:orientation="horizontal">
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/login_button"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/loginbtn"
+        android:fontFamily="@font/pretendardsemibold"
+        android:text="로 그 인"
+        android:textColor="@color/subFont1"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@drawable/loginbtn"
-                android:text="Login"
-                android:textColor="@color/black"
-                android:textSize="15dp" />
-        </LinearLayout>
-    </LinearLayout>
+
+
     <View
         android:visibility="invisible"
         android:background="#77545454"

@@ -29,4 +29,19 @@
     <color name="basic_white">#F5F5F5</color>
     <color name="bottom_Sheet_Orange">#FF5722</color>
     <color name="myTransparent">#00FF5722</color>
+
+
+    <!-- 변경된 색상표 [모든 앱 UI 변경 후 위에 색상표 없애주기]-->
+    <color name="mainBackground">#FDFDFD</color>
+    <color name="subBackground1">#FFAA2C</color>
+    <color name="subBackground2">#FFEFD2</color>
+    <color name="mainFont">#000000</color>
+    <color name="subFont1">#333333</color>
+    <color name="subFont2">#808080</color>
+    <color name="mainButton">#FFAA2C</color>
+    <color name="subButton1">#FFC979</color>
+    <color name="subButton2">#EFEFEF</color>
+    <color name="subButton3">#E0E0E0</color>
+
+
 </resources>

@@ -37,8 +37,7 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
             dialogcardEditCardprice.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_DONE && dialogcardEditCardprice.text.isNotEmpty()) {
-                    dialogcardEditCardprice.setText(
-                        cardAddBottomViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
+                    dialogcardEditCardprice.setText(cardAddBottomViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
                 }
                 handled
             }

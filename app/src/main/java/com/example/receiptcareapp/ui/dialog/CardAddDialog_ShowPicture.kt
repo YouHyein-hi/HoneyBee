@@ -40,12 +40,7 @@ class CardAddDialog_ShowPicture : BaseDialog<DialogCardBinding>(DialogCardBindin
             dialogcardEditCardprice.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_DONE && dialogcardEditCardprice.text.isNotEmpty()) {
-/*                    val gap = DecimalFormat("#,###")
-                    dialogcardEditCardprice.setText(
-                        gap.format(dialogcardEditCardprice.text.toString().toInt()))
-*/
-                    dialogcardEditCardprice.setText(
-                        cardAddShowPictureViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
+                    dialogcardEditCardprice.setText(cardAddShowPictureViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
 
                 }
                 handled

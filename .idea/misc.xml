@@ -14,11 +14,9 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/delete_btn.xml" value="0.2535" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/homebtn_camera.xml" value="0.245" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/homebtn_gallery.xml" value="0.241" />
-        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/homebtn_list.xml" value="0.245" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/ic_baseline_reply_24.xml" value="0.2535" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.2535" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2465" />
-        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/image_circle.xml" value="0.245" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/img_camera.xml" value="0.245" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/left_rectangle.xml" value="0.252" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/loginbtn.xml" value="0.241" />
@@ -43,7 +41,7 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/dialog_server_send_card.xml" value="0.3651041666666667" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_camera.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_gallery.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_home.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_home_card_bottomsheet.xml" value="0.5796875" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_recycler.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_recycler_show.xml" value="0.36614583333333334" />
@@ -103,6 +101,7 @@
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/spinneritem.xml" value="0.212" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/white_btn.xml" value="0.224" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/yellow_btn.xml" value="0.212" />
+        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/activity_login.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/card_item.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/dialog_card.xml" value="0.18518518518518517" />
@@ -133,11 +132,6 @@
         <entry key="..\:/Users/You/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.24947916666666667" />
       </map>
     </option>
-  </component>
-  <component name="EntryPointsManager">
-    <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="dagger.hilt.android.qualifiers.ActivityContext" />
-    </list>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

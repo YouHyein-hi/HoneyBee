@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="Honey Bee"
+            android:text="@string/home_title"
             android:textColor="@color/black"
             android:textSize="48sp"
             android:transitionName="title"

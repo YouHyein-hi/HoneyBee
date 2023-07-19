@@ -19,11 +19,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.example.data.manager.PreferenceManager
 import com.example.domain.model.UpdateCardData
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
+import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
 import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_Bottom
@@ -40,60 +42,38 @@ import javax.inject.Inject
  * 2023-03-22
  * pureum
  */
-class HomeCardBottomSheet(
-) : BottomSheetDialogFragment() {
-    private val binding: FragmentHomeCardBottomsheetBinding by lazy {
-        FragmentHomeCardBottomsheetBinding.inflate(layoutInflater)
-    }
-
+class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
+    FragmentHomeCardBottomsheetBinding::inflate,
+    "homeCardBottomSheet"
+) {
     private val adapter: HomeCardAdapter = HomeCardAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val homeCardAddBottomViewModel : HomeCardBottomSheetViewModel by viewModels()
-
     private var uid : Long = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
+    }
+
+    override fun initData() {
         //initData 부분
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
         //서버 데이터 불러오기
         activityViewModel.receiveServerCardData()
-
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-
-        Log.e("TAG", "onCreateView: ${adapter.dataList}", )
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initUI() {
         //initUI 부분
         binding.cardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.cardRecyclerview.adapter = adapter
     }
 
-    override fun onResume() {
-        super.onResume()
-        //initListener 부분
-
+    override fun initListener() {
         //서버 카드 추가 다이얼로그
         binding.addBtn.setOnClickListener{
             val cardAddDialogBottom = CardAddDialog_Bottom()
             cardAddDialogBottom.show(parentFragmentManager, "CardAddDialog")
-        }
-
-        binding.logoutBtn.setOnClickListener{
-            activityViewModel.clearAll()
-            activity?.finish()
-            Toast.makeText(requireContext(), "로그아웃 성공.", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
         }
 
         //서버 카드 수정 및 삭제 다이알로그
@@ -146,9 +126,9 @@ class HomeCardBottomSheet(
             gap.getButton(DialogInterface.BUTTON_NEGATIVE)
                 .setTextColor(Color.BLACK)
         }
+    }
 
-        //initObserver 부분
-        //서버 커넥팅 관리
+    override fun initObserver() {
         activityViewModel.connectedState.observe(viewLifecycleOwner){
             when(it){
                 ConnectedState.CONNECTING -> {
@@ -177,6 +157,7 @@ class HomeCardBottomSheet(
                     setCenterText("", false)
                     setCenterText("서버와 연결 실패!", true)
                 }
+                else ->{}
             }
             Log.e("TAG", "onCreateView: $it", )
         }
@@ -197,21 +178,15 @@ class HomeCardBottomSheet(
         }
     }
 
-
-
-    fun setCenterText(text:String, state:Boolean){
-        binding.centerStateTxt.text = text
-        binding.centerStateTxt.isVisible = state
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
-    }
-
     // 창 내려갈때 서버 통신 시 중지
     override fun onDestroy() {
         super.onDestroy()
         activityViewModel.serverCoroutineStop()
+    }
+
+    fun setCenterText(text:String, state:Boolean){
+        binding.centerStateTxt.text = text
+        binding.centerStateTxt.isVisible = state
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.receiptcareapp.ui.fragment
 
 import android.content.Context
+import android.content.Intent
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
@@ -10,6 +11,8 @@ import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.ui.botteomSheet.HomeCardBottomSheet
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
+import com.google.android.gms.oss.licenses.OssLicensesActivity
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 
 //메인 프레그먼트/
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
@@ -17,10 +20,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     "HomeFragment"
 ) {
 
-    private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
-    private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-    private val CAMERA_CODE = 98
-    private val GALLERY_CODE = 1010
+//    private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
+//    private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+//    private val CAMERA_CODE = 98
+//    private val GALLERY_CODE = 1010
     private lateinit var callback: OnBackPressedCallback
     private val homeViewModel: HomeViewModel by viewModels()
 
@@ -31,9 +34,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
             galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
             historyBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
-            settingBtn.setOnClickListener{
-                val bottomDialogFragment = HomeCardBottomSheet()
-                bottomDialogFragment.show(parentFragmentManager,"tag")
+            settingBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_menuFragment)
             }
         }
     }

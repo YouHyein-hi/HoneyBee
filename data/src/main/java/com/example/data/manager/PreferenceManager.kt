@@ -1,9 +1,6 @@
 package com.example.data.manager
 
 import android.content.Context
-import android.content.SharedPreferences
-import com.example.domain.util.Constants
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /**

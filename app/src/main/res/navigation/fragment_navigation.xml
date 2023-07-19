@@ -5,15 +5,6 @@
     android:id="@+id/fragment_navigation"
     app:startDestination="@id/homeFragment">
 
-<!--    <fragment-->
-<!--        android:id="@+id/splashFragment"-->
-<!--        android:name="com.example.receiptcareapp.ui.fragment.SplashFragment"-->
-<!--        android:label="splashFragment"-->
-<!--        tools:layout="@layout/fragment_splash" >-->
-<!--        <action-->
-<!--            android:id="@+id/action_splashFragment_to_homeFragment"-->
-<!--            app:destination="@id/homeFragment" />-->
-<!--    </fragment>-->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.receiptcareapp.ui.fragment.HomeFragment"
@@ -34,7 +25,28 @@
             android:id="@+id/action_homeFragment_to_recyclerFragment"
             app:destination="@id/recyclerFragment"
             app:popUpTo="@id/homeFragment"/>
+
+        <action
+            android:id="@+id/action_homeFragment_to_menuFragment"
+            app:destination="@id/menuFragment"
+            app:popUpTo="@id/homeFragment"/>
+
+
     </fragment>
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu">
+
+        <action
+            android:id="@+id/action_menuFragment_to_noticeFragment"
+            app:destination="@id/noticeFragment"
+            app:popUpTo="@id/menuFragment"
+        />
+    </fragment>
+
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.example.receiptcareapp.ui.fragment.CameraFragment"
@@ -116,6 +128,24 @@
             app:popUpTo="@id/homeFragment"
             />
     </fragment>
+    <fragment
+        android:id="@+id/noticeFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.NoticeFragment"
+        android:label="fragment_notice"
+        tools:layout="@layout/fragment_notice" >
+
+        <action
+            android:id="@+id/action_noticeFragment_to_addNoticeFragment"
+            app:destination="@id/addnoticeFragment"
+            app:popUpTo="@id/noticeFragment"
+            />
+
+    </fragment>
+    <fragment
+        android:id="@+id/addnoticeFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.AddnoticeFragment"
+        android:label="fragment_addnotice"
+        tools:layout="@layout/fragment_addnotice" />
 
 
 </navigation>

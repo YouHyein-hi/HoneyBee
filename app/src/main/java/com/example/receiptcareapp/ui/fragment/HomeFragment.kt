@@ -30,7 +30,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         with(binding){
             cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
             galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
-            storageBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
+            historyBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
             settingBtn.setOnClickListener{
                 val bottomDialogFragment = HomeCardBottomSheet()
                 bottomDialogFragment.show(parentFragmentManager,"tag")

@@ -3,4 +3,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home_title">Honey Bee</string>
+    <string name="menu_changeTime"><u>시간변경</u></string>
+    <string name="recycler_amount">%s원 남았어요!</string>
+
+    <string name="bottomSheet_title">등록 카드 목록</string>
+    <string name="bottomSheet_sub_title">이번달 처리 할 카드 개수 : %s</string>
+    <string name="bottom_sheet_recycler_check">저번 달 청구</string>
+    <string name="notice_title">공지사항</string>
 </resources>

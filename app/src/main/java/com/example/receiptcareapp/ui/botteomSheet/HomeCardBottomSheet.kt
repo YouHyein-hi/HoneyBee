@@ -26,7 +26,9 @@ import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseBottomSheet
+import com.example.receiptcareapp.base.BaseFragmentDataBinding
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
+import com.example.receiptcareapp.databinding.FragmentMenuBinding
 import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_Bottom
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
@@ -43,8 +45,7 @@ import javax.inject.Inject
  * pureum
  */
 class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
-    FragmentHomeCardBottomsheetBinding::inflate,
-    "homeCardBottomSheet"
+    FragmentHomeCardBottomsheetBinding::inflate, "HomeCardBottomSheet"
 ) {
     private val adapter: HomeCardAdapter = HomeCardAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
@@ -64,6 +65,8 @@ class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
     }
 
     override fun initUI() {
+        binding.cardCount = "0"
+        Log.e("TAG", "initUI homecardBottomSheet: ${binding.cardCount}")
         //initUI 부분
         binding.cardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.cardRecyclerview.adapter = adapter
@@ -71,6 +74,7 @@ class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
 
     override fun initListener() {
         //서버 카드 추가 다이얼로그
+        binding.cardCount = "0"
         binding.addBtn.setOnClickListener{
             val cardAddDialogBottom = CardAddDialog_Bottom()
             cardAddDialogBottom.show(parentFragmentManager, "CardAddDialog")
@@ -129,6 +133,8 @@ class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
     }
 
     override fun initObserver() {
+        binding.cardCount = "0"
+
         activityViewModel.connectedState.observe(viewLifecycleOwner){
             when(it){
                 ConnectedState.CONNECTING -> {

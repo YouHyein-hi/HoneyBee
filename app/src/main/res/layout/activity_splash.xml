@@ -5,7 +5,7 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/subBackground2"
+    android:background="@color/sub_background2_light_orange"
     tools:context=".ui.activity.SplashActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendardextrabold"
             android:text="Honey Bee"
-            android:textColor="@color/mainFont"
+            android:textColor="@color/main_font_black"
             android:textSize="55sp"
             android:transitionName="title"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +38,7 @@
             android:layout_marginBottom="-15dp"
             android:fontFamily="@font/pretendardmedium"
             android:text="DC LAB 영수증 관리 어플"
-            android:textColor="@color/subFont2"
+            android:textColor="@color/sub_font2_gray"
             app:layout_constraintBottom_toTopOf="@+id/title"
             app:layout_constraintStart_toEndOf="@+id/lottieAnimationView" />
 

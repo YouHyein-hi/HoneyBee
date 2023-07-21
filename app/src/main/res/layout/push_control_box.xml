@@ -19,7 +19,7 @@
 
         <TextView
             android:textSize="30dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="25dp"
             android:layout_weight="1"
             android:text="청구 알림"
             android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
             android:layout_height="match_parent"/>
 
         <Switch
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="25dp"
             android:gravity="right|center"
             android:layout_weight="1"
             android:id="@+id/switch1"
@@ -60,7 +60,7 @@
         >
 
         <TextView
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="25dp"
             android:layout_weight="1"
             android:text="09:00 PM에 영수증 청구 알림을 해드려요!"
             android:layout_width="wrap_content"
@@ -72,10 +72,10 @@
             android:layout_height="match_parent"/>
 
         <TextView
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="25dp"
             android:gravity="right"
             android:layout_weight="1"
-            android:text="시간변경"
+            android:text="@string/menu_changeTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

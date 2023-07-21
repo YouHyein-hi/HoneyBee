@@ -15,7 +15,7 @@
         android:fontFamily="@font/pretendardextrabold"
         android:gravity="center"
         android:text="HoneyBee 이용을 위한\n접근 권한 안내"
-        android:textColor="@color/subFont1"
+        android:textColor="@color/sub_font1_gray"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardextrabold"
                 android:text="카메라 (필수)"
-                android:textColor="@color/subFont1"
+                android:textColor="@color/sub_font1_gray"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -65,7 +65,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/pretendardmedium"
                 android:text="영수증 사진 촬영"
-                android:textColor="@color/subFont1"
+                android:textColor="@color/sub_font1_gray"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/textView15"
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardextrabold"
                 android:text="사진, 미디어, 파일 (필수)"
-                android:textColor="@color/subFont1"
+                android:textColor="@color/sub_font1_gray"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -115,7 +115,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/pretendardmedium"
                 android:text="영수증 사진 저장과 관리"
-                android:textColor="@color/subFont1"
+                android:textColor="@color/sub_font1_gray"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/textView17"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
@@ -154,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardextrabold"
                 android:text="알림 (필수)"
-                android:textColor="@color/subFont1"
+                android:textColor="@color/sub_font1_gray"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -166,7 +166,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/pretendardmedium"
                 android:text="공지, 청구 카드 알림 동의 수신"
-                android:textColor="@color/subFont1"
+                android:textColor="@color/sub_font1_gray"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/textView19"
                 app:layout_constraintTop_toBottomOf="@+id/textView19" />
@@ -185,7 +185,7 @@
         android:background="@drawable/main_button"
         android:fontFamily="@font/pretendardsemibold"
         android:text="확 인"
-        android:textColor="@color/mainFont"
+        android:textColor="@color/main_font_black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/textView13"

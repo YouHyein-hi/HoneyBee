@@ -1,116 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:behavior_hideable="true"
-    app:behavior_draggable="true"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    android:background="@drawable/bottom_sheet_style"
     >
-
-    <TextView
-        android:id="@+id/titleTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/murukmuruk"
-        android:text="현재 서버의 남은 카드 잔액"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:transitionName="title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/addBtn"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/icon_add"
-        app:layout_constraintStart_toEndOf="@+id/titleTxt"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cardRecyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTxt"
-        tools:listitem="@layout/card_item" />
-
-    <View
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/oragne"
-        android:id="@+id/view3"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/logout_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardRecyclerview" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/logout_btn"
+    <data>
+        <variable
+            name="cardCount"
+            type="String"
+            />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:fontFamily="@font/pretendardbold"
-        android:text="로그아웃"
-        android:background="@color/emphasis_yellow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
+        app:behavior_hideable="true"
+        app:behavior_draggable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:background="@drawable/bottom_sheet_style">
 
-    <View
-        android:id="@+id/connectingView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/watingColor"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        <TextView
+            android:id="@+id/titleTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/bottomSheet_title"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:transitionName="title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/serverProgressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/cardRecyclerview"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/subTitleTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{@string/bottomSheet_sub_title(cardCount)}"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:transitionName="title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTxt" />
 
-    <TextView
-        android:fontFamily="@font/murukmuruk"
-        android:textSize="30dp"
-        android:id="@+id/centerStateTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="비었어요!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <!--            android:text="@{@string/bottomSheet_sub_title(cardCount)}"-->
 
+        <ImageButton
+            android:id="@+id/addBtn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/icon_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/connectingView"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cardRecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/subTitleTxt"
+            tools:listitem="@layout/card_item" />
+
+        <View
+            android:id="@+id/connectingView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/watingColor"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ProgressBar
+            android:id="@+id/serverProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/cardRecyclerview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:fontFamily="@font/murukmuruk"
+            android:textSize="30dp"
+            android:id="@+id/centerStateTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비었어요!"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

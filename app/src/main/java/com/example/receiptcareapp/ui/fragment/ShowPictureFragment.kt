@@ -28,10 +28,7 @@ import java.text.DecimalFormat
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(
-    FragmentShowPictureBinding::inflate,
-    "ShowPictureFragment"
-    ) {
+class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate, "ShowPictureFragment") {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val showPictureViewModel : ShowPictureViewModel by viewModels()
     private var checked = ""

@@ -13,12 +13,6 @@ import com.example.receiptcareapp.databinding.DialogPermissionBinding
 
 class Permissiond_Dialog : BaseDialog<DialogPermissionBinding>(DialogPermissionBinding::inflate)  {
 
-    private val handler = Handler(Looper.getMainLooper())
-    private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
-    private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-    private val CAMERA_CODE = 98
-    private val GALLERY_CODE = 1010
-
     // 인터페이스를 정의하여 이벤트를 처리하기 위한 콜백 메서드를 포함합니다.
     interface OnDismissListener {
         fun onDialogDismissed()

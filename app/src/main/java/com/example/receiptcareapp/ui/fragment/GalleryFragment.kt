@@ -16,13 +16,8 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.GalleryViewModel
 
-class GalleryFragment : BaseFragment<FragmentGalleryBinding>(
-    FragmentGalleryBinding::inflate,
-    "GalleryFragment"
-) {
+class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBinding::inflate, "GalleryFragment") {
 
-    private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-    private val GALLERY_CODE = 1010
     private val activityViewModel : MainActivityViewModel by activityViewModels()
     private val galleryViewModel : GalleryViewModel by viewModels()
 

@@ -15,17 +15,9 @@ import com.google.android.gms.oss.licenses.OssLicensesActivity
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 
 //메인 프레그먼트/
-class HomeFragment : BaseFragment<FragmentHomeBinding>(
-    FragmentHomeBinding::inflate,
-    "HomeFragment"
-) {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate, "HomeFragment") {
 
-//    private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
-//    private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-//    private val CAMERA_CODE = 98
-//    private val GALLERY_CODE = 1010
     private lateinit var callback: OnBackPressedCallback
-    private val homeViewModel: HomeViewModel by viewModels()
 
     override fun initData() {}
 

@@ -21,15 +21,17 @@ class CardAddDialog_ShowPicture : BaseDialog<DialogCardBinding>(DialogCardBindin
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val cardAddShowPictureViewModel : CardAddShowPictureViewModel by viewModels()
+    private var newCard = 0
 
-    override fun onResume() {
-        super.onResume()
+    override fun initData() {
+    }
 
-        var newCard = 0
+    override fun initUI() {
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout((width * 1).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
 
-
+    override fun initListener() {
         with(binding){
             dialogcardEditCardprice.setOnClickListener {
                 if (dialogcardEditCardprice.text.contains(",")) {
@@ -109,15 +111,6 @@ class CardAddDialog_ShowPicture : BaseDialog<DialogCardBinding>(DialogCardBindin
                 dismiss()
             }
         }
-    }
-
-    override fun initData() {
-    }
-
-    override fun initUI() {
-    }
-
-    override fun initListener() {
     }
 
     override fun initObserver() {

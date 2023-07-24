@@ -13,10 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SplashActivity : BaseActivity<ActivitySplashBinding>(
-    {ActivitySplashBinding.inflate(it)},
-    "SplashActivity"
-) {
+class SplashActivity : BaseActivity<ActivitySplashBinding>({ActivitySplashBinding.inflate(it)}, "SplashActivity") {
 
     override fun initData() {}
 

@@ -42,10 +42,7 @@ import javax.inject.Inject
  * 2023-03-22
  * pureum
  */
-class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
-    FragmentHomeCardBottomsheetBinding::inflate,
-    "homeCardBottomSheet"
-) {
+class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(FragmentHomeCardBottomsheetBinding::inflate, "homeCardBottomSheet") {
     private val adapter: HomeCardAdapter = HomeCardAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val homeCardAddBottomViewModel : HomeCardBottomSheetViewModel by viewModels()

@@ -23,13 +23,8 @@ import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerShowViewMo
 import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerViewModel
 
 
-class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(
-    FragmentRecyclerBinding::inflate,
-    "RecyclerFragment"
-) {
-    init {
-        Log.e("TAG", ": RecyclerFragment RecyclerFragment RecyclerFragment", )
-    }
+class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerBinding::inflate, "RecyclerFragment") {
+    init { Log.e("TAG", ": RecyclerFragment RecyclerFragment RecyclerFragment", ) }
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: RecyclerViewModel by viewModels()
@@ -52,7 +47,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(
         recyclerServerAdapter.dataList.clear()
         recyclerLocalAdapter.dataList.clear()
     }
-// TODO 이혜인바보
+
     override fun initUI() {
         Log.e(TAG, "initUI", )
         if(viewModel.startGap.value == ShowType.LOCAL){

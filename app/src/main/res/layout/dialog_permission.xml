@@ -16,7 +16,7 @@
         android:gravity="center"
         android:text="HoneyBee 이용을 위한\n접근 권한 안내"
         android:textColor="@color/subFont1"
-        android:textSize="28sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,8 +25,8 @@
         android:id="@+id/constraintLayout12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13">
 
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout7"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout7"
+            app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@drawable/img_permission_camera" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,7 +54,7 @@
                 android:fontFamily="@font/pretendardextrabold"
                 android:text="카메라 (필수)"
                 android:textColor="@color/subFont1"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,7 +66,7 @@
                 android:fontFamily="@font/pretendardmedium"
                 android:text="영수증 사진 촬영"
                 android:textColor="@color/subFont1"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@+id/textView15"
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -104,7 +104,7 @@
                 android:fontFamily="@font/pretendardextrabold"
                 android:text="사진, 미디어, 파일 (필수)"
                 android:textColor="@color/subFont1"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -116,7 +116,7 @@
                 android:fontFamily="@font/pretendardmedium"
                 android:text="영수증 사진 저장과 관리"
                 android:textColor="@color/subFont1"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@+id/textView17"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -155,7 +155,7 @@
                 android:fontFamily="@font/pretendardextrabold"
                 android:text="알림 (필수)"
                 android:textColor="@color/subFont1"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -167,7 +167,7 @@
                 android:fontFamily="@font/pretendardmedium"
                 android:text="공지, 청구 카드 알림 동의 수신"
                 android:textColor="@color/subFont1"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@+id/textView19"
                 app:layout_constraintTop_toBottomOf="@+id/textView19" />
         </androidx.constraintlayout.widget.ConstraintLayout>

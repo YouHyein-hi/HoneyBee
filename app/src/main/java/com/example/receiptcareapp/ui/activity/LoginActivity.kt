@@ -27,6 +27,8 @@ import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityLoginBinding
 import com.example.receiptcareapp.databinding.ActivityMainBinding
 import com.example.receiptcareapp.dto.LoginData
+import com.example.receiptcareapp.ui.dialog.ChangeDialog
+import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,6 +52,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             nextAndFinish()
             Log.e("TAG", "initData: ${viewModel.getLoginData()}", )
         }else{
+            permissiondDialog()
             Log.e("TAG", "initData: 로그인 정보가 없음!", )
         }
     }
@@ -62,9 +65,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     }
 
     override fun initListener() {
-        //TODO 뭔가 카메라, 갤러리 사이의 텀이 이상해!!!!!!!!!
-        checkPermission(CAMERA, CAMERA_CODE)
-
         binding.loginButton.setOnClickListener {
             loginData.id = binding.loginEmail.text.toString()
             loginData.pw = binding.loginPassword.text.toString()
@@ -75,7 +75,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
                 else viewModel.requestLogin(binding.loginEmail.text.toString(), binding.loginPassword.text.toString())
             }
 
-//            nextAndFinish()
+            nextAndFinish()
         }
     }
 
@@ -152,13 +152,27 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
+    //권한 Dialog
+    private fun permissiondDialog() {
+        val permissiondDialog = Permissiond_Dialog()
+
+        permissiondDialog.setOnDismissListener(object : Permissiond_Dialog.OnDismissListener {
+            override fun onDialogDismissed() {
+                Log.e("TAG", "onDialogDismissed: 성공함?", )
+                checkPermission(CAMERA, CAMERA_CODE)
+            }
+        })
+
+        permissiondDialog.show(supportFragmentManager, "permissiondDialog")
+    }
+
+    //권한 관련
     private fun checkPermission(permissions: Array<out String>, requestCode : Int) {
         // 마시멜로 버전 이후
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, requestCode)
         }
     }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         Log.e("TAG", "onRequestPermissionsResult: 에 접근", )
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -190,9 +204,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
                         checkPermission(GALLERY, GALLERY_CODE)
                     }, 2000)
                 }
-
-
-
             }
             GALLERY_CODE -> {
                 Log.e("TAG", "onRequestPermissionsResult: 겔러리 권한 접근", )
@@ -212,4 +223,5 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
 
         }
     }
+
 }

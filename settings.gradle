@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "ReceiptCareApp"
-include ':app'
+include ':presentation'
 include ':data'
 include ':domain'

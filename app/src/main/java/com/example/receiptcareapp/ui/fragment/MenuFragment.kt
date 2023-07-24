@@ -25,11 +25,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(
 
 
     override fun initData() {
-        TODO("Not yet implemented")
     }
 
     override fun initUI() {
-        TODO("Not yet implemented")
     }
 
     override fun initListener() {
@@ -59,7 +57,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(
     }
 
     override fun initObserver() {
-        TODO("Not yet implemented")
     }
 
 }

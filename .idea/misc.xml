@@ -11,6 +11,7 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/book.xml" value="0.252" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/book_icon.xml" value="0.252" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/bottom_sheet_style.xml" value="0.2535" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/change_btn.xml" value="0.245" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/choice_btn.xml" value="0.252" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/delete_btn.xml" value="0.2535" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/dialog_background.xml" value="0.3545" />
@@ -21,10 +22,13 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.2535" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2465" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/img_camera.xml" value="0.245" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/img_gallery.xml" value="0.245" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/left_rectangle.xml" value="0.252" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/loginbtn.xml" value="0.241" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/main_button.xml" value="0.3545" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/menu_selector_color.xml" value="0.2535" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/my_book_icon.xml" value="0.252" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/notice_item.xml" value="0.2795" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/rectangle.xml" value="0.2515" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/recycler_show.xml" value="0.2515" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/replay_btn.xml" value="0.2535" />
@@ -36,7 +40,8 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/under_line.xml" value="0.181" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/white_btn.xml" value="0.245" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/yellow_btn.xml" value="0.252" />
-        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/activity_login.xml" value="0.2625" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/font/my_font.xml" value="0.3963541666666667" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/activity_login.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/activity_splash.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/card_item.xml" value="0.3770833333333333" />
@@ -44,16 +49,16 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/dialog_change.xml" value="0.3770833333333333" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/dialog_server_add_card.xml" value="0.3651041666666667" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/dialog_server_send_card.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_addnotice.xml" value="0.3515625" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_camera.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_gallery.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_home_card_bottomsheet.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_menu.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_notice.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_home.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_home_card_bottomsheet.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_recycler.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_recycler_show.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_show_notice.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_show_picture.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/fragment_splash.xml" value="0.2171875" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/layout/list.xml" value="0.36614583333333334" />
@@ -69,6 +74,7 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/menu/bottom_menu.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.25" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/memo_border.xml" value="0.2795" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/roundsquare.xml" value="0.1" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/activity_splash.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/card_item.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/fragment_addnotice.xml" value="0.36614583333333334" />
@@ -102,7 +108,6 @@
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/btn_homegallery.xml" value="0.2115" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/choice_btn.xml" value="0.212" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/delete_btn.xml" value="0.2115" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/dialog_background.xml" value="0.2185" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/homebtn_camera.xml" value="0.2115" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/homebtn_gallery.xml" value="0.2115" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/homebtn_l.xml" value="0.2115" />
@@ -113,13 +118,8 @@
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/img_camera.xml" value="0.2115" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/img_gallery.xml" value="0.2115" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/img_list.xml" value="0.2115" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/img_permission_camera.xml" value="0.2185" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/img_permission_gallery.xml" value="0.2185" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/img_permission_notifications.xml" value="0.2185" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/left_rectangle.xml" value="0.2115" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/loginbtn.xml" value="0.2185" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/main_btn.xml" value="0.212" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/main_button.xml" value="0.2185" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/positive_btn.xml" value="0.1965" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/replay_btn.xml" value="0.212" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/right_rectangle.xml" value="0.2115" />
@@ -132,32 +132,25 @@
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/spinneritem.xml" value="0.212" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/white_btn.xml" value="0.224" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/drawable/yellow_btn.xml" value="0.212" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/font/my_font.xml" value="0.2796875" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/activity_login.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/activity_splash.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/card_item.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/dialog_card.xml" value="0.18518518518518517" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/dialog_change.xml" value="0.2484375" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/dialog_change_test.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/dialog_permission.xml" value="0.21693840579710144" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/dialog_server_add_card.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/dialog_server_send_card.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/fragment_camera.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/fragment_gallery.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/fragment_home.xml" value="0.8" />
+        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/fragment_home_card_bottomsheet.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/fragment_menu.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/fragment_recycler.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/fragment_recycler_show.xml" value="0.209375" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/fragment_show_picture.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/local_item.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/permission_dialog.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/push_control_box.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/server_item.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/setting_bottom_sheet.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/spinner_custom_item_layout.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/spinner_custom_layout.xml" value="0.2484375" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/spinner_layout.xml" value="0.2047008547008547" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/layout/test.xml" value="0.2484375" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/app/src/main/res/menu/bottom_menu.xml" value="0.109375" />

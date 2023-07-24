@@ -25,8 +25,8 @@
         android:id="@+id/constraintLayout12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13">
 
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout7"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout7"
+            app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@drawable/img_permission_camera" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

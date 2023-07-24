@@ -45,7 +45,8 @@ import javax.inject.Inject
  * pureum
  */
 class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
-    FragmentHomeCardBottomsheetBinding::inflate, "HomeCardBottomSheet"
+    FragmentHomeCardBottomsheetBinding::inflate,
+    "homeCardBottomSheet"
 ) {
     private val adapter: HomeCardAdapter = HomeCardAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()

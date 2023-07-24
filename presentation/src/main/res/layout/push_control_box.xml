@@ -35,7 +35,7 @@
             android:layout_marginRight="25dp"
             android:gravity="right|center"
             android:layout_weight="1"
-            android:id="@+id/switch1"
+            android:id="@+id/switch_onoff"
             android:layout_width="30dp"
             android:layout_height="50dp"
             />

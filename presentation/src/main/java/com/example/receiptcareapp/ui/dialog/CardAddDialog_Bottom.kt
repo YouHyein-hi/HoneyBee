@@ -20,13 +20,15 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val cardAddBottomViewModel : CardAddBottomViewModel by viewModels()
 
+    override fun initData() {
+    }
 
-    override fun onResume() {
-        super.onResume()
-
+    override fun initUI() {
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout((width * 1).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
 
+    override fun initListener() {
         with(binding){
             dialogcardEditCardprice.setOnClickListener {
                 if (dialogcardEditCardprice.text.contains(",")) {
@@ -42,7 +44,6 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
                 handled
             }
 
-            // EditText 비어있을 시 나타나는 style 이벤트 (UI 관련)
             val hintCardNmae = dialogcardEditCardname.hint
             val emphasis_yellow = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.emphasis_yellow))
             dialogcardEditCardname.setOnFocusChangeListener { view, hasFocus ->
@@ -96,15 +97,6 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
             }
 
         }
-    }
-
-    override fun initData() {
-    }
-
-    override fun initUI() {
-    }
-
-    override fun initListener() {
     }
 
     override fun initObserver() {

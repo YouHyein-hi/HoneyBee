@@ -25,9 +25,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:fontFamily="@font/pretendardsemibold"
-        android:text="추가할 카드 이름과 초기 금액을 입력해주세요."
+        android:text="추가할 카드 이름과 금액, 청구 날짜를 입력해주세요."
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -50,15 +50,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:hint="카드 초기 금액을 입력해주세요."
+        android:hint="카드 금액을 입력해주세요."
         android:inputType="number"
         android:maxLength="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogcard_editCardname" />
+
+    <EditText
+        android:id="@+id/dialogcard_editBillCardCheck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:hint="카드 청구 날짜를 입력해주세요."
+        android:inputType="number"
+        android:maxLength="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogcard_editCardprice" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -68,7 +83,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialogcard_editCardprice">
+        app:layout_constraintTop_toBottomOf="@+id/dialogcard_editBillCardCheck">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/dialogCard_btnPositive"

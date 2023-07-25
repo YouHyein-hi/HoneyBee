@@ -87,9 +87,9 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             }
 
             /** Card 추가 Button -> Card 추가 Dialog 생성 **/
-            cardaddBtn.setOnClickListener{
+/*            cardaddBtn.setOnClickListener{
                 CardAddDialog_ShowPicture().show(parentFragmentManager, "CardAddDialog")
-            }
+            }*/
 
             /** 금액 EidtText , 추가 **/
             btnPrice.setOnClickListener {
@@ -110,7 +110,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             }
 
             /** 완료 Button **/
-            sendBtn.setOnClickListener {
+            completeBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
                 when {
                     checked == "" -> { showShortToast("카드를 입력하세요.") }

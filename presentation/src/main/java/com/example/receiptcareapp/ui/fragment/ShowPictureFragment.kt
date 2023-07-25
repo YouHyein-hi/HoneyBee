@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.domain.model.BottomSheetData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
@@ -22,6 +23,7 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_ShowPicture
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
+import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.ShowPictureViewModel
 import java.text.DecimalFormat
@@ -31,7 +33,8 @@ import java.util.*
 class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate, "ShowPictureFragment") {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val showPictureViewModel : ShowPictureViewModel by viewModels()
-    private var checked = ""
+    private var cardName = ""
+    private var cardAmount = ""
     private var myYear = 0
     private var myMonth = 0
     private var myDay = 0
@@ -113,7 +116,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             sendBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
                 when {
-                    checked == "" -> { showShortToast("카드를 입력하세요.") }
+                    cardName == "" -> { showShortToast("카드를 입력하세요.") }
                     btnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
                     btnDate.text.isEmpty() -> { showShortToast("날짜를 입력하세요.") }
                     btnPrice.text.isEmpty() -> { showShortToast("금액을 입력하세요.") }
@@ -123,17 +126,27 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                             .navigate(R.id.action_showFragment_to_homeFragment)
                     }
                     else -> {
-                        Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}")
                         val myLocalDateTime = showPictureViewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
-                        activityViewModel.sendData(
-                            AppSendData(
-                                billSubmitTime = myLocalDateTime.toString(),
+                        SendCheckBottomSheet(
+                            BottomSheetData(
+                                cardName = cardName,
                                 amount = btnPrice.text.toString(),
-                                cardName = checked,
-                                picture = activityViewModel.image.value!!,
-                                storeName = binding.btnStore.text.toString()
+                                cardAmount = cardAmount,
+                                storeName = binding.btnStore.text.toString(),
+                                date = myLocalDateTime.toString(),
+                                picture = activityViewModel.image.value!!
                             )
-                        )
+                        ).show(parentFragmentManager,"tag")
+//                        Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}")
+//                        activityViewModel.sendData(
+//                            AppSendData(
+//                                billSubmitTime = myLocalDateTime.toString(),
+//                                amount = btnPrice.text.toString(),
+//                                cardName = cardName,
+//                                picture = activityViewModel.image.value!!,
+//                                storeName = binding.btnStore.text.toString()
+//                            )
+//                        )
                     }
 
                 }
@@ -205,8 +218,9 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                 Log.e("TAG", "onItemSelected: ${myArray[position]}")
                 Log.e("TAG", "onItemSelected: ${position}")
                 val spiltCard = myArray[position].split(" : ")
-                checked = spiltCard[0]
-                Log.e("TAG", "onItemSelected: ${checked}")
+                cardName = spiltCard[0]
+                cardAmount = spiltCard[1]
+                Log.e("TAG", "onItemSelected: ${cardName}")
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }

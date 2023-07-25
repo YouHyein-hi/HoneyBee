@@ -11,4 +11,14 @@
     <string name="bottom_sheet_recycler_check">저번 달 청구</string>
     <string name="notice_title">공지사항</string>
     <string name="notice_add_title">공지사항 추가</string>
+
+    <!-- Button -->
+    <string name="cancel">취소</string>
+    <string name="complete">완료</string>
+
+    <!-- showPicture 전송 페이지 -->
+    <string name="pictureShow_text">해당 카드와 날짜를 금액을 입력해주세요.</string>
+    <string name="pictureShow_store">가게 이름을 입력해주세요.</string>
+    <string name="pictureShow_price">금액을 입력해주세요.</string>
+    <string name="pictureShow_date">날짜을 입력해주세요.</string>
 </resources>

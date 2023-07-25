@@ -72,6 +72,20 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
                     dialogcardEditCardprice.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
                 }
             }
+            val hintBillCardCheck = dialogcardEditBillCardCheck.hint
+            dialogcardEditBillCardCheck.setOnFocusChangeListener { view, hasFocus ->
+                if (!hasFocus && dialogcardEditBillCardCheck.text.isEmpty()) {
+                    // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
+                    dialogcardEditBillCardCheck.hint = "청구 날짜를 꼭 적어주세요!"
+                    dialogcardEditBillCardCheck.backgroundTintList = ColorStateList.valueOf(Color.RED)
+                } else if(hasFocus && !dialogcardEditBillCardCheck.text.isEmpty()) {
+                    dialogcardEditBillCardCheck.hint = hintBillCardCheck // 초기 hint로 되돌리기
+                    dialogcardEditBillCardCheck.backgroundTintList = emphasis_yellow
+                }
+                else if(!hasFocus && !dialogcardEditBillCardCheck.text.isEmpty()){
+                    dialogcardEditBillCardCheck.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+                }
+            }
 
             dialogCardBtnPositive.setOnClickListener{
                 if(dialogcardEditCardname.text.toString() == ""){
@@ -84,7 +98,12 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
                     dismiss()
                     showLongToast("추가 금액을 입력하세요.")
                 }
-                else{
+                else if(dialogcardEditBillCardCheck.text.toString() == ""){
+                    Log.e("TAG", "initListener: 청구 날짜를 입력해주세요.", )
+                    dismiss()
+                    showLongToast("청구 날짜를 입력해주세요.")
+                }
+                else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
                     var price = cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())
                     activityViewModel.sendCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
                     dismiss()

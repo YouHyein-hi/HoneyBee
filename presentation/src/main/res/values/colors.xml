@@ -44,6 +44,7 @@
     <color name="sub_button2_white">#EFEFEF</color>
     <color name="sub_button3_white_gray">#E0E0E0</color>
     <color name="sub_button3_transparent_white_gray">#9CB6B6B6</color>
+    <color name="storke1">#BEBEBE</color>
 
 
 </resources>

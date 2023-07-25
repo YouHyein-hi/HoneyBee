@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.ui.fragment
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -15,6 +16,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.domain.model.BottomSheetData
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
@@ -50,12 +54,12 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
 
     override fun initUI() {
         with(binding){
+
             //글라이드
             Glide.with(pictureView)
                 .load(activityViewModel.image.value!!)
+                .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                 .into(pictureView)
-
-            pictureView.clipToOutline = true
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
             btnDate.text = "${showPictureViewModel.DateNow().format(formatterDate)}"
             myYear = showPictureViewModel.DateNow().year
@@ -90,9 +94,9 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             }
 
             /** Card 추가 Button -> Card 추가 Dialog 생성 **/
-            cardaddBtn.setOnClickListener{
+/*            cardaddBtn.setOnClickListener{
                 CardAddDialog_ShowPicture().show(parentFragmentManager, "CardAddDialog")
-            }
+            }*/
 
             /** 금액 EidtText , 추가 **/
             btnPrice.setOnClickListener {
@@ -113,7 +117,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             }
 
             /** 완료 Button **/
-            sendBtn.setOnClickListener {
+            completeBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
                 when {
                     cardName == "" -> { showShortToast("카드를 입력하세요.") }

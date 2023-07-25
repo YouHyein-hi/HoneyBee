@@ -50,6 +50,7 @@ class SendCheckBottomSheet(
                     storeName = bottomSheetData.storeName
                 )
             )
+            dismiss()
         }
     }
 

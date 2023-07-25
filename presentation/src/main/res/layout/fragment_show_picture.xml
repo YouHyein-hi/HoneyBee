@@ -8,6 +8,17 @@
     android:background="@color/sub_background1_orange"
     >
 
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-50dp"
+        android:src="@drawable/background_honeybee"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout5"
         android:layout_width="0dp"
@@ -23,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/pretendardbold"
-            android:text="해당 카드와 날짜를 금액을 입력해주세요."
+            android:text="@string/pictureShow_text"
             android:textColor="@color/fontColor_black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +69,7 @@
             android:elevation="3dp"
             android:fontFamily="@font/pretendardsemibold"
             android:gravity="center"
-            android:hint="가게 이름을 입력해주세요."
+            android:hint="@string/pictureShow_store"
 
             android:imeOptions="actionDone"
             android:inputType="text"
@@ -81,7 +92,7 @@
             android:elevation="3dp"
             android:fontFamily="@font/pretendardsemibold"
             android:gravity="center"
-            android:hint="금액을 입력해주세요."
+            android:hint="@string/pictureShow_price"
             android:inputType="number"
             android:maxLength="10"
             android:textSize="16sp"
@@ -100,7 +111,7 @@
             android:background="@drawable/btn_edittext"
             android:elevation="3dp"
             android:fontFamily="@font/pretendardsemibold"
-            android:hint="날짜를 입력해주세요."
+            android:hint="@string/pictureShow_date"
             android:imeOptions="actionDone"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -134,7 +145,7 @@
                     android:background="@drawable/btn_cancel"
                     android:elevation="3dp"
                     android:fontFamily="@font/pretendardsemibold"
-                    android:text="취소"
+                    android:text="@string/cancel"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/textView10" />
 
@@ -156,7 +167,7 @@
                     android:background="@drawable/btn_complete"
                     android:elevation="3dp"
                     android:fontFamily="@font/pretendardsemibold"
-                    android:text="완료"
+                    android:text="@string/complete"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/textView10" />
             </LinearLayout>
@@ -187,8 +198,10 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints" />
 
     <ProgressBar

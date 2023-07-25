@@ -6,6 +6,7 @@ import com.example.data.remote.model.ReceiveData
 import com.example.data.remote.model.ServerResponse
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
+import retrofit2.create
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -53,6 +54,12 @@ class GeneralDataSourceImpl @Inject constructor(
         billSubmitTime: LocalDateTime,
         amount: String
     ): ServerResponse {
-        TODO("Not yet implemented")
+        return retrofit.create(RetrofitSource::class.java).updateDataSource(
+            id,
+            cardName,
+            storeName,
+            billSubmitTime,
+            amount
+        )
     }
 }

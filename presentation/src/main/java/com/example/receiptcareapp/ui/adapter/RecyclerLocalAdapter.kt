@@ -23,9 +23,9 @@ class RecyclerLocalAdapter: RecyclerView.Adapter<RecyclerLocalAdapter.MyAdapter>
 
     inner class MyAdapter(private val binding: LocalItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:RecyclerShowData){
-            binding.storeName.text = "${list.storeName}"
-            binding.cardName.text = "${list.cardName}"
-            binding.amount.text = " ${list.amount}"
+            binding.storeName.text = list.storeName
+            binding.cardName.text = list.cardName
+            binding.amount.text = list.amount
             binding.date.text = list.date
             binding.listLayout.setOnClickListener{ onLocalSaveClic(list) }
         }

@@ -36,12 +36,14 @@
     <color name="sub_background1_orange">#FFAA2C</color>
     <color name="sub_background2_light_orange">#FFEFD2</color>
     <color name="main_font_black">#000000</color>
+    <color name="main_font_transparent_black">#A9000000</color>
     <color name="sub_font1_gray">#333333</color>
     <color name="sub_font2_gray">#808080</color>
     <color name="main_button_orange">#FFAA2C</color>
     <color name="sub_button1_light_orange">#FFC979</color>
     <color name="sub_button2_white">#EFEFEF</color>
     <color name="sub_button3_white_gray">#E0E0E0</color>
+    <color name="sub_button3_transparent_white_gray">#9CB6B6B6</color>
     <color name="storke1">#BEBEBE</color>
 
 

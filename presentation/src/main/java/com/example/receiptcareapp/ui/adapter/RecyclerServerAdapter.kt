@@ -1,6 +1,7 @@
 package com.example.receiptcareapp.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.receive.DomainReceiveAllData
@@ -24,11 +25,18 @@ class RecyclerServerAdapter(
 
     inner class MyAdapter(private val binding: ServerItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list: DomainReceiveAllData){
-            binding.storeName.text = "${list.storeName}"
-            binding.cardName.text = "${list.cardName}"
-            binding.amount.text = " ${list.amount}"
-            binding.date.text = "${list.date}"
-            binding.listLayout.setOnClickListener{ onServerSaveClick(list) }
+            with(binding){
+                storeName.text = list.storeName
+                cardName.text = list.cardName
+                amount.text = list.amount
+                date.text = list.date
+                listLayout.setOnClickListener{ onServerSaveClick(list) }
+                if(list.billCheck) {
+                    billCheckLayout.visibility = View.VISIBLE
+                    billCheckLayout.bringToFront()
+                }
+                else billCheckLayout.visibility = View.INVISIBLE
+            }
         }
     }
 

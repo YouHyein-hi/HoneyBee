@@ -19,7 +19,6 @@ import com.example.receiptcareapp.ui.adapter.RecyclerServerAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.dto.RecyclerData
-import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerShowViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerViewModel
 
 
@@ -54,12 +53,12 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             Log.e("TAG", "로컬부분!", )
             binding.bottomNavigationView.menu.findItem(R.id.local).isChecked = true
             initLocalRecyclerView()
-            activityViewModel.receiveAllLocalData()
+            activityViewModel.getLocalAllBillData()
             binding.explain.text = "휴대폰의 데이터 입니다."
         }
         else {
             Log.e("TAG", "서버부분!", )
-            activityViewModel.receiveServerAllData()
+            activityViewModel.getServerAllbillData()
             initServerRecyclerView()
             binding.explain.text = "서버의 데이터 입니다."
             activityViewModel.changeNullPicture()
@@ -73,7 +72,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             when(it.itemId){
                 R.id.server -> {
                     binding.explain.text = "서버의 데이터 입니다."
-                    activityViewModel.receiveServerAllData()
+                    activityViewModel.getServerAllbillData()
                     initServerRecyclerView()
                     true
                 }
@@ -82,7 +81,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
                     binding.explain.text = "휴대폰의 데이터 입니다."
                     activityViewModel.hideServerCoroutineStop()
                     setTextAndVisible("",false)
-                    activityViewModel.receiveAllLocalData()
+                    activityViewModel.getLocalAllBillData()
                     initLocalRecyclerView()
                     true
                 }
@@ -105,7 +104,7 @@ class RecyclerFragment : BaseFragment<FragmentRecyclerBinding>(FragmentRecyclerB
             activityViewModel.changeSelectedData(myData)
 
             activityViewModel.changeNullPicture()
-            activityViewModel.requestServerPictureData(it.uid)
+            activityViewModel.getServerPictureData(it.uid)
 
             viewModel.changeStartGap(ShowType.SERVER)
         }

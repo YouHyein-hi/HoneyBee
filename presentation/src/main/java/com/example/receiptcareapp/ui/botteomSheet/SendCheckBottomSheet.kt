@@ -41,7 +41,7 @@ class SendCheckBottomSheet(
         binding.cancleBtn.setOnClickListener { dismiss() }
 
         binding.sendBtn.setOnClickListener {
-            activityViewModel.sendData(
+            activityViewModel.insertServerBillData(
                 AppSendData(
                     billSubmitTime = bottomSheetData.date,
                     amount = bottomSheetData.amount,

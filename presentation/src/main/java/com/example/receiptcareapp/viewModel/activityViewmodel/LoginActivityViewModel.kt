@@ -36,6 +36,7 @@ class LoginActivityViewModel @Inject constructor(
 
     init {
         Log.e("TAG", "LoginActivityViewModel 생성: ", )
+
     }
 
     //서버 연결 유무 관리

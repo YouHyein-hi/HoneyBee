@@ -4,22 +4,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.domain.model.UpdateData
 import com.example.domain.model.send.AppSendData
-import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
-import com.example.receiptcareapp.databinding.SpinnerCustomItemLayoutBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.ChangeViewModel
-import java.text.DecimalFormat
 
 class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
@@ -92,7 +88,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                 else -> {
                     Log.e("TAG", "initListener myData: $myData", )
                     if(myData.type == ShowType.SERVER) {
-                        activityViewModel.updateServerData(
+                        activityViewModel.updateServerBillData(
                             sendData = UpdateData(
                                 billSubmitTime = myLocalDateTime.toString(),
                                 amount = binding.changeBtnPrice.text.toString(),
@@ -102,7 +98,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                             uid = myData.uid,
                         )
                     } else {
-                        activityViewModel.resendData(
+                        activityViewModel.updateLocalBillData(
                             sendData = AppSendData(
                                 billSubmitTime = myLocalDateTime.toString(),
                                 amount = binding.changeBtnPrice.text.toString(),
@@ -150,7 +146,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             }
 
             private fun getSpinner() {
-                activityViewModel.receiveServerCardData()
+                activityViewModel.getServerCardData()
                 val adapter = SpinnerAdapter(requireContext(), myArray)
 
                 val inflater = LayoutInflater.from(context)

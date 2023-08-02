@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.viewModel.activityViewmodel
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.database.Cursor
@@ -70,7 +69,6 @@ class MainActivityViewModel @Inject constructor(
     private val updateRoomData: UpdateRoomData,
     private val preferenceManager: PreferenceManager
 ) : BaseViewModel(application) {
-    private var waitTime = 5000L
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
     // viewModel 의 lifecycle은 activity보다 길기 때문에 activity context를 참조하게되면 메모리 누수가 발생함.
     // activity가 회전할 activity는 초기화가 되고, viewModel은 유지되는데,
@@ -128,7 +126,7 @@ class MainActivityViewModel @Inject constructor(
 
     // TODO ShowPictureFragment에만 들어가는 코드인데 ShowPictureViewModel에 옮길까
     //서버에 데이터 전송 기능
-    fun sendData(sendData: AppSendData) {
+    fun insertServerBillData(sendData: AppSendData) {
         Log.e("TAG", "sendData: $sendData", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
@@ -153,7 +151,7 @@ class MainActivityViewModel @Inject constructor(
                         splitData = dateTimeToString(sendData.billSubmitTime)
                     }
                     _connectedState.postValue(ConnectedState.CONNECTING_SUCCESS)
-                    insertRoomData(
+                    insertRoomBillData(
                         DomainRoomData(
                             cardName = sendData.cardName,
                             amount = sendData.amount,
@@ -173,7 +171,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     //로컬 데이터 재전송
-    fun resendData(sendData:AppSendData, beforeUid: String){
+    fun updateLocalBillData(sendData:AppSendData, beforeUid: String){
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             Log.e("TAG", "resendData: $sendData", )
@@ -242,7 +240,7 @@ class MainActivityViewModel @Inject constructor(
         return result!!
     }
 
-    fun sendCardData(sendData: AppSendCardData) {
+    fun insertServerCardData(sendData: AppSendCardData) {
         Log.e("TAG", "sendCardData: 카드 보내기 $sendData", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
@@ -254,13 +252,14 @@ class MainActivityViewModel @Inject constructor(
                     )
                 )
                 _connectedState.postValue(ConnectedState.CARD_CONNECTING_SUCCESS)
-                receiveServerCardData()
+                //TODO 이런 유기적인 연결 다 지우기
+                getServerCardData()
             }?:throw SocketTimeoutException()
         }
     }
 
     // Server 데이터 불러오는 부분
-    fun receiveServerAllData() {
+    fun getServerAllbillData() {
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime){
@@ -272,7 +271,8 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun receiveServerCardData() {
+    //여러 Fragment에서 사용되는 함수
+    fun getServerCardData() {
         _connectedState.postValue(ConnectedState.CONNECTING)
         _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
@@ -285,7 +285,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     // TODO RecyclerFragment에만 들어가는 코드인데 RecyclerViewModel에 옮길까
-    fun requestServerPictureData(uid:String){
+    fun getServerPictureData(uid:String){
         _connectedState.postValue(ConnectedState.CONNECTING)
         _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
@@ -298,7 +298,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel에 옮길까
-    fun deleteServerData(id: Long) {
+    fun deleteServerBillData(id: Long) {
         Log.e("TAG", "deleteServerData: 들어감", )
         _connectedState.postValue(ConnectedState.CONNECTING)
         _serverJob.postValue(CoroutineScope(exceptionHandler).async {
@@ -312,7 +312,7 @@ class MainActivityViewModel @Inject constructor(
 
     // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
     //서버 데이터 업데이트
-    fun updateServerData(sendData: UpdateData, uid : String) {
+    fun updateServerBillData(sendData: UpdateData, uid : String) {
         Log.e("TAG", "changeServerData: $sendData $uid", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
@@ -340,7 +340,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun updateCardData(updateCardData : UpdateCardData){
+    fun updateServerCardData(updateCardData : UpdateCardData){
         Log.e("TAG", "updateCardData: ${updateCardData}", )
         _connectedState.value = ConnectedState.CONNECTING
         _serverJob.value = CoroutineScope(exceptionHandler).launch {
@@ -357,7 +357,8 @@ class MainActivityViewModel @Inject constructor(
 
                 if(result.status == "200"){
                     _connectedState.postValue(ConnectedState.CARD_CONNECTING_SUCCESS)
-                    receiveServerCardData()
+                    //TODO 이런 유기적인 연결 다 지우기
+                    getServerCardData()
                 }
                 else{
                     Exception("오류! 전송 실패")
@@ -370,18 +371,19 @@ class MainActivityViewModel @Inject constructor(
     }
 
     // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel
-    fun deleteRoomData(date: String) {
+    fun deleteRoomBillData(date: String) {
         CoroutineScope(exceptionHandler).launch {
             _connectedState.postValue(ConnectedState.CONNECTING)
             val result = deleteDataRoomUseCase(date)
             Log.e("TAG", "deleteRoomData result : $result", )
             //삭제 후에 데이터 끌어오기 위한 구성
-            receiveAllLocalData()
+            getLocalAllBillData()
             _connectedState.postValue(ConnectedState.DISCONNECTED)
         }
     }
 
-    fun insertRoomData(domainRoomData: DomainRoomData) {
+    // 이 기능을 따로 빼야할듯
+    private fun insertRoomBillData(domainRoomData: DomainRoomData) {
         CoroutineScope(exceptionHandler).launch {
             _connectedState.postValue(ConnectedState.CONNECTING)
             insertDataRoomUseCase(domainRoomData)
@@ -389,7 +391,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun receiveAllLocalData() {
+    fun getLocalAllBillData() {
         CoroutineScope(exceptionHandler).launch {
             _connectedState.postValue(ConnectedState.CONNECTING)
             val gap = getRoomDataListUseCase()
@@ -399,12 +401,14 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    //TODO 이 기능을 Base ViewModel에 정의
     fun serverCoroutineStop() {
         _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소"))
         this.setFetchStateStop()
         _connectedState.postValue(ConnectedState.DISCONNECTED)
     }
 
+    //TODO 이 기능을 Base ViewModel에 정의
     fun hideServerCoroutineStop() {
         _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소"))
         _connectedState.postValue(ConnectedState.DISCONNECTED)
@@ -467,13 +471,13 @@ class MainActivityViewModel @Inject constructor(
         preferenceManager.clearAll()
     }
 
-    fun bitmapToUri(activity: Activity, bitmap: Bitmap?): Uri {
-        Log.e("TAG", "bitmapToUri: $bitmap", )
-        val file = File(activity.cacheDir, "temp_image.jpg")
-        val outputStream = FileOutputStream(file)
-        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        outputStream.flush()
-        outputStream.close()
-        return Uri.fromFile(file)
-    }
+//    fun bitmapToUri(activity: Activity, bitmap: Bitmap?): Uri {
+//        Log.e("TAG", "bitmapToUri: $bitmap", )
+//        val file = File(activity.cacheDir, "temp_image.jpg")
+//        val outputStream = FileOutputStream(file)
+//        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+//        outputStream.flush()
+//        outputStream.close()
+//        return Uri.fromFile(file)
+//    }
 }

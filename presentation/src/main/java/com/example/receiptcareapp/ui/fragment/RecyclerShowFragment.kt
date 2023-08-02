@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.State.ShowType
@@ -22,6 +21,7 @@ import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerShowViewMo
 
 class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate, "RecyclerShowFragment") {
     private val activityViewModel : MainActivityViewModel by activityViewModels()
+    private val viewModel : RecyclerShowViewModel by viewModels()
     private lateinit var myData: ShowData
     private lateinit var callback:OnBackPressedCallback
 
@@ -125,9 +125,9 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             .setNegativeButton("삭제하기"){dialog,id->
                 Log.e("TAG", "deleteDialog: ${myData}", )
                 if(myData.type == ShowType.SERVER){
-                    activityViewModel.deleteServerData(myData.uid.toLong()).toString()
+                    activityViewModel.deleteServerBillData(myData.uid.toLong()).toString()
                 }else{
-                    activityViewModel.deleteRoomData(myData.billSubmitTime).toString()
+                    activityViewModel.deleteRoomBillData(myData.billSubmitTime).toString()
                     findNavController().popBackStack()
                 }
             }

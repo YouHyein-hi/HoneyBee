@@ -109,7 +109,7 @@
     </fragment>
     <fragment
         android:id="@+id/showFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.ShowPictureFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.SendBillDataFragment"
         android:label="fragment_success"
         tools:layout="@layout/fragment_show_picture" >
         <action

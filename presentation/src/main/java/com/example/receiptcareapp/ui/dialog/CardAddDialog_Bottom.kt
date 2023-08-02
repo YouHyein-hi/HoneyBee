@@ -105,7 +105,7 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
                 }
                 else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
                     var price = cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())
-                    activityViewModel.sendCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
+                    activityViewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
                     dismiss()
                 }
             }

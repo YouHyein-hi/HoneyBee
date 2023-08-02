@@ -3,42 +3,28 @@ package com.example.receiptcareapp.ui.botteomSheet
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewbinding.ViewBinding
-import com.example.data.manager.PreferenceManager
 import com.example.domain.model.UpdateCardData
-import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseBottomSheet
-import com.example.receiptcareapp.base.BaseFragmentDataBinding
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
-import com.example.receiptcareapp.databinding.FragmentMenuBinding
-import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_Bottom
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddBottomViewModel
-import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardBottomSheetViewModel
+import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.text.DecimalFormat
-import javax.inject.Inject
 
 /**
  * 2023-03-22
@@ -50,7 +36,7 @@ class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
 ) {
     private val adapter: HomeCardAdapter = HomeCardAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val homeCardAddBottomViewModel : HomeCardBottomSheetViewModel by viewModels()
+    private val homeCardAddBottomViewModel : HomeCardViewModel by viewModels()
     private var uid : Long = 0
 
 
@@ -62,7 +48,7 @@ class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
         //initData 부분
         activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
         //서버 데이터 불러오기
-        activityViewModel.receiveServerCardData()
+        activityViewModel.getServerCardData()
     }
 
     override fun initUI() {
@@ -115,7 +101,7 @@ class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
                     Log.e("TAG", "adapter.dataList: ${adapter.dataList}", )
                     Log.e("TAG", "onCreateView uid: $uid", )
                     var price = homeCardAddBottomViewModel.CommaReplaceSpace(cardPrice.text.toString())
-                    activityViewModel.updateCardData(
+                    activityViewModel.updateServerCardData(
                         updateCardData = UpdateCardData(
                             id = uid,
                             cardName = cardName.text.toString(),

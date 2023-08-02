@@ -5,28 +5,28 @@ import androidx.lifecycle.ViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-class ShowPictureViewModel : ViewModel() {
+class SendBillDataViewModel : ViewModel() {
 
     init {
         Log.e("TAG", "ShowPictureViewModel")
     }
 
-    fun CommaReplaceSpace(text: String): String {
+    fun commaReplaceSpace(text: String): String {
         return text.replace(",", "")
     }
 
-    fun DateNow(): LocalDate {
+    fun dateNow(): LocalDate {
         return LocalDate.now()
     }
 
-    fun DatePickerMonth(month: Int): String {
+    fun datePickerMonth(month: Int): String {
         var myMonth: String
         if (month < 10) myMonth = "0${month + 1}"
         else myMonth = "${month + 1}"
         return myMonth
     }
 
-    fun DatePickerDay(day: Int): String {
+    fun datePickerDay(day: Int): String {
         var myDay: String
         if (day < 10) myDay = "0${day}"
         else myDay = "${day}"
@@ -40,14 +40,7 @@ class ShowPictureViewModel : ViewModel() {
         )
     }
 
-//    private val _card = MutableLiveData<Map<String, Int>>()
-//    val card : LiveData<Map<String, Int>>
-//        get() = _card
-//    fun takeCardData(card: Map<String, Int>){
-//        _card.value = card
-//    }
-//    fun spiltCardSplit(myPostion: String) : ArrayList<String>{
-//        return myPostion.split(" : ") as ArrayList<String>
-//    }
+
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.data.manager
 
 import android.content.Context
+import androidx.core.content.edit
 import javax.inject.Inject
 
 /**
@@ -33,5 +34,13 @@ class PreferenceManager @Inject constructor(
         sharedPreference.edit().remove("sharedPreference_id").apply()
         sharedPreference.edit().remove("sharedPreference_pw").apply()
 //        sharedPreference.edit().clear().commit()
+    }
+
+    fun putPush(onoff : Boolean){
+        sharedPreference.edit().putBoolean("sharedPreference_push", onoff).apply()
+    }
+
+    fun getPush() : Boolean?{
+        return sharedPreference.getBoolean("sharedPreference_push", false)
     }
 }

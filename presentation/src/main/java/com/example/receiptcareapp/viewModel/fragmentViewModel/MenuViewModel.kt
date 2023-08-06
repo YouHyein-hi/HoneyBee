@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.example.data.manager.PreferenceManager
 import com.example.receiptcareapp.base.BaseViewModel
+import com.example.receiptcareapp.dto.LoginData
+import com.example.receiptcareapp.dto.TimeData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -20,4 +22,11 @@ class MenuViewModel @Inject constructor(
     fun getPush(): Boolean? {
         return preferenceManager.getPush()
     }
+
+    fun putTime(hour : Int, minute: Int){
+        preferenceManager.putHour(hour)
+        preferenceManager.putMinute(minute)
+    }
+
+    fun getTime() : TimeData = TimeData(preferenceManager.getHour(), preferenceManager.getMinute())
 }

@@ -43,4 +43,20 @@ class PreferenceManager @Inject constructor(
     fun getPush() : Boolean?{
         return sharedPreference.getBoolean("sharedPreference_push", false)
     }
+
+    fun putHour(hour : Int){
+        sharedPreference.edit().putInt("sharedPreference_pushHour", hour).apply()
+    }
+
+    fun putMinute(minute : Int){
+        sharedPreference.edit().putInt("sharedPreference_pushMinute", minute).apply()
+    }
+
+    fun getHour() : Int?{
+        return sharedPreference.getInt("sharedPreference_pushHour", 17)
+    }
+
+    fun getMinute() : Int?{
+        return sharedPreference.getInt("sharedPreference_pushMinute", 0)
+    }
 }

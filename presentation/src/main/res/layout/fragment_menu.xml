@@ -97,7 +97,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/pretendardmedium"
-            android:text="09 : 00 PM"
+            android:text="05 : 00"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view" />

@@ -6,8 +6,6 @@
     <string name="menu_changeTime"><u>시간 변경</u></string>
     <string name="recycler_amount">%s원 남았어요!</string>
 
-    <string name="bottomSheet_title">등록 카드 목록</string>
-    <string name="bottomSheet_sub_title">이번달 처리 할 카드 개수 : %s</string>
     <string name="bottom_sheet_recycler_check">저번 달 청구</string>
     <string name="notice_title">공지사항</string>
     <string name="notice_add_title">공지사항 추가</string>
@@ -21,6 +19,11 @@
     <string name="pictureShow_store">가게 이름을 입력해주세요.</string>
     <string name="pictureShow_price">금액을 입력해주세요.</string>
     <string name="pictureShow_date">날짜을 입력해주세요.</string>
+
+    <!-- BottomSheet Card -->
+    <string name="bottomSheet_card_title">등록된 카드</string>
+    <string name="bottomSheet_card_text">이번 달 처리 할 카드 개수 : %s</string>
+    <string name="bottomSheet_card_empty">비었어요!</string>
 
     <!-- Dialog CardAdd -->
     <string name="dialog_cardAdd_title">카드 추가</string>

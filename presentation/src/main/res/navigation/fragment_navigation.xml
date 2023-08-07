@@ -23,7 +23,7 @@
             />
         <action
             android:id="@+id/action_homeFragment_to_recyclerFragment"
-            app:destination="@id/recyclerFragment"
+            app:destination="@id/recordFrameFragment"
             app:popUpTo="@id/homeFragment"/>
 
         <action
@@ -54,7 +54,7 @@
         tools:layout="@layout/fragment_camera" >
         <action
             android:id="@+id/action_cameraFragment_to_showFragment"
-            app:destination="@id/showFragment"
+            app:destination="@id/sendBillFragment"
             app:popUpTo="@id/homeFragment"
             />
         <action
@@ -70,7 +70,7 @@
         tools:layout="@layout/fragment_gallery" >
         <action
             android:id="@+id/action_galleryFragment_to_showFragment"
-            app:destination="@id/showFragment"
+            app:destination="@id/sendBillFragment"
             app:popUpTo="@id/homeFragment"
             />
         <action
@@ -80,14 +80,14 @@
             />
     </fragment>
     <fragment
-        android:id="@+id/recyclerFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.RecyclerFragment"
+        android:id="@+id/recordFrameFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.RecordFrameFragment"
         android:label="fragment_recycler"
-        tools:layout="@layout/fragment_recycler" >
+        tools:layout="@layout/fragment_record_frame" >
         <action
             android:id="@+id/action_recyclerFragment_to_recyclerShowFragment"
-            app:destination="@id/recyclerShowFragment"
-            app:popUpTo="@id/recyclerFragment"
+            app:destination="@id/recordShowFragment"
+            app:popUpTo="@id/recordFrameFragment"
             />
         <action
             android:id="@+id/action_recyclerFragment_to_homeFragment"
@@ -96,22 +96,22 @@
             />
     </fragment>
     <fragment
-        android:id="@+id/recyclerShowFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.RecyclerShowFragment"
+        android:id="@+id/recordShowFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.RecordShowFragment"
         android:label="fragment_recycler_show"
-        tools:layout="@layout/fragment_recycler_show" >
+        tools:layout="@layout/fragment_record_show" >
         <action
             android:id="@+id/action_recyclerShowFragment_to_recyclerFragment"
-            app:destination="@id/recyclerFragment"
-            app:popUpTo="@id/recyclerFragment"
+            app:destination="@id/recordFrameFragment"
+            app:popUpTo="@id/recordFrameFragment"
             app:popUpToInclusive="false"
             />
     </fragment>
     <fragment
-        android:id="@+id/showFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.SendBillDataFragment"
+        android:id="@+id/sendBillFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.SendBillFragment"
         android:label="fragment_success"
-        tools:layout="@layout/fragment_show_picture" >
+        tools:layout="@layout/fragment_send_bill" >
         <action
             android:id="@+id/action_showFragment_to_homeFragment"
             app:destination="@id/homeFragment"

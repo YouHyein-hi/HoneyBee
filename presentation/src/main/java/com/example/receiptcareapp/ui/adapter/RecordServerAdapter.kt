@@ -11,9 +11,9 @@ import com.example.receiptcareapp.databinding.ServerItemBinding
  * 2023-02-06
  * pureum
  */
-class RecyclerServerAdapter(
+class RecordServerAdapter(
 
-) :RecyclerView.Adapter<RecyclerServerAdapter.MyAdapter>(){
+) :RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
 
     lateinit var onServerSaveClick : (DomainReceiveAllData)->Unit
     private lateinit var serverBinding:ServerItemBinding

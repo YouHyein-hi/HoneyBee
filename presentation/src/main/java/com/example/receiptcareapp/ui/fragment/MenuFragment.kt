@@ -19,8 +19,10 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::inflate, "MenuFragment") {
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()

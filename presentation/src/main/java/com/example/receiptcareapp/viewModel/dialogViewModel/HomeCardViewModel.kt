@@ -2,13 +2,17 @@ package com.example.receiptcareapp.viewModel.dialogViewModel
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.model.UpdateCardData
+import com.example.domain.model.receive.DomainServerReponse
 import com.example.domain.model.receive.DomainUpdateCardData
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.card.UpdateCardUseCase
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
+import com.example.receiptcareapp.util.ResponseState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
@@ -16,12 +20,17 @@ import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 class HomeCardViewModel @Inject constructor(
-    application: Application,
     private val getCardListUseCase: GetCardListUseCase,
     private val updateCardUseCase: UpdateCardUseCase
-) : BaseViewModel(application){
+) : BaseViewModel(){
 
     init { Log.e("TAG", "HomeCardBottomSheetViewModel", ) }
+
+    val loading : MutableLiveData<Boolean> get() = isLoading
+
+    private var _response = MutableLiveData<ResponseState>()
+    val response : LiveData<ResponseState> get() = _response
+
 
     fun CommaReplaceSpace(text : String): String {
         return text.replace(",", "")
@@ -30,39 +39,40 @@ class HomeCardViewModel @Inject constructor(
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
         CoroutineScope(exceptionHandler).launch {
+            isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                val gap = getCardListUseCase()
-                Log.e("TAG", "receiveCardData: $gap")
-                _cardData.postValue(gap)
+                getCardListUseCase()
             } ?:throw SocketTimeoutException()
+            isLoading.postValue(false)
         }
     }
 
-    fun updateServerCardData(updateCardData : UpdateCardData){
-        Log.e("TAG", "updateCardData: ${updateCardData}", )
+    fun updateServerCardData(updateCardData : UpdateCardData) {
+        Log.e("TAG", "updateCardData: $updateCardData",)
         CoroutineScope(exceptionHandler).launch {
-            Log.e("TAG", "updateCardData: 훔냠냠", )
+            isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                val result = updateCardUseCase(
-                    DomainUpdateCardData(
-                        id = updateCardData.id,
-                        cardName = updateCardData.cardName,
-                        cardAmount = updateCardData.cardAmount
+                updateResponse(
+                    updateCardUseCase(
+                        DomainUpdateCardData(
+                            id = updateCardData.id,
+                            cardName = updateCardData.cardName,
+                            cardAmount = updateCardData.cardAmount
+                        )
                     )
                 )
-                Log.e("TAG", "updateCardData result: ${result}",)
-
-                if(result.status == "200"){
-                    //TODO 이런 유기적인 연결 다 지우기
-                    getServerCardData()
-                }
-                else{
-                    Exception("오류! 전송 실패")
-                }
-
-
-            }?:throw SocketTimeoutException()
+            } ?: throw SocketTimeoutException()
+            isLoading.postValue(false)
         }
-//        retrofitUseCase.updateCardDateUseCase()
+    }
+
+    private fun updateResponse(response: DomainServerReponse){
+        when(response.status){
+            "200" -> {
+                getServerCardData()
+                _response.postValue(ResponseState.SUCCESS)
+            }
+            else -> {_response.postValue(ResponseState.FALSE)}
+        }
     }
 }

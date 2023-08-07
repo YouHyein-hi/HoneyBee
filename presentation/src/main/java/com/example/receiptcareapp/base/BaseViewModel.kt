@@ -21,7 +21,9 @@ import java.net.UnknownHostException
  * 2023-02-15
  * pureum
  */
-abstract class BaseViewModel(application: Application)  : AndroidViewModel(application){
+abstract class BaseViewModel : ViewModel(){
+
+    protected val isLoading = MutableLiveData(false)
 
     private val _fetchState = MutableLiveData<Pair<Throwable, FetchState>>()
     val fetchState : LiveData<Pair<Throwable, FetchState>>
@@ -37,6 +39,8 @@ abstract class BaseViewModel(application: Application)  : AndroidViewModel(appli
     private val job = SupervisorJob()
 
     protected val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        isLoading.postValue(false)
+
         throwable.printStackTrace()
         Log.e("TAG", "base : $throwable", )
         when(throwable){

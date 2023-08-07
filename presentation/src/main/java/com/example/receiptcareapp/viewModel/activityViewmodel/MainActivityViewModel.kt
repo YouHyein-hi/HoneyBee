@@ -35,7 +35,10 @@ import com.example.domain.usecase.room.UpdateRoomData
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.dto.RecyclerData
+import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -52,7 +55,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    application: Application,
+    @ApplicationContext private val application: Context,
 //    private val retrofitUseCase: RetrofitUseCase,
 //    private val roomUseCase: RoomUseCase,
     private val getCardListUseCase: GetCardListUseCase,
@@ -68,7 +71,7 @@ class MainActivityViewModel @Inject constructor(
     private val insertDataRoomUseCase: InsertDataRoomUseCase,
     private val updateRoomData: UpdateRoomData,
     private val preferenceManager: PreferenceManager
-) : BaseViewModel(application) {
+) : BaseViewModel() {
     //이렇게 쓰면 메모리 누수가 일어난다는데 왜??
     // viewModel 의 lifecycle은 activity보다 길기 때문에 activity context를 참조하게되면 메모리 누수가 발생함.
     // activity가 회전할 activity는 초기화가 되고, viewModel은 유지되는데,
@@ -78,7 +81,7 @@ class MainActivityViewModel @Inject constructor(
     // 방법 1. activityViewModel을 상속받아 viewmodel을 구성한는 방법
     // (기존방법은 activityContext 참조였으나, ActivityContext를 참조하는방법임)
     // 방법 2. util의 APP클레스에 DI로 Context를 선언해주는 방법
-    //    var myCotext: Context? = application
+//    var myCotext: Context?
 
     // viewModel에 있는 context 빼기
 
@@ -103,6 +106,9 @@ class MainActivityViewModel @Inject constructor(
     private var _roomData = MutableLiveData<MutableList<DomainRoomData>>()
     val roomData: LiveData<MutableList<DomainRoomData>>
         get() = _roomData
+//    fun updateRoomData(RecylcerData){
+//
+//    }
 
     //서버 연결 유무 관리
     private var _connectedState = MutableLiveData<ConnectedState>()
@@ -460,7 +466,8 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun compressEncodePicture(uri:Uri): MultipartBody.Part{
-        val file = File(absolutelyPath(uri, getApplication()))
+        //TODO 바꿔야함
+        val file = File(absolutelyPath(uri, application))
         val compressFile = compressImageFile(file)
         val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData("file", file.name, requestFile)

@@ -32,4 +32,8 @@
     <string name="dialog_cardAdd_billCheckDate">카드 청구 날짜를 입력해주세요.</string>
     <string name="dialog_cardAdd_billCheckDate_err">카드 청구 날짜를 꼭 적어주세요!</string>
 
+    <!-- Dialog CardChange -->
+    <string name="dialog_cardChange_title">카드 수정</string>
+    <string name="dialog_cardChange_price">수정할 금액을 입력해주세요.</string>
+
 </resources>

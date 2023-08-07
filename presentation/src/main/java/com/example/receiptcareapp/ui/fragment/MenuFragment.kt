@@ -8,14 +8,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
-import android.os.SystemClock
-import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.view.menu.MenuView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
@@ -26,8 +20,6 @@ import com.example.receiptcareapp.ui.botteomSheet.HomeCardBottomSheet
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.util.*
 
 class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::inflate, "MenuFragment") {
@@ -36,8 +28,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     private val menuViewModel: MenuViewModel by activityViewModels()
     companion object { const val REQUEST_CODE = 101 }
 
-    private var myHour = "0"
-    private var myMinute = "0"
     private lateinit var pendingIntent: PendingIntent
     private lateinit var alarmManager: AlarmManager
 
@@ -77,7 +67,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             activity?.finish()
             Toast.makeText(requireContext(), "로그아웃 성공.", Toast.LENGTH_SHORT).show()
             startActivity(Intent(requireContext(), LoginActivity::class.java))
-
         }
 
         binding.pushTimeButton.setOnClickListener{
@@ -102,7 +91,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
         }
 
 
-        //05 : 00
         binding.pushSwitch.isChecked = menuViewModel.getPush()!!
         binding.pushSwitch.setOnCheckedChangeListener { _, isChecked ->
             menuViewModel.putPush(isChecked)
@@ -117,7 +105,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
 
         // 최초 세팅
         updatePushTimeText()
-
     }
 
     override fun initObserver() {
@@ -145,14 +132,10 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     }
 
     private fun updatePushTimeText() {
-        // 이건 format으로 하면 될거같은데~~ 일단 이렇게 하자
-        // 그리고 ViewModel에 빼줘야됨~!~!!!
-        if (menuViewModel.getTime().hour!! < 10) myHour = "0${menuViewModel.getTime().hour!!}"
-        else myHour = "${menuViewModel.getTime().hour!!}"
-        if (menuViewModel.getTime().minute!! < 10) myMinute = "0${menuViewModel.getTime().minute!!}"
-        else myMinute = "${menuViewModel.getTime().minute!!}"
-
-        binding.pushTime.text = "${myHour} : ${myMinute}"
+        binding.pushTime.text = menuViewModel.timePickerText(
+            menuViewModel.getTime().hour!!,
+            menuViewModel.getTime().minute!!
+        )
     }
 
 }

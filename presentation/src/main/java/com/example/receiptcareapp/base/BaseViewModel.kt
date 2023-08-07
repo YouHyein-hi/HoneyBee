@@ -4,13 +4,15 @@ import android.app.Application
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.util.FetchState
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.plus
 import retrofit2.HttpException
+import java.io.InterruptedIOException
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -19,7 +21,9 @@ import java.net.UnknownHostException
  * 2023-02-15
  * pureum
  */
-abstract class BaseViewModel(application: Application)  : AndroidViewModel(application){
+abstract class BaseViewModel : ViewModel(){
+
+    protected val isLoading = MutableLiveData(false)
 
     private val _fetchState = MutableLiveData<Pair<Throwable, FetchState>>()
     val fetchState : LiveData<Pair<Throwable, FetchState>>
@@ -30,8 +34,13 @@ abstract class BaseViewModel(application: Application)  : AndroidViewModel(appli
     fun hideSetFetchStateStop(){
         _fetchState.postValue(Pair(Throwable(""), FetchState.HIDE_STOP))
     }
+    protected val waitTime = 5000L
 
-    protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+    private val job = SupervisorJob()
+
+    protected val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        isLoading.postValue(false)
+
         throwable.printStackTrace()
         Log.e("TAG", "base : $throwable", )
         when(throwable){
@@ -43,4 +52,19 @@ abstract class BaseViewModel(application: Application)  : AndroidViewModel(appli
             else -> _fetchState.postValue(Pair(throwable, FetchState.FAIL))
         }
     }
+
+    //디스패쳐 메인에서 돌아감
+    protected val modelScope = viewModelScope + job + exceptionHandler
+
+
+//    //TODO 이 기능을 Base ViewModel에 정의
+//    fun serverCoroutineStop() {
+//        _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소"))
+//        this.setFetchStateStop()
+//    }
+//
+//    //TODO 이 기능을 Base ViewModel에 정의
+//    fun hideServerCoroutineStop() {
+//        _serverJob.value?.cancel("코루틴 취소", InterruptedIOException("강제 취소"))
+//    }
 }

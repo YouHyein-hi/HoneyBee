@@ -12,30 +12,33 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.domain.model.BottomSheetData
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
+import com.example.receiptcareapp.databinding.FragmentSendBillBinding
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
+import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import com.example.receiptcareapp.viewModel.fragmentViewModel.ShowPictureViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentShowPictureBinding::inflate, "ShowPictureFragment") {
+
+@AndroidEntryPoint
+class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillBinding::inflate, "ShowPictureFragment") {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val showPictureViewModel : ShowPictureViewModel by viewModels()
+    private val viewModel : SendBillViewModel by viewModels()
     private var cardName = ""
     private var cardAmount = ""
     private var myYear = 0
@@ -60,10 +63,10 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                 .into(pictureView)
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-            btnDate.text = "${showPictureViewModel.DateNow().format(formatterDate)}"
-            myYear = showPictureViewModel.DateNow().year
-            myMonth = showPictureViewModel.DateNow().monthValue
-            myDay = showPictureViewModel.DateNow().dayOfMonth
+            btnDate.text = "${viewModel.dateNow().format(formatterDate)}"
+            myYear = viewModel.dateNow().year
+            myMonth = viewModel.dateNow().monthValue
+            myDay = viewModel.dateNow().dayOfMonth
         }
         /** Spinner 호출 **/
         getSpinner()
@@ -81,7 +84,7 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                     myYear = year
                     myMonth = month + 1
                     myDay = day
-                    btnDate.text = "${myYear}/${showPictureViewModel.DatePickerMonth(month)}/${showPictureViewModel.DatePickerDay(day)}"
+                    btnDate.text = "${myYear}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
                 }
                 val dataDialog = DatePickerDialog(requireContext(), data,
                     cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
@@ -92,10 +95,11 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                     .setTextColor(Color.BLACK)
             }
 
+
             /** 금액 EidtText , 추가 **/
             btnPrice.setOnClickListener {
                 if (btnPrice.text.contains(",")) {
-                    btnPrice.setText(showPictureViewModel.CommaReplaceSpace(btnPrice.text.toString()))
+                    btnPrice.setText(viewModel.commaReplaceSpace(btnPrice.text.toString()))
                     btnPrice.setSelection(btnPrice.text.length)
                 }
             }
@@ -120,11 +124,11 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                     btnPrice.text.isEmpty() -> { showShortToast("금액을 입력하세요.") }
                     activityViewModel.image.value == null -> {
                         showShortToast("사진이 비었습니다.\n초기화면으로 돌아갑니다.")
-                        NavHostFragment.findNavController(this@ShowPictureFragment)
+                        NavHostFragment.findNavController(this@SendBillFragment)
                             .navigate(R.id.action_showFragment_to_homeFragment)
                     }
                     else -> {
-                        val myLocalDateTime = showPictureViewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
+                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
                         SendCheckBottomSheet(
                             BottomSheetData(
                                 cardName = cardName,
@@ -176,37 +180,25 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
             }
 
             /** 프로그래스바 컨트롤 **/
-            activityViewModel.connectedState.observe(viewLifecycleOwner){
-                Log.e("TAG", "onViewCreated: $it")
-                when (it) {
-                    ConnectedState.CONNECTING -> {
-                        waitingView.visibility = View.VISIBLE
-                        progressBar.visibility = View.VISIBLE
+            viewModel.loading.observe(viewLifecycleOwner){
+                if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
+                else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
+            }
+
+            viewModel.response.observe(viewLifecycleOwner){
+                when(it){
+                    ResponseState.SUCCESS -> {
+                        findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                        showShortToast("전송 성공")
                     }
-                    ConnectedState.DISCONNECTED -> {
-                        waitingView.visibility = View.INVISIBLE
-                        progressBar.visibility = View.INVISIBLE
-                    }
-                    ConnectedState.CONNECTING_SUCCESS -> {
-                        showShortToast("전송 완료!")
-                        NavHostFragment.findNavController(this@ShowPictureFragment).navigate(R.id.action_showFragment_to_homeFragment)
-                    }
-                    ConnectedState.CARD_CONNECTING_SUCCESS -> {
-                        waitingView.visibility = View.INVISIBLE
-                        progressBar.visibility = View.INVISIBLE
-                        showShortToast("카드 추가 완료!")
-                    }
-                    else -> {
-                        waitingView.visibility = View.INVISIBLE
-                        progressBar.visibility = View.INVISIBLE
-                    }
+                    else -> {}
                 }
             }
         }
     }
     /** Spinner 관련 **/
-    fun getSpinner() {
-        activityViewModel.receiveServerCardData()
+    private fun getSpinner() {
+        activityViewModel.getServerCardData()
         var adapter =
             SpinnerAdapter(requireContext(), arrayListOf())
         binding.spinner.adapter = adapter

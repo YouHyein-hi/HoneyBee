@@ -1,13 +1,9 @@
 package com.example.receiptcareapp.ui.activity
 
-import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -15,25 +11,15 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.data.manager.PreferenceManager
-import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityLoginBinding
-import com.example.receiptcareapp.databinding.ActivityMainBinding
 import com.example.receiptcareapp.dto.LoginData
-import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
 import com.example.receiptcareapp.util.FetchState
+import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.log
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
@@ -48,12 +34,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val GALLERY_CODE = 1010
 
     override fun initData() {
-        if(viewModel.getLoginData().id != null){
-            nextAndFinish()
-            Log.e("TAG", "initData: ${viewModel.getLoginData()}", )
+        var getLogin = viewModel.getLoginData()
+        if(getLogin.id != null){
+            nextActivity()
         }else{
-            permissiondDialog()
-            Log.e("TAG", "initData: 로그인 정보가 없음!", )
+            //TODO 펄미션 체크는 이미 권한체크가 되있을땐 안올라오게해야함
+            permissionDialog()
         }
     }
 
@@ -61,7 +47,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         supportActionBar?.hide()
         binding.loginEmail.setText("1234@email.com")
         binding.loginPassword.setText("1234")
-
     }
 
     override fun initListener() {
@@ -72,25 +57,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             with(loginData){
                 if(id.isNullOrEmpty()) showShortToast("아이디를 입력해주세요.")
                 else if(pw.isNullOrEmpty()) showShortToast("비밀번호를 입력해주세요.")
-                else viewModel.requestLogin(binding.loginEmail.text.toString(), binding.loginPassword.text.toString())
+                else viewModel.requestLogin(
+                    binding.loginEmail.text.toString().replace(" ",""),
+                    binding.loginPassword.text.toString().replace(" ","")
+                )
             }
-
-            nextAndFinish()
         }
     }
 
     override fun initObserver() {
-        viewModel.connectedState.observe(this){
-            Log.e("TAG", "show onViewCreated: $it", )
-            if(it==ConnectedState.CONNECTING) {
-                binding.loginProgressBar.visibility = View.VISIBLE
-                binding.loginView.visibility = View.VISIBLE
-            }
-            else{
-                binding.loginProgressBar.visibility = View.INVISIBLE
-                binding.loginView.visibility = View.INVISIBLE
-            }
-        }
 
         //에러 대응
         viewModel.fetchState.observe(this) {
@@ -109,22 +84,30 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             Log.e("TAG", "onCreate: $message")
         }
 
+        viewModel.loading.observe(this){
+            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
+            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
+        }
+
         //응답 성공 시
         viewModel.response.observe(this) { response ->
             Log.e("TAG", "initObserver: $response")
-            when (response.status) {
-                "200" -> {
-                    viewModel.putLoginData(
-                        binding.loginEmail.text.toString(), binding.loginPassword.text.toString()
-                    )
-                    nextAndFinish()
+            when (response) {
+                ResponseState.SUCCESS -> {
+                    nextActivity()
                 }
-                else -> {
-                    showShortToast("알 수 없는 오류입니다.")
+                ResponseState.FALSE -> {
+                    showShortToast("로그인 실패")
                 }
             }
 
         }
+    }
+
+    private fun nextActivity(){
+        showShortToast("환영합니다.")
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     override fun onBackPressed() {
@@ -140,12 +123,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         return true
     }
 
-    private fun nextAndFinish(){
-        showShortToast("환영합니다.")
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
-    }
-
     private fun downKeyBoard() {
         val imm: InputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -153,17 +130,17 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     }
 
     //권한 Dialog
-    private fun permissiondDialog() {
-        val permissiondDialog = Permissiond_Dialog()
+    private fun permissionDialog() {
+        val permissionDialog = Permissiond_Dialog()
 
-        permissiondDialog.setOnDismissListener(object : Permissiond_Dialog.OnDismissListener {
+        permissionDialog.setOnDismissListener(object : Permissiond_Dialog.OnDismissListener {
             override fun onDialogDismissed() {
                 Log.e("TAG", "onDialogDismissed: 성공함?", )
                 checkPermission(CAMERA, CAMERA_CODE)
             }
         })
 
-        permissiondDialog.show(supportFragmentManager, "permissiondDialog")
+        permissionDialog.show(supportFragmentManager, "permissiondDialog")
     }
 
     //권한 관련
@@ -173,6 +150,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             requestPermissions(permissions, requestCode)
         }
     }
+
+
+
+    // TODO 이 부분을 ViewModel 로 빼고 ViewModel 에서는 Enum Class로 값 관리하기
+    // TODO 여기선 observer 만하는게 어떨지
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         Log.e("TAG", "onRequestPermissionsResult: 에 접근", )
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -219,8 +201,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
                     }, 1500)
                 }
             }
-
-
         }
     }
 

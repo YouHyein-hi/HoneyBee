@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
@@ -19,10 +20,13 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
+import com.example.receiptcareapp.ui.dialog.CardAddDialog_Bottom
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
+import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.ui.dialog.CardChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
+import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardBottomSheetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.text.DecimalFormat
@@ -37,7 +41,7 @@ class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
 ) {
     private val adapter: HomeCardAdapter = HomeCardAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val homeCardAddBottomViewModel : HomeCardBottomSheetViewModel by viewModels()
+    private val viewModel : HomeCardViewModel by viewModels()
     private var uid : Long = 0
 
 
@@ -47,9 +51,9 @@ class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
 
     override fun initData() {
         //initData 부분
-        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
+//        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
         //서버 데이터 불러오기
-        activityViewModel.receiveServerCardData()
+        viewModel.getServerCardData()
     }
 
     override fun initUI() {
@@ -81,38 +85,55 @@ class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
     override fun initObserver() {
         binding.cardCount = "0"
 
-        activityViewModel.connectedState.observe(viewLifecycleOwner){
-            when(it){
-                ConnectedState.CONNECTING -> {
-                    binding.connectingView.isVisible = true
-                    binding.serverProgressBar.isVisible = true
-                    binding.addBtn.isClickable = false
-                    setCenterText("", false)
-                }
-                ConnectedState.DISCONNECTED -> {
-                    binding.connectingView.isVisible = false
-                    binding.serverProgressBar.isVisible = false
-                    binding.addBtn.isClickable = true
-                    setCenterText("", false)
-                }
-                ConnectedState.CONNECTING_SUCCESS -> {
-                    Toast.makeText(requireContext(), "전송 성공!", Toast.LENGTH_SHORT).show()
-                    binding.connectingView.isVisible = false
-                    binding.serverProgressBar.isVisible = false
-                    binding.addBtn.isClickable = true
-                    setCenterText("", false)
-                }
-                ConnectedState.CONNECTING_FALSE -> {
-                    binding.connectingView.isVisible = false
-                    binding.serverProgressBar.isVisible = false
-                    binding.addBtn.isClickable = true
-                    setCenterText("", false)
-                    setCenterText("서버와 연결 실패!", true)
-                }
-                else ->{}
-            }
-            Log.e("TAG", "onCreateView: $it", )
+        //프로그래스 바 컨트롤
+        viewModel.loading.observe(viewLifecycleOwner){
+            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
+            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
+
+        viewModel.response.observe(viewLifecycleOwner){
+            when(it){
+                ResponseState.SUCCESS -> {
+                    setCenterText("추가 성공!", true)
+                }
+                else -> {
+                    setCenterText("전송 실패!", true)
+                }
+            }
+        }
+
+//        activityViewModel.connectedState.observe(viewLifecycleOwner){
+//            when(it){
+//                ConnectedState.CONNECTING -> {
+//                    binding.connectingView.isVisible = true
+//                    binding.serverProgressBar.isVisible = true
+//                    binding.addBtn.isClickable = false
+//                    setCenterText("", false)
+//                }
+//                ConnectedState.DISCONNECTED -> {
+//                    binding.connectingView.isVisible = false
+//                    binding.serverProgressBar.isVisible = false
+//                    binding.addBtn.isClickable = true
+//                    setCenterText("", false)
+//                }
+//                ConnectedState.CONNECTING_SUCCESS -> {
+//                    Toast.makeText(requireContext(), "전송 성공!", Toast.LENGTH_SHORT).show()
+//                    binding.connectingView.isVisible = false
+//                    binding.serverProgressBar.isVisible = false
+//                    binding.addBtn.isClickable = true
+//                    setCenterText("", false)
+//                }
+//                ConnectedState.CONNECTING_FALSE -> {
+//                    binding.connectingView.isVisible = false
+//                    binding.serverProgressBar.isVisible = false
+//                    binding.addBtn.isClickable = true
+//                    setCenterText("", false)
+//                    setCenterText("서버와 연결 실패!", true)
+//                }
+//                else ->{}
+//            }
+//            Log.e("TAG", "onCreateView: $it", )
+//        }
 
         activityViewModel.cardData.observe(viewLifecycleOwner) { dataList ->
             if (dataList.isEmpty()) { setCenterText("데이터가 비었어요!", true)

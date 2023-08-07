@@ -39,6 +39,7 @@
     <color name="main_font_transparent_black">#A9000000</color>
     <color name="sub_font1_gray">#333333</color>
     <color name="sub_font2_gray">#808080</color>
+    <color name="sub_font3_orange">#FFAA2C</color>
     <color name="main_button_orange">#FFAA2C</color>
     <color name="sub_button1_light_orange">#FFC979</color>
     <color name="sub_button2_white">#EFEFEF</color>

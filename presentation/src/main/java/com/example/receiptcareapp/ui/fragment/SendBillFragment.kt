@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.ui.fragment
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -193,32 +194,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     else -> {}
                 }
             }
-//            activityViewModel.connectedState.observe(viewLifecycleOwner){
-//                Log.e("TAG", "onViewCreated: $it")
-//                when (it) {
-//                    ConnectedState.CONNECTING -> {
-//                        waitingView.visibility = View.VISIBLE
-//                        progressBar.visibility = View.VISIBLE
-//                    }
-//                    ConnectedState.DISCONNECTED -> {
-//                        waitingView.visibility = View.INVISIBLE
-//                        progressBar.visibility = View.INVISIBLE
-//                    }
-//                    ConnectedState.CONNECTING_SUCCESS -> {
-//                        showShortToast("전송 완료!")
-//                        NavHostFragment.findNavController(this@SendBillDataFragment).navigate(R.id.action_showFragment_to_homeFragment)
-//                    }
-//                    ConnectedState.CARD_CONNECTING_SUCCESS -> {
-//                        waitingView.visibility = View.INVISIBLE
-//                        progressBar.visibility = View.INVISIBLE
-//                        showShortToast("카드 추가 완료!")
-//                    }
-//                    else -> {
-//                        waitingView.visibility = View.INVISIBLE
-//                        progressBar.visibility = View.INVISIBLE
-//                    }
-//                }
-//            }
         }
     }
     /** Spinner 관련 **/

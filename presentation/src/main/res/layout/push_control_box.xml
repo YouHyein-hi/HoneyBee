@@ -74,13 +74,13 @@
             android:layout_height="match_parent"/>
 
         <TextView
-            android:textColor="@color/main_font_black"
-            android:layout_marginRight="25dp"
-            android:gravity="right"
-            android:layout_weight="1"
-            android:text="@string/menu_changeTime"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginRight="25dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="@string/menu_changeTime"
+            android:textColor="@color/main_font_black" />
     </LinearLayout>
 
 

@@ -8,7 +8,6 @@ import android.os.Looper
 import android.util.Log
 import android.view.ViewGroup
 import com.example.receiptcareapp.base.BaseDialog
-import com.example.receiptcareapp.databinding.DialogCardBinding
 import com.example.receiptcareapp.databinding.DialogPermissionBinding
 
 class Permissiond_Dialog : BaseDialog<DialogPermissionBinding>(DialogPermissionBinding::inflate)  {

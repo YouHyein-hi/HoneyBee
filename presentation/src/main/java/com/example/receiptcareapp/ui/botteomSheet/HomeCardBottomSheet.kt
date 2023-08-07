@@ -10,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -20,10 +21,13 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog_Bottom
+import com.example.receiptcareapp.ui.dialog.CardAddDialog
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.util.ResponseState
+import com.example.receiptcareapp.ui.dialog.CardChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
+import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardBottomSheetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.text.DecimalFormat
 
@@ -64,60 +68,18 @@ class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
         //서버 카드 추가 다이얼로그
         binding.cardCount = "0"
         binding.addBtn.setOnClickListener{
-            val cardAddDialogBottom = CardAddDialog_Bottom()
-            cardAddDialogBottom.show(parentFragmentManager, "CardAddDialog")
+            val cardAddDialog = CardAddDialog()
+            cardAddDialog.show(parentFragmentManager, "CardAddDialog")
         }
 
         //서버 카드 수정 및 삭제 다이알로그
         adapter.onLocalSaveClic = {
-            val dialogView = layoutInflater.inflate(R.layout.dialog_server_send_card, null)
-            val cardName  = dialogView.findViewById<TextView>(R.id.dialog_server_cardName)
-            val cardPrice = dialogView.findViewById<EditText>(R.id.dialog_server_cardPrice)
-
-            cardName.text = "${it.cardName}"
-
-            cardPrice.setOnClickListener {
-                if (cardPrice.text.contains(",")) {
-                    cardPrice.setText(cardPrice.text.toString().replace(",", ""))
-                    cardPrice.setSelection(cardPrice.text.length)
-                }
-            }
-
-            cardPrice.setOnEditorActionListener { v, actionId, event ->
-                var handled = false
-                if (actionId == EditorInfo.IME_ACTION_DONE && cardPrice.text.isNotEmpty()) {
-                    val gap = DecimalFormat("#,###")
-                    cardPrice.setText(gap.format(cardPrice.text.toString().toInt()))
-                }
-                handled
-            }
-
-            var gap = AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-                .setTitle("서버 카드 금액 수정")
-//                .setMessage("${it.name} 금액을 수정하여 서버에 보내시겠어요?")
-                .setView(dialogView)
-                .setPositiveButton("보내기") { dialog, id ->
-                    Log.e("TAG", "onCreateView: 수정 버튼 누름", )
-                    Log.e("TAG", "cardName.text.toString() : ${cardName.text}", )
-                    Log.e("TAG", "adapter.dataList: ${adapter.dataList}", )
-                    Log.e("TAG", "onCreateView uid: $uid", )
-                    var price = viewModel.CommaReplaceSpace(cardPrice.text.toString())
-                    viewModel.updateServerCardData(
-                        updateCardData = UpdateCardData(
-                            id = uid,
-                            cardName = cardName.text.toString(),
-                            cardAmount = price.toInt()
-                        )
-                    )
-                }
-                .setNegativeButton("취소") { dialog, id -> }
-                .show()
-
-            gap.getButton(DialogInterface.BUTTON_POSITIVE)
-                .setTextColor(Color.RED)
-            gap.getButton(DialogInterface.BUTTON_NEGATIVE)
-                .setTextColor(Color.BLACK)
+            val cardChangeDialog = CardChangeDialog(it)
+            cardChangeDialog.show(parentFragmentManager, "CardChangeDialog")
         }
+
+
+
     }
 
     override fun initObserver() {

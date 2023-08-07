@@ -1,11 +1,14 @@
 package com.example.receiptcareapp.base
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.DialogFragment
@@ -42,6 +45,13 @@ abstract class BaseDialog<VB: ViewBinding>(
         Log.e("TAG", "onCreateView: ", )
         _binding = inflate.invoke(inflater, container, false)
         Log.e("TAG", "BaseDialog : $_binding: ", )
+
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+        val width = resources.displayMetrics.widthPixels
+        dialog?.window?.setLayout((width * 0.8).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+
         return binding.root
     }
 

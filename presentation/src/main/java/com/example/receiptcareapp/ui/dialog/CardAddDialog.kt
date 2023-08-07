@@ -1,9 +1,13 @@
 package com.example.receiptcareapp.ui.dialog
 
+import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
+import android.view.Window
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -11,21 +15,20 @@ import androidx.fragment.app.viewModels
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
-import com.example.receiptcareapp.databinding.DialogCardBinding
-import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddBottomViewModel
+import com.example.receiptcareapp.databinding.DialogCardAddBinding
+import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {
+class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val cardAddBottomViewModel : CardAddBottomViewModel by viewModels()
+    private val cardAddBottomViewModel : CardAddViewModel by viewModels()
 
     override fun initData() {
     }
 
     override fun initUI() {
-        val width = resources.displayMetrics.widthPixels
-        dialog?.window?.setLayout((width * 1).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun initListener() {
@@ -38,7 +41,7 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
             }
             dialogcardEditCardprice.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
-                if (actionId == EditorInfo.IME_ACTION_DONE && dialogcardEditCardprice.text.isNotEmpty()) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT && dialogcardEditCardprice.text.isNotEmpty()) {
                     dialogcardEditCardprice.setText(cardAddBottomViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
                 }
                 handled
@@ -48,7 +51,7 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
             val emphasis_yellow = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.emphasis_yellow))
             dialogcardEditCardname.setOnFocusChangeListener { view, hasFocus ->
                 if (!hasFocus && dialogcardEditCardname.text.isEmpty()) {
-                    dialogcardEditCardname.hint = "카드 이름을 꼭 적어주세요!"
+                    dialogcardEditCardname.hint = getString(R.string.dialog_cardAdd_name_err)
                     dialogcardEditCardname.backgroundTintList = ColorStateList.valueOf(Color.RED)
                 } else if(hasFocus && !dialogcardEditCardname.text.isEmpty())  {
                     dialogcardEditCardname.hint = hintCardNmae // 초기 hint로 되돌리기
@@ -62,7 +65,7 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
             dialogcardEditCardprice.setOnFocusChangeListener { view, hasFocus ->
                 if (!hasFocus && dialogcardEditCardprice.text.isEmpty()) {
                     // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
-                    dialogcardEditCardprice.hint = "초기 금액을 꼭 적어주세요!"
+                    dialogcardEditCardprice.hint = getString(R.string.dialog_cardAdd_price_err)
                     dialogcardEditCardprice.backgroundTintList = ColorStateList.valueOf(Color.RED)
                 } else if(hasFocus && !dialogcardEditCardprice.text.isEmpty()) {
                     dialogcardEditCardprice.hint = hintCardPrice // 초기 hint로 되돌리기
@@ -76,7 +79,7 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
             dialogcardEditBillCardCheck.setOnFocusChangeListener { view, hasFocus ->
                 if (!hasFocus && dialogcardEditBillCardCheck.text.isEmpty()) {
                     // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
-                    dialogcardEditBillCardCheck.hint = "청구 날짜를 꼭 적어주세요!"
+                    dialogcardEditBillCardCheck.hint = getString(R.string.dialog_cardAdd_billCheckDate_err)
                     dialogcardEditBillCardCheck.backgroundTintList = ColorStateList.valueOf(Color.RED)
                 } else if(hasFocus && !dialogcardEditBillCardCheck.text.isEmpty()) {
                     dialogcardEditBillCardCheck.hint = hintBillCardCheck // 초기 hint로 되돌리기
@@ -89,19 +92,19 @@ class CardAddDialog_Bottom : BaseDialog<DialogCardBinding>(DialogCardBinding::in
 
             dialogCardBtnPositive.setOnClickListener{
                 if(dialogcardEditCardname.text.toString() == ""){
-                    Log.e("TAG", "onResume: 카드 이름을 입력해주세요.", )
+                    Log.e("TAG", "initListener: 카드 이름을 입력해주세요.", )
                     dismiss()
-                    showLongToast("카드 이름을 입력하세요.")
+                    showLongToast(getString(R.string.dialog_cardAdd_name))
                 }
                 else if(dialogcardEditCardname.text.toString() == ""){
-                    Log.e("TAG", "onResume: 초기 금액을 입력해주세요")
+                    Log.e("TAG", "initListener: 초기 금액을 입력해주세요")
                     dismiss()
-                    showLongToast("추가 금액을 입력하세요.")
+                    showLongToast(getString(R.string.dialog_cardAdd_price))
                 }
                 else if(dialogcardEditBillCardCheck.text.toString() == ""){
                     Log.e("TAG", "initListener: 청구 날짜를 입력해주세요.", )
                     dismiss()
-                    showLongToast("청구 날짜를 입력해주세요.")
+                    showLongToast(getString(R.string.dialog_cardAdd_billCheckDate))
                 }
                 else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
                     var price = cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())

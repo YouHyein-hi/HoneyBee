@@ -60,19 +60,22 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:text="@{@string/recycler_amount(amount), default = `로딩중..`}"/>
+                        android:fontFamily="@font/pretendardmedium"
+                        android:text="@{@string/recycler_amount(amount), default = `로딩중..`}"
+                        android:textColor="@color/sub_font2_gray"
+                        android:textSize="10sp" />
+
                     <TextView
-                        android:layout_marginLeft="25dp"
-                        android:textColor="@color/main_font_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:fontFamily="@font/pretendardsemibold"
                         android:text="@{cardName, default = `로딩중..`}"
-                        android:textSize="22sp"
-                        />
+                        android:textColor="@color/main_font_black"
+                        android:textSize="22sp" />
 
                 </LinearLayout>
 
@@ -87,13 +90,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
+                        android:fontFamily="@font/pretendardmedium"
                         android:text="청구 날짜"
+                        android:textColor="@color/sub_font2_gray"
                         android:textSize="10sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
+                        android:fontFamily="@font/pretendardsemibold"
                         android:text="@{billCheckDate, default = `로딩중..`}"
                         android:textColor="@color/main_font_black"
                         android:textSize="22sp" />
@@ -110,13 +116,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="25dp"
+                        android:fontFamily="@font/pretendardmedium"
                         android:text="@string/bottom_sheet_recycler_check"
+                        android:textColor="@color/sub_font2_gray"
                         android:textSize="10sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="25dp"
+                        android:fontFamily="@font/pretendardsemibold"
                         android:text="@{check, default = `로딩중..`}"
                         android:textColor="@color/main_font_black"
                         android:textSize="22dp" />

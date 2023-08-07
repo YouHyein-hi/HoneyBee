@@ -25,7 +25,6 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentShowPictureBinding
-import com.example.receiptcareapp.ui.dialog.CardAddDialog_ShowPicture
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
@@ -92,11 +91,6 @@ class ShowPictureFragment : BaseFragment<FragmentShowPictureBinding>(FragmentSho
                 dataDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
                     .setTextColor(Color.BLACK)
             }
-
-            /** Card 추가 Button -> Card 추가 Dialog 생성 **/
-/*            cardaddBtn.setOnClickListener{
-                CardAddDialog_ShowPicture().show(parentFragmentManager, "CardAddDialog")
-            }*/
 
             /** 금액 EidtText , 추가 **/
             btnPrice.setOnClickListener {

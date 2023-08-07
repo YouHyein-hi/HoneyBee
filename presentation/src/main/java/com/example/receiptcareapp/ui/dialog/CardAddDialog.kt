@@ -15,12 +15,12 @@ import androidx.fragment.app.viewModels
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
-import com.example.receiptcareapp.databinding.DialogCardBinding
+import com.example.receiptcareapp.databinding.DialogCardAddBinding
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class CardAddDialog : BaseDialog<DialogCardBinding>(DialogCardBinding::inflate) {
+class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val cardAddBottomViewModel : CardAddViewModel by viewModels()

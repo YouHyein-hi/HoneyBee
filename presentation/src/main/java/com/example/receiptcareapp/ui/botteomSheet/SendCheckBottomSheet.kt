@@ -18,13 +18,12 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class SendCheckBottomSheet(
+    private val viewModel: SendBillViewModel,
     private val bottomSheetData: BottomSheetData
 ) : BaseBottomSheet<SendBottomsheetBinding>(
     SendBottomsheetBinding::inflate,
     "SendBottomsheetBinding"
 ) {
-    private val viewModel: SendBillViewModel by viewModels()
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
     }
@@ -55,6 +54,5 @@ class SendCheckBottomSheet(
             dismiss()
         }
     }
-
     override fun initObserver() {}
 }

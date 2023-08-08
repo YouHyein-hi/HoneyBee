@@ -4,16 +4,11 @@ import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.FragmentCardBottomsheetBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
@@ -24,11 +19,13 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardBottomSheetViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * 2023-03-22
  * pureum
  */
+@AndroidEntryPoint
 class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
     FragmentCardBottomsheetBinding::inflate,
     "homeCardBottomSheet"

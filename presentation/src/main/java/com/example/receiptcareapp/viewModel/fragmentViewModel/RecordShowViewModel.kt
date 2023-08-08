@@ -24,6 +24,7 @@ import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.data.DeleteDataUseCase
+import com.example.domain.usecase.data.GetPictureDataUseCase
 import com.example.domain.usecase.data.InsertDataUseCase
 import com.example.domain.usecase.data.UpdateDataUseCase
 import com.example.domain.usecase.room.DeleteDataRoomUseCase
@@ -33,6 +34,7 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.util.ResponseState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -52,10 +54,11 @@ import javax.inject.Inject
  * 2023-06-21
  * pureum
  */
+@HiltViewModel
 class RecordShowViewModel @Inject constructor(
     @ApplicationContext private val application: Context,
     private val deleteDataRoomUseCase: DeleteDataRoomUseCase,
-    private val getRoomDataListUseCase: GetDataListRoomUseCase,
+    private val getPictureDataUseCase: GetPictureDataUseCase,
     private val deleteDataUseCase: DeleteDataUseCase,
     private val updateDataUseCase: UpdateDataUseCase,
     private val getCardListUseCase: GetCardListUseCase,
@@ -69,9 +72,15 @@ class RecordShowViewModel @Inject constructor(
     val response : LiveData<ResponseState> get() = _response
 
     // 서버 카드 전달받은 값 관리
-    private var _cardData = MutableLiveData<MutableList<DomainReceiveCardData>>()
-    val cardData: LiveData<MutableList<DomainReceiveCardData>>
+    private var _cardData = MutableLiveData<MutableList<DomainReceiveCardData>?>()
+    val cardData: LiveData<MutableList<DomainReceiveCardData>?>
         get() = _cardData
+
+    private var _picture = MutableLiveData<Bitmap?>()
+    val picture : LiveData<Bitmap?> get(){
+        Log.e("TAG", "@@@@picture ${_picture.value}: ", )
+        return _picture
+    }
 
 
     // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
@@ -178,9 +187,20 @@ class RecordShowViewModel @Inject constructor(
         CoroutineScope(exceptionHandler).launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                val gap = getCardListUseCase()
-                _cardData.postValue(gap)
+                _cardData.postValue(getCardListUseCase())
                 isLoading.postValue(false)
+            }?:throw SocketTimeoutException()
+        }
+    }
+
+    // TODO RecyclerFragment에만 들어가는 코드인데 RecyclerViewModel에 옮길까
+    fun getServerPictureData(uid:String){
+        CoroutineScope(exceptionHandler).launch {
+            Log.e("TAG", "getServerPictureData: ", )
+            withTimeoutOrNull(waitTime) {
+                loading.postValue(true)
+                _picture.postValue(getPictureDataUseCase(uid))
+                loading.postValue(false)
             }?:throw SocketTimeoutException()
         }
     }

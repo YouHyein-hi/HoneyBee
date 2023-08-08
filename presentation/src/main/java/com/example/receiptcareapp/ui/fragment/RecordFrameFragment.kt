@@ -49,6 +49,7 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
 
     override fun initUI() {
         Log.e(TAG, "initUI", )
+        changeFragment(RecordServerFragment(viewModel))
 //        if(viewModel.startGap.value == ShowType.LOCAL){
 //            Log.e("TAG", "로컬부분!", )
 //            binding.bottomNavigationView.menu.findItem(R.id.local).isChecked = true
@@ -72,14 +73,14 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
             parentFragmentManager.beginTransaction()
             when(it.itemId){
                 R.id.server -> {
-                    changeFragment(RecordServerFragment())
+                    changeFragment(RecordServerFragment(viewModel))
 //                    binding.explain.text = "서버의 데이터 입니다."
 //                    activityViewModel.getServerAllbillData()
 //                    initServerRecyclerView()
                     true
                 }
                 R.id.local -> {
-                    changeFragment(RecordLocalFragment())
+                    changeFragment(RecordLocalFragment(viewModel))
 //                    Log.e("TAG", "click listener local: ", )
 //                    binding.explain.text = "휴대폰의 데이터 입니다."
 //                    activityViewModel.hideServerCoroutineStop()

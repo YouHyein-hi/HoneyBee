@@ -10,17 +10,17 @@ import android.content.Intent
 import android.graphics.Color
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentMenuBinding
 import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.ui.adapter.PushReceiver
+import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -28,9 +28,8 @@ import java.util.*
 class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::inflate, "MenuFragment") {
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val menuViewModel: MenuViewModel by activityViewModels()
+    private val viewModel: MenuViewModel by viewModels()
     companion object { const val REQUEST_CODE = 101 }
-
     private lateinit var pendingIntent: PendingIntent
     private lateinit var alarmManager: AlarmManager
 
@@ -66,6 +65,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             OssLicensesMenuActivity.setActivityTitle("오픈소스 라이선스")
         }
 
+//        binding.cardBtn.setOnClickListener{ HomeCardBottomSheet().show(parentFragmentManager, "tag") }
+
         binding.logoutBtn.setOnClickListener {
             activityViewModel.clearAll()
             activity?.finish()
@@ -76,7 +77,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
         binding.pushTimeButton.setOnClickListener{
             val cal = Calendar.getInstance()
             val data = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-                menuViewModel.putTime(hour, minute)
+                viewModel.putTime(hour, minute)
 
                 updatePushTimeText()
 
@@ -95,9 +96,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
         }
 
 
-        binding.pushSwitch.isChecked = menuViewModel.getPush()!!
+        binding.pushSwitch.isChecked = viewModel.getPush()!!
         binding.pushSwitch.setOnCheckedChangeListener { _, isChecked ->
-            menuViewModel.putPush(isChecked)
+            viewModel.putPush(isChecked)
             if (isChecked) {
                 setAlarm()
                 showShortToast("푸시 알림 ON")
@@ -117,8 +118,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     private fun setAlarm() {
         val targetTime = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, menuViewModel.getTime().hour!!)
-            set(Calendar.MINUTE, menuViewModel.getTime().minute!!)
+            set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
+            set(Calendar.MINUTE, viewModel.getTime().minute!!)
         }
 
         alarmManager.setExact(
@@ -136,9 +137,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     }
 
     private fun updatePushTimeText() {
-        binding.pushTime.text = menuViewModel.timePickerText(
-            menuViewModel.getTime().hour!!,
-            menuViewModel.getTime().minute!!
+        binding.pushTime.text = viewModel.timePickerText(
+            viewModel.getTime().hour!!,
+            viewModel.getTime().minute!!
         )
     }
 

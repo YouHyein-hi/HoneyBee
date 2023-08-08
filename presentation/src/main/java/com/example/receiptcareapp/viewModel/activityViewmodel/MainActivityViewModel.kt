@@ -290,18 +290,18 @@ class MainActivityViewModel @Inject constructor(
         })
     }
 
-    // TODO RecyclerFragment에만 들어가는 코드인데 RecyclerViewModel에 옮길까
-    fun getServerPictureData(uid:String){
-        _connectedState.postValue(ConnectedState.CONNECTING)
-        _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
-            withTimeoutOrNull(waitTime) {
-                val gap = getPictureDataUseCase(uid)
-                Log.e("TAG", "receiveServerPictureData gap : $gap", )
-                _picture.postValue(gap)
-                _connectedState.postValue(ConnectedState.DISCONNECTED)
-            }?:throw SocketTimeoutException()
-        })
-    }
+//    // TODO RecyclerFragment에만 들어가는 코드인데 RecyclerViewModel에 옮길까
+//    fun getServerPictureData(uid:String){
+//        _connectedState.postValue(ConnectedState.CONNECTING)
+//        _serverJob.postValue(CoroutineScope(exceptionHandler).launch {
+//            withTimeoutOrNull(waitTime) {
+//                val gap = getPictureDataUseCase(uid)
+//                Log.e("TAG", "receiveServerPictureData gap : $gap", )
+//                _picture.postValue(gap)
+//                _connectedState.postValue(ConnectedState.DISCONNECTED)
+//            }?:throw SocketTimeoutException()
+//        })
+//    }
 
     // TODO RecyclerShowFragment에만 들어가는 코드인데 RecyclerShowViewModel에 옮길까
     fun deleteServerBillData(id: Long) {

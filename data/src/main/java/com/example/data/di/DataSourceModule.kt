@@ -28,7 +28,7 @@ object DataSourceModule {
 
     @Singleton
     @Provides
-    fun provideGeneralDataSource(retrofit: Retrofit):GeneralDataSurce = GeneralDataSourceImpl(retrofit)
+    fun provideGeneralDataSource(retrofit: Retrofit):GeneralDataSource = GeneralDataSourceImpl(retrofit)
 
     @Singleton
     @Provides

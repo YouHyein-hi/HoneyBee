@@ -2,7 +2,6 @@ package com.example.data.di
 
 import com.example.data.local.LocalDatabase
 import com.example.data.remote.dataSource.*
-import com.example.data.remote.dataSourceImpl.NoticeDataSourceImpl
 import com.example.data.repoImpl.*
 import com.example.domain.repo.*
 import dagger.Module
@@ -32,7 +31,7 @@ object RepoModule {
 
     @Provides
     @Singleton
-    fun provideGeneralData(source : GeneralDataSurce): GeneralRepository {
+    fun provideGeneralData(source : GeneralDataSource): GeneralRepository {
         return GeneralRepositoryImpl(source)
     }
 

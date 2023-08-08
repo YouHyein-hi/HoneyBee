@@ -16,7 +16,7 @@ import java.text.DecimalFormat
 class CardChangeDialog(val cardData: DomainReceiveCardData) : BaseDialog<DialogCardChangeBinding>(DialogCardChangeBinding::inflate) {
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val cardChangeViewModel : CardChangeViewModel by viewModels()
+    private val viewModel : CardChangeViewModel by viewModels()
 
     override fun initData() {
 
@@ -46,6 +46,7 @@ class CardChangeDialog(val cardData: DomainReceiveCardData) : BaseDialog<DialogC
                 handled
             }
 
+            //TODO 카드 수정은 삭제하는걸로
             dialogCardChangeBtnPositive.setOnClickListener{
                 if(dialogCardChangeEditCardprice.text.toString() == ""){
                     Log.e("TAG", "initListener: 수정할 금액을 입력해주세요.", )
@@ -53,8 +54,8 @@ class CardChangeDialog(val cardData: DomainReceiveCardData) : BaseDialog<DialogC
                     showShortToast(getString(R.string.dialog_cardChange_price))
                 }
                 else {
-                    var price = cardChangeViewModel.CommaReplaceSpace(dialogCardChangeEditCardprice.text.toString())
-                    activityViewModel.sendCardData(AppSendCardData(cardData.cardName, price.toInt()))
+                    var price = viewModel.CommaReplaceSpace(dialogCardChangeEditCardprice.text.toString())
+//                    activityViewModel.sendCardData(AppSendCardData(cardData.cardName, price.toInt()))
                     dismiss()
                 }
             }

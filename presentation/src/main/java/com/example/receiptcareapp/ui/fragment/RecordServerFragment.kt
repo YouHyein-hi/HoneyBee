@@ -22,21 +22,24 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 
 @AndroidEntryPoint
-class RecordServerFragment : BaseFragment<FragmentRecordServerBinding>(
+class RecordServerFragment(
+    private val viewModel: RecordViewModel
+) : BaseFragment<FragmentRecordServerBinding>(
     FragmentRecordServerBinding::inflate,
     "RecyclerFragment"
 ) {
     private val recordServerAdapter: RecordServerAdapter = RecordServerAdapter()
-    private val viewModel: RecordViewModel by viewModels()
+//    private val viewModel: RecordViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+
     override fun initData() {
         recordServerAdapter.dataList.clear()
     }
 
     override fun initUI() {
         initServerRecyclerView()
-        viewModel.getServerAllBillData()
 //        activityViewModel.changeNullPicture()
+        viewModel.getServerAllBillData()
     }
 
     override fun initListener() {
@@ -55,7 +58,6 @@ class RecordServerFragment : BaseFragment<FragmentRecordServerBinding>(
                 )
             )
 //            activityViewModel.changeNullPicture()
-
             //서버 가져오기
 //            activityViewModel.getServerPictureData(it.uid)
 //            viewModel.changeStartGap(ShowType.SERVER)
@@ -71,10 +73,9 @@ class RecordServerFragment : BaseFragment<FragmentRecordServerBinding>(
             recordServerAdapter.dataList = it
             setTextAndVisible("데이터가 비었어요!", recordServerAdapter.dataList.isEmpty())
         }
-
     }
 
-    fun initServerRecyclerView() {
+    private fun initServerRecyclerView() {
         binding.mainRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.mainRecycler.adapter = recordServerAdapter
         recordServerAdapter.dataList.clear()

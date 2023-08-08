@@ -22,12 +22,13 @@ import dagger.hilt.android.AndroidEntryPoint
  * pureum
  */
 @AndroidEntryPoint
-class RecordLocalFragment : BaseFragment<FragmentRecordLocalBinding>(
+class RecordLocalFragment(
+    private val viewModel: RecordViewModel
+) : BaseFragment<FragmentRecordLocalBinding>(
     FragmentRecordLocalBinding::inflate,
     "RecodeLocalFragment"
 ) {
     private val recordLocalAdapter: RecordLocalAdapter = RecordLocalAdapter()
-    private val viewModel: RecordViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     override fun initData() {

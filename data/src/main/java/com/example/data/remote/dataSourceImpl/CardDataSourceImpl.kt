@@ -1,7 +1,6 @@
 package com.example.data.remote.dataSourceImpl
 
 import com.example.data.remote.dataSource.CardDataSource
-import com.example.data.remote.dataSource.RetrofitSource
 import com.example.data.remote.model.ReceiveCardData
 import com.example.data.remote.model.ServerResponse
 import retrofit2.Retrofit

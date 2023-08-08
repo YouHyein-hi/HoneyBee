@@ -14,6 +14,18 @@
     <string name="cancel">취소</string>
     <string name="complete">완료</string>
 
+    <!-- 메인(홈) 페이지 -->
+    <string name="home_cardlist_title">보유 카드 리스트</string>
+    <string name="home_list_title">영수증 목록</string>
+    <string name="home_add_title">영수증 추가</string>
+    <string name="home_notice_title">소식</string>
+
+    <!-- 메인(홈) 영수증 추가 방법 Dialog -->
+    <string name="homeAddDialog_title">영수증 추가 방법</string>
+    <string name="homeAddDialog_camera">카메라로 영수증 추가</string>
+    <string name="homeAddDialog_gallery">갤러리로 영수증 추가</string>
+
+
     <!-- showPicture 전송 페이지 -->
     <string name="pictureShow_text">해당 카드와 날짜를 금액을 입력해주세요.</string>
     <string name="pictureShow_store">가게 이름을 입력해주세요.</string>

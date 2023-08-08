@@ -87,19 +87,4 @@ class RecordViewModel @Inject constructor(
             } ?: throw SocketTimeoutException()
         }
     }
-
-    // TODO RecyclerFragment에만 들어가는 코드인데 RecyclerViewModel에 옮길까
-    fun getServerPictureData(uid:String){
-        CoroutineScope(exceptionHandler).launch {
-            withTimeoutOrNull(waitTime) {
-                loading.postValue(false)
-                val gap = getPictureDataUseCase(uid)
-
-                Log.e("TAG", "receiveServerPictureData gap : $gap", )
-//                _picture.postValue(gap)
-                loading.postValue(false)
-            }?:throw SocketTimeoutException()
-        }
-    }
-
 }

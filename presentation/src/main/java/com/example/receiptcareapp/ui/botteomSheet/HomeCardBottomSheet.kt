@@ -1,40 +1,30 @@
 package com.example.receiptcareapp.ui.botteomSheet
 
-import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.UpdateCardData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
-import com.example.receiptcareapp.ui.dialog.CardAddDialog_Bottom
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.ui.dialog.CardChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
-import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardBottomSheetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.text.DecimalFormat
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * 2023-03-22
  * pureum
  */
+@AndroidEntryPoint
 class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
     FragmentHomeCardBottomsheetBinding::inflate,
     "homeCardBottomSheet"

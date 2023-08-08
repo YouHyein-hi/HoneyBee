@@ -34,6 +34,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val GALLERY_CODE = 1010
 
     override fun initData() {
+//        nextActivity()
         var getLogin = viewModel.getLoginData()
         if(getLogin.id != null){
             nextActivity()

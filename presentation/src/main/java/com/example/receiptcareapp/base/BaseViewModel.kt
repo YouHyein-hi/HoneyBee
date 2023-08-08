@@ -34,7 +34,7 @@ abstract class BaseViewModel : ViewModel(){
     fun hideSetFetchStateStop(){
         _fetchState.postValue(Pair(Throwable(""), FetchState.HIDE_STOP))
     }
-    protected val waitTime = 5000L
+    protected val waitTime = 8000L
 
     private val job = SupervisorJob()
 

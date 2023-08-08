@@ -55,6 +55,7 @@ class SendBillViewModel @Inject constructor(
     fun insertBillData(sendData: AppSendData) {
         CoroutineScope(exceptionHandler).launch {
             isLoading.postValue(true)
+            Log.e("TAG", "insertBillData isloading: ${isLoading.value}", )
             withTimeoutOrNull(waitTime) {
                 updateResponse(
                     insertDataUseCase(
@@ -91,6 +92,9 @@ class SendBillViewModel @Inject constructor(
         when (response) {
             "0" -> {} // 실패
             else -> {
+                /// TODO 여기는 임시방편
+                _response.postValue(ResponseState.SUCCESS)
+                ///
                 if (data.billSubmitTime.contains("-") && data.billSubmitTime.contains("T") && data.billSubmitTime.contains(":")) {
                     data.billSubmitTime = dateTimeToString(data.billSubmitTime)
                 }

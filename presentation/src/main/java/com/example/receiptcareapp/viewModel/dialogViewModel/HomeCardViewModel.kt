@@ -13,12 +13,14 @@ import com.example.domain.usecase.card.UpdateCardUseCase
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.util.ResponseState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
+@HiltViewModel
 class HomeCardViewModel @Inject constructor(
     private val getCardListUseCase: GetCardListUseCase,
     private val updateCardUseCase: UpdateCardUseCase

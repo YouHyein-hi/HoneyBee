@@ -3,7 +3,7 @@ package com.example.data.repoImpl
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
-import com.example.data.remote.dataSource.GeneralDataSurce
+import com.example.data.remote.dataSource.GeneralDataSource
 import com.example.data.remote.model.toDomainLoginResponse
 import com.example.data.remote.model.toDomainReceiveData
 import com.example.domain.model.receive.DomainReceiveAllData
@@ -18,7 +18,7 @@ import javax.inject.Inject
  * pureum
  */
 class GeneralRepositoryImpl @Inject constructor(
-    private val generalDataSource: GeneralDataSurce
+    private val generalDataSource: GeneralDataSource
 ): GeneralRepository {
     override suspend fun deleteDataRepository(id: Long): String {
         return generalDataSource.deleteServerData(id)

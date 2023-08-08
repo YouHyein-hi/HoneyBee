@@ -10,30 +10,30 @@ import java.time.LocalDateTime
  * 2023-07-23
  * pureum
  */
-interface GeneralDataSurce {
+interface GeneralDataSource {
     @Multipart
     @POST("bill/add")
     suspend fun sendDataSource(
-        @Part cardName : MultipartBody.Part,
-        @Part storeName : MultipartBody.Part,
-        @Part billSubmitTime : MultipartBody.Part,
-        @Part amount : MultipartBody.Part,
-        @Part file : MultipartBody.Part,
+        @Part cardName: MultipartBody.Part,
+        @Part storeName: MultipartBody.Part,
+        @Part billSubmitTime: MultipartBody.Part,
+        @Part amount: MultipartBody.Part,
+        @Part file: MultipartBody.Part,
     ): String
 
     @Streaming
     @GET("bill/list")   // 전체 데이터 요청
-    suspend fun receiveDataSource() : MutableList<ReceiveData>
+    suspend fun receiveDataSource(): MutableList<ReceiveData>
 
     @Streaming
     @GET("bill/image/{id}")
     suspend fun receivePictureDataSource(
-        @Path("id") user:String
-    ) : String
+        @Path("id") user: String
+    ): String
 
     @DELETE("bill/delete/{uid}")
     suspend fun deleteServerData(
-        @Path("uid") uid:Long
+        @Path("uid") uid: Long
     ): String
 
     //    @PUT("bill/update/{id}/{cardName}/{storeName}/{date}/{amount}")

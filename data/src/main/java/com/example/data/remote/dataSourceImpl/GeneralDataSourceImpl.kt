@@ -1,12 +1,10 @@
 package com.example.data.remote.dataSourceImpl
 
-import com.example.data.remote.dataSource.GeneralDataSurce
-import com.example.data.remote.dataSource.RetrofitSource
+import com.example.data.remote.dataSource.GeneralDataSource
 import com.example.data.remote.model.ReceiveData
 import com.example.data.remote.model.ServerResponse
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
-import retrofit2.create
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -16,7 +14,7 @@ import javax.inject.Inject
  */
 class GeneralDataSourceImpl @Inject constructor(
     private val retrofit: Retrofit
-): GeneralDataSurce {
+): GeneralDataSource {
 
 
     override suspend fun sendDataSource(
@@ -26,7 +24,7 @@ class GeneralDataSourceImpl @Inject constructor(
         timestmap: MultipartBody.Part,
         bill: MultipartBody.Part
     ): String {
-        return retrofit.create(RetrofitSource::class.java).sendDataSource(
+        return retrofit.create(GeneralDataSource::class.java).sendDataSource(
             cardName = cardName,
             amount = amount,
             storeName = pictureName,
@@ -36,16 +34,15 @@ class GeneralDataSourceImpl @Inject constructor(
     }
 
     override suspend fun receiveDataSource(): MutableList<ReceiveData> {
-        return retrofit.create(RetrofitSource::class.java).receiveDataSource()
+        return retrofit.create(GeneralDataSource::class.java).receiveDataSource()
     }
 
     override suspend fun receivePictureDataSource(uid:String): String {
-        return retrofit.create(RetrofitSource::class.java).receivePictureDataSource(uid)
+        return retrofit.create(GeneralDataSource::class.java).receivePictureDataSource(uid)
     }
 
-
     override suspend fun deleteServerData(uid:Long): String {
-        return retrofit.create(RetrofitSource::class.java).deleteServerData(uid)
+        return retrofit.create(GeneralDataSource::class.java).deleteServerData(uid)
     }
 
 
@@ -56,7 +53,7 @@ class GeneralDataSourceImpl @Inject constructor(
         billSubmitTime: LocalDateTime,
         amount: String
     ): ServerResponse {
-        return retrofit.create(RetrofitSource::class.java).updateDataSource(
+        return retrofit.create(GeneralDataSource::class.java).updateDataSource(
             id,
             cardName,
             storeName,

@@ -30,6 +30,10 @@ import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -56,7 +60,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
     override fun initUI() {
         with(binding){
-
             //글라이드
             Glide.with(pictureView)
                 .load(activityViewModel.image.value!!)
@@ -73,6 +76,8 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     }
 
     override fun initListener() {
+
+        //TODO 여기 왜있지?
         val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager.beginTransaction().add(this, "showPictureFragment").commit()
 
@@ -118,18 +123,28 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             completeBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
                 when {
-                    cardName == "" -> { showShortToast("카드를 입력하세요.") }
-                    btnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
-                    btnDate.text.isEmpty() -> { showShortToast("날짜를 입력하세요.") }
-                    btnPrice.text.isEmpty() -> { showShortToast("금액을 입력하세요.") }
+                    cardName == "" -> {
+                        showShortToast("카드를 입력하세요.")
+                    }
+                    btnStore.text!!.isEmpty() -> {
+                        showShortToast("가게 이름을 입력하세요.")
+                    }
+                    btnDate.text.isEmpty() -> {
+                        showShortToast("날짜를 입력하세요.")
+                    }
+                    btnPrice.text.isEmpty() -> {
+                        showShortToast("금액을 입력하세요.")
+                    }
                     activityViewModel.image.value == null -> {
                         showShortToast("사진이 비었습니다.\n초기화면으로 돌아갑니다.")
                         NavHostFragment.findNavController(this@SendBillFragment)
                             .navigate(R.id.action_showFragment_to_homeFragment)
                     }
                     else -> {
-                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
+                        val myLocalDateTime =
+                            viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
                         SendCheckBottomSheet(
+                            viewModel,
                             BottomSheetData(
                                 cardName = cardName,
                                 amount = btnPrice.text.toString(),
@@ -138,17 +153,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                                 date = myLocalDateTime.toString(),
                                 picture = activityViewModel.image.value!!
                             )
-                        ).show(parentFragmentManager,"tag")
-//                        Log.e("TAG", "onViewCreated: ${myYear}, ${myMonth}, ${myDay}")
-//                        activityViewModel.sendData(
-//                            AppSendData(
-//                                billSubmitTime = myLocalDateTime.toString(),
-//                                amount = btnPrice.text.toString(),
-//                                cardName = cardName,
-//                                picture = activityViewModel.image.value!!,
-//                                storeName = binding.btnStore.text.toString()
-//                            )
-//                        )
+                        ).show(parentFragmentManager, "tag")
                     }
 
                 }
@@ -161,8 +166,24 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         }
     }
 
-    // initData와 같은 거라고 생각하자
     override fun initObserver() {
+        /** 프로그래스바 컨트롤 **/
+        viewModel.loading.observe(viewLifecycleOwner){
+            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
+            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
+        }
+
+        viewModel.response.observe(viewLifecycleOwner){
+            Log.e("TAG", "initObserver: com", )
+            when(it){
+                ResponseState.SUCCESS -> {
+                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                    showShortToast("전송 성공")
+                }
+                else -> {}
+            }
+        }
+
         with(binding){
             /** CardData 관련 **/
             activityViewModel.cardData.observe(viewLifecycleOwner){
@@ -177,22 +198,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 val adapter =
                     SpinnerAdapter(requireContext(), myArray)
                 spinner.adapter = adapter
-            }
-
-            /** 프로그래스바 컨트롤 **/
-            viewModel.loading.observe(viewLifecycleOwner){
-                if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
-                else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
-            }
-
-            viewModel.response.observe(viewLifecycleOwner){
-                when(it){
-                    ResponseState.SUCCESS -> {
-                        findNavController().navigate(R.id.action_showFragment_to_homeFragment)
-                        showShortToast("전송 성공")
-                    }
-                    else -> {}
-                }
             }
         }
     }

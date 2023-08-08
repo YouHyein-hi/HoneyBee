@@ -11,9 +11,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(
-    application: Application,
     private val preferenceManager: PreferenceManager
-) : BaseViewModel(application) {
+) : BaseViewModel() {
 
     fun putPush(onoff: Boolean) {
         preferenceManager.putPush(onoff)

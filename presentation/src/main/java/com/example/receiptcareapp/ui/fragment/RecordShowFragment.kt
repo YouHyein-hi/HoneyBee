@@ -8,26 +8,26 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.State.ShowType
-import com.example.receiptcareapp.dto.ShowData
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
+import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.fragmentViewModel.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class RecordShowFragment(
-) : BaseFragment<FragmentRecordShowBinding>(FragmentRecordShowBinding::inflate, "RecordShowFragment") {
+class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecordShowBinding::inflate, "RecordShowFragment") {
     private val activityViewModel : MainActivityViewModel by activityViewModels()
     private val viewModel : RecordShowViewModel by viewModels()
-    private lateinit var myData: ShowData
+    private lateinit var viewModelData: RecyclerData
     private lateinit var callback:OnBackPressedCallback
 
     init {
@@ -35,19 +35,22 @@ class RecordShowFragment(
     }
 
     override fun initData() {
-        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
+//        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
     }
 
     override fun initUI() {
+        // TODO 재전송 버튼은 일단 비활성화
+        binding.resendBtn.isVisible = false
+
         if(activityViewModel.selectedData.value != null){
-            binding.resendBtn.isVisible = false
-            val data = activityViewModel.selectedData.value
-            myData = ShowData(data!!.type, data.uid, data.cardName, data.amount, data.billSubmitTime, data.storeName, data.file)
-            binding.imageView.setImageURI(myData.file)
-            binding.pictureName.text = myData.storeName
+            viewModelData = activityViewModel.selectedData.value!!
+            viewModel.getServerPictureData(viewModelData.uid)
+            activityViewModel.changeSelectedData(null) // 복사했으니 비워주기
+            binding.imageView.setImageURI(viewModelData!!.file)
+            binding.pictureName.text = viewModelData.storeName
             binding.imageView.clipToOutline = true
-            binding.date.text = myData.billSubmitTime
-            binding.cardAmount.text = "${myData.cardName}카드 : ${myData.amount}원"
+            binding.date.text = viewModelData.billSubmitTime
+            binding.cardAmount.text = "${viewModelData.cardName}카드 : ${viewModelData.amount}원"
         }else{
             binding.emptyText.text = "데이터가 없어요!"
             showShortToast("데이터가 없어요!")
@@ -114,6 +117,11 @@ class RecordShowFragment(
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
+
+        viewModel.picture.observe(viewLifecycleOwner){
+            Log.e("TAG", "initObserver: $it", )
+            binding.imageView.setImageBitmap(it)
+        }
     }
 
     //서버, 로컬 재전송
@@ -151,11 +159,11 @@ class RecordShowFragment(
             .setTitle("")
             .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")
             .setNegativeButton("삭제하기"){dialog,id->
-                Log.e("TAG", "deleteDialog: ${myData}", )
-                if(myData.type == ShowType.SERVER){
-                    viewModel.deleteServerBillData(myData.uid.toLong())
+                Log.e("TAG", "deleteDialog: ${viewModelData}", )
+                if(viewModelData.type == ShowType.SERVER){
+                    viewModel.deleteServerBillData(viewModelData.uid.toLong())
                 }else{
-                    viewModel.deleteRoomBillData(myData.billSubmitTime)
+                    viewModel.deleteRoomBillData(viewModelData.billSubmitTime)
                     findNavController().popBackStack()
                 }
             }

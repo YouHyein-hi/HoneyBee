@@ -49,7 +49,7 @@ class LoginActivityViewModel @Inject constructor(
     fun requestLogin(email:String, password:String){
         modelScope.launch {
             withTimeoutOrNull(waitTime){
-                isLoading.postValue(false)
+                isLoading.postValue(true)
                 updateLoginState(
                     loginUseCase.invoke(
                         email = email,

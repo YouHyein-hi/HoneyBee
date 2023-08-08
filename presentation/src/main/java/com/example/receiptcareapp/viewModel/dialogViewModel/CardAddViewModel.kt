@@ -19,7 +19,7 @@ import java.net.SocketTimeoutException
 import java.text.DecimalFormat
 import javax.inject.Inject
 
-class CardAddBottomViewModel @Inject constructor(
+class CardAddViewModel @Inject constructor(
     private val insertCardUseCase: InsertCardUseCase,
     private val getCardListUseCase: GetCardListUseCase,
 ) : BaseViewModel(){

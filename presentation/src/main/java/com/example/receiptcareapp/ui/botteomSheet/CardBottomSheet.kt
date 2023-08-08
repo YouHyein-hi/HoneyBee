@@ -1,43 +1,35 @@
 package com.example.receiptcareapp.ui.botteomSheet
 
-import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.UpdateCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseBottomSheet
-import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
+import com.example.receiptcareapp.databinding.FragmentCardBottomsheetBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
-import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
+import com.example.receiptcareapp.ui.adapter.CardAdapter
 import com.example.receiptcareapp.ui.dialog.CardChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardBottomSheetViewModel
+import com.example.receiptcareapp.viewModel.dialogViewModel.CardBottomSheetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.text.DecimalFormat
 
 /**
  * 2023-03-22
  * pureum
  */
-class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
-    FragmentHomeCardBottomsheetBinding::inflate,
+class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
+    FragmentCardBottomsheetBinding::inflate,
     "homeCardBottomSheet"
 ) {
-    private val adapter: HomeCardAdapter = HomeCardAdapter()
+    private val adapter: CardAdapter = CardAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val homeCardAddBottomViewModel : HomeCardBottomSheetViewModel by viewModels()
+    private val homeCardAddBottomViewModel : CardBottomSheetViewModel by viewModels()
     private var uid : Long = 0
 
 

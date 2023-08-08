@@ -3,7 +3,7 @@ package com.example.receiptcareapp.viewModel.dialogViewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 
-class HomeCardBottomSheetViewModel : ViewModel(){
+class CardBottomSheetViewModel : ViewModel(){
 
     init { Log.e("TAG", "HomeCardBottomSheetViewModel", ) }
 

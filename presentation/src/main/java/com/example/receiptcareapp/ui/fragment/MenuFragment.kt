@@ -19,8 +19,12 @@ import com.example.receiptcareapp.ui.adapter.PushReceiver
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::inflate, "MenuFragment") {
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
@@ -49,6 +53,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     }
 
     @SuppressLint("MissingPermission")
+    //TODO 알림권한 체크를 로그인에 추가
     override fun initListener() {
 
 

@@ -16,14 +16,14 @@ import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardAddBinding
-import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
+import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddBottomViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val cardAddBottomViewModel : CardAddViewModel by viewModels()
+    private val cardAddBottomViewModel : CardAddBottomViewModel by viewModels()
 
     override fun initData() {
     }
@@ -108,7 +108,7 @@ class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inf
                 }
                 else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
                     var price = cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())
-                    activityViewModel.sendCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
+                    activityViewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
                     dismiss()
                 }
             }

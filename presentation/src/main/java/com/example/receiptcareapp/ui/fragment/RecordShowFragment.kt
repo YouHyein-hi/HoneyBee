@@ -9,19 +9,24 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.State.ShowType
-import com.example.receiptcareapp.databinding.FragmentRecyclerShowBinding
 import com.example.receiptcareapp.dto.ShowData
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.viewModel.fragmentViewModel.RecyclerShowViewModel
+import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
+import com.example.receiptcareapp.util.ResponseState
+import com.example.receiptcareapp.viewModel.fragmentViewModel.RecordShowViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentRecyclerShowBinding::inflate, "RecyclerShowFragment") {
+
+@AndroidEntryPoint
+class RecordShowFragment(
+) : BaseFragment<FragmentRecordShowBinding>(FragmentRecordShowBinding::inflate, "RecordShowFragment") {
     private val activityViewModel : MainActivityViewModel by activityViewModels()
+    private val viewModel : RecordShowViewModel by viewModels()
     private lateinit var myData: ShowData
     private lateinit var callback:OnBackPressedCallback
 
@@ -44,15 +49,15 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             binding.date.text = myData.billSubmitTime
             binding.cardAmount.text = "${myData.cardName}카드 : ${myData.amount}원"
         }else{
-            binding.backgroundText.text = "데이터가 없어요!"
+            binding.emptyText.text = "데이터가 없어요!"
             showShortToast("데이터가 없어요!")
             findNavController().popBackStack()
         }
     }
 
     override fun initListener() {
-        //재전송 버튼
-        binding.resendBtn.setOnClickListener{ resendDialog() }
+        //재전송 버튼 / 삭제기능
+//        binding.resendBtn.setOnClickListener{ resendDialog() }
         //수정 후 재전송 버튼
         binding.changeBtn.setOnClickListener{ changeDialog() }
         //삭제 버튼
@@ -70,21 +75,44 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
     override fun initObserver() {
         //서버 연결 상태 옵져버
-        activityViewModel.connectedState.observe(viewLifecycleOwner){
-            Log.e("TAG", "show onViewCreated: $it", )
-            if(it==ConnectedState.DISCONNECTED) {
-                binding.progressBar.visibility = View.INVISIBLE
+//        viewModel.loading.observe(viewLifecycleOwner){
+//            Log.e("TAG", "show onViewCreated: $it", )
+//            if(it==ConnectedState.DISCONNECTED) {
+//                binding.progressBar.visibility = View.INVISIBLE
+//            }
+//            else if(it==ConnectedState.CONNECTING){
+//                binding.progressBar.visibility = View.VISIBLE
+//            }
+//            else if(it==ConnectedState.CONNECTING_SUCCESS){
+//                showShortToast("전송 완료!")
+//                findNavController().popBackStack()
+//            }else{
+//                showShortToast("전송 실패...")
+//                findNavController().popBackStack()
+//            }
+//        }
+        //Todo api 요청에서 ViewModel 전부 State 처리해야함
+        viewModel.response.observe(viewLifecycleOwner){
+            when(it){
+                ResponseState.UPDATE_SUCCESS -> {
+                    showShortToast("수정 완료!")
+                    findNavController().popBackStack()
+                }
+                ResponseState.DELETE_SUCCESS -> {
+                    showShortToast("삭제 완료!")
+                    findNavController().popBackStack()
+                }
+                else -> {
+                    showShortToast("전송 실패...")
+                    findNavController().popBackStack()
+                }
             }
-            else if(it==ConnectedState.CONNECTING){
-                binding.progressBar.visibility = View.VISIBLE
-            }
-            else if(it==ConnectedState.CONNECTING_SUCCESS){
-                showShortToast("전송 완료!")
-                findNavController().popBackStack()
-            }else{
-                showShortToast("전송 실패...")
-                findNavController().popBackStack()
-            }
+        }
+
+        //서버 연결 상태 옵져버
+        viewModel.loading.observe(viewLifecycleOwner){
+            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
+            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
     }
 
@@ -112,7 +140,7 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
 
     //수정
     private fun changeDialog(){
-        activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
+//        activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
         val changeDialogFragment = ChangeDialog()
         changeDialogFragment.show(parentFragmentManager, "CustomDialog")
     }
@@ -125,9 +153,9 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
             .setNegativeButton("삭제하기"){dialog,id->
                 Log.e("TAG", "deleteDialog: ${myData}", )
                 if(myData.type == ShowType.SERVER){
-                    activityViewModel.deleteServerData(myData.uid.toLong()).toString()
+                    viewModel.deleteServerBillData(myData.uid.toLong())
                 }else{
-                    activityViewModel.deleteRoomData(myData.billSubmitTime).toString()
+                    viewModel.deleteRoomBillData(myData.billSubmitTime)
                     findNavController().popBackStack()
                 }
             }
@@ -135,8 +163,6 @@ class RecyclerShowFragment : BaseFragment<FragmentRecyclerShowBinding>(FragmentR
                 dialog.dismiss()
             }
             .create().show()
-
-
     }
 
     override fun onDestroy() {

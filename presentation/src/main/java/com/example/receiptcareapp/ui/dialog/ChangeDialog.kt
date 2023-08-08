@@ -4,26 +4,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.domain.model.UpdateData
 import com.example.domain.model.send.AppSendData
-import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
-import com.example.receiptcareapp.databinding.SpinnerCustomItemLayoutBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import com.example.receiptcareapp.viewModel.dialogViewModel.ChangeViewModel
-import java.text.DecimalFormat
+import com.example.receiptcareapp.viewModel.fragmentViewModel.RecordShowViewModel
 
 class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val changeViewModel: ChangeViewModel by viewModels()
+    private val viewModel: RecordShowViewModel by viewModels()
     private lateinit var myData: RecyclerData
     private var myArray = arrayListOf<String>()
     private var checked = ""
@@ -39,7 +35,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
             myData = activityViewModel.selectedData.value!!
-            newDate = changeViewModel.DateReplace(myData.billSubmitTime)
+            newDate = viewModel.dateReplace(myData.billSubmitTime)
             Log.e("TAG", "initData myData : $myData",)
         } else {
             showShortToast("데이터가 없습니다!")
@@ -77,7 +73,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             myDay = binding.changeDatepicker.dayOfMonth
             Log.e("TAG", "onCreateDialog: $myYear, $myMonth, $myDay")
 
-            val myLocalDateTime = changeViewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
+            val myLocalDateTime = viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
 
             Log.e("TAG", "onCreateView: ${myData.uid}",)
             Log.e("TAG", "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${checked}, ${binding.changeBtnStore.text}, ${myData.file}",)
@@ -92,7 +88,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                 else -> {
                     Log.e("TAG", "initListener myData: $myData", )
                     if(myData.type == ShowType.SERVER) {
-                        activityViewModel.updateServerData(
+                        viewModel.updateServerBillData(
                             sendData = UpdateData(
                                 billSubmitTime = myLocalDateTime.toString(),
                                 amount = binding.changeBtnPrice.text.toString(),
@@ -102,7 +98,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                             uid = myData.uid,
                         )
                     } else {
-                        activityViewModel.resendData(
+                        activityViewModel.updateLocalBillData(
                             sendData = AppSendData(
                                 billSubmitTime = myLocalDateTime.toString(),
                                 amount = binding.changeBtnPrice.text.toString(),
@@ -134,7 +130,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                         SpinnerAdapter(requireContext(), myArray)
                     binding.changeCardspinner.adapter = adapter
 
-                    var position = changeViewModel.AdapterPosition(adapter, dataCardName)
+                    var position = viewModel.AdapterPosition(adapter, dataCardName)
                     if (position != -1) {
                         binding.changeCardspinner.setSelection(position)
                     } else {
@@ -144,13 +140,13 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                 }
 
                 //프로그래스 바 컨트롤
-                activityViewModel.connectedState.observe(viewLifecycleOwner) {
-                    Log.e("TAG", "onViewCreated: $it")
-                }
+//                activityViewModel.connectedState.observe(viewLifecycleOwner) {
+//                    Log.e("TAG", "onViewCreated: $it")
+//                }
             }
 
             private fun getSpinner() {
-                activityViewModel.receiveServerCardData()
+                viewModel.getServerCardData()
                 val adapter = SpinnerAdapter(requireContext(), myArray)
 
                 val inflater = LayoutInflater.from(context)
@@ -169,7 +165,7 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
 
                             Log.e("TAG", "getSpinner onItemSelected: ${position}")
                             Log.e("TAG", "getSpinner onItemSelected: ${myArray[position]}")
-                            val spiltCard = changeViewModel.SplitColon(myArray[position])
+                            val spiltCard = viewModel.splitColon(myArray[position])
                             cardId = position
                             checked = spiltCard[0]
                             Log.e("TAG", "onItemSelected checked: ${checked}")

@@ -12,7 +12,7 @@ import com.example.receiptcareapp.databinding.CardItemBinding
  * 2023-03-22
  * pureum
  */
-class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
+class CardAdapter : RecyclerView.Adapter<CardAdapter.MyHolder>(){
 
     lateinit var onLocalSaveClic : (DomainReceiveCardData)->Unit
     lateinit var longClick : (DomainReceiveCardData)->Unit

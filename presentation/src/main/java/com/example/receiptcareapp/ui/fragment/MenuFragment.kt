@@ -16,7 +16,6 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentMenuBinding
 import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.ui.adapter.PushReceiver
-import com.example.receiptcareapp.ui.botteomSheet.HomeCardBottomSheet
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity

@@ -1,39 +1,21 @@
 package com.example.receiptcareapp.ui.fragment
 
 import android.content.Context
-import android.content.Intent
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.ui.botteomSheet.HomeCardBottomSheet
-import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
-import com.google.android.gms.oss.licenses.OssLicensesActivity
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.example.receiptcareapp.ui.botteomSheet.CardBottomSheet
+import com.example.receiptcareapp.ui.dialog.AddDialog
 
 //메인 프레그먼트/
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate, "HomeFragment") {
 
     private lateinit var callback: OnBackPressedCallback
-
-    override fun initData() {}
-
-    override fun initUI() {
-        with(binding){
-            cameraBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_cameraFragment) }
-            galleryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
-            historyBtn.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
-            settingBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_menuFragment) }
-        }
-    }
-
-    override fun initListener() {
-    }
-
-    override fun initObserver() {}
+    private val homeCardBottomSheet: CardBottomSheet = CardBottomSheet()
+    private val addDialog : AddDialog = AddDialog()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,6 +34,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
+
+    override fun initData() {}
+
+    override fun initUI() {
+        with(binding){
+            historyBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment)}
+            settingBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_menuFragment) }
+
+            addBtn.setOnClickListener{ addDialog.show(parentFragmentManager, "addDialog") }
+            cardlistBtn.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
+            //addBtn
+        }
+    }
+
+    override fun initListener() {
+    }
+
+    override fun initObserver() {}
 
     override fun onDetach() {
         super.onDetach()

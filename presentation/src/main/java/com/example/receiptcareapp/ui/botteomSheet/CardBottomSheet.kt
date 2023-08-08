@@ -10,12 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseBottomSheet
-import com.example.receiptcareapp.databinding.FragmentHomeCardBottomsheetBinding
+import com.example.receiptcareapp.databinding.FragmentCardBottomsheetBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
-import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
+import com.example.receiptcareapp.ui.adapter.CardAdapter
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.ui.dialog.CardChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
+import com.example.receiptcareapp.viewModel.dialogViewModel.CardBottomSheetViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,12 +26,13 @@ import dagger.hilt.android.AndroidEntryPoint
  * pureum
  */
 @AndroidEntryPoint
-class HomeCardBottomSheet: BaseBottomSheet<FragmentHomeCardBottomsheetBinding>(
-    FragmentHomeCardBottomsheetBinding::inflate,
+class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
+    FragmentCardBottomsheetBinding::inflate,
     "homeCardBottomSheet"
 ) {
-    private val adapter: HomeCardAdapter = HomeCardAdapter()
+    private val adapter: CardAdapter = CardAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val homeCardAddBottomViewModel : CardBottomSheetViewModel by viewModels()
     private val viewModel : HomeCardViewModel by viewModels()
     private var uid : Long = 0
 

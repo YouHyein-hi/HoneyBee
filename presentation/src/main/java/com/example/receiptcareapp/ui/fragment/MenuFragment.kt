@@ -17,7 +17,6 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentMenuBinding
 import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.ui.adapter.PushReceiver
-import com.example.receiptcareapp.ui.botteomSheet.HomeCardBottomSheet
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
@@ -33,7 +32,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     companion object { const val REQUEST_CODE = 101 }
     private lateinit var pendingIntent: PendingIntent
     private lateinit var alarmManager: AlarmManager
-
 
     override fun initData() {
         // AlarmManager와 PendingIntent 초기화
@@ -67,7 +65,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             OssLicensesMenuActivity.setActivityTitle("오픈소스 라이선스")
         }
 
-        binding.cardBtn.setOnClickListener{ HomeCardBottomSheet().show(parentFragmentManager, "tag") }
+//        binding.cardBtn.setOnClickListener{ HomeCardBottomSheet().show(parentFragmentManager, "tag") }
 
         binding.logoutBtn.setOnClickListener {
             activityViewModel.clearAll()

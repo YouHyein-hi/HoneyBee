@@ -69,7 +69,6 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
     override fun initListener() {
         // 하단 바텀시트 버튼
         binding.bottomNavigationView.setOnItemSelectedListener{
-//            setTextAndVisible("",false)
             parentFragmentManager.beginTransaction()
             when(it.itemId){
                 R.id.server -> {

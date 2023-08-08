@@ -145,7 +145,7 @@
         android:id="@+id/addnoticeFragment"
         android:name="com.example.receiptcareapp.ui.fragment.NoticeAddUpdateFragment"
         android:label="fragment_addnotice"
-        tools:layout="@layout/fragment_addnotice" />
+        tools:layout="@layout/fragment_notice_add" />
 
 
 </navigation>

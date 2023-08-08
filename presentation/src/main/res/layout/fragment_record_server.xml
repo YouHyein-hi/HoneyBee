@@ -1,11 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="서버의 데이터입니다."
+        android:textColor="@color/sub_font2_gray"
+        android:textSize="14dp" />
+
+    <LinearLayout
+        android:weightSum="10"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@drawable/btn_stroke_up_bottom">
+
+        <EditText
+            android:textColorHighlight="@color/black"
+            android:textSize="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:hint="가게 이름을 입력해주세요."
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_button_orange"
+            />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_server_bill_list"
+        />
 
     <TextView
         android:gravity="center"
@@ -16,4 +52,4 @@
         android:textColor="@color/black"
         android:textSize="20dp"
         />
-</FrameLayout>
+</LinearLayout>

@@ -212,6 +212,8 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 Log.e("TAG", "onItemSelected: ${myArray[position]}")
                 Log.e("TAG", "onItemSelected: ${position}")
+                //TODO myArray / "카드이름 :" 50000
+                // 배열 두개로 관리를 하는게 낫지않을까
                 val spiltCard = myArray[position].split(" : ")
                 cardName = spiltCard[0]
                 cardAmount = spiltCard[1]

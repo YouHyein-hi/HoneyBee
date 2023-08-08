@@ -29,7 +29,6 @@ class RecordServerFragment(
     "RecyclerFragment"
 ) {
     private val recordServerAdapter: RecordServerAdapter = RecordServerAdapter()
-//    private val viewModel: RecordViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     override fun initData() {

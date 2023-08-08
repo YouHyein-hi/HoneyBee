@@ -3,11 +3,14 @@
     <item
         android:title="server"
         android:id="@+id/server"
-        android:icon="@drawable/book"
+        android:icon="@drawable/navigation_server_icon"
+        android:enabled="true"
+
         />
     <item
         android:title="local"
         android:id="@+id/local"
-        android:icon="@drawable/book"
+        android:icon="@drawable/navigation_home_icon"
+        android:enabled="true"
         />
 </menu>

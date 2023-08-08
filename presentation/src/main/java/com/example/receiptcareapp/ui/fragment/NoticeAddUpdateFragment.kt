@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.databinding.FragmentAddnoticeBinding
+import com.example.receiptcareapp.databinding.FragmentNoticeAddBinding
 
-class NoticeAddUpdateFragment : BaseFragment<FragmentAddnoticeBinding>(
-    FragmentAddnoticeBinding::inflate, "NoticeAddUpdateFragment"
+class NoticeAddUpdateFragment : BaseFragment<FragmentNoticeAddBinding>(
+    FragmentNoticeAddBinding::inflate, "NoticeAddUpdateFragment"
 ) {
     override fun initData() {
 //        binding.title

@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
@@ -35,27 +34,21 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initData() {
-//        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
+        if(activityViewModel.selectedData.value != null)
+            viewModelData = activityViewModel.selectedData.value!!
+        else findNavController().popBackStack()
     }
 
     override fun initUI() {
         // TODO 재전송 버튼은 일단 비활성화
         binding.resendBtn.isVisible = false
-
-        if(activityViewModel.selectedData.value != null){
-            viewModelData = activityViewModel.selectedData.value!!
-            viewModel.getServerPictureData(viewModelData.uid)
-            activityViewModel.changeSelectedData(null) // 복사했으니 비워주기
-            binding.imageView.setImageURI(viewModelData!!.file)
-            binding.pictureName.text = viewModelData.storeName
-            binding.imageView.clipToOutline = true
-            binding.date.text = viewModelData.billSubmitTime
-            binding.cardAmount.text = "${viewModelData.cardName}카드 : ${viewModelData.amount}원"
-        }else{
-            binding.emptyText.text = "데이터가 없어요!"
-            showShortToast("데이터가 없어요!")
-            findNavController().popBackStack()
-        }
+        viewModelData = activityViewModel.selectedData.value!!
+        if(viewModelData.type == ShowType.LOCAL) insertLocalPicture(viewModelData.file.toString())
+        else viewModel.getServerPictureData(viewModelData.uid)
+        binding.pictureName.text = viewModelData.storeName
+        binding.imageView.clipToOutline = true
+        binding.date.text = viewModelData.billSubmitTime
+        binding.cardAmount.text = "${viewModelData.cardName}카드 : ${viewModelData.amount}원"
     }
 
     override fun initListener() {
@@ -144,6 +137,12 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 //            AppSendData(myData.cardName,myData.amount, myData.billSubmitTime, myData.storeName,myData.file!!),
 //            myData.billSubmitTime
 //        )
+    }
+
+    private fun insertLocalPicture(insert: String){
+        Log.e("TAG", "insertLocalPicture: $insert", )
+        try { binding.imageView.setImageURI(viewModelData.file) }
+        catch(e:Exception) { binding.emptyText.isVisible }
     }
 
     //수정

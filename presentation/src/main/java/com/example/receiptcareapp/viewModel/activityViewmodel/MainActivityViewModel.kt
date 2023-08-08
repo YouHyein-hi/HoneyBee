@@ -56,8 +56,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     @ApplicationContext private val application: Context,
-//    private val retrofitUseCase: RetrofitUseCase,
-//    private val roomUseCase: RoomUseCase,
     private val getCardListUseCase: GetCardListUseCase,
     private val insertCardUseCase: InsertCardUseCase,
     private val updateCardUseCase: UpdateCardUseCase,

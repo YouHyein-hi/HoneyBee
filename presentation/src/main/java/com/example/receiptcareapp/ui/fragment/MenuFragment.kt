@@ -118,6 +118,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     private fun setAlarm() {
         val targetTime = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
+//            set(Calendar.da, viewModel.getTime().hour!!)
             set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
             set(Calendar.MINUTE, viewModel.getTime().minute!!)
         }

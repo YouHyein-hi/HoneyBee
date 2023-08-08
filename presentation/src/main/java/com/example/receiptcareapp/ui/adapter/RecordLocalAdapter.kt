@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.RecyclerShowData
-import com.example.receiptcareapp.databinding.LocalItemBinding
+import com.example.receiptcareapp.databinding.ItemLocalBillListBinding
 
 /**
  * 2023-03-16
@@ -13,14 +13,14 @@ import com.example.receiptcareapp.databinding.LocalItemBinding
 class RecordLocalAdapter: RecyclerView.Adapter<RecordLocalAdapter.MyAdapter>(){
 
     lateinit var onLocalSaveClic : (RecyclerShowData)->Unit
-    private lateinit var localBinding: LocalItemBinding
+    private lateinit var localBinding: ItemLocalBillListBinding
     var dataList = mutableListOf<RecyclerShowData>()
         set(value){
             field = value.reversed().toMutableList()
             notifyDataSetChanged()
         }
 
-    inner class MyAdapter(private val binding: LocalItemBinding):RecyclerView.ViewHolder(binding.root){
+    inner class MyAdapter(private val binding: ItemLocalBillListBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:RecyclerShowData){
             binding.storeName.text = list.storeName
             binding.cardName.text = list.cardName
@@ -31,7 +31,7 @@ class RecordLocalAdapter: RecyclerView.Adapter<RecordLocalAdapter.MyAdapter>(){
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter {
-        localBinding = LocalItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        localBinding = ItemLocalBillListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyAdapter(localBinding)
     }
 

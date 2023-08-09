@@ -15,7 +15,7 @@
 
 
         <TextView
-            android:id="@+id/home_cardlist_name"
+            android:id="@+id/home_cardname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/home_cardlist_price"
+            android:id="@+id/home_cardprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"

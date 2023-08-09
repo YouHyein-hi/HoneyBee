@@ -84,26 +84,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:gravity="center|left"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
-                        android:fontFamily="@font/pretendardmedium"
-                        android:text="청구 날짜"
-                        android:textColor="@color/sub_font2_gray"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
-                        android:fontFamily="@font/pretendardsemibold"
-                        android:text="@{billCheckDate, default = `로딩중..`}"
-                        android:textColor="@color/main_font_black"
-                        android:textSize="22sp" />
-                </LinearLayout>
+                    android:orientation="vertical"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"

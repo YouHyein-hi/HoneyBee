@@ -14,7 +14,6 @@ import com.example.receiptcareapp.databinding.FragmentCardBottomsheetBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
 import com.example.receiptcareapp.ui.adapter.CardAdapter
 import com.example.receiptcareapp.util.ResponseState
-import com.example.receiptcareapp.ui.dialog.CardChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardBottomSheetViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
@@ -63,15 +62,6 @@ class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
             val cardAddDialog = CardAddDialog()
             cardAddDialog.show(parentFragmentManager, "CardAddDialog")
         }
-
-        //서버 카드 수정 및 삭제 다이알로그
-        adapter.onLocalSaveClic = {
-            val cardChangeDialog = CardChangeDialog(it)
-            cardChangeDialog.show(parentFragmentManager, "CardChangeDialog")
-        }
-
-
-
     }
 
     override fun initObserver() {

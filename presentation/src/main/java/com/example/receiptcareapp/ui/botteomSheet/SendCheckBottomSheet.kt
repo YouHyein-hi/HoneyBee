@@ -28,7 +28,9 @@ class SendCheckBottomSheet(
         return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
     }
 
-    override fun initData() {}
+    override fun initData() {
+
+    }
 
     override fun initUI() {
         binding.cardName = bottomSheetData.cardName

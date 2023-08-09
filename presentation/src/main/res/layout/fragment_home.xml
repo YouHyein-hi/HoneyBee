@@ -13,8 +13,10 @@
         android:id="@+id/constraintLayout17"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:background="@drawable/round_bottomsheet_yellow"
+        style="@style/TextAppearance.AppCompat.Headline"
+        android:background="@drawable/background_home_1080_570"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

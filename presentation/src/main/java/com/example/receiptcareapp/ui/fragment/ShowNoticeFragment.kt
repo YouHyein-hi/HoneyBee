@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.databinding.FragmentShowNoticeBinding
+import com.example.receiptcareapp.databinding.FragmentNoticeShowBinding
 import com.example.receiptcareapp.viewModel.fragmentViewModel.ShowNoticeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class ShowNoticeFragment : BaseFragment<FragmentShowNoticeBinding>(
-    FragmentShowNoticeBinding::inflate, "ShowNoticeFragment"
+class ShowNoticeFragment : BaseFragment<FragmentNoticeShowBinding>(
+    FragmentNoticeShowBinding::inflate, "ShowNoticeFragment"
 ) {
     private val viewModel: ShowNoticeViewModel by viewModels()
 

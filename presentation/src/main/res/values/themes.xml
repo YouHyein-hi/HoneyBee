@@ -66,4 +66,25 @@
     <style name="OpenSourceMenuTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/main_button_orange</item>
     </style>
+
+    <style name="BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/TextAppearance.BottomNavigationView.Active</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.BottomNavigationView.Inactive</item>
+    </style>
+
+    <!-- blank styles for better code readability-->
+    <style name="TextAppearance"/>
+    <style name="TextAppearance.BottomNavigationView"/>
+
+    <!-- inactive tab icon style -->
+    <style name="TextAppearance.BottomNavigationView.Inactive">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">50sp</item>
+    </style>
+
+    <!-- active tab icon style -->
+    <style name="TextAppearance.BottomNavigationView.Active">
+        <item name="android:textSize">50sp</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>

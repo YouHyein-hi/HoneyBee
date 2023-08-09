@@ -32,24 +32,46 @@
     </LinearLayout>
 
     <LinearLayout
+        android:gravity="center"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="50dp"
         android:layout_marginBottom="10dp"
         android:elevation="4dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="90dp"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Click!" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardbold"
+                android:gravity="left"
+                android:text="19,800"
+                android:textColor="@color/black"
+                android:textSize="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/pretendardbold"
+                android:gravity="bottom"
+                android:paddingLeft="5dp"
+                android:text="원"
+                android:textColor="@color/gray"
+                android:textSize="20sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,7 +82,8 @@
             android:paddingRight="15dp">
 
             <TextView
-                android:id="@+id/date"
+                android:layout_marginTop="10dp"
+                android:id="@+id/date_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardbold"
@@ -69,66 +92,25 @@
                 android:textColor="@color/gray"
                 android:textSize="16sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/cardName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:orientation="horizontal"
-                android:paddingTop="5dp">
-
-                <TextView
-                    android:id="@+id/storeName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardbold"
-                    android:gravity="center"
-                    android:text="가게 이름"
-                    android:textColor="@color/gray" />
-
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:text="/" />
-
-                <TextView
-                    android:id="@+id/cardName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardbold"
-                    android:gravity="center"
-                    android:text="카드 이름 :"
-                    android:textColor="@color/gray" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+                android:fontFamily="@font/pretendardbold"
+                android:gravity="center"
+                android:text="카드 이름"
+                android:textColor="@color/gray" />
+            <TextView
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/storeName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardbold"
-                    android:gravity="left"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="30dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardbold"
-                    android:gravity="left"
-                    android:paddingLeft="5dp"
-                    android:text="원"
-                    android:textColor="@color/gray"
-                    android:textSize="15dp" />
-            </LinearLayout>
+                android:fontFamily="@font/pretendardbold"
+                android:gravity="center"
+                android:text="가게 이름"
+                android:textColor="@color/gray" />
         </LinearLayout>
     </LinearLayout>
 

@@ -5,7 +5,7 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sub_background2_light_orange"
+    android:background="@drawable/background_loading_1080_2140"
     tools:context=".ui.activity.SplashActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +23,7 @@
             android:fontFamily="@font/pretendardextrabold"
             android:text="Honey Bee"
             android:textColor="@color/main_font_black"
-            android:textSize="55sp"
+            android:textSize="60sp"
             android:transitionName="title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,22 +34,23 @@
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="-5dp"
-            android:layout_marginBottom="-15dp"
+            android:layout_marginStart="53dp"
+            android:layout_marginBottom="-20dp"
             android:fontFamily="@font/pretendardmedium"
             android:text="DC LAB 영수증 관리 어플"
-            android:textColor="@color/sub_font2_gray"
+            android:textColor="@color/basic_white"
+            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/title"
-            app:layout_constraintStart_toEndOf="@+id/lottieAnimationView" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottieAnimationView"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="-30dp"
-            android:layout_marginBottom="-35dp"
-            app:layout_constraintBottom_toTopOf="@+id/title"
-            app:layout_constraintStart_toStartOf="@+id/title"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="-20dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView14"
+            app:layout_constraintStart_toStartOf="parent"
             app:lottie_autoPlay="true"
             app:lottie_fileName="bee.json"
             app:lottie_loop="true" />

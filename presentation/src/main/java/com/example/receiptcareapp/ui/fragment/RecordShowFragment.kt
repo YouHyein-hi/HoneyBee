@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ConnectedState
@@ -36,34 +35,16 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initData() {
-//        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
+        if(activityViewModel.selectedData.value != null) viewModelData = activityViewModel.selectedData.value!!
+        else findNavController().popBackStack()
     }
 
     override fun initUI() {
         // TODO 재전송 버튼은 일단 비활성화
-        binding.resendBtn.isVisible = false
-
-        if(activityViewModel.selectedData.value != null){
-            viewModelData = activityViewModel.selectedData.value!!
-            viewModel.getServerPictureData(viewModelData.uid)
-            //activityViewModel.changeSelectedData(null) // 복사했으니 비워주기
-            // ChangeDialog에도 써야되기때문에 비워주면 안됩니다!
-            // 비울거면 다른 방법 찾아봐야될거같아요!
-            binding.imageView.setImageURI(viewModelData!!.file)
-            binding.pictureName.text = viewModelData.storeName
-            binding.imageView.clipToOutline = true
-            binding.date.text = viewModelData.billSubmitTime
-            binding.cardAmount.text = "${viewModelData.cardName}카드 : ${viewModelData.amount}원"
-        }else{
-            binding.emptyText.text = "데이터가 없어요!"
-            showShortToast("데이터가 없어요!")
-            findNavController().popBackStack()
-        }
+        initView()
     }
 
     override fun initListener() {
-        //재전송 버튼 / 삭제기능
-//        binding.resendBtn.setOnClickListener{ resendDialog() }
         //수정 후 재전송 버튼
         binding.changeBtn.setOnClickListener{ changeDialog() }
         //삭제 버튼
@@ -80,23 +61,6 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initObserver() {
-        //서버 연결 상태 옵져버
-//        viewModel.loading.observe(viewLifecycleOwner){
-//            Log.e("TAG", "show onViewCreated: $it", )
-//            if(it==ConnectedState.DISCONNECTED) {
-//                binding.progressBar.visibility = View.INVISIBLE
-//            }
-//            else if(it==ConnectedState.CONNECTING){
-//                binding.progressBar.visibility = View.VISIBLE
-//            }
-//            else if(it==ConnectedState.CONNECTING_SUCCESS){
-//                showShortToast("전송 완료!")
-//                findNavController().popBackStack()
-//            }else{
-//                showShortToast("전송 실패...")
-//                findNavController().popBackStack()
-//            }
-//        }
         //Todo api 요청에서 ViewModel 전부 State 처리해야함
         viewModel.response.observe(viewLifecycleOwner){
             when(it){
@@ -127,26 +91,44 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         }
     }
 
-    //서버, 로컬 재전송
-    private fun resendDialog(){
-        AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-            .setTitle("")
-            .setMessage("서버에 보내시겠어요?")
-            .setNegativeButton("보내기"){dialog,id->
-                dialog.dismiss()
-                resendData()
-            }
-            .setPositiveButton("닫기"){dialog,id->
-                dialog.dismiss()
-            }
-            .create().show()
+//    //서버, 로컬 재전송
+//    private fun resendDialog(){
+//        AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
+//            .setTitle("")
+//            .setMessage("서버에 보내시겠어요?")
+//            .setNegativeButton("보내기"){dialog,id->
+//                dialog.dismiss()
+//                resendData()
+//            }
+//            .setPositiveButton("닫기"){dialog,id->
+//                dialog.dismiss()
+//            }
+//            .create().show()
+//    }
+//    //로컬재전송
+//    private fun resendData(){
+////        activityViewModel.resendData(
+////            AppSendData(myData.cardName,myData.amount, myData.billSubmitTime, myData.storeName,myData.file!!),
+////            myData.billSubmitTime
+////        )
+//    }
+
+    private fun initView(){
+        if(viewModelData.type == ShowType.LOCAL) insertLocalPicture(viewModelData.file.toString())
+        else viewModel.getServerPictureData(viewModelData.uid)
+        binding.imageView.clipToOutline = true
+        binding.cardTxt.text = viewModelData.cardName
+        binding.dateTxt.text = viewModelData.billSubmitTime
+        binding.amountTxt.text = viewModelData.amount
+        binding.cardAmount.text = "${viewModelData.cardName}카드 : ${viewModelData.amount}원"
+        // TODO 청구 날짜 만들기
+//        binding.checkDataTxt.text = viewModelData.dat
     }
-    //로컬재전송
-    private fun resendData(){
-//        activityViewModel.resendData(
-//            AppSendData(myData.cardName,myData.amount, myData.billSubmitTime, myData.storeName,myData.file!!),
-//            myData.billSubmitTime
-//        )
+
+    private fun insertLocalPicture(insert: String){
+        Log.e("TAG", "insertLocalPicture: $insert", )
+        try { binding.imageView.setImageURI(viewModelData.file) }
+        catch(e:Exception) { binding.emptyText.isVisible }
     }
 
     //수정

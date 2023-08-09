@@ -2,10 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_background"
-    android:backgroundTint="@color/main_background_white">
+    android:background="@drawable/dialog_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout11"
@@ -22,9 +21,9 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/pretendardextrabold"
-            android:text="@string/dialog_cardChange_title"
+            android:text="@string/dialog_delete_title"
             android:textColor="@color/fontColor_black"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,44 +38,18 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout16"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/textView24"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/pretendardbold"
+        android:text="@string/dialog_delete_text"
+        android:textColor="@color/fontColor_black"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
-
-        <EditText
-            android:id="@+id/dialogCardChange_editCardprice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:gravity="center"
-            android:hint="@string/dialog_cardChange_price"
-            android:inputType="number"
-            android:maxLength="10"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dialogCardChange_textCardname" />
-
-        <TextView
-            android:id="@+id/dialogCardChange_textCardname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/pretendardbold"
-            android:text="카드 이름"
-            android:textColor="@color/fontColor_black"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -86,17 +59,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout16">
+        app:layout_constraintTop_toBottomOf="@+id/textView24">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/dialogCardChange_btnPositive"
+            android:id="@+id/change_btnPositive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:background="@drawable/white_btn"
             android:fontFamily="@font/pretendardsemibold"
             android:stateListAnimator="@null"
-            android:text="@string/complete"
+            android:text="@string/delete"
             android:textColor="@color/sub_font3_orange"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +77,7 @@
             tools:ignore="MissingConstraints" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/dialogCardChange_btnNegative"
+            android:id="@+id/change_btnNegative"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -119,6 +92,5 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,8 +17,14 @@ class AddDialog : BaseDialog<DialogAddBinding>(DialogAddBinding::inflate) {
 
     override fun initListener() {
         with(binding){
-            homeAddCamera.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_cameraFragment)}
-            homeAddGallery.setOnClickListener{  findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)}
+            homeAddCamera.setOnClickListener{
+                findNavController().navigate(R.id.action_homeFragment_to_cameraFragment)
+                dismiss()
+            }
+            homeAddGallery.setOnClickListener{
+                findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)
+                dismiss()
+            }
         }
 
     }

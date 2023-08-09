@@ -6,37 +6,35 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.receiptcareapp.databinding.CardItemBinding
+import com.example.receiptcareapp.databinding.CardHomeItemBinding
 
-/**
- * 2023-03-22
- * pureum
- */
-class CardAdapter : RecyclerView.Adapter<CardAdapter.MyHolder>(){
+class CardHomeAdapter : RecyclerView.Adapter<CardHomeAdapter.MyHolder>(){
 
-    private lateinit var cardBinding: CardItemBinding
+    private lateinit var binding: CardHomeItemBinding
     var dataList = mutableListOf<DomainReceiveCardData>()
         set(value){
             field = value.reversed().toMutableList()
             notifyDataSetChanged()
         }
-    inner class MyHolder(private val binding : CardItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    inner class MyHolder(private val binding : CardHomeItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DomainReceiveCardData) {
             Log.e("TAG", "bind: inin", )
-            Log.e("TAG", "bind: cardName=${item.cardName}, amount=${item.cardAmount}", )
-            binding.cardName = item.cardName
-            binding.amount = item.cardAmount
-            binding.billCheckDate = "10" + "일"
+            Log.e("TAG", "bind: ${item.cardName}, ${item.cardAmount}", )
+            binding.homeCardname.text = item.cardName
+            binding.homeCardprice.text = item.cardAmount
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
-        cardBinding = CardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyHolder(cardBinding)
+        binding = CardHomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-     holder.bind(dataList[position])
+        holder.bind(dataList[position])
     }
+
     override fun getItemCount(): Int = dataList.size
+
 }

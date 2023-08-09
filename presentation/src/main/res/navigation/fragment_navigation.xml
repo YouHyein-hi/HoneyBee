@@ -30,6 +30,9 @@
             android:id="@+id/action_homeFragment_to_menuFragment"
             app:destination="@id/menuFragment"
             app:popUpTo="@id/homeFragment"/>
+        <action
+            android:id="@+id/action_homeFragment_to_noticeFragment"
+            app:destination="@id/noticeFragment" />
 
 
     </fragment>

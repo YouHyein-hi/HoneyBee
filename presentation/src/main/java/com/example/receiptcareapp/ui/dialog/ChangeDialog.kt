@@ -41,16 +41,14 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             Log.e("TAG", "initData myData : $myData",)
         } else {
             showShortToast("데이터가 없습니다!")
+            Log.e("TAG", "initData: 데이터가 없다", )
             dismiss()
-
         }
     }
 
     override fun initUI() {
         getSpinner()
 
-        val width = resources.displayMetrics.widthPixels
-        dialog?.window?.setLayout((width * 1), ViewGroup.LayoutParams.WRAP_CONTENT)
         // 수정 전 로컬 데이터 화면에 띄우기
         // Spinner은 아직 설정 안함
         binding.changeCardspinner
@@ -150,8 +148,6 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
             private fun getSpinner() {
                 viewModel.getServerCardData()
                 val adapter = SpinnerAdapter(requireContext(), myArray)
-
-                val inflater = LayoutInflater.from(context)
 
                 binding.changeCardspinner?.adapter = adapter
                 binding.changeCardspinner?.onItemSelectedListener =

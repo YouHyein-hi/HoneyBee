@@ -17,6 +17,7 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.receiptcareapp.dto.RecyclerData
+import com.example.receiptcareapp.ui.dialog.DeleteDialog
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.fragmentViewModel.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -132,14 +133,16 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 
     //수정
     private fun changeDialog(){
-//        activityViewModel.changeConnectedState(ConnectedState.CONNECTING)
-        val changeDialogFragment = ChangeDialog()
-        changeDialogFragment.show(parentFragmentManager, "CustomDialog")
+        val changeDialog = ChangeDialog()
+        changeDialog.show(parentFragmentManager, "changeDialog")
     }
 
     //서버와 로컬 삭제
     private fun deleteDialog(){
-        AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
+       val deleteDialog = DeleteDialog()
+        deleteDialog.show(parentFragmentManager, "deleteDialog")
+
+/*        AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
             .setTitle("")
             .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")
             .setNegativeButton("삭제하기"){dialog,id->
@@ -154,7 +157,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
             .setPositiveButton("닫기"){dialog,id->
                 dialog.dismiss()
             }
-            .create().show()
+            .create().show()*/
     }
 
     override fun onDestroy() {

@@ -27,9 +27,6 @@ class Permissiond_Dialog : BaseDialog<DialogPermissionBinding>(DialogPermissionB
     }
 
     override fun initUI() {
-        val width = resources.displayMetrics.widthPixels
-        dialog?.window?.setLayout((width * 1), ViewGroup.LayoutParams.WRAP_CONTENT)
-
     }
 
     override fun initListener() {

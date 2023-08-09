@@ -24,7 +24,7 @@
             android:fontFamily="@font/pretendardextrabold"
             android:text="@string/dialog_cardAdd_title"
             android:textColor="@color/fontColor_black"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

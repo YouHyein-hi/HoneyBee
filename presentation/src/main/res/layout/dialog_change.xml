@@ -4,161 +4,198 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout9"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background">
 
-    <TextView
-        android:id="@+id/textView6"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout11"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/pretendardsemibold"
-        android:text="데이터를 수정하시겠어요?"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/pretendardsemibold"
-        android:text="카드"
-        android:textColor="@color/gray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/change_cardspinner"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-    <Spinner
-        android:id="@+id/change_cardspinner"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/spinner_custom"
-        android:elevation="3dp"
-        android:fontFamily="@font/pretendardbold"
-        android:gravity="center"
-        android:textAlignment="center"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/pretendardsemibold"
-        android:text="가게 이름"
-        android:textColor="@color/gray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/change_btnStore"
-        app:layout_constraintTop_toBottomOf="@+id/change_cardspinner" />
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/pretendardextrabold"
+            android:text="@string/dialog_change_title"
+            android:textColor="@color/fontColor_black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/change_btnStore"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/choice_btn"
-        android:elevation="3dp"
-        android:fontFamily="@font/pretendardbold"
-        android:gravity="center"
-        android:hint="가게 이름"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/sub_button3_white_gray"
+            app:layout_constraintTop_toBottomOf="@+id/textView22"
+            tools:layout_editor_absoluteX="0dp" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/pretendardsemibold"
-        android:text="금액"
-        android:textColor="@color/gray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/change_btnPrice"
-        app:layout_constraintTop_toBottomOf="@+id/change_btnStore" />
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/pretendardbold"
+            android:text="@string/dialog_change_text"
+            android:textColor="@color/fontColor_black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/view4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view4" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-        android:id="@+id/change_btnPrice"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/choice_btn"
-        android:elevation="3dp"
-        android:fontFamily="@font/pretendardbold"
-        android:gravity="center"
-        android:hint="금액"
-        android:imeOptions="actionDone"
-        android:inputType="number"
-        android:maxLength="10"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/pretendardsemibold"
-        android:text="금액"
-        android:textColor="@color/gray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/change_datepicker"
-        app:layout_constraintTop_toBottomOf="@+id/change_btnPrice" />
-
-    <DatePicker
-        android:id="@+id/change_datepicker"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout18"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="30dp"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
+
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendardsemibold"
+            android:text="@string/dialog_change_cardName"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/change_cardspinner"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/spinner_custom"
+            android:fontFamily="@font/pretendardsemibold"
+            android:gravity="center"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
+        <TextView
+            android:id="@+id/textView34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/pretendardsemibold"
+            android:text="@string/dialog_change_storeName"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/change_btnStore"
+            app:layout_constraintTop_toBottomOf="@+id/change_cardspinner" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/change_btnStore"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_edittext"
+            android:fontFamily="@font/pretendardsemibold"
+            android:gravity="center"
+
+            android:hint="@string/dialog_change_storeName_text"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="15"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+        <TextView
+            android:id="@+id/textView35"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/pretendardsemibold"
+            android:text="@string/dialog_change_price"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/change_btnPrice"
+            app:layout_constraintTop_toBottomOf="@+id/change_btnStore" />
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/change_btnPrice"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_edittext"
+            android:fontFamily="@font/pretendardsemibold"
+            android:gravity="center"
+            android:hint="@string/dialog_change_price_text"
+            android:inputType="number"
+            android:maxLength="10"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView35" />
+
+        <TextView
+            android:id="@+id/textView36"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/pretendardsemibold"
+            android:text="@string/dialog_change_date"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/change_datepicker"
+            app:layout_constraintTop_toBottomOf="@+id/change_btnPrice" />
+
+        <DatePicker
+            android:id="@+id/change_datepicker"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView36" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/change_datepicker">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout18">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/change_btnPositive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="15dp"
             android:background="@drawable/white_btn"
             android:fontFamily="@font/pretendardsemibold"
             android:stateListAnimator="@null"
-            android:text="수정해서 보내기"
-            android:textColor="@color/red"
+            android:text="@string/complete"
+            android:textColor="@color/sub_font3_orange"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/change_btnNegative"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
 
@@ -166,43 +203,16 @@
             android:id="@+id/change_btnNegative"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
             android:background="@drawable/white_btn"
             android:elevation="0dp"
             android:fontFamily="@font/pretendardsemibold"
             android:stateListAnimator="@null"
-            android:text="닫기"
-            android:textColor="@color/black"
+            android:text="취소"
+            android:textColor="@color/fontColor_black"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!--<View
-        android:id="@+id/waitingView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/watingColor"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>

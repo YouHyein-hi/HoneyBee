@@ -44,24 +44,28 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:textColor="@color/main_font_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="정말 전송하시겠어요?"
+                android:fontFamily="@font/pretendardbold"
+                android:text="@string/bottomSheet_sendbill_title"
+                android:textColor="@color/main_font_black"
                 android:textSize="30dp" />
 
             <TextView
-                android:layout_marginTop="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{cardName, default = 나라사랑카드}"/>
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/pretendardsemibold"
+                android:text="@{cardName, default = 나라사랑카드}"
+                android:textColor="@color/fontColor_black" />
 
             <TextView
-                android:textColor="@color/main_font_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardsemibold"
                 android:text="@{amount+`원`,default = `19,800원`}"
-                android:textSize="35sp"/>
+                android:textColor="@color/main_font_black"
+                android:textSize="24sp" />
 
             <LinearLayout
                 android:layout_marginTop="40dp"
@@ -69,17 +73,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="카드 남은 금액" />
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardmedium"
+                    android:text="@string/bottomSheet_sendbill_cardPriceText"
+                    android:textColor="@color/sub_font1_gray" />
+
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardsemibold"
                     android:gravity="right"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{cardAmount+`원`, default = `354,000`}" />
+                    android:text="@{cardAmount+`원`, default = `354,000`}"
+                    android:textColor="@color/fontColor_black" />
             </LinearLayout>
 
             <LinearLayout
@@ -88,17 +98,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="가게 이름" />
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardmedium"
+                    android:text="@string/bottomSheet_sendbill_storeNameText"
+                    android:textColor="@color/sub_font1_gray" />
+
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardsemibold"
                     android:gravity="right"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{storeName,default = `짬뽕만세`}" />
+                    android:text="@{storeName,default = `짬뽕만세`}"
+                    android:textColor="@color/fontColor_black" />
             </LinearLayout>
 
             <LinearLayout
@@ -107,17 +123,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="날짜" />
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardmedium"
+                    android:text="@string/bottomSheet_sendbill_dateText"
+                    android:textColor="@color/sub_font1_gray" />
+
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardsemibold"
                     android:gravity="right"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{date, default = `23.07.05`}" />
+                    android:text="@{date, default = `23.07.05`}"
+                    android:textColor="@color/fontColor_black" />
             </LinearLayout>
 
             <LinearLayout
@@ -127,23 +149,28 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="3">
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/cancle_btn"
-                    android:layout_weight="2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="취소"
+                    android:layout_marginBottom="2dp"
+                    android:layout_weight="2"
                     android:background="@drawable/button_cancle"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/cancel"
                     android:textColor="@color/main_font_black" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/send_btn"
-                    android:layout_marginLeft="15dp"
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_weight="1"
                     android:background="@drawable/main_button_ok"
-                    android:text="전송하기"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/send"
                     android:textColor="@color/main_font_black" />
             </LinearLayout>
         </LinearLayout>

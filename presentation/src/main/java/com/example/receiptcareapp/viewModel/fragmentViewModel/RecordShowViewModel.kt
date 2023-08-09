@@ -193,7 +193,6 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-    // TODO RecyclerFragment에만 들어가는 코드인데 RecyclerViewModel에 옮길까
     fun getServerPictureData(uid:String){
         CoroutineScope(exceptionHandler).launch {
             Log.e("TAG", "getServerPictureData: ", )

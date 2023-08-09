@@ -27,7 +27,7 @@ class RecordServerAdapter:RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
                 storeName.text = list.storeName
                 cardName.text = list.cardName
                 amount.text = list.amount
-                date.text = list.date
+                dateTxt.text = list.date
                 listLayout.setOnClickListener{ onServerSaveClick(list) }
                 if(list.billCheck) {
                     billCheckLayout.visibility = View.VISIBLE

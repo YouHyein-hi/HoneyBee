@@ -25,7 +25,7 @@ class RecordLocalAdapter: RecyclerView.Adapter<RecordLocalAdapter.MyAdapter>(){
             binding.storeName.text = list.storeName
             binding.cardName.text = list.cardName
             binding.amount.text = list.amount
-            binding.date.text = list.date
+            binding.dateTxt.text = list.date
             binding.listLayout.setOnClickListener{ onLocalSaveClic(list) }
         }
     }

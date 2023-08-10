@@ -88,7 +88,7 @@
         android:id="@+id/constraintLayout13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout12"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout12">
 
@@ -138,7 +138,7 @@
         android:id="@+id/constraintLayout15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout13"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout13"
         tools:ignore="MissingConstraints">

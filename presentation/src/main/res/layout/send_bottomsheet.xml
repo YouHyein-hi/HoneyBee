@@ -80,7 +80,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardmedium"
                     android:text="@string/bottomSheet_sendbill_cardPriceText"
-                    android:textColor="@color/sub_font1_gray" />
+                    android:textColor="@color/sub_font2_gray" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -105,7 +105,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardmedium"
                     android:text="@string/bottomSheet_sendbill_storeNameText"
-                    android:textColor="@color/sub_font1_gray" />
+                    android:textColor="@color/sub_font2_gray" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -130,7 +130,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardmedium"
                     android:text="@string/bottomSheet_sendbill_dateText"
-                    android:textColor="@color/sub_font1_gray" />
+                    android:textColor="@color/sub_font2_gray" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -143,10 +143,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
@@ -168,7 +168,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginBottom="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/main_button_ok"
+                    android:background="@drawable/btn_ok"
                     android:fontFamily="@font/pretendardsemibold"
                     android:text="@string/send"
                     android:textColor="@color/main_font_black" />

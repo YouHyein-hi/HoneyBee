@@ -35,11 +35,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
-            android:elevation="10dp"
             android:fontFamily="@font/pretendardextrabold"
             android:text="@string/app_name"
             android:textColor="@color/sub_font4_white"
             android:textSize="53sp"
+            android:shadowColor="@color/shadow2_orange"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -164,9 +167,9 @@
             android:weightSum="2">
 
             <LinearLayout
-                android:id="@+id/linearLayout4"
+                android:id="@+id/home_add_camera"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="150dp"
                 android:layout_weight="1"
                 android:background="@drawable/roundsquare_white"
                 android:gravity="left|center"
@@ -218,9 +221,9 @@
                 android:orientation="vertical" />
 
             <LinearLayout
-                android:id="@+id/linearLayout6"
+                android:id="@+id/home_add_gallery"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="150dp"
                 android:layout_weight="1"
                 android:background="@drawable/roundsquare_white"
                 android:gravity="right|center"

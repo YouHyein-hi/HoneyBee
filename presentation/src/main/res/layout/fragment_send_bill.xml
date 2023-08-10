@@ -7,11 +7,13 @@
     tools:context=".ui.fragment.SendBillFragment"
     android:background="@drawable/background_loading_1080_2140"
     >
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_sheet_style"
+        android:paddingBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -92,71 +94,52 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="10dp"
             android:background="@drawable/btn_edittext"
-            android:elevation="3dp"
             android:fontFamily="@font/pretendardsemibold"
             android:hint="@string/pictureShow_date"
             android:imeOptions="actionDone"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_price" />
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/linearLayout9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:weightSum="3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_date">
 
-            <LinearLayout
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cancle_btn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_weight="2"
+                android:background="@drawable/button_cancle"
+                android:fontFamily="@font/pretendardsemibold"
+                android:text="@string/cancel"
+                android:textColor="@color/main_font_black" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/cancle_btn"
-                    android:layout_width="120dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/btn_cancel"
-                    android:elevation="3dp"
-                    android:fontFamily="@font/pretendardsemibold"
-                    android:text="@string/cancel"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textView10" />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/complete_btn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="2dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/complete_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/btn_stroke_up_bottom"
-                    android:elevation="3dp"
-                    android:fontFamily="@font/pretendardsemibold"
-                    android:text="@string/complete"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textView10" />
-            </LinearLayout>
-
+                android:background="@drawable/main_button_ok"
+                android:fontFamily="@font/pretendardsemibold"
+                android:text="@string/send"
+                android:textColor="@color/main_font_black" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -186,29 +169,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <View-->
-<!--        android:id="@+id/waitingView"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:background="@color/watingColor"-->
-<!--        android:visibility="invisible"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.0"-->
-<!--        tools:ignore="MissingConstraints" />-->
+    <!--    <View-->
+    <!--        android:id="@+id/waitingView"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:background="@color/watingColor"-->
+    <!--        android:visibility="invisible"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="0.0"-->
+    <!--        tools:ignore="MissingConstraints" />-->
 
-<!--    <ProgressBar-->
-<!--        android:id="@+id/progressBar"-->
-<!--        style="?android:attr/progressBarStyle"-->
-<!--        android:layout_width="150dp"-->
-<!--        android:layout_height="150dp"-->
-<!--        android:visibility="invisible"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <!--    <ProgressBar-->
+    <!--        android:id="@+id/progressBar"-->
+    <!--        style="?android:attr/progressBarStyle"-->
+    <!--        android:layout_width="150dp"-->
+    <!--        android:layout_height="150dp"-->
+    <!--        android:visibility="invisible"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

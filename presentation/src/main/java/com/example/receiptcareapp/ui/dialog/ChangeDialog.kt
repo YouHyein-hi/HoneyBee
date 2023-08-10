@@ -114,11 +114,13 @@ class ChangeDialog : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflat
                 }
             }
 
-                binding.changeBtnNegative.setOnClickListener {
-                    dismiss()
-                }
             }
+
+        binding.changeBtnNegative.setOnClickListener {
+            Log.e("TAG", "initListener: change_btnNegative을 클릭함!", )
+            dismiss()
         }
+    }
 
             override fun initObserver() {
                 val dataCardName = myData.cardName

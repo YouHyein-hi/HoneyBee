@@ -49,6 +49,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/notice_item"/>
+        tools:listitem="@layout/item_notice"/>
 
 </LinearLayout>

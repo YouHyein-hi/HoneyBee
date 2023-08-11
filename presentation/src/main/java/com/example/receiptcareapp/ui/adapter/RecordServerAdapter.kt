@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.receive.DomainReceiveAllData
-import com.example.receiptcareapp.databinding.ItemServerBillListBinding
+import com.example.receiptcareapp.databinding.ItemBillListServerBinding
 
 /**
  * 2023-02-06
@@ -14,14 +14,14 @@ import com.example.receiptcareapp.databinding.ItemServerBillListBinding
 class RecordServerAdapter:RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
 
     lateinit var onServerSaveClick : (DomainReceiveAllData)->Unit
-    private lateinit var serverBinding:ItemServerBillListBinding
+    private lateinit var serverBinding:ItemBillListServerBinding
     var dataList = mutableListOf<DomainReceiveAllData>()
         set(value){
             field = value.reversed().toMutableList()
             notifyDataSetChanged()
         }
 
-    inner class MyAdapter(private val binding: ItemServerBillListBinding):RecyclerView.ViewHolder(binding.root){
+    inner class MyAdapter(private val binding: ItemBillListServerBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list: DomainReceiveAllData){
             with(binding){
                 storeName.text = list.storeName
@@ -39,7 +39,7 @@ class RecordServerAdapter:RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter {
-        serverBinding = ItemServerBillListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        serverBinding = ItemBillListServerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyAdapter(serverBinding)
     }
 

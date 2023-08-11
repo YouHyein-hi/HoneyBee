@@ -81,7 +81,7 @@
 
                 <include
                     android:id="@+id/layout_loading_progress"
-                    layout="@layout/layout_loading_progress"
+                    layout="@layout/progressbar_loading"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:visibility="invisible"
@@ -124,7 +124,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view5"
-                    tools:listitem="@layout/card_home_item">
+                    tools:listitem="@layout/item_cardhome">
 
                 </androidx.recyclerview.widget.RecyclerView>
 

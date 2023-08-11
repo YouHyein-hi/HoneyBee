@@ -20,11 +20,12 @@
 
     <ImageView
         android:id="@+id/downArrow"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/spinnerItem"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/spinnerItem"
-        app:srcCompat="@drawable/downarrow" />
+        app:srcCompat="@drawable/icon_arrow_down" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,7 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:gravity="center"
-        android:background="@drawable/btn_stroke_up_bottom">
+        android:background="@drawable/box_yellow">
 
         <EditText
             android:textColorHighlight="@color/black"

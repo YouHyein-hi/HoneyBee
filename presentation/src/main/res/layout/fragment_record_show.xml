@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_loading_1080_2140"
+    android:background="@drawable/background_honey"
     tools:context=".ui.fragment.RecordShowFragment">
 
     <ImageView
@@ -13,19 +13,9 @@
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
-        android:src="@drawable/icon_leftarrow"
+        android:src="@drawable/icon_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/remove_btn"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_trash" />
 
     <ImageView
         android:id="@+id/change_btn"
@@ -36,6 +26,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/remove_btn"
         app:layout_constraintEnd_toStartOf="@+id/remove_btn"
         app:layout_constraintTop_toTopOf="@+id/remove_btn" />
+
+    <ImageView
+        android:id="@+id/remove_btn"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_trash" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -211,7 +211,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

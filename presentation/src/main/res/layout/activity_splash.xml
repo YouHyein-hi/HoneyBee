@@ -37,7 +37,7 @@
             android:layout_marginStart="53dp"
             android:layout_marginBottom="-20dp"
             android:fontFamily="@font/pretendardmedium"
-            android:text="DC LAB 영수증 관리 어플"
+            android:text="영수증 관리 어플리케이션"
             android:textColor="@color/basic_white"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/title"

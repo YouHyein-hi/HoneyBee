@@ -102,55 +102,44 @@ class RecordShowViewModel @Inject constructor(
                     ResponseState.UPDATE_SUCCESS
                 )
             } ?: throw SocketTimeoutException()
-            isLoading.postValue(true)
+            isLoading.postValue(false)
         }
     }
 
     //로컬 데이터 재전송
-    fun updateLocalBillData(sendData: AppSendData, beforeUid: String){
+    fun updateLocalBillData(sendData: AppSendData, uid: String) {
         CoroutineScope(exceptionHandler).launch {
-            Log.e("TAG", "resendData: $sendData", )
             withTimeoutOrNull(waitTime) {
-
-                //TODO responseUpdate로 반환값 합쳐야함
-                val response = insertDataUseCase(
-                    DomainSendData(
-                        cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
-                        storeName = MultipartBody.Part.createFormData("storeName", sendData.storeName),
-                        date = MultipartBody.Part.createFormData("billSubmitTime", sendData.billSubmitTime),
-                        amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
-                        picture = compressEncodePicture(sendData.picture)
-                    )
+                imsiUpdateResponse(
+                    insertDataUseCase(
+                        DomainSendData(
+                            cardName = MultipartBody.Part.createFormData(
+                                "cardName",
+                                sendData.cardName
+                            ),
+                            storeName = MultipartBody.Part.createFormData(
+                                "storeName",
+                                sendData.storeName
+                            ),
+                            date = MultipartBody.Part.createFormData(
+                                "billSubmitTime",
+                                sendData.billSubmitTime
+                            ),
+                            amount = MultipartBody.Part.createFormData(
+                                "amount",
+                                sendData.amount.replace(",", "")
+                            ),
+                            picture = compressEncodePicture(sendData.picture)
+                        )
+                    ),
+                    ResponseState.UPDATE_SUCCESS,
+                    uid,
+                    sendData
                 )
                 Log.e("TAG", "sendData 응답 : $response ")
-                if (response != "0") {
-                    val roomResult = insertDataRoomUseCase(
-                        DomainRoomData(
-                        uid = beforeUid,
-                        cardName = sendData.cardName,
-                        amount = sendData.amount,
-                        billSubmitTime = dateTimeToString(sendData.billSubmitTime),
-                        storeName = sendData.storeName,
-                        file = sendData.picture.toString(),
-                    )
-                    )
-                    Log.e("TAG", "resendData room result : $roomResult", )
-                } else {
-                    Log.e("TAG", "sendData: 실패입니다!")
-                    Exception("오류! 전송 실패.")
-                }
             } ?: throw SocketTimeoutException()
         }
     }
-
-    // 이 기능을 따로 빼야할듯
-    private fun insertRoomData(domainRoomData: DomainRoomData) {
-        CoroutineScope(exceptionHandler).launch {
-            insertDataRoomUseCase(domainRoomData)
-            _response.postValue(ResponseState.SUCCESS)
-        }
-    }
-
     fun deleteServerBillData(id: Long) {
         Log.e("TAG", "deleteServerData: 들어감")
         CoroutineScope(exceptionHandler).async {
@@ -174,11 +163,40 @@ class RecordShowViewModel @Inject constructor(
 //            getLocalAllBillData()
         }
     }
+    // 이 기능을 따로 빼야할듯
+    private fun insertRoomData(domainRoomData: DomainRoomData) {
+        CoroutineScope(exceptionHandler).launch {
+            insertDataRoomUseCase(domainRoomData)
+            _response.postValue(ResponseState.SUCCESS)
+        }
+    }
 
     private fun updateResponse(response: DomainServerReponse, type: ResponseState){
         when(response.status){
             "200" -> _response.postValue(type)
             else -> _response.postValue(ResponseState.FALSE)
+        }
+    }
+
+    //TODO 들어오는 값이 통일되면 하나로 합치기 + 응답값에 맞춰서 움직여야함
+    private fun imsiUpdateResponse(response: String, type: ResponseState, uid: String, sendData: AppSendData){
+        when(response) {
+            else -> {
+                _response.postValue(type)
+                deleteRoomBillData(uid)
+                insertRoomData(
+                    DomainRoomData(
+                        uid,
+                        sendData.cardName,
+                        sendData.amount,
+                        sendData.billSubmitTime,
+                        sendData.storeName,
+                        sendData.picture.toString()
+                    )
+                )
+            }
+//            "200" -> _response.postValue(type)
+//            else -> _response.postValue(ResponseState.FALSE)
         }
     }
 
@@ -199,6 +217,7 @@ class RecordShowViewModel @Inject constructor(
             withTimeoutOrNull(waitTime) {
                 loading.postValue(true)
                 _picture.postValue(getPictureDataUseCase(uid))
+
                 loading.postValue(false)
             }?:throw SocketTimeoutException()
         }

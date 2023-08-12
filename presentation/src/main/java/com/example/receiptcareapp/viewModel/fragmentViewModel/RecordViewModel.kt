@@ -36,11 +36,6 @@ class RecordViewModel @Inject constructor(
     private val getPictureDataUseCase: GetPictureDataUseCase,
 ): BaseViewModel() {
 
-    private var _startGap = MutableLiveData<ShowType>()
-    val startGap : LiveData<ShowType>
-        get() = _startGap
-    fun changeStartGap(type: ShowType){ _startGap.value = type }
-
     val loading : MutableLiveData<Boolean> get() = isLoading
 
     //서버에서 받은 데이터 담는 박스
@@ -52,8 +47,6 @@ class RecordViewModel @Inject constructor(
     private var _roomData = MutableLiveData<MutableList<DomainRoomData>>()
     val roomData: LiveData<MutableList<DomainRoomData>>
         get() = _roomData
-
-
 
     fun getLocalAllData() {
         CoroutineScope(exceptionHandler).launch {

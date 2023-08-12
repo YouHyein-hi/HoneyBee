@@ -1,9 +1,8 @@
-package com.example.receiptcareapp.ui.fragment
+package com.example.receiptcareapp.ui.fragment.record
 
 import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.local.toRecyclerShowData

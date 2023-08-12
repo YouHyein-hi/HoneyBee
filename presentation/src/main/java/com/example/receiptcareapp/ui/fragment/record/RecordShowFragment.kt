@@ -1,10 +1,9 @@
-package com.example.receiptcareapp.ui.fragment
+package com.example.receiptcareapp.ui.fragment.record
 
 import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -13,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
@@ -53,14 +51,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         //삭제 버튼
         binding.removeBtn.setOnClickListener{ deleteDialog() }
         //뒤로가기 버튼
-        binding.backBtn.setOnClickListener{
-            if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                activityViewModel.serverCoroutineStop()
-                findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
-            } else {
-                findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
-            }
-        }
+        binding.backBtn.setOnClickListener{ findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment) }
     }
 
     override fun initObserver() {
@@ -89,7 +80,6 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         }
 
         viewModel.picture.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: $it", )
             binding.imageView.setImageBitmap(it)
             Glide.with(binding.imageView)
                 .load(it)
@@ -97,28 +87,6 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
                 .into(binding.imageView)
         }
     }
-
-//    //서버, 로컬 재전송
-//    private fun resendDialog(){
-//        AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-//            .setTitle("")
-//            .setMessage("서버에 보내시겠어요?")
-//            .setNegativeButton("보내기"){dialog,id->
-//                dialog.dismiss()
-//                resendData()
-//            }
-//            .setPositiveButton("닫기"){dialog,id->
-//                dialog.dismiss()
-//            }
-//            .create().show()
-//    }
-//    //로컬재전송
-//    private fun resendData(){
-////        activityViewModel.resendData(
-////            AppSendData(myData.cardName,myData.amount, myData.billSubmitTime, myData.storeName,myData.file!!),
-////            myData.billSubmitTime
-////        )
-//    }
 
     private fun initView(){
         if(viewModelData.type == ShowType.LOCAL) insertLocalPicture(viewModelData.file.toString())
@@ -140,7 +108,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 
     //수정
     private fun changeDialog(){
-        val changeDialog = ChangeDialog()
+        val changeDialog = ChangeDialog(viewModel)
         changeDialog.show(parentFragmentManager, "changeDialog")
     }
 
@@ -148,23 +116,6 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     private fun deleteDialog(){
        val deleteDialog = DeleteDialog()
         deleteDialog.show(parentFragmentManager, "deleteDialog")
-
-/*        AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-            .setTitle("")
-            .setMessage("정말 삭제하실 건가요?\n삭제한 데이터는 복구시킬 수 없어요.")
-            .setNegativeButton("삭제하기"){dialog,id->
-                Log.e("TAG", "deleteDialog: ${viewModelData}", )
-                if(viewModelData.type == ShowType.SERVER){
-                    viewModel.deleteServerBillData(viewModelData.uid.toLong())
-                }else{
-                    viewModel.deleteRoomBillData(viewModelData.billSubmitTime)
-                    findNavController().popBackStack()
-                }
-            }
-            .setPositiveButton("닫기"){dialog,id->
-                dialog.dismiss()
-            }
-            .create().show()*/
     }
 
     override fun onDestroy() {
@@ -177,11 +128,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    activityViewModel.serverCoroutineStop()
-                } else {
-                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
-                }
+                findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)

@@ -38,11 +38,6 @@ class HomeCardViewModel @Inject constructor(
     private var _cardList = MutableLiveData<MutableList<DomainReceiveCardData>>()
     val cardList : LiveData<MutableList<DomainReceiveCardData>> get() = _cardList
 
-
-    fun CommaReplaceSpace(text : String): String {
-        return text.replace(",", "")
-    }
-
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
         CoroutineScope(exceptionHandler).launch {
@@ -54,32 +49,32 @@ class HomeCardViewModel @Inject constructor(
         }
     }
 
-    fun updateServerCardData(updateCardData : UpdateCardData) {
-        Log.e("TAG", "updateCardData: $updateCardData",)
-        CoroutineScope(exceptionHandler).launch {
-            isLoading.postValue(true)
-            withTimeoutOrNull(waitTime) {
-                updateResponse(
-                    updateCardUseCase(
-                        DomainUpdateCardData(
-                            id = updateCardData.id,
-                            cardName = updateCardData.cardName,
-                            cardAmount = updateCardData.cardAmount
-                        )
-                    )
-                )
-            } ?: throw SocketTimeoutException()
-            isLoading.postValue(false)
-        }
-    }
-
-    private fun updateResponse(response: DomainServerReponse){
-        when(response.status){
-            "200" -> {
-                getServerCardData()
-                _response.postValue(ResponseState.SUCCESS)
-            }
-            else -> {_response.postValue(ResponseState.FALSE)}
-        }
-    }
+    //TODO 카드 데이터 수정 가능 시 OPEN
+//    fun updateServerCardData(updateCardData : UpdateCardData) {
+//        Log.e("TAG", "updateCardData: $updateCardData",)
+//        CoroutineScope(exceptionHandler).launch {
+//            isLoading.postValue(true)
+//            withTimeoutOrNull(waitTime) {
+//                updateResponse(
+//                    updateCardUseCase(
+//                        DomainUpdateCardData(
+//                            id = updateCardData.id,
+//                            cardName = updateCardData.cardName,
+//                            cardAmount = updateCardData.cardAmount
+//                        )
+//                    )
+//                )
+//            } ?: throw SocketTimeoutException()
+//            isLoading.postValue(false)
+//        }
+//    }
+//    private fun updateResponse(response: DomainServerReponse){
+//        when(response.status){
+//            "200" -> {
+//                getServerCardData()
+//                _response.postValue(ResponseState.SUCCESS)
+//            }
+//            else -> {_response.postValue(ResponseState.FALSE)}
+//        }
+//    }
 }

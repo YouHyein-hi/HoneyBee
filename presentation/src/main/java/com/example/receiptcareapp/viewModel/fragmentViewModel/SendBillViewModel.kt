@@ -13,10 +13,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.DomainRoomData
+import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
+import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.data.InsertDataUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase
+import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.util.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +42,8 @@ import javax.inject.Inject
 class SendBillViewModel @Inject constructor(
     @ApplicationContext private val application: Context,
     private val insertDataUseCase: InsertDataUseCase,
-    private val insertDataRoomUseCase: InsertDataRoomUseCase
+    private val insertDataRoomUseCase: InsertDataRoomUseCase,
+    private val getCardListUseCase: GetCardListUseCase
 ) : BaseViewModel() {
 
     val loading: LiveData<Boolean> get() = isLoading
@@ -49,6 +53,21 @@ class SendBillViewModel @Inject constructor(
 
     init {
         Log.e("TAG", "ShowPictureViewModel")
+    }
+
+    //서버 응답 일관화 이전에 사용할 박스
+    private var _cardList = MutableLiveData<MutableList<DomainReceiveCardData>>()
+    val cardList : LiveData<MutableList<DomainReceiveCardData>> get() = _cardList
+
+    //여러 Fragment에서 사용되는 함수
+    fun getServerCardData() {
+        CoroutineScope(exceptionHandler).launch {
+            withTimeoutOrNull(waitTime) {
+                isLoading.postValue(true)
+                _cardList.postValue(getCardListUseCase()!!)
+                isLoading.postValue(false)
+            }?:throw SocketTimeoutException()
+        }
     }
 
     //insertData 분리해야함
@@ -86,6 +105,7 @@ class SendBillViewModel @Inject constructor(
         }
     }
 
+    //TODO 여기도 서버 값 통일되면 바꿔야 함
     private fun updateResponse(response: String, data: AppSendData) {
         Log.e("TAG", "updateResponse: $response", )
         //uid로 넘어옴

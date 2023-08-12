@@ -9,9 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/main_background_white"
-        tools:context=".ui.fragment.RecordFrameFragment"
-
-        >
+        tools:context=".ui.fragment.record.RecordFrameFragment">
 
         <include
             android:id="@+id/base_component"
@@ -61,6 +59,7 @@
         <!--        tools:listitem="@layout/server_item" />-->
 
         <FrameLayout
+            android:layout_marginTop="10dp"
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.ui.fragment
+package com.example.receiptcareapp.ui.fragment.record
 
 import android.util.Log
 import androidx.core.view.isVisible

@@ -53,10 +53,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     private var myArray = arrayListOf<String>()
     private var newCard = 0
 
-    override fun initData() {
-        // 서버와 연결 상태 초기화.
-        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
-    }
+    override fun initData() {}
 
     override fun initUI() {
         with(binding){
@@ -186,27 +183,19 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
         with(binding){
             /** CardData 관련 **/
-            activityViewModel.cardData.observe(viewLifecycleOwner){
-                if(myArray.isEmpty()){
-                    it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
-                }
-                if(newCard == 1){
-                    myArray.clear()
-                    it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
-                    newCard = 0
-                }
-                val adapter =
-                    SpinnerAdapter(requireContext(), myArray)
-                spinner.adapter = adapter
+            //TODO 해당 프레그먼트에선 카드를 추가할 수 없으니,
+            // 애초에 홈에서 카메라나 겔러리로 넘어가기전에 막아야할듯함
+            viewModel.cardList.observe(viewLifecycleOwner){
+                myArray.clear()
+                it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
+                spinner.adapter = SpinnerAdapter(requireContext(), myArray)
             }
         }
     }
     /** Spinner 관련 **/
     private fun getSpinner() {
-        activityViewModel.getServerCardData()
-        var adapter =
-            SpinnerAdapter(requireContext(), arrayListOf())
-        binding.spinner.adapter = adapter
+        viewModel.getServerCardData()
+        binding.spinner.adapter = SpinnerAdapter(requireContext(), arrayListOf())
         Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -228,14 +217,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                Log.e("TAG", "onAttach@@@@@@@: ${activityViewModel.connectedState.value}")
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    Log.e("TAG", "handleOnBackPressed: stop")
-                    activityViewModel.serverCoroutineStop()
-                } else {
-                    Log.e("TAG", "handleOnBackPressed: back")
-                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
-                }
+                findNavController().navigate(R.id.action_showFragment_to_homeFragment)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)

@@ -2,6 +2,7 @@ package com.example.data.remote.dataSource
 
 import com.example.data.remote.model.ReceiveCardData
 import com.example.data.remote.model.ServerResponse
+import com.example.domain.model.receive.DomainServerReponse
 import retrofit2.http.*
 
 /**
@@ -14,7 +15,7 @@ interface CardDataSource {
     suspend fun sendCardDataSource(
         @Field("cardName") cardName : String?,
         @Field("cardAmount") amount : Int?,
-    ): String
+    ): DomainServerReponse
 
     @Streaming
     @GET("billCard/list")

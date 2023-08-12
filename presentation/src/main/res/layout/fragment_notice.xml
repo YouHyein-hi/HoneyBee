@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:background="@color/main_background_white"
         android:orientation="vertical"
-        tools:context=".ui.fragment.NoticeFragment">
+        tools:context=".ui.fragment.notice.NoticeFragment">
 
         <include
             android:id="@+id/base_component"

@@ -12,6 +12,6 @@ import com.example.domain.model.send.DomainSendCardData
  */
 interface CardRepository {
     suspend fun getCardListRepository():MutableList<DomainReceiveCardData>
-    suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): String
+    suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): DomainServerReponse
     suspend fun updateCardUseCase(domainUpdateCardData: DomainUpdateCardData):DomainServerReponse
 }

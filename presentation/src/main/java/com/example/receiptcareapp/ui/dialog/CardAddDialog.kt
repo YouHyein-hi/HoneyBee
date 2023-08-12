@@ -1,31 +1,29 @@
 package com.example.receiptcareapp.ui.dialog
 
-import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
 import android.util.Log
-import android.view.ViewGroup
-import android.view.Window
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardAddBinding
+import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
+class CardAddDialog(
+    private val homeCardViewModel: HomeCardViewModel
+) : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
-    private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val cardAddBottomViewModel : CardAddViewModel by viewModels()
+    private val viewModel : CardAddViewModel by viewModels()
 
     override fun initData() {
     }
@@ -37,14 +35,14 @@ class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inf
         with(binding){
             dialogcardEditCardprice.setOnClickListener {
                 if (dialogcardEditCardprice.text.contains(",")) {
-                    dialogcardEditCardprice.setText(cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
+                    dialogcardEditCardprice.setText(viewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
                     dialogcardEditCardprice.setSelection(dialogcardEditCardprice.text.length)
                 }
             }
             dialogcardEditCardprice.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_NEXT && dialogcardEditCardprice.text.isNotEmpty()) {
-                    dialogcardEditCardprice.setText(cardAddBottomViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
+                    dialogcardEditCardprice.setText(viewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
                 }
                 handled
             }
@@ -108,10 +106,9 @@ class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inf
                     dismiss()
                     showLongToast(getString(R.string.dialog_cardAdd_billCheckDate))
                 }
-                else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
-                    var price = cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())
-                    activityViewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
-                    dismiss()
+                else{  // TODO 여기서 viewModel로 연결해야함
+                    var price = viewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())
+                    viewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
                 }
             }
 
@@ -119,11 +116,19 @@ class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inf
                 Log.e("TAG", "onResume: 카드 추가 취소", )
                 dismiss()
             }
-
         }
     }
 
     override fun initObserver() {
+        viewModel.response.observe(viewLifecycleOwner){
+            when(it){
+                ResponseState.UPDATE_SUCCESS -> {
+                    homeCardViewModel.getServerCardData()
+                    dismiss()
+                }
+                else->{}
+            }
+        }
     }
 
 

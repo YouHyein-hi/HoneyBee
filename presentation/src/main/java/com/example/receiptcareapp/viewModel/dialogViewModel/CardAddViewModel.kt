@@ -6,12 +6,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.receive.DomainServerReponse
 import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.card.InsertCardUseCase
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
+import com.example.receiptcareapp.util.ResponseState
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -29,10 +31,8 @@ class CardAddViewModel @Inject constructor(
 
     init { Log.e("TAG", "CardAddBottomViewModel", ) }
 
-    // 서버 카드 전달받은 값 관리
-    private var _cardData = MutableLiveData<MutableList<DomainReceiveCardData>>()
-    val cardData: LiveData<MutableList<DomainReceiveCardData>>
-        get() = _cardData
+    private var _response = MutableLiveData<ResponseState>()
+    val response : LiveData<ResponseState> get() = _response
 
     fun CommaReplaceSpace(text : String): String {
         return text.replace(",", "")
@@ -43,29 +43,29 @@ class CardAddViewModel @Inject constructor(
     }
 
     fun insertServerCardData(sendData: AppSendCardData) {
-        Log.e("TAG", "sendCardData: 카드 보내기 $sendData", )
+        Log.e("TAG", "sendCardData: 카드 보내기 $sendData",)
         CoroutineScope(exceptionHandler).launch {
             withTimeoutOrNull(waitTime) {
-                insertCardUseCase(
-                    DomainSendCardData(
-                        cardName = sendData.cardName,
-                        cardAmount = sendData.cardAmount
-                    )
+                updateResponse(
+                    insertCardUseCase(
+                        DomainSendCardData(
+                            cardName = sendData.cardName,
+                            cardAmount = sendData.cardAmount
+                        )
+                    ),
+                    ResponseState.UPDATE_SUCCESS
                 )
                 //TODO 이런 유기적인 관계로 걸려있으면 안됨
-                getServerCardData()
-            } ?:throw SocketTimeoutException()
+            } ?: throw SocketTimeoutException()
         }
     }
 
-    //여러 Fragment에서 사용되는 함수
-    fun getServerCardData() {
-        CoroutineScope(exceptionHandler).launch {
-            withTimeoutOrNull(waitTime) {
-                val gap = getCardListUseCase()
-                Log.e("TAG", "receiveCardData: $gap")
-                _cardData.postValue(gap)
-            }?:throw SocketTimeoutException()
+    fun updateResponse(response:DomainServerReponse, type: ResponseState){
+        when(response.status){
+            "200" ->{
+                _response.postValue(type)
+            }
+            else -> {}
         }
     }
 }

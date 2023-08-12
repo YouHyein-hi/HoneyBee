@@ -84,7 +84,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordFrameFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.RecordFrameFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.record.RecordFrameFragment"
         android:label="fragment_recycler"
         tools:layout="@layout/fragment_record_frame" >
         <action
@@ -100,7 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordShowFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.RecordShowFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.record.RecordShowFragment"
         android:label="fragment_recycler_show"
         tools:layout="@layout/fragment_record_show" >
         <action
@@ -133,7 +133,7 @@
     </fragment>
     <fragment
         android:id="@+id/noticeFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.NoticeFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.notice.NoticeFragment"
         android:label="fragment_notice"
         tools:layout="@layout/fragment_notice" >
 
@@ -146,7 +146,7 @@
     </fragment>
     <fragment
         android:id="@+id/addnoticeFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.NoticeAddUpdateFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.notice.NoticeAddUpdateFragment"
         android:label="fragment_addnotice"
         tools:layout="@layout/fragment_notice_add" />
 

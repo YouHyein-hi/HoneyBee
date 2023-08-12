@@ -48,7 +48,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="20dp"
-            android:layout_marginBottom="-20dp"
+            android:layout_marginBottom="-10dp"
             app:layout_constraintBottom_toTopOf="@+id/textView14"
             app:layout_constraintStart_toStartOf="parent"
             app:lottie_autoPlay="true"

@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.ui.fragment
+package com.example.receiptcareapp.ui.fragment.notice
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class ShowNoticeFragment : BaseFragment<FragmentNoticeShowBinding>(
+class NoticeShowFragment : BaseFragment<FragmentNoticeShowBinding>(
     FragmentNoticeShowBinding::inflate, "ShowNoticeFragment"
 ) {
     private val viewModel: ShowNoticeViewModel by viewModels()

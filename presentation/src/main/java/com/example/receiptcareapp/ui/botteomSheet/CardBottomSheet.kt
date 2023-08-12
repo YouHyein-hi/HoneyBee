@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.receiptcareapp.R
@@ -13,9 +12,6 @@ import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.FragmentCardBottomsheetBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
 import com.example.receiptcareapp.ui.adapter.CardAdapter
-import com.example.receiptcareapp.util.ResponseState
-import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import com.example.receiptcareapp.viewModel.dialogViewModel.CardBottomSheetViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,10 +26,7 @@ class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
     "homeCardBottomSheet"
 ) {
     private val adapter: CardAdapter = CardAdapter()
-    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel : HomeCardViewModel by viewModels()
-    private var uid : Long = 0
-
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
@@ -56,7 +49,7 @@ class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
         //서버 카드 추가 다이얼로그
         binding.cardCount = "0"
         binding.addBtn.setOnClickListener{
-            val cardAddDialog = CardAddDialog()
+            val cardAddDialog = CardAddDialog(viewModel)
             cardAddDialog.show(parentFragmentManager, "CardAddDialog")
         }
     }
@@ -81,12 +74,6 @@ class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
 //                }
 //            }
         }
-    }
-
-    // 창 내려갈때 서버 통신 시 중지
-    override fun onDestroy() {
-        super.onDestroy()
-        activityViewModel.serverCoroutineStop()
     }
 
     fun setCenterText(text:String, state:Boolean){

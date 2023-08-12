@@ -24,13 +24,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate, "HomeFragment") {
 
-    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel : HomeCardViewModel by viewModels()
     private lateinit var callback: OnBackPressedCallback
     private val homeCardBottomSheet: CardBottomSheet = CardBottomSheet()
     private val addDialog : AddDialog = AddDialog()
     private val adapter: CardHomeAdapter = CardHomeAdapter()
-    private var uid : Long = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

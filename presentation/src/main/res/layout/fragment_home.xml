@@ -121,7 +121,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view5"
-                    tools:listitem="@layout/card_home_item">
+                    tools:listitem="@layout/item_home_card_list">
 
                 </androidx.recyclerview.widget.RecyclerView>
 

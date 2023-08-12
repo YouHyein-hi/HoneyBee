@@ -32,19 +32,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/subTitleTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/pretendardbold"
-            android:text="@{@string/bottomSheet_card_text(cardCount)}"
-            android:textColor="@color/fontColor_black"
-            android:textSize="14sp"
-            android:transitionName="title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTxt" />
+<!--        <TextView-->
+<!--            android:id="@+id/subTitleTxt"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:fontFamily="@font/pretendardbold"-->
+<!--            android:text="@{@string/bottomSheet_card_text(cardCount)}"-->
+<!--            android:textColor="@color/fontColor_black"-->
+<!--            android:textSize="14sp"-->
+<!--            android:transitionName="title"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/titleTxt" />-->
 
         <!--            android:text="@{@string/bottomSheet_sub_title(cardCount)}"-->
 
@@ -59,6 +59,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
+
+            android:stateListAnimator="@null"
             android:id="@+id/cardRecyclerview"
             android:layout_width="match_parent"
             android:layout_height="300dp"
@@ -68,8 +70,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/subTitleTxt"
-            tools:listitem="@layout/card_item" />
+            app:layout_constraintTop_toBottomOf="@+id/titleTxt"
+            tools:listitem="@layout/item_card" />
 
 <!--        <View-->
 <!--            android:id="@+id/connectingView"-->
@@ -102,6 +104,7 @@
             android:fontFamily="@font/pretendardbold"
             android:text="@string/bottomSheet_card_empty"
             android:textSize="30dp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

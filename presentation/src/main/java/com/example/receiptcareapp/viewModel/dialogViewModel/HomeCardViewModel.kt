@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.model.UpdateCardData
+import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.receive.DomainServerReponse
 import com.example.domain.model.receive.DomainUpdateCardData
 import com.example.domain.usecase.card.GetCardListUseCase
@@ -33,6 +34,10 @@ class HomeCardViewModel @Inject constructor(
     private var _response = MutableLiveData<ResponseState>()
     val response : LiveData<ResponseState> get() = _response
 
+    //서버 응답 일관화 이전에 사용할 박스
+    private var _cardList = MutableLiveData<MutableList<DomainReceiveCardData>>()
+    val cardList : LiveData<MutableList<DomainReceiveCardData>> get() = _cardList
+
 
     fun CommaReplaceSpace(text : String): String {
         return text.replace(",", "")
@@ -43,7 +48,7 @@ class HomeCardViewModel @Inject constructor(
         CoroutineScope(exceptionHandler).launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                getCardListUseCase()
+                _cardList.postValue(getCardListUseCase()!!)
             } ?:throw SocketTimeoutException()
             isLoading.postValue(false)
         }

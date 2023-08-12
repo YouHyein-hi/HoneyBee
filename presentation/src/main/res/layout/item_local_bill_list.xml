@@ -102,6 +102,7 @@
                 android:textSize="30dp" />
 
             <TextView
+                android:layout_marginBottom="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/pretendardbold"

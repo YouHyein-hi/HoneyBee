@@ -19,7 +19,9 @@ import com.example.receiptcareapp.databinding.DialogCardAddBinding
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()

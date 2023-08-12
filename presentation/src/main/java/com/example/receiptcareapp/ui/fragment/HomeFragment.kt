@@ -50,8 +50,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    override fun initData() {
-    }
+    override fun initData() {}
 
     override fun initUI() {
         with(binding){
@@ -61,42 +60,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             addBtn.setOnClickListener{ addDialog.show(parentFragmentManager, "addDialog") }
             cardlistBtn.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
-            cardhomeRecyclerview.setOnClickListener{
-                Log.e("TAG", "initUI: linearLayout2 클릭함", )
-                homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
-
+            cardhomeRecyclerview.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
             cardhomeRecyclerview.layoutManager = LinearLayoutManager(requireContext())
             cardhomeRecyclerview.adapter = adapter
-            //addBtn
         }
+        //카드목록 불러오기
+        viewModel.getServerCardData()
     }
 
     override fun initListener() {
     }
 
     override fun initObserver() {
-        viewModel.getServerCardData()
-
         //프로그래스 바 컨트롤
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
-        activityViewModel.cardData.observe(viewLifecycleOwner) { dataList ->
-            if (dataList.isEmpty()) { //setCenterText("데이터가 비었어요!", true)
-            } else {
-                Log.e("TAG", "onCreateView: dataList  ${dataList}", )
-                for (data in dataList) {
-                    Log.e("TAG", "onCreateView: data  ${data}", )
-                    uid = data.uid
-                    // uid 값을 사용하여 원하는 작업 수행
-                    Log.e("TAG", "uid: $uid")
-                }
-                //setCenterText("", false)
-                adapter.dataList = dataList
-            }
+        viewModel.cardList.observe(viewLifecycleOwner) { dataList ->
+            if (dataList.isEmpty()) {/*setCenterText("데이터가 비었어요!", true)*/ }
+            else { adapter.dataList = dataList }
         }
+
     }
 
     override fun onDetach() {

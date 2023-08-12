@@ -21,7 +21,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
     }
 
     override fun initListener() {
-        binding.noticeTitle.setOnLongClickListener {
+        binding.baseComponent.title.setOnLongClickListener {
             findNavController().navigate(R.id.action_noticeFragment_to_addNoticeFragment)
             true
         }

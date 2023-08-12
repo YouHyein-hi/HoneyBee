@@ -31,7 +31,6 @@ class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
 ) {
     private val adapter: CardAdapter = CardAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val homeCardAddBottomViewModel : CardBottomSheetViewModel by viewModels()
     private val viewModel : HomeCardViewModel by viewModels()
     private var uid : Long = 0
 
@@ -41,8 +40,6 @@ class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
     }
 
     override fun initData() {
-        //initData 부분
-//        activityViewModel.changeConnectedState(ConnectedState.DISCONNECTED)
         //서버 데이터 불러오기
         viewModel.getServerCardData()
     }
@@ -73,63 +70,16 @@ class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
-        viewModel.response.observe(viewLifecycleOwner){
-            when(it){
-                ResponseState.SUCCESS -> {
-                    setCenterText("추가 성공!", true)
-                }
-                else -> {
-                    setCenterText("전송 실패!", true)
-                }
-            }
-        }
-
-//        activityViewModel.connectedState.observe(viewLifecycleOwner){
+        viewModel.cardList.observe(viewLifecycleOwner){
+            adapter.dataList = it
 //            when(it){
-//                ConnectedState.CONNECTING -> {
-//                    binding.connectingView.isVisible = true
-//                    binding.serverProgressBar.isVisible = true
-//                    binding.addBtn.isClickable = false
-//                    setCenterText("", false)
+//                ResponseState.SUCCESS -> {
+//                    setCenterText("추가 성공!", true)
 //                }
-//                ConnectedState.DISCONNECTED -> {
-//                    binding.connectingView.isVisible = false
-//                    binding.serverProgressBar.isVisible = false
-//                    binding.addBtn.isClickable = true
-//                    setCenterText("", false)
+//                else -> {
+//                    setCenterText("전송 실패!", true)
 //                }
-//                ConnectedState.CONNECTING_SUCCESS -> {
-//                    Toast.makeText(requireContext(), "전송 성공!", Toast.LENGTH_SHORT).show()
-//                    binding.connectingView.isVisible = false
-//                    binding.serverProgressBar.isVisible = false
-//                    binding.addBtn.isClickable = true
-//                    setCenterText("", false)
-//                }
-//                ConnectedState.CONNECTING_FALSE -> {
-//                    binding.connectingView.isVisible = false
-//                    binding.serverProgressBar.isVisible = false
-//                    binding.addBtn.isClickable = true
-//                    setCenterText("", false)
-//                    setCenterText("서버와 연결 실패!", true)
-//                }
-//                else ->{}
 //            }
-//            Log.e("TAG", "onCreateView: $it", )
-//        }
-
-        activityViewModel.cardData.observe(viewLifecycleOwner) { dataList ->
-            if (dataList.isEmpty()) { setCenterText("데이터가 비었어요!", true)
-            } else {
-                Log.e("TAG", "onCreateView: dataList  ${dataList}", )
-                for (data in dataList) {
-                    Log.e("TAG", "onCreateView: data  ${data}", )
-                    uid = data.uid
-                    // uid 값을 사용하여 원하는 작업 수행
-                    Log.e("TAG", "uid: $uid")
-                }
-                setCenterText("", false)
-                adapter.dataList = dataList
-            }
         }
     }
 

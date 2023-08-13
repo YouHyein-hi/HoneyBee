@@ -9,6 +9,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -51,7 +52,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     override fun initUI() {
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission", "ResourceAsColor")
     //TODO 알림권한 체크를 로그인에 추가
     override fun initListener() {
 
@@ -90,7 +91,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
                     cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
             timeDialog.show()
             timeDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-                .setTextColor(Color.RED)
+                .setTextColor(ContextCompat.getColor(requireContext(), R.color.sub_font4_orange2))
             timeDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
                 .setTextColor(Color.BLACK)
         }

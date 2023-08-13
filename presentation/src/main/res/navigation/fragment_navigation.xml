@@ -130,7 +130,7 @@
 
         <action
             android:id="@+id/action_noticeFragment_to_addNoticeFragment"
-            app:destination="@id/addnoticeFragment"
+            app:destination="@id/addNoticeFragment"
             app:popUpTo="@id/noticeFragment" />
 
         <action
@@ -140,7 +140,7 @@
 
     </fragment>
     <fragment
-        android:id="@+id/addnoticeFragment"
+        android:id="@+id/addNoticeFragment"
         android:name="com.example.receiptcareapp.ui.fragment.notice.NoticeAddFragment"
         android:label="fragment_addnotice"
         tools:layout="@layout/fragment_notice_add" />

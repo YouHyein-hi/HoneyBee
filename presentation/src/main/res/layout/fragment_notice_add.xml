@@ -59,6 +59,7 @@
             tools:layout_editor_absoluteX="0dp">
 
             <EditText
+                android:gravity="center"
                 android:id="@+id/titleEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,6 +76,7 @@
                 android:background="@color/gray_line" />
 
             <EditText
+                android:gravity="center"
                 android:id="@+id/contentEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

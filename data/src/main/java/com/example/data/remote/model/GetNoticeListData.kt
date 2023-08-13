@@ -8,9 +8,9 @@ import java.time.LocalDateTime
  * pureum
  */
 data class GetNoticeListData(
-    val billNoticeId: Int,
+    val billNoticeId: String,
     val billNoticeTitle: String,
-    val billNoticeDate: LocalDateTime,
+    val billNoticeDate: String,
     val billNoticeContent: String,
 )
 

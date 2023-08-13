@@ -18,6 +18,10 @@ class NoticeAdapter : RecyclerView.Adapter<NoticeAdapter.MyHolder>(){
     lateinit var onNoticeClic: (DomainGetNoticeListData)-> Unit
     private lateinit var binding: ItemNoticeBinding
     var dataList = mutableListOf<DomainGetNoticeListData>()
+        set(value){
+            field = value.reversed().toMutableList()
+            notifyDataSetChanged()
+        }
 
     inner class MyHolder(private val binding : ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DomainGetNoticeListData) {

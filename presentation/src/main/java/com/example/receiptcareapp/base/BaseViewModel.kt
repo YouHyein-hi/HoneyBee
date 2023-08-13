@@ -7,10 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.util.FetchState
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.plus
+import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.io.InterruptedIOException
 import java.net.SocketException
@@ -54,6 +51,7 @@ abstract class BaseViewModel : ViewModel(){
     }
 
     //디스패쳐 메인에서 돌아감
+    //TODO IO 에서 돌아가는 Retrofit도 해당 스코프로도 잘 돌아가는데 왜그럴까?
     protected val modelScope = viewModelScope + job + exceptionHandler
 
 

@@ -55,10 +55,6 @@ class RecordServerFragment(
                     file = null
                 )
             )
-//            activityViewModel.changeNullPicture()
-            //서버 가져오기
-//            activityViewModel.getServerPictureData(it.uid)
-//            viewModel.changeStartGap(ShowType.SERVER)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
 

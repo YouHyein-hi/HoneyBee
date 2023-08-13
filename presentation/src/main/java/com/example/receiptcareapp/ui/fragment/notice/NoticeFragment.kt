@@ -26,11 +26,10 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
     private val viewModel: NoticeViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val adapter: NoticeAdapter = NoticeAdapter()
-    override fun initData() {
-        viewModel.getNoticeList()
-    }
+    override fun initData() {}
 
     override fun initUI() {
+        viewModel.getNoticeList()
         binding.noticeRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.noticeRecycler.adapter = adapter
     }
@@ -51,6 +50,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
 
     override fun initObserver() {
         viewModel.response.observe(viewLifecycleOwner){
+            adapter.dataList.clear()
             adapter.dataList = it
         }
         viewModel.loading.observe(viewLifecycleOwner){

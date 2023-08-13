@@ -18,6 +18,7 @@ import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.File
@@ -49,7 +50,7 @@ class RecordViewModel @Inject constructor(
         get() = _roomData
 
     fun getLocalAllData() {
-        modelScope.launch {
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             loading.postValue(true)
             val gap = getRoomDataListUseCase()
             Log.e("TAG", "receiveAllRoomData: $gap")

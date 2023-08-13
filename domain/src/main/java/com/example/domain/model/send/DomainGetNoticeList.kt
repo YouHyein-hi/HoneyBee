@@ -7,8 +7,8 @@ import java.time.LocalDateTime
  * pureum
  */
 data class DomainGetNoticeListData(
-    val id: Int,
+    val id: String,
     val title: String,
-    val date: LocalDateTime,
+    val date: String,
     val content: String,
 )

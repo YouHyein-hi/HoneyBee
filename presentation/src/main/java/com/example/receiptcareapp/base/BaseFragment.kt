@@ -41,6 +41,9 @@ abstract class BaseFragment<VB: ViewBinding>(
     // 값을 유지하고 싶을 경우 savedInstanceState 를 이용하는게 좋음.
     // 리소스들을 초기화해주는 단계,
     // 데이터 관련 친구들여기서 관리
+    //
+    // 추가적으로, 네비게이션 프레그먼트 쓰면서 pop으로 이전 페이지 돌아갔을때
+    // 여기부터 시작함
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.e(name, "fragment onCreate: ", )
         super.onCreate(savedInstanceState)

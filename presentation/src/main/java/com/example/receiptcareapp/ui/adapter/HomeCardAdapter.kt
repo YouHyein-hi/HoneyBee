@@ -20,7 +20,7 @@ class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
     inner class MyHolder(private val binding : ItemHomeCardListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DomainReceiveCardData, position:Int) {
             binding.homeCardname.text = item.cardName
-            binding.homeCardprice.text = item.cardAmount
+            binding.amount = item.cardAmount
             when(position) {
                 1 -> binding.cardIcon.setImageResource(R.drawable.icon_card_1)
                 2 -> binding.cardIcon.setImageResource(R.drawable.icon_card_2)
@@ -36,7 +36,7 @@ class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        holder.bind(dataList[position], position%4)
+        holder.bind(dataList[position], position%4 )
     }
 
     override fun getItemCount(): Int = dataList.size

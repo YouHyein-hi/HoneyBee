@@ -38,7 +38,8 @@
     <string name="homeAddDialog_title">영수증 추가 방법</string>
     <string name="homeAddDialog_camera">카메라로 영수증 추가</string>
     <string name="homeAddDialog_gallery">갤러리로 영수증 추가</string>
-
+    <!--    홈 카드 컴포넌트 -->
+    <string name="home_card_item_amount">%s 원</string>
 
     <!-- sendbill 전송 페이지 -->
     <string name="pictureShow_text">해당 카드와 날짜를 금액을 입력해주세요.</string>

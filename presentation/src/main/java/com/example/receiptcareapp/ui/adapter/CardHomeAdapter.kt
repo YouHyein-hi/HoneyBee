@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.ItemHomeCardListBinding
 
 class CardHomeAdapter : RecyclerView.Adapter<CardHomeAdapter.MyHolder>(){
@@ -18,11 +19,15 @@ class CardHomeAdapter : RecyclerView.Adapter<CardHomeAdapter.MyHolder>(){
         }
 
     inner class MyHolder(private val binding : ItemHomeCardListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DomainReceiveCardData) {
-            Log.e("TAG", "bind: inin", )
-            Log.e("TAG", "bind: ${item.cardName}, ${item.cardAmount}", )
+        fun bind(item: DomainReceiveCardData, position:Int) {
             binding.homeCardname.text = item.cardName
             binding.homeCardprice.text = item.cardAmount
+            when(position) {
+                1 -> binding.cardIcon.setImageResource(R.drawable.icon_card_1)
+                2 -> binding.cardIcon.setImageResource(R.drawable.icon_card_2)
+                3 -> binding.cardIcon.setImageResource(R.drawable.icon_card_3)
+                else -> binding.cardIcon.setImageResource(R.drawable.icon_card_4)
+            }
         }
     }
 
@@ -32,7 +37,7 @@ class CardHomeAdapter : RecyclerView.Adapter<CardHomeAdapter.MyHolder>(){
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        holder.bind(dataList[position])
+        holder.bind(dataList[position], position%4)
     }
 
     override fun getItemCount(): Int = dataList.size

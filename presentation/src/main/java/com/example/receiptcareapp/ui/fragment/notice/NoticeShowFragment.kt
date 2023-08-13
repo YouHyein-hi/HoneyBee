@@ -19,19 +19,12 @@ class NoticeShowFragment : BaseFragment<FragmentNoticeShowBinding>(
 ) {
     private val viewModel: ShowNoticeViewModel by viewModels()
 
+    override fun initData() {}
 
-    override fun initData() {
-//        viewModel.getNoticeData()
-//        binding.title =
-    }
+    override fun initUI() {}
 
-    override fun initUI() {
-    }
+    override fun initListener() {}
 
-    override fun initListener() {
-    }
-
-    override fun initObserver() {
-    }
+    override fun initObserver() {}
 
 }

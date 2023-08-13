@@ -57,7 +57,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             noticeBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_noticeFragment) }
 
             addBtn.setOnClickListener{ addDialog.show(parentFragmentManager, "addDialog") }
-            cardlistBtn.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
+            cardListBtn.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
             cardhomeRecyclerview.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
             cardhomeRecyclerview.layoutManager = LinearLayoutManager(requireContext())
             cardhomeRecyclerview.adapter = adapter

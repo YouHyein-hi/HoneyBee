@@ -12,25 +12,34 @@
         android:layout_marginBottom="15dp"
         android:background="@drawable/roundsquare_yellow">
 
+        <ImageView
+            android:id="@+id/card_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/icon_card_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/home_cardname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="10dp"
             android:fontFamily="@font/pretendardsemibold"
             android:text="나라사랑 카드"
             android:textColor="@color/fontColor_black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/card_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/home_cardprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
+            android:layout_marginEnd="20dp"
             android:fontFamily="@font/pretendardsemibold"
             android:text="19,800 원"
             android:textColor="@color/fontColor_black"

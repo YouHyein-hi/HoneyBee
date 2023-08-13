@@ -44,7 +44,6 @@ class RecordLocalFragment(
         //로컬 목록에서 리스트를 누를경우
         recordLocalAdapter.onLocalSaveClic = {
             Log.e("TAG", "initListener: local")
-
             //Activity ViewModel 값 저장
             activityViewModel.changeSelectedData(
                 RecyclerData(
@@ -57,9 +56,6 @@ class RecordLocalFragment(
                     file = it.file
                 )
             )
-//            activityViewModel.changeSelectedData(myData)
-//            activityViewModel.changeNullPicture()
-//            viewModel.changeStartGap(ShowType.LOCAL)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
     }

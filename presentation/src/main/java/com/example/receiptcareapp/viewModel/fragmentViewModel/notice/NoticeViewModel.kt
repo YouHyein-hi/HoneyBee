@@ -24,7 +24,7 @@ class NoticeViewModel @Inject constructor(
     val response: MutableLiveData<MutableList<DomainGetNoticeListData>> get() = _response
 
     fun getNoticeList(){
-        CoroutineScope(Dispatchers.IO).launch {
+        modelScope.launch {
             withTimeoutOrNull(waitTime){
                 isLoading.postValue(true)
                 _response.postValue(getNoticeListUseCase()!!)

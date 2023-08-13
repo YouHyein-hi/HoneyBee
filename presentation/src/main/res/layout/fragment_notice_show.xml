@@ -36,12 +36,6 @@
             bind:title="@{@string/notice_show_title}"
             />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/gray_line"
-            />
-
         <LinearLayout
             android:layout_marginTop="25dp"
             android:layout_marginBottom="25dp"

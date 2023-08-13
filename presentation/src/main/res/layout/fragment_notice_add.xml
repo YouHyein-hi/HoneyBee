@@ -59,9 +59,10 @@
             tools:layout_editor_absoluteX="0dp">
 
             <EditText
+                android:id="@+id/titleEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@{content_title, default = `제목을 입력해주세요.`}"
+                android:hint="제목을 입력해주세요."
                 android:textSize="25dp" />
 
             <View
@@ -74,9 +75,19 @@
                 android:background="@color/gray_line" />
 
             <EditText
+                android:id="@+id/contentEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@{content, default = `내용을 입력해주세요.`}" />
+                android:hint="내용을 입력해주세요." />
         </LinearLayout>
+
+        <include
+            android:visibility="invisible"
+            android:id="@+id/layoutLoadingProgress"
+            layout="@layout/layout_loading_progress"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

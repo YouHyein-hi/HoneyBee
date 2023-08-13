@@ -44,7 +44,7 @@ class CardAddViewModel @Inject constructor(
 
     fun insertServerCardData(sendData: AppSendCardData) {
         Log.e("TAG", "sendCardData: 카드 보내기 $sendData",)
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 updateResponse(
                     insertCardUseCase(

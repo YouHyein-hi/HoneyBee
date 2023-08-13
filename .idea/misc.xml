@@ -137,7 +137,7 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/fragment_menu.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/fragment_notice.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/fragment_notice_add.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/fragment_notice_show.xml" value="0.2921875" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/fragment_notice_show.xml" value="0.1" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/fragment_record_frame.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/fragment_record_local.xml" value="0.33" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/fragment_record_server.xml" value="0.36614583333333334" />
@@ -153,7 +153,7 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/item_card_list.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/item_home_card_list.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/item_local_bill_list.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/item_notice.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/item_notice.xml" value="0.1" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/item_server_bill_list.xml" value="0.33" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/layout_loading_progress.xml" value="0.3651041666666667" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/local_item.xml" value="0.36614583333333334" />

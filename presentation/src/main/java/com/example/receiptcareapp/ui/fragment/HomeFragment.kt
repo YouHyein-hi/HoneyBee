@@ -1,23 +1,18 @@
 package com.example.receiptcareapp.ui.fragment
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.base.BaseFragment
-import com.example.receiptcareapp.ui.adapter.CardAdapter
-import com.example.receiptcareapp.ui.adapter.CardHomeAdapter
+import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.ui.botteomSheet.CardBottomSheet
 import com.example.receiptcareapp.ui.dialog.AddDialog
-import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +23,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var callback: OnBackPressedCallback
     private val homeCardBottomSheet: CardBottomSheet = CardBottomSheet()
     private val addDialog : AddDialog = AddDialog()
-    private val adapter: CardHomeAdapter = CardHomeAdapter()
+    private val adapter: HomeCardAdapter = HomeCardAdapter()
 
     override fun initData() {}
 

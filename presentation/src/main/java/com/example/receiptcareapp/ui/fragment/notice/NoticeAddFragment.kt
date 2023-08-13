@@ -1,28 +1,49 @@
 package com.example.receiptcareapp.ui.fragment.notice
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.domain.model.send.DomainAddNoticeData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentNoticeAddBinding
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.notice.NoticeAddViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
 
+@AndroidEntryPoint
 class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
     FragmentNoticeAddBinding::inflate, "NoticeAddUpdateFragment"
 ) {
-    override fun initData() {
-//        binding.title
-    }
+    private val viewModel: NoticeAddViewModel by viewModels()
 
-    override fun initUI() {
-    }
+    override fun initData() {}
+
+    override fun initUI() {}
 
     override fun initListener() {
+        binding.addBtn.setOnClickListener {
+            viewModel.insertNotice(
+                DomainAddNoticeData(
+                    title = binding.titleEditTxt.text.toString(),
+                    date = LocalDateTime.now(),
+                    content = binding.contentEditTxt.text.toString()
+                )
+            )
+        }
+
+        binding.baseComponent.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     override fun initObserver() {
+        viewModel.loading.observe(viewLifecycleOwner){
+            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
+            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
+        }
     }
 
 }

@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveCardData
@@ -80,7 +81,7 @@ class RecordShowViewModel @Inject constructor(
     // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
     //서버 데이터 업데이트
     fun updateServerBillData(sendData: UpdateData, uid: String) {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
                 updateResponse(
@@ -102,7 +103,7 @@ class RecordShowViewModel @Inject constructor(
 
     //로컬 데이터 재전송
     fun updateLocalBillData(sendData: AppSendData, uid: String) {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 imsiUpdateResponse(
                     insertDataUseCase(
@@ -136,7 +137,7 @@ class RecordShowViewModel @Inject constructor(
     }
     fun deleteServerBillData(id: Long) {
         Log.e("TAG", "deleteServerData: 들어감")
-        CoroutineScope(exceptionHandler).async {
+        modelScope.async {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
                 deleteDataUseCase(id)
@@ -148,7 +149,7 @@ class RecordShowViewModel @Inject constructor(
     }
 
     fun deleteRoomBillData(date: String) {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             isLoading.postValue(true)
             val result = deleteDataRoomUseCase(date)
             Log.e("TAG", "deleteRoomData result : $result")
@@ -159,7 +160,7 @@ class RecordShowViewModel @Inject constructor(
     }
     // 이 기능을 따로 빼야할듯
     private fun insertRoomData(domainRoomData: DomainRoomData) {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             insertDataRoomUseCase(domainRoomData)
             _response.postValue(ResponseState.SUCCESS)
         }
@@ -196,7 +197,7 @@ class RecordShowViewModel @Inject constructor(
 
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
                 _cardData.postValue(getCardListUseCase())
@@ -206,7 +207,7 @@ class RecordShowViewModel @Inject constructor(
     }
 
     fun getServerPictureData(uid:String){
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             Log.e("TAG", "getServerPictureData: ", )
             withTimeoutOrNull(waitTime) {
                 loading.postValue(true)

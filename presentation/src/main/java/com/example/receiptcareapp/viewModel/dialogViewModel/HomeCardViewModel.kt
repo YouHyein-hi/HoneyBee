@@ -40,7 +40,7 @@ class HomeCardViewModel @Inject constructor(
 
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
                 _cardList.postValue(getCardListUseCase()!!)

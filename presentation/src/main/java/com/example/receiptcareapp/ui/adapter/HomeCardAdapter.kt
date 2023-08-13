@@ -1,15 +1,13 @@
 package com.example.receiptcareapp.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.ItemHomeCardListBinding
 
-class CardHomeAdapter : RecyclerView.Adapter<CardHomeAdapter.MyHolder>(){
+class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
 
     private lateinit var binding: ItemHomeCardListBinding
 

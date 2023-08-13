@@ -61,7 +61,7 @@ class SendBillViewModel @Inject constructor(
 
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 isLoading.postValue(true)
                 _cardList.postValue(getCardListUseCase()!!)
@@ -72,7 +72,7 @@ class SendBillViewModel @Inject constructor(
 
     //insertData 분리해야함
     fun insertBillData(sendData: AppSendData) {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             isLoading.postValue(true)
             Log.e("TAG", "insertBillData isloading: ${isLoading.value}", )
             withTimeoutOrNull(waitTime) {
@@ -134,7 +134,7 @@ class SendBillViewModel @Inject constructor(
 
     // 이 기능을 따로 빼야할듯
     private fun insertRoomData(domainRoomData: DomainRoomData) {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             insertDataRoomUseCase(domainRoomData)
             _response.postValue(ResponseState.SUCCESS)
         }

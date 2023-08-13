@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentMenuBinding
 import com.example.receiptcareapp.databinding.FragmentNoticeBinding
 import com.example.receiptcareapp.ui.adapter.NoticeAdapter
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.notice.NoticeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +24,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
     FragmentNoticeBinding::inflate,"NoticeFragment"
 ) {
     private val viewModel: NoticeViewModel by viewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val adapter: NoticeAdapter = NoticeAdapter()
     override fun initData() {
         viewModel.getNoticeList()
@@ -40,6 +43,10 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
         binding.baseComponent.backBtn.setOnClickListener {
             findNavController().navigate(R.id.action_noticeFragment_to_homeFragment)
         }
+        adapter.onNoticeClic = {
+            activityViewModel.selectedNoticeData = it
+            findNavController().navigate(R.id.action_noticeFragment_to_showNoticeFragment)
+        }
     }
 
     override fun initObserver() {
@@ -53,7 +60,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
         }
     }
 
-    fun checkDataList(){
+    private fun checkDataList(){
         if(adapter.dataList.isEmpty()) binding.emptyText.visibility = View.VISIBLE
         else  binding.emptyText.visibility = View.INVISIBLE
     }

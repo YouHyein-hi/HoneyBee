@@ -20,10 +20,7 @@ import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.receive.DomainUpadateData
 import com.example.domain.model.receive.DomainUpdateCardData
-import com.example.domain.model.send.AppSendCardData
-import com.example.domain.model.send.AppSendData
-import com.example.domain.model.send.DomainSendCardData
-import com.example.domain.model.send.DomainSendData
+import com.example.domain.model.send.*
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.card.InsertCardUseCase
 import com.example.domain.usecase.card.UpdateCardUseCase
@@ -77,6 +74,8 @@ class MainActivityViewModel @Inject constructor(
     val selectedData : LiveData<RecyclerData?>
         get() = _selectedData
     fun changeSelectedData(data: RecyclerData?){ _selectedData.value = data }
+
+    lateinit var selectedNoticeData : DomainGetNoticeListData
 
     fun clearAll(){
         preferenceManager.clearAll()

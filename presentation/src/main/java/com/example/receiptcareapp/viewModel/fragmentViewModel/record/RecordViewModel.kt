@@ -49,7 +49,7 @@ class RecordViewModel @Inject constructor(
         get() = _roomData
 
     fun getLocalAllData() {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             loading.postValue(true)
             val gap = getRoomDataListUseCase()
             Log.e("TAG", "receiveAllRoomData: $gap")
@@ -69,7 +69,7 @@ class RecordViewModel @Inject constructor(
 
     // Server 데이터 불러오는 부분
     fun getServerAllBillData() {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             withTimeoutOrNull(waitTime){
                 loading.postValue(true)
                 Log.e("TAG", "receiveServerAllData: ", )

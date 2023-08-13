@@ -1,6 +1,5 @@
 package com.example.data.remote.dataSourceImpl
 
-import android.util.Log
 import com.example.data.remote.dataSource.NoticeDataSource
 import com.example.data.remote.model.GetNoticeListData
 import retrofit2.Retrofit
@@ -13,12 +12,9 @@ import javax.inject.Inject
  */
 class NoticeDataSourceImpl @Inject constructor(
     private val retrofit: Retrofit
-): NoticeDataSource {
+) : NoticeDataSource {
     override suspend fun getNoticeListDataSource(): MutableList<GetNoticeListData> {
-        Log.e("TAG", "getNoticeListDataSource", )
-        val gap = retrofit.create(NoticeDataSource::class.java).getNoticeListDataSource()
-        Log.e("TAG", "getNoticeListDataSource: $gap", )
-        return gap
+        return retrofit.create(NoticeDataSource::class.java).getNoticeListDataSource()
     }
 
     override suspend fun addNoticeDataSource(
@@ -27,7 +23,7 @@ class NoticeDataSourceImpl @Inject constructor(
         content: String
     ): String {
         return retrofit.create(NoticeDataSource::class.java).addNoticeDataSource(
-            title= title,
+            title = title,
             date = date,
             content = content
         )

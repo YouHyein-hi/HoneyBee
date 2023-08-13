@@ -1,7 +1,6 @@
 package com.example.data.remote.model
 
 import com.example.domain.model.send.DomainGetNoticeListData
-import java.time.LocalDateTime
 
 /**
  * 2023-08-13
@@ -18,6 +17,14 @@ fun GetNoticeListData.toDomainGetNoticeListData(): DomainGetNoticeListData =
     DomainGetNoticeListData(
         billNoticeId,
         billNoticeTitle,
-        billNoticeDate,
+        changeDate(billNoticeDate),
         billNoticeContent
 )
+
+fun changeDate(inputDate: String): String {
+    return if (inputDate.contains(":")) {
+        val gap = inputDate.replace("-", ".").split("T")
+        val time = gap[1].split(":")
+        "${gap[0]}  ${time[0]}시 ${time[1]}분"
+    } else{ inputDate }
+}

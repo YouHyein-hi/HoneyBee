@@ -10,7 +10,7 @@ import com.example.domain.repo.RoomRepository
 class GetDataListRoomUseCase(
     private val roomRepository: RoomRepository
 ) {
-    suspend operator fun invoke(): ArrayList<DomainRoomData>{
+    suspend operator fun invoke(): MutableList<DomainRoomData>{
         return roomRepository.getAllData()
     }
 }

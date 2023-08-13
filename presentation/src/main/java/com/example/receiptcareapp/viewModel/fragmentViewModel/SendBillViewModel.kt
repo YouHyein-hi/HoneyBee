@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.data.remote.model.changeDate
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.send.AppSendData
@@ -25,6 +26,7 @@ import com.example.receiptcareapp.util.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -116,7 +118,7 @@ class SendBillViewModel @Inject constructor(
                 _response.postValue(ResponseState.SUCCESS)
                 ///
                 if (data.billSubmitTime.contains("-") && data.billSubmitTime.contains("T") && data.billSubmitTime.contains(":")) {
-                    data.billSubmitTime = dateTimeToString(data.billSubmitTime)
+                    data.billSubmitTime = changeDate(data.billSubmitTime)
                 }
                 insertRoomData(
                     DomainRoomData(
@@ -134,7 +136,7 @@ class SendBillViewModel @Inject constructor(
 
     // 이 기능을 따로 빼야할듯
     private fun insertRoomData(domainRoomData: DomainRoomData) {
-        modelScope.launch {
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             insertDataRoomUseCase(domainRoomData)
             _response.postValue(ResponseState.SUCCESS)
         }

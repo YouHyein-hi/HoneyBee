@@ -35,12 +35,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             addBtn.setOnClickListener{ addDialog.show(parentFragmentManager, "addDialog") }
             cardListBtn.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
-            cardhomeRecyclerview.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
-            cardhomeRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-            cardhomeRecyclerview.adapter = adapter
+            homeCardRecyclerview.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
+            homeCardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+            homeCardRecyclerview.adapter = adapter
         }
         //카드목록 불러오기
         viewModel.getServerCardData()
+        viewModel.getNoticeList()
     }
 
     override fun initListener() {
@@ -58,6 +59,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             else { adapter.dataList = dataList }
         }
 
+        viewModel.notice.observe(viewLifecycleOwner){
+            binding.homeNoticeTxt.text = it
+        }
     }
 
     override fun onDetach() {

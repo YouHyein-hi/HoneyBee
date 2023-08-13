@@ -9,8 +9,10 @@ import com.example.domain.model.UpdateCardData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.receive.DomainServerReponse
 import com.example.domain.model.receive.DomainUpdateCardData
+import com.example.domain.model.send.DomainGetNoticeListData
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.card.UpdateCardUseCase
+import com.example.domain.usecase.notice.GetNoticeListUseCase
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.util.ResponseState
@@ -24,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeCardViewModel @Inject constructor(
     private val getCardListUseCase: GetCardListUseCase,
-    private val updateCardUseCase: UpdateCardUseCase
+    private val getNoticeListUseCase: GetNoticeListUseCase
 ) : BaseViewModel(){
 
     init { Log.e("TAG", "HomeCardBottomSheetViewModel", ) }
@@ -38,6 +40,10 @@ class HomeCardViewModel @Inject constructor(
     private var _cardList = MutableLiveData<MutableList<DomainReceiveCardData>>()
     val cardList : LiveData<MutableList<DomainReceiveCardData>> get() = _cardList
 
+    //서버 응답 일관화 이전에 사용할 박스
+    private var _notice = MutableLiveData<String>()
+    val notice : LiveData<String> get() = _notice
+
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
         modelScope.launch {
@@ -49,32 +55,16 @@ class HomeCardViewModel @Inject constructor(
         }
     }
 
-    //TODO 카드 데이터 수정 가능 시 OPEN
-//    fun updateServerCardData(updateCardData : UpdateCardData) {
-//        Log.e("TAG", "updateCardData: $updateCardData",)
-//        CoroutineScope(exceptionHandler).launch {
-//            isLoading.postValue(true)
-//            withTimeoutOrNull(waitTime) {
-//                updateResponse(
-//                    updateCardUseCase(
-//                        DomainUpdateCardData(
-//                            id = updateCardData.id,
-//                            cardName = updateCardData.cardName,
-//                            cardAmount = updateCardData.cardAmount
-//                        )
-//                    )
-//                )
-//            } ?: throw SocketTimeoutException()
-//            isLoading.postValue(false)
-//        }
-//    }
-//    private fun updateResponse(response: DomainServerReponse){
-//        when(response.status){
-//            "200" -> {
-//                getServerCardData()
-//                _response.postValue(ResponseState.SUCCESS)
-//            }
-//            else -> {_response.postValue(ResponseState.FALSE)}
-//        }
-//    }
+    fun getNoticeList(){
+        modelScope.launch{
+            isLoading.postValue(true)
+            withTimeoutOrNull(waitTime){
+                if(getNoticeListUseCase().isEmpty())
+                    _notice.postValue("Honey Bee 영수증 관리 앱 사용을 환영합니다!")
+                else
+                    _notice.postValue(getNoticeListUseCase().last().title)
+            }
+            isLoading.postValue(false)
+        }
+    }
 }

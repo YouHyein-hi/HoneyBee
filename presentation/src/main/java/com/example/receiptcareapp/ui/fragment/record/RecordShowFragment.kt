@@ -4,8 +4,6 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,7 +19,7 @@ import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.dialog.DeleteDialog
 import com.example.receiptcareapp.util.ResponseState
-import com.example.receiptcareapp.viewModel.fragmentViewModel.RecordShowViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -44,7 +42,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     override fun initUI() {
         // TODO 재전송 버튼은 일단 비활성화
         initView()
-        if(binding.imageView.drawable == null) binding.emptyText.isVisible
+        checkImageData()
     }
 
     override fun initListener() {
@@ -86,11 +84,12 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
                 .load(it)
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                 .into(binding.imageView)
+            checkImageData()
         }
     }
 
     private fun initView(){
-        if(viewModelData.type == ShowType.LOCAL) insertLocalPicture(viewModelData.file.toString())
+        if(viewModelData.type == ShowType.LOCAL) binding.imageView.setImageURI(viewModelData.file)
         else viewModel.getServerPictureData(viewModelData.uid)
         binding.imageView.clipToOutline = true
         binding.cardTxt.text = viewModelData.cardName
@@ -99,8 +98,8 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         binding.cardAmount.text = "${viewModelData.cardName}카드 : ${viewModelData.amount}원"
     }
 
-    private fun insertLocalPicture(insert: String){
-        binding.imageView.setImageURI(insert.toUri())
+    private fun checkImageData(){
+        if(binding.imageView.drawable == null) binding.emptyText.visibility = View.VISIBLE
     }
 
     //수정

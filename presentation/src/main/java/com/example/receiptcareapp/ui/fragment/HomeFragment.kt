@@ -30,24 +30,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val addDialog : AddDialog = AddDialog()
     private val adapter: CardHomeAdapter = CardHomeAdapter()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-                    .setTitle("종료")
-                    .setMessage("꿀을 그만 빠시겠어요?")
-                    .setPositiveButton("그만 빤다"){dialog, id->
-                        requireActivity().finish()
-                    }
-                    .setNegativeButton("더 빤다"){dialog, id->
-
-                    }.show()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-
     override fun initData() {}
 
     override fun initUI() {
@@ -86,5 +68,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onDetach() {
         super.onDetach()
         callback.remove()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
+                    .setTitle("종료")
+                    .setMessage("꿀을 그만 빠시겠어요?")
+                    .setPositiveButton("그만 빤다"){dialog, id->
+                        requireActivity().finish()
+                    }
+                    .setNegativeButton("더 빤다"){dialog, id->
+
+                    }.show()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 }

@@ -38,6 +38,7 @@
         tools:targetApi="31">
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activity.SplashActivity"
             android:exported="true" >
             <intent-filter>
@@ -47,6 +48,7 @@
         </activity>
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activity.LoginActivity"
             android:exported="false" >
         </activity>
@@ -63,11 +65,13 @@
         </provider>
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activity.MainActivity"
             android:exported="true">
         </activity>
 
         <activity
+            android:screenOrientation="portrait"
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/OpenSourceMenuTheme" />
 

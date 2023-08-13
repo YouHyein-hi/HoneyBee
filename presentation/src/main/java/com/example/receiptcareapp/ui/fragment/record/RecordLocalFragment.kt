@@ -13,7 +13,7 @@ import com.example.receiptcareapp.databinding.FragmentRecordLocalBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.adapter.RecordLocalAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import com.example.receiptcareapp.viewModel.fragmentViewModel.RecordViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

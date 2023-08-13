@@ -2,6 +2,7 @@ package com.example.data.di
 
 import com.example.data.local.LocalDatabase
 import com.example.data.remote.dataSource.*
+import com.example.data.remote.dataSourceImpl.NoticeDataSourceImpl
 import com.example.data.repoImpl.*
 import com.example.domain.repo.*
 import dagger.Module
@@ -41,16 +42,16 @@ object RepoModule {
         return LoginRepositoryImpl(source)
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideNoticeData(source : NoticeDataSource): NoticeRepository {
-//        return NoticeDataSourceImpl(source)
-//    }
+    @Provides
+    @Singleton
+    fun provideNoticeData(source : NoticeDataSource): NoticeRepository {
+        return NoticeRepositoryImpl(source)
+    }
 
     @Provides
     @Singleton
-    fun provideRepoRoom(source : LocalDatabase): RoomRepo {
-        return RoomRepoImpl(source.myDatabase())
+    fun provideRepoRoom(source : LocalDatabase): RoomRepository {
+        return RoomRepositoryImpl(source.myDatabase())
     }
 
 }

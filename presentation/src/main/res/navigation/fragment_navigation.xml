@@ -48,6 +48,12 @@
             app:destination="@id/noticeFragment"
             app:popUpTo="@id/menuFragment"
         />
+
+        <action
+            android:id="@+id/action_noticeFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/noticeFragment"
+            />
     </fragment>
 
     <fragment
@@ -146,7 +152,7 @@
     </fragment>
     <fragment
         android:id="@+id/addnoticeFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.notice.NoticeAddUpdateFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.notice.NoticeAddFragment"
         android:label="fragment_addnotice"
         tools:layout="@layout/fragment_notice_add" />
 

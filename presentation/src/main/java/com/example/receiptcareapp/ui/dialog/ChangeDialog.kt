@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.example.domain.model.UpdateData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.State.ShowType
@@ -13,12 +12,12 @@ import com.example.receiptcareapp.databinding.DialogChangeBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import com.example.receiptcareapp.viewModel.fragmentViewModel.RecordShowViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ChangeDialog(
-    private val viewModel:RecordShowViewModel
+    private val viewModel: RecordShowViewModel
     ) : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var viewModelData: RecyclerData

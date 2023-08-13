@@ -9,7 +9,7 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentNoticeAddBinding
 
-class NoticeAddUpdateFragment : BaseFragment<FragmentNoticeAddBinding>(
+class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
     FragmentNoticeAddBinding::inflate, "NoticeAddUpdateFragment"
 ) {
     override fun initData() {

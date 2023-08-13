@@ -5,18 +5,12 @@ import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnectedState
-import com.example.receiptcareapp.ui.adapter.RecordLocalAdapter
-import com.example.receiptcareapp.ui.adapter.RecordServerAdapter
-import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordFrameBinding
-import com.example.receiptcareapp.dto.RecyclerData
-import com.example.receiptcareapp.viewModel.fragmentViewModel.RecordViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 

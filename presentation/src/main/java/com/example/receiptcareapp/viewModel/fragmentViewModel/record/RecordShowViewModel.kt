@@ -1,7 +1,5 @@
-package com.example.receiptcareapp.viewModel.fragmentViewModel
+package com.example.receiptcareapp.viewModel.fragmentViewModel.record
 
-import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -14,7 +12,6 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveCardData
@@ -28,10 +25,7 @@ import com.example.domain.usecase.data.GetPictureDataUseCase
 import com.example.domain.usecase.data.InsertDataUseCase
 import com.example.domain.usecase.data.UpdateDataUseCase
 import com.example.domain.usecase.room.DeleteDataRoomUseCase
-import com.example.domain.usecase.room.GetDataListRoomUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase
-import com.example.receiptcareapp.State.ConnectedState
-import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.util.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel

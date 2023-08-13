@@ -7,7 +7,7 @@ import okhttp3.MultipartBody
  * 2023-02-15
  * pureum
  */
-interface RoomRepo {
+interface RoomRepository {
     suspend fun insertData(list: DomainRoomData)
     suspend fun getAllData():ArrayList<DomainRoomData>
     suspend fun deleteData(date: String) : Int

@@ -6,6 +6,8 @@ import com.example.domain.usecase.card.InsertCardUseCase
 import com.example.domain.usecase.card.UpdateCardUseCase
 import com.example.domain.usecase.data.*
 import com.example.domain.usecase.login.LoginUseCase
+import com.example.domain.usecase.notice.AddNoticeUseCase
+import com.example.domain.usecase.notice.GetNoticeListUseCase
 import com.example.domain.usecase.room.DeleteDataRoomUseCase
 import com.example.domain.usecase.room.GetDataListRoomUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase
@@ -83,31 +85,45 @@ object UseCaseModule {
         return LoginUseCase(repo)
     }
 
-    //notice 추가
-    //notice 추가
-    //notice 추가
+    //Notice
+    @Provides
+    @Singleton
+    fun provideGetNoticeListUseCase(noticeRepo : NoticeRepository) : GetNoticeListUseCase{
+        return GetNoticeListUseCase(noticeRepo)
+    }
 
     @Provides
     @Singleton
-    fun provideDeleteRoomDataUseCase(repo : RoomRepo) : DeleteDataRoomUseCase{
+    fun provideAddNoticeUseCase(noticeRepo : NoticeRepository) : AddNoticeUseCase{
+        return AddNoticeUseCase(noticeRepo)
+    }
+
+
+
+    //ROOM
+    @Provides
+    @Singleton
+    fun provideDeleteRoomDataUseCase(repo : RoomRepository) : DeleteDataRoomUseCase{
         return DeleteDataRoomUseCase(repo)
     }
 
     @Provides
     @Singleton
-    fun provideGetRoomDataListUseCase(repo : RoomRepo) : GetDataListRoomUseCase{
+    fun provideGetRoomDataListUseCase(repo : RoomRepository) : GetDataListRoomUseCase{
         return GetDataListRoomUseCase(repo)
     }
 
     @Provides
     @Singleton
-    fun provideInsertDataRoomUseCase(repo : RoomRepo) : InsertDataRoomUseCase{
+    fun provideInsertDataRoomUseCase(repo : RoomRepository) : InsertDataRoomUseCase{
         return InsertDataRoomUseCase(repo)
     }
 
     @Provides
     @Singleton
-    fun provideUpdateRoomUseCAse(repo : RoomRepo) : UpdateRoomData{
+    fun provideUpdateRoomUseCAse(repo : RoomRepository) : UpdateRoomData{
         return UpdateRoomData(repo)
     }
+
+
 }

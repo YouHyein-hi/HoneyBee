@@ -12,6 +12,7 @@ import com.example.receiptcareapp.databinding.ItemHomeCardListBinding
 class CardHomeAdapter : RecyclerView.Adapter<CardHomeAdapter.MyHolder>(){
 
     private lateinit var binding: ItemHomeCardListBinding
+
     var dataList = mutableListOf<DomainReceiveCardData>()
         set(value){
             field = value.reversed().toMutableList()

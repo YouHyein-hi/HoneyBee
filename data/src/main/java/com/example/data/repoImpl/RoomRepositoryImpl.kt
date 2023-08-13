@@ -3,14 +3,14 @@ package com.example.data.repoImpl
 import com.example.data.local.dao.MyDao
 import com.example.data.local.entity.MyEntity
 import com.example.domain.model.local.DomainRoomData
-import com.example.domain.repo.RoomRepo
+import com.example.domain.repo.RoomRepository
 import javax.inject.Inject
 
 /**
  * 2023-02-15
  * pureum
  */
-class RoomRepoImpl @Inject constructor(private val roomDao: MyDao) : RoomRepo {
+class RoomRepositoryImpl @Inject constructor(private val roomDao: MyDao) : RoomRepository {
 
     override suspend fun insertData(list: DomainRoomData) {
         val myList = MyEntity(

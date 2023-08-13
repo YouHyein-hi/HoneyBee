@@ -19,11 +19,12 @@ import com.example.receiptcareapp.databinding.DialogCardAddBinding
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.text.DecimalFormat
 
 class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val cardAddBottomViewModel : CardAddViewModel by viewModels()
+    private val cardAddViewModel : CardAddViewModel by viewModels()
 
     override fun initData() {
     }
@@ -35,14 +36,16 @@ class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inf
         with(binding){
             dialogcardEditCardprice.setOnClickListener {
                 if (dialogcardEditCardprice.text.contains(",")) {
-                    dialogcardEditCardprice.setText(cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
+                    dialogcardEditCardprice.setText(cardAddViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
                     dialogcardEditCardprice.setSelection(dialogcardEditCardprice.text.length)
                 }
             }
             dialogcardEditCardprice.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_NEXT && dialogcardEditCardprice.text.isNotEmpty()) {
-                    dialogcardEditCardprice.setText(cardAddBottomViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
+                    val gap = DecimalFormat("#,###")
+                    dialogcardEditCardprice.setText(gap.format(dialogcardEditCardprice.text.toString().replace(",","").toInt()))
+//                    dialogcardEditCardprice.setText(cardAddViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
                 }
                 handled
             }
@@ -79,7 +82,7 @@ class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inf
             dialogcardEditBillCardCheck.setOnFocusChangeListener { view, hasFocus ->
                 if (!hasFocus && dialogcardEditBillCardCheck.text.isEmpty()) {
                     // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
-                    dialogcardEditBillCardCheck.hint = getString(R.string.dialog_cardAdd_billCheckDate_err)
+                    dialogcardEditBillCardCheck.hint = getString(R.string.dialog_cardAdd_billCheckDate_err1)
                     dialogcardEditBillCardCheck.backgroundTintList = ColorStateList.valueOf(Color.RED)
                 } else if(hasFocus && !dialogcardEditBillCardCheck.text.isEmpty()) {
                     dialogcardEditBillCardCheck.hint = hintBillCardCheck // 초기 hint로 되돌리기
@@ -106,9 +109,18 @@ class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inf
                     dismiss()
                     showLongToast(getString(R.string.dialog_cardAdd_billCheckDate))
                 }
+                else if (dialogcardEditBillCardCheck.text.toString().toInt() > 31){
+
+                    Log.e("TAG", "initListener: 청구 날짜를 입력해주세요.", )
+                    dismiss()
+                    showLongToast(getString(R.string.dialog_cardAdd_billCheckDate_err2))
+                }
                 else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
-                    var price = cardAddBottomViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())
-                    activityViewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
+                    var price = dialogcardEditCardprice.text.toString()
+                    if (price.contains(","))
+                        price = dialogcardEditCardprice.text.toString().replace(",", "")
+
+                    activityViewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt(), dialogcardEditBillCardCheck.text.toString()))
                     dismiss()
                 }
             }

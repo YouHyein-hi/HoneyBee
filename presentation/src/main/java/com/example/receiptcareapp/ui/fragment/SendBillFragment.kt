@@ -112,7 +112,9 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
             /** 금액 EidtText , 추가 **/
             btnPrice.setOnClickListener {
+                Log.e("TAG", "initListener: setOnClickListener", )
                 if (btnPrice.text.contains(",")) {
+                    Log.e("TAG", "initListener: setOnClickListener if 안에 들어옴", )
                     btnPrice.setText(viewModel.commaReplaceSpace(btnPrice.text.toString()))
                     btnPrice.setSelection(btnPrice.text.length)
                 }
@@ -121,7 +123,9 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             /** 금액 EidtText , 추가 **/
             btnPrice.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
+                Log.e("TAG", "initListener: setOnEditorActionListener", )
                 if (actionId == EditorInfo.IME_ACTION_DONE && btnPrice.text.isNotEmpty()) {
+                    Log.e("TAG", "initListener: setOnEditorActionListener if 안에 들어옴", )
                     val gap = DecimalFormat("#,###")
                     btnPrice.setText(gap.format(btnPrice.text.toString().replace(",","").toInt()))
                 }

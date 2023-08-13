@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.viewModel.activityViewmodel
 
-import android.app.Application
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -35,9 +34,7 @@ import com.example.domain.usecase.room.UpdateRoomData
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.dto.RecyclerData
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -252,7 +249,8 @@ class MainActivityViewModel @Inject constructor(
                 insertCardUseCase(
                     DomainSendCardData(
                         cardName = sendData.cardName,
-                        cardAmount = sendData.cardAmount
+                        cardAmount = sendData.cardAmount,
+                        billCheckDate = sendData.billCheckDate
                     )
                 )
                 _connectedState.postValue(ConnectedState.CARD_CONNECTING_SUCCESS)
@@ -354,7 +352,7 @@ class MainActivityViewModel @Inject constructor(
                     DomainUpdateCardData(
                         id = updateCardData.id,
                         cardName = updateCardData.cardName,
-                        cardAmount = updateCardData.cardAmount
+                        cardAmount = updateCardData.cardAmount,
                     )
                 )
                 Log.e("TAG", "updateCardData result: ${result}",)

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -43,6 +44,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     override fun initUI() {
         // TODO 재전송 버튼은 일단 비활성화
         initView()
+        if(binding.imageView.drawable == null) binding.emptyText.isVisible
     }
 
     override fun initListener() {
@@ -80,7 +82,6 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         }
 
         viewModel.picture.observe(viewLifecycleOwner){
-            binding.imageView.setImageBitmap(it)
             Glide.with(binding.imageView)
                 .load(it)
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
@@ -96,14 +97,10 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         binding.dateTxt.text = viewModelData.billSubmitTime
         binding.amountTxt.text = viewModelData.amount
         binding.cardAmount.text = "${viewModelData.cardName}카드 : ${viewModelData.amount}원"
-        // TODO 청구 날짜 만들기
-//        binding.checkDataTxt.text = viewModelData.dat
     }
 
     private fun insertLocalPicture(insert: String){
-        Log.e("TAG", "insertLocalPicture: $insert", )
-        try { binding.imageView.setImageURI(viewModelData.file) }
-        catch(e:Exception) { binding.emptyText.isVisible }
+        binding.imageView.setImageURI(insert.toUri())
     }
 
     //수정

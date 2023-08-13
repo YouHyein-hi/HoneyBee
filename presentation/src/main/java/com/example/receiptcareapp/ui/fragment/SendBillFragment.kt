@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.ui.fragment
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -12,7 +11,6 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -21,7 +19,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentSendBillBinding
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
@@ -30,10 +27,6 @@ import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -134,12 +127,14 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     }
                     activityViewModel.image.value == null -> {
                         showShortToast("사진이 비었습니다.\n초기화면으로 돌아갑니다.")
-                        NavHostFragment.findNavController(this@SendBillFragment)
-                            .navigate(R.id.action_showFragment_to_homeFragment)
+                        NavHostFragment.findNavController(this@SendBillFragment).navigate(R.id.action_showFragment_to_homeFragment)
                     }
                     else -> {
-                        val myLocalDateTime =
-                            viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
+                        if(!viewModel.amountCheck(btnPrice.text.toString(), cardAmount)) {
+                            showShortToast("보유금액보다 많은 비용입니다.")
+                            return@setOnClickListener
+                        }
+                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
                         SendCheckBottomSheet(
                             viewModel,
                             BottomSheetData(
@@ -152,7 +147,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                             )
                         ).show(parentFragmentManager, "tag")
                     }
-
                 }
             }
 

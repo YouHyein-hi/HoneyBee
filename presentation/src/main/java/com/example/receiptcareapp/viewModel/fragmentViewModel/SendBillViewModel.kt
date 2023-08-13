@@ -140,49 +140,6 @@ class SendBillViewModel @Inject constructor(
         }
     }
 
-
-//    fun insertBillData(sendData: AppSendData) {
-//        Log.e("TAG", "sendData: $sendData", )
-//        CoroutineScope(exceptionHandler).launch {
-//            withTimeoutOrNull(waitTime) {
-//                val result = insertDataUseCase(
-//                    DomainSendData(
-//                        cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
-//                        storeName = MultipartBody.Part.createFormData(
-//                            "storeName",
-//                            sendData.storeName
-//                        ),
-//                        date = MultipartBody.Part.createFormData("billSubmitTime", sendData.billSubmitTime),
-//                        amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
-//                        picture = compressEncodePicture(sendData.picture)
-//                    )
-//                )
-//                Log.e("TAG", "sendData 응답 : $result ")
-//
-//                if (result != "0") { //TODO uid != "0"이 아니라 실패했을 때 서버에서 받아오는 메세지로 조건식 바꾸자!!
-//                    var splitData =""
-//                    if(sendData.billSubmitTime.contains("-") && sendData.billSubmitTime.contains("T") && sendData.billSubmitTime.contains(":")){
-//                        splitData = dateTimeToString(sendData.billSubmitTime)
-//                    }
-//                    insertRoomData(
-//                        DomainRoomData(
-//                            cardName = sendData.cardName,
-//                            amount = sendData.amount,
-//                            storeName = sendData.storeName,
-//                            billSubmitTime = splitData,
-//                            file = sendData.picture.toString(),
-//                            uid = result
-//                        )
-//                    )
-//                } else {
-//                    Log.e("TAG", "sendData: 실패입니다!")
-//                    Exception("오류! 전송 실패.")
-//                }
-//            } ?: throw SocketTimeoutException()
-//        }
-//    }
-
-
     fun compressEncodePicture(uri: Uri): MultipartBody.Part{
         val file = File(absolutelyPath(uri, application))
         val compressFile = compressImageFile(file)
@@ -285,7 +242,9 @@ class SendBillViewModel @Inject constructor(
         )
     }
 
-
+    fun amountCheck(price: String, cardAmount: String):Boolean{
+        return price.replace(",","").toInt() <= cardAmount.replace(",","").toInt()
+    }
 
 
 }

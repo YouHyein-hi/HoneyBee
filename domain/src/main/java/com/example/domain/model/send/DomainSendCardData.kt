@@ -8,5 +8,6 @@ import okhttp3.MultipartBody
  */
 data class DomainSendCardData(
     var cardName:String,
-    var cardAmount:Int
+    var cardAmount:Int,
+    var billCheckDate:String
 )

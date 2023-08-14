@@ -16,6 +16,7 @@ interface CardDataSource {
     suspend fun sendCardDataSource(
         @Field("cardName") cardName : String?,
         @Field("cardAmount") amount : Int?,
+        @Field("billCheckDate") billCheckDate : String?
     ): DomainServerReponse
 
     @Streaming

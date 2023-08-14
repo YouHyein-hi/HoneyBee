@@ -17,28 +17,29 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".ui.fragment.RecyclerShowFragment">
 
-        <ImageView
-            android:id="@+id/menu_back_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/icon_back_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-20dp"
+            android:layout_marginTop="30dp"
             android:fontFamily="@font/pretendardextrabold"
             android:text="메뉴"
             android:textColor="@color/main_font_black"
             android:textSize="40sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/menu_back_btn" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/menu_back_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/icon_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -50,7 +51,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
-        android:background="@drawable/gray_round_box"
+        android:background="@drawable/line_gray_round"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
@@ -220,14 +221,13 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/btn_round_orange"
+        android:background="@drawable/btn_ok"
         android:fontFamily="@font/pretendardsemibold"
         android:text="로그아웃"
         android:textColor="@color/main_font_black"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

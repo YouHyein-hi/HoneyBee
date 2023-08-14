@@ -18,6 +18,8 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.text.DecimalFormat
 
 @AndroidEntryPoint
 class CardAddDialog(
@@ -25,6 +27,7 @@ class CardAddDialog(
 ) : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
     private val viewModel : CardAddViewModel by viewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     override fun initData() {
     }
@@ -44,6 +47,8 @@ class CardAddDialog(
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_NEXT && dialogcardEditCardprice.text.isNotEmpty()) {
                     dialogcardEditCardprice.setText(viewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
+//                    val gap = DecimalFormat("#,###")
+//                    dialogcardEditCardprice.setText(gap.format(dialogcardEditCardprice.text.toString().replace(",","").toInt()))
                 }
                 handled
             }
@@ -80,7 +85,7 @@ class CardAddDialog(
             dialogcardEditBillCardCheck.setOnFocusChangeListener { view, hasFocus ->
                 if (!hasFocus && dialogcardEditBillCardCheck.text.isEmpty()) {
                     // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
-                    dialogcardEditBillCardCheck.hint = getString(R.string.dialog_cardAdd_billCheckDate_err)
+                    dialogcardEditBillCardCheck.hint = getString(R.string.dialog_cardAdd_billCheckDate_err1)
                     dialogcardEditBillCardCheck.backgroundTintList = ColorStateList.valueOf(Color.RED)
                 } else if(hasFocus && !dialogcardEditBillCardCheck.text.isEmpty()) {
                     dialogcardEditBillCardCheck.hint = hintBillCardCheck // 초기 hint로 되돌리기
@@ -107,10 +112,20 @@ class CardAddDialog(
                     dismiss()
                     showLongToast(getString(R.string.dialog_cardAdd_billCheckDate))
                 }
-                else{  // TODO 여기서 viewModel로 연결해야함
-                    var price = viewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())
-                    viewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
+                else if (dialogcardEditBillCardCheck.text.toString().toInt() > 31){
+
+                    Log.e("TAG", "initListener: 청구 날짜를 입력해주세요.", )
+                    dismiss()
+                    showLongToast(getString(R.string.dialog_cardAdd_billCheckDate_err2))
+                }
+                else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
+                    var price = dialogcardEditCardprice.text.toString()
+                    if (price.contains(","))
+                        price = dialogcardEditCardprice.text.toString().replace(",", "")
+
+                    viewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt(), dialogcardEditBillCardCheck.text.toString()))
                     homeCardViewModel.getServerCardData()
+//                    dismiss()
                 }
             }
 
@@ -118,6 +133,7 @@ class CardAddDialog(
                 Log.e("TAG", "onResume: 카드 추가 취소", )
                 dismiss()
             }
+
         }
     }
 

@@ -7,7 +7,7 @@ import com.example.domain.model.BottomSheetData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseBottomSheet
-import com.example.receiptcareapp.databinding.SendBottomsheetBinding
+import com.example.receiptcareapp.databinding.BottomsheetSendBinding
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,9 +20,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class SendCheckBottomSheet(
     private val viewModel: SendBillViewModel,
     private val bottomSheetData: BottomSheetData
-) : BaseBottomSheet<SendBottomsheetBinding>(
-    SendBottomsheetBinding::inflate,
-    "SendBottomsheetBinding"
+) : BaseBottomSheet<BottomsheetSendBinding>(
+    BottomsheetSendBinding::inflate,
+    "BottomsheetSendBinding"
 ) {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)

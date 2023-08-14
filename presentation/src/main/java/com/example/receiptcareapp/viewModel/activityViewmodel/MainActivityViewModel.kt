@@ -32,9 +32,7 @@ import com.example.domain.usecase.room.UpdateRoomData
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.dto.RecyclerData
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

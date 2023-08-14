@@ -35,18 +35,6 @@
             layout="@layout/base_background_component"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            bind:title="@{@string/notice_add_title}" />
-
-        <ImageButton
-            android:id="@+id/add_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/icon_add_filled"
-            android:backgroundTint="#545454"
-            app:layout_constraintBottom_toBottomOf="@+id/base_component"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
@@ -86,7 +74,7 @@
         <include
             android:visibility="invisible"
             android:id="@+id/layoutLoadingProgress"
-            layout="@layout/layout_loading_progress"
+            layout="@layout/progressbar_loading"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

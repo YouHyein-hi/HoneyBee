@@ -16,9 +16,10 @@ class CardDataSourceImpl @Inject constructor(
 ): CardDataSource{
     override suspend fun sendCardDataSource(
         cardName: String?,
-        amount: Int?
+        amount: Int?,
+        billCheckDate : String?
     ): DomainServerReponse {
-        return retrofit.create(CardDataSource::class.java).sendCardDataSource(cardName = cardName, amount = amount)
+        return retrofit.create(CardDataSource::class.java).sendCardDataSource(cardName = cardName, amount = amount, billCheckDate = billCheckDate)
     }
 
     override suspend fun receiveCardDataSource(): MutableList<ReceiveCardData> {
@@ -35,7 +36,7 @@ class CardDataSourceImpl @Inject constructor(
         return retrofit.create(CardDataSource::class.java).updateCardDataSource(
             id = id,
             cardName = cardName,
-            cardAmount = cardAmount
+            cardAmount = cardAmount,
         )
     }
 }

@@ -33,7 +33,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun initUI() {
         with(binding){
             historyBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment) }
-            settingBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_menuFragment) }
+            menuBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_menuFragment) }
             noticeBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_noticeFragment) }
 
             addBtn.setOnClickListener{ addDialog.show(parentFragmentManager, "addDialog") }

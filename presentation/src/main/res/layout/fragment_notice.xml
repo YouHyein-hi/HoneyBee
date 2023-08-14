@@ -38,7 +38,7 @@
 
         <include
             android:id="@+id/layoutLoadingProgress"
-            layout="@layout/layout_loading_progress"
+            layout="@layout/progressbar_loading"
             bind:layout_constraintBottom_toBottomOf="parent"
             bind:layout_constraintEnd_toEndOf="parent"
             bind:layout_constraintStart_toStartOf="parent"

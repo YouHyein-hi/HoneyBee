@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
@@ -59,10 +59,10 @@
         <!--        tools:listitem="@layout/server_item" />-->
 
         <FrameLayout
-            android:layout_marginTop="10dp"
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
 
             <include
                 android:id="@+id/layout_loading_progress"
-                layout="@layout/layout_loading_progress"
+                layout="@layout/progressbar_loading"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:visibility="invisible" />
@@ -92,7 +92,5 @@
             app:menu="@menu/bottom_menu">
 
         </com.google.android.material.bottomnavigation.BottomNavigationView>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

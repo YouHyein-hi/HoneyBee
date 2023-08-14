@@ -14,35 +14,38 @@
         android:layout_width="0dp"
         android:layout_height="200dp"
         style="@style/TextAppearance.AppCompat.Headline"
-        android:background="@drawable/background_home_1080_570"
+        android:background="@drawable/background_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/setting_btn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/icon_setting"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView31"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
-            android:elevation="10dp"
             android:fontFamily="@font/pretendardextrabold"
+            android:shadowColor="@color/shadow2_orange"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="5"
             android:text="@string/app_name"
-            android:textColor="@color/sub_font4_white"
+            android:textColor="@color/sub_font5_white"
             android:textSize="53sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/menu_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/icon_menu"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -78,7 +81,7 @@
 
                 <include
                     android:id="@+id/layout_loading_progress"
-                    layout="@layout/layout_loading_progress"
+                    layout="@layout/progressbar_loading"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:visibility="invisible"
@@ -121,7 +124,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view5"
-                    tools:listitem="@layout/item_home_card_list">
+                    tools:listitem="@layout/item_cardhome">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
@@ -166,7 +169,7 @@
             <LinearLayout
                 android:id="@+id/noticeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="150dp"
                 android:layout_weight="1"
                 android:background="@drawable/roundsquare_white"
                 android:gravity="left|center"
@@ -206,7 +209,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view9"
-                    app:srcCompat="@drawable/icon_book" />
+                    app:srcCompat="@drawable/icon_list" />
 
             </LinearLayout>
 
@@ -218,9 +221,9 @@
                 android:orientation="vertical" />
 
             <LinearLayout
-                android:id="@+id/linearLayout6"
+                android:id="@+id/home_add_gallery"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="150dp"
                 android:layout_weight="1"
                 android:background="@drawable/roundsquare_white"
                 android:gravity="right|center"
@@ -260,7 +263,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view7"
-                    app:srcCompat="@drawable/icon_book" />
+                    app:srcCompat="@drawable/icon_add" />
 
             </LinearLayout>
         </LinearLayout>
@@ -291,7 +294,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/icon_book" />
+                    app:srcCompat="@drawable/icon_notice" />
 
                 <TextView
                     android:id="@+id/textView28"

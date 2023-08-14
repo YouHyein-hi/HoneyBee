@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="server"
         android:id="@+id/server"
-        android:icon="@drawable/navigation_server_icon"
         android:enabled="true"
+        android:icon="@drawable/icon_navigation_server"
+        android:title="server"
 
         />
     <item
         android:title="local"
         android:id="@+id/local"
-        android:icon="@drawable/navigation_home_icon"
+        android:icon="@drawable/icon_navigation_local"
         android:enabled="true"
         />
 </menu>

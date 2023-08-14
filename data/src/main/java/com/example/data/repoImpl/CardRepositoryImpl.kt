@@ -28,7 +28,8 @@ class CardRepositoryImpl @Inject constructor(
     override suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): DomainServerReponse {
         return cardDataSource.sendCardDataSource(
             cardName = domainSendCardData.cardName,
-            amount = domainSendCardData.cardAmount
+            amount = domainSendCardData.cardAmount,
+            billCheckDate = domainSendCardData.billCheckDate
         )
     }
 

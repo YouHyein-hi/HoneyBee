@@ -4,6 +4,8 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -28,6 +30,7 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -41,12 +44,17 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     private var myYear = 0
     private var myMonth = 0
     private var myDay = 0
+    private var todayDate : LocalDate? = null
+    private var selectedDate : LocalDate? = null
     private lateinit var callback: OnBackPressedCallback
     private var arrayCardList : MutableList<DomainReceiveCardData> = mutableListOf()
     private var myArray = arrayListOf<String>()
     private var newCard = 0
 
-    override fun initData() {}
+    override fun initData() {
+        todayDate = viewModel.dateNow()
+        selectedDate = viewModel.dateNow()
+    }
 
     override fun initUI() {
         with(binding){
@@ -80,6 +88,8 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     myMonth = month + 1
                     myDay = day
                     btnDate.text = "${myYear}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
+
+                    selectedDate = LocalDate.of(year, month + 1, day)
                 }
                 val dataDialog = DatePickerDialog(requireContext(), data,
                     cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
@@ -109,6 +119,25 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 handled
             }
 
+            btnDate.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    if (s!!.length > 15) {
+                        showShortToast("15자 이내로 입력해주세요.")
+                    }
+                }
+            })
+            btnPrice.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    if (s!!.length > 10) {
+                        showShortToast("10자 이내로 입력해주세요.")
+                    }
+                }
+            })
+
             /** 완료 Button **/
             completeBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
@@ -119,11 +148,15 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     btnStore.text!!.isEmpty() -> {
                         showShortToast("가게 이름을 입력하세요.")
                     }
+                    btnPrice.text.isEmpty() -> {
+                        showShortToast("금액을 입력하세요.")
+                    }
                     btnDate.text.isEmpty() -> {
                         showShortToast("날짜를 입력하세요.")
                     }
-                    btnPrice.text.isEmpty() -> {
-                        showShortToast("금액을 입력하세요.")
+                    selectedDate!!.isAfter(todayDate) -> {
+                        showShortToast("오늘보다 미래 날짜는 불가능합니다.")
+                        Log.e("TAG", "SendBillFragment: 오늘보다 미래 날짜는 불가능합니다.", )
                     }
                     activityViewModel.image.value == null -> {
                         showShortToast("사진이 비었습니다.\n초기화면으로 돌아갑니다.")
@@ -147,6 +180,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                             )
                         ).show(parentFragmentManager, "tag")
                     }
+
                 }
             }
 

@@ -27,7 +27,7 @@ class CardAdapter : RecyclerView.Adapter<CardAdapter.MyHolder>(){
             Log.e("TAG", "bind: cardName=${item.cardName}, amount=${item.cardAmount}", )
             binding.cardName = item.cardName
             binding.amount = item.cardAmount
-            binding.billCheckDate = "10" + "일"
+            binding.billCheckDate = "${item.billCheckDate}일"
         }
     }
 

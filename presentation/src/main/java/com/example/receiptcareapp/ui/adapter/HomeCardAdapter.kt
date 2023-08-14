@@ -19,7 +19,7 @@ class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
 
     inner class MyHolder(private val binding : ItemHomeCardListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DomainReceiveCardData, position:Int) {
-            binding.homeCardname.text = item.cardName
+            binding.homeCardName.text = item.cardName
             binding.amount = item.cardAmount
             when(position) {
                 1 -> binding.cardIcon.setImageResource(R.drawable.icon_card_1)

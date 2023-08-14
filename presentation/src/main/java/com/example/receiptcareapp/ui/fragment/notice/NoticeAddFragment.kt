@@ -24,15 +24,15 @@ class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
     override fun initUI() {}
 
     override fun initListener() {
-        binding.addBtn.setOnClickListener {
-            viewModel.insertNotice(
-                DomainAddNoticeData(
-                    title = binding.titleEditTxt.text.toString(),
-                    date = LocalDateTime.now(),
-                    content = binding.contentEditTxt.text.toString()
-                )
-            )
-        }
+//        binding. addBtn.setOnClickListener {
+//            viewModel.insertNotice(
+//                DomainAddNoticeData(
+//                    title = binding.titleEditTxt.text.toString(),
+//                    date = LocalDateTime.now(),
+//                    content = binding.contentEditTxt.text.toString()
+//                )
+//            )
+//        }
 
         binding.baseComponent.backBtn.setOnClickListener {
             findNavController().popBackStack()

@@ -21,12 +21,14 @@ import dagger.hilt.android.AndroidEntryPoint
  * pureum
  */
 @AndroidEntryPoint
-class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
+class CardBottomSheet(
+    private val viewModel: HomeCardViewModel
+): BaseBottomSheet<FragmentCardBottomsheetBinding>(
     FragmentCardBottomsheetBinding::inflate,
     "homeCardBottomSheet"
 ) {
     private val adapter: CardAdapter = CardAdapter()
-    private val viewModel : HomeCardViewModel by viewModels()
+//    private val viewModel : HomeCardViewModel by viewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)

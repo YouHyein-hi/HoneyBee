@@ -1,6 +1,7 @@
 package com.example.receiptcareapp.ui.fragment
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -21,11 +22,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private val viewModel : HomeCardViewModel by viewModels()
     private lateinit var callback: OnBackPressedCallback
-    private val homeCardBottomSheet: CardBottomSheet = CardBottomSheet()
+    private lateinit var homeCardBottomSheet: CardBottomSheet
     private val addDialog : AddDialog = AddDialog()
     private val adapter: HomeCardAdapter = HomeCardAdapter()
 
-    override fun initData() {}
+    override fun initData() {
+        homeCardBottomSheet = CardBottomSheet(viewModel)
+    }
 
     override fun initUI() {
         with(binding){
@@ -34,12 +37,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             noticeBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_noticeFragment) }
 
             addBtn.setOnClickListener{ addDialog.show(parentFragmentManager, "addDialog") }
-            cardListBtn.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
+            cardListBtn.setOnClickListener{
+                homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet")
+            }
             homeCardRecyclerview.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
             homeCardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
             homeCardRecyclerview.adapter = adapter
         }
-        //카드목록 불러오기
+        //카드목록, 공지사항 불러오기
         viewModel.getServerCardData()
         viewModel.getNoticeList()
     }

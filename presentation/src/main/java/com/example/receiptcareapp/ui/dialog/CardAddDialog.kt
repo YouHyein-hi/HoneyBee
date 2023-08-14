@@ -3,6 +3,7 @@ package com.example.receiptcareapp.ui.dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.Log
+import android.util.LogPrinter
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -109,6 +110,7 @@ class CardAddDialog(
                 else{  // TODO 여기서 viewModel로 연결해야함
                     var price = viewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString())
                     viewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt()))
+                    homeCardViewModel.getServerCardData()
                 }
             }
 

@@ -15,7 +15,7 @@
         app:behavior_hideable="true"
         app:behavior_draggable="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        android:background="@drawable/bottom_sheet_style">
+        android:background="@drawable/bottomsheet_style">
 
         <TextView
             android:id="@+id/titleTxt"
@@ -54,7 +54,7 @@
             android:layout_height="35dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/icon_add"
+            android:background="@drawable/icon_add_card"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,7 +69,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/subTitleTxt"
-            tools:listitem="@layout/card_item" />
+            tools:listitem="@layout/item_card" />
 
 <!--        <View-->
 <!--            android:id="@+id/connectingView"-->
@@ -109,7 +109,7 @@
 
         <include
             android:id="@+id/layout_loading_progress"
-            layout="@layout/layout_loading_progress"
+            layout="@layout/progressbar_loading"
             android:layout_height="0dp"
             android:layout_width="match_parent"
             android:visibility="invisible"

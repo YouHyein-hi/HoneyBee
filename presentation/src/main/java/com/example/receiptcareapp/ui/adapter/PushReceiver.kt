@@ -41,7 +41,7 @@ class PushReceiver : BroadcastReceiver() {
 
             // Notification
             val builder01 = NotificationCompat.Builder(context, CHANNEL_ID).apply {
-                setSmallIcon(R.drawable.icon_camera)
+                setSmallIcon(R.drawable.icon_add_camera)
                 setContentTitle("HoneyBee 푸시알림!!!!")  // Set Title
                 setContentText(contents)   // Set Content
                 priority = NotificationCompat.PRIORITY_DEFAULT  // Set PRIORITY

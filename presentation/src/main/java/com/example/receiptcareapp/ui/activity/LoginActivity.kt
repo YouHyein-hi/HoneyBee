@@ -26,22 +26,28 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val viewModel: LoginActivityViewModel by viewModels()
     private var backPressedTime: Long = 0
     private val loginData = LoginData(null,null)
-
     private val handler = Handler(Looper.getMainLooper())
-    private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
-    private val GALLERY = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-    private val CAMERA_CODE = 98
-    private val GALLERY_CODE = 1010
+    private val ALL_PERMISSIONS = arrayOf(
+        android.Manifest.permission.CAMERA,
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+    private val ALL_PERMISSIONS_CODE = 123
 
     override fun initData() {
 //        nextActivity()
         var getLogin = viewModel.getLoginData()
         if(getLogin.id != null){
             nextActivity()
-        }else{
-            //TODO 펄미션 체크는 이미 권한체크가 되있을땐 안올라오게해야함
-            permissionDialog()
         }
+
+        if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) {
+            permissionDialog()
+            Log.e("TAG", "initData: 권한 없음", )
+        }
+        else{
+            showShortToast("권한 있음")
+        }
+
     }
 
     override fun initUI() {
@@ -133,15 +139,23 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     //권한 Dialog
     private fun permissionDialog() {
         val permissionDialog = Permissiond_Dialog()
-
-        permissionDialog.setOnDismissListener(object : Permissiond_Dialog.OnDismissListener {
-            override fun onDialogDismissed() {
-                Log.e("TAG", "onDialogDismissed: 성공함?", )
-                checkPermission(CAMERA, CAMERA_CODE)
+        permissionDialog.setOnPermissionButtonClickListener(object : Permissiond_Dialog.OnPermissionButtonClickListener {
+            override fun onPermissionButtonClicked() {
+                checkPermission(ALL_PERMISSIONS, ALL_PERMISSIONS_CODE)
             }
         })
-
         permissionDialog.show(supportFragmentManager, "permissiondDialog")
+        Log.e(TAG, "다이알로그 실행", )
+    }
+
+    // 권한 체크
+    private fun checkAllPermissionsGranted(permissions: Array<String>): Boolean {
+        for (permission in permissions) {
+            if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
     }
 
     //권한 관련
@@ -152,57 +166,43 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         }
     }
 
-
-
     // TODO 이 부분을 ViewModel 로 빼고 ViewModel 에서는 Enum Class로 값 관리하기
     // TODO 여기선 observer 만하는게 어떨지
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        Log.e("TAG", "onRequestPermissionsResult: 에 접근", )
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        var permissionsString : String = " "
+        Log.e("TAG", "onRequestPermissionsResult: 에 접근",)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults) // 두 개의 배열 파라미터를 모두 전달합니다.
 
-        Log.e("TAG", "onRequestPermissionsResult: $requestCode", )
-
-        when(requestCode){
-            CAMERA_CODE -> {
-                Log.e("TAG", "onRequestPermissionsResult: 카메라 권한 접근", )
-                permissionsString = "카메라"
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.e("TAG", "${permissionsString} 권한이 허용됐습니다!")
-                    showShortToast("${permissionsString} 권한이 허용됐습니다!")
-
-                    handler.postDelayed({
-                        Log.e("TAG", "initListener: 딜레이 2초 지남", )
-                        checkPermission(GALLERY, GALLERY_CODE)
-                    }, 2000)
-                } else {
-                    Log.e("TAG", "${permissionsString}는 서비스에 필요한 권한입니다.권한에 동의해주세요.")
-                    showShortToast("${permissionsString}는 서비스에 필요한 권한입니다.\n권한에 동의해주세요.")
-                    handler.postDelayed({
-                        checkPermission(CAMERA, CAMERA_CODE)
-                    }, 1500)
-
-                    handler.postDelayed({
-                        Log.e("TAG", "initListener: 딜레이 2초 지남", )
-                        checkPermission(GALLERY, GALLERY_CODE)
-                    }, 2000)
+        for (i in permissions.indices) {
+            val grantResult = grantResults[i]
+            when (permissions[i]) {
+                android.Manifest.permission.CAMERA -> {
+                    if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                        Log.e("TAG", "카메라 권한이 허용됐습니다!")
+                        showShortToast("카메라 권한이 허용됐습니다!")
+                    } else {
+                        handlePermissionDenied("카메라")
+                    }
                 }
-            }
-            GALLERY_CODE -> {
-                Log.e("TAG", "onRequestPermissionsResult: 겔러리 권한 접근", )
-                permissionsString = "갤러리"
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.e("TAG", "${permissionsString} 권한이 허용됐습니다!")
-                    showShortToast("${permissionsString} 권한이 허용됐습니다!")
-                } else {
-                    Log.e("TAG", "${permissionsString}는 서비스에 필요한 권한입니다.권한에 동의해주세요.")
-                    showShortToast("${permissionsString}는 서비스에 필요한 권한입니다.\n권한에 동의해주세요.")
-                    handler.postDelayed({
-                        checkPermission(GALLERY, GALLERY_CODE)
-                    }, 1500)
+                android.Manifest.permission.READ_EXTERNAL_STORAGE -> {
+                    if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                        Log.e("TAG", "갤러리 권한이 허용됐습니다!")
+                        showShortToast("갤러리 권한이 허용됐습니다!")
+                    } else {
+                        handlePermissionDenied("갤러리")
+                    }
                 }
             }
         }
+
+    }
+
+    private fun handlePermissionDenied(permission: String) {
+        Log.e("TAG", permission)
+        showShortToast("$permission 는 서비스에 필요한 권한입니다. 권한에 동의해주세요.")
+
+        handler.postDelayed({
+            checkPermission(ALL_PERMISSIONS, ALL_PERMISSIONS_CODE)
+        }, 2000)
     }
 
 }

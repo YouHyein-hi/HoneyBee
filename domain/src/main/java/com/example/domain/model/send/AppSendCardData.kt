@@ -6,5 +6,6 @@ package com.example.domain.model.send
  */
 data class AppSendCardData(
     var cardName: String,
-    var cardAmount: Int
+    var cardAmount: Int,
+    var billCheckDate: String
 )

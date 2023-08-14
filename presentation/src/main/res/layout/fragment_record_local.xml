@@ -22,7 +22,7 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:gravity="center"
-        android:background="@drawable/btn_stroke_up_bottom">
+        android:background="@drawable/box_yellow">
 
         <EditText
             android:textColorHighlight="@color/black"
@@ -41,7 +41,7 @@
         android:id="@+id/mainRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_local_bill_list"/>
+        tools:listitem="@layout/item_bill_list_local"/>
 
     <TextView
         android:id="@+id/empty_text"

@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseBottomSheet
-import com.example.receiptcareapp.databinding.FragmentCardBottomsheetBinding
+import com.example.receiptcareapp.databinding.BottomsheetCardBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
 import com.example.receiptcareapp.ui.adapter.CardAdapter
 import com.example.receiptcareapp.util.ResponseState
@@ -25,9 +25,9 @@ import dagger.hilt.android.AndroidEntryPoint
  * pureum
  */
 @AndroidEntryPoint
-class CardBottomSheet: BaseBottomSheet<FragmentCardBottomsheetBinding>(
-    FragmentCardBottomsheetBinding::inflate,
-    "homeCardBottomSheet"
+class CardBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
+    BottomsheetCardBinding::inflate,
+    "BottomsheetCardBinding"
 ) {
     private val adapter: CardAdapter = CardAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()

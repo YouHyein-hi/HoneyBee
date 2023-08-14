@@ -128,7 +128,7 @@
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_marginTop="15dp"
-        android:background="@drawable/loginbtn"
+        android:background="@drawable/btn_login"
         android:fontFamily="@font/pretendardsemibold"
         android:text="로 그 인"
         android:textColor="@color/sub_font1_gray"
@@ -139,7 +139,7 @@
 
     <include
         android:id="@+id/layout_loading_progress"
-        layout="@layout/layout_loading_progress"
+        layout="@layout/progressbar_loading"
         android:layout_height="0dp"
         android:layout_width="match_parent"
         android:visibility="invisible"

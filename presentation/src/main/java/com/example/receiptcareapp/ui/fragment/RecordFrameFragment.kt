@@ -17,7 +17,9 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordFrameBinding
 import com.example.receiptcareapp.dto.RecyclerData
-import com.example.receiptcareapp.viewModel.fragmentViewModel.RecordViewModel
+import com.example.receiptcareapp.ui.fragment.record.RecordLocalFragment
+import com.example.receiptcareapp.ui.fragment.record.RecordServerFragment
+import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -131,7 +133,7 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
 //        }
 
         //뒤로가기 버튼
-        binding.recordBackBtn.setOnClickListener{
+        binding.baseComponent.backBtn.setOnClickListener{
             findNavController().popBackStack()
         }
     }
@@ -210,13 +212,7 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                Log.e("TAG", "handleOnBackPressed: 뒤로가기", )
-                if (activityViewModel.connectedState.value == ConnectedState.CONNECTING) {
-                    activityViewModel.serverCoroutineStop()
-                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
-                } else {
-                    findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
-                }
+                findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)

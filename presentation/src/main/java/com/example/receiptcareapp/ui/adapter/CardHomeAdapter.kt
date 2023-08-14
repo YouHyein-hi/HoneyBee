@@ -2,7 +2,6 @@ package com.example.receiptcareapp.ui.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.receive.DomainReceiveCardData
@@ -21,8 +20,8 @@ class CardHomeAdapter : RecyclerView.Adapter<CardHomeAdapter.MyHolder>(){
         fun bind(item: DomainReceiveCardData) {
             Log.e("TAG", "bind: inin", )
             Log.e("TAG", "bind: ${item.cardName}, ${item.cardAmount}", )
-            binding.homeCardname.text = item.cardName
-            binding.homeCardprice.text = item.cardAmount
+            binding.homeCardName.text = item.cardName
+            binding.homeCardPrice.text = item.cardAmount
         }
     }
 

@@ -34,9 +34,9 @@ object DataSourceModule {
     @Provides
     fun provideLoginSource(retrofit: Retrofit):LoginDataSource = LoginDataSourceImpl(retrofit)
 
-//    @Singleton
-//    @Provides
-//    fun provideNoticeSource(retrofit: Retrofit):NoticeDataSource = NoticeDataSourceImpl()
+    @Singleton
+    @Provides
+    fun provideNoticeSource(retrofit: Retrofit):NoticeDataSource = NoticeDataSourceImpl(retrofit)
 
 
 }

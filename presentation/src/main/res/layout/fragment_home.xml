@@ -69,7 +69,7 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cardlist_btn"
+                android:id="@+id/cardList_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -115,7 +115,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/cardhome_recyclerview"
+                    android:id="@+id/home_card_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginStart="20dp"
@@ -137,7 +137,7 @@
                     android:background="@color/sub_button3_white_gray"
                     app:layout_constraintBottom_toTopOf="@+id/textView7"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardhome_recyclerview" />
+                    app:layout_constraintTop_toBottomOf="@+id/home_card_recyclerview" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -167,7 +167,7 @@
             android:weightSum="2">
 
             <LinearLayout
-                android:id="@+id/home_add_camera"
+                android:id="@+id/noticeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_weight="1"
@@ -309,7 +309,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/home_textNotice"
+                    android:id="@+id/home_notice_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"

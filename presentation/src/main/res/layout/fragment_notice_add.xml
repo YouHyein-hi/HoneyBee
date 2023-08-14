@@ -1,107 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.NoticeAddUpdateFragment"
-    android:orientation="vertical"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     >
+
+    <data>
+        <variable
+            name="content_title"
+            type="String" />
+
+        <variable
+            name="date"
+            type="String" />
+
+        <variable
+            name="content"
+            type="String" />
+    </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.notice.NoticeShowFragment"
+        android:orientation="vertical"
+        android:background="@color/main_background_white"
+        >
 
-        <ImageButton
-            android:id="@+id/noticeAdd_back_btn"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/icon_back"
+        <include
+            android:id="@+id/base_component"
+            layout="@layout/base_background_component"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:textColor="@color/main_font_black"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="@string/notice_add_title"
-            android:textSize="30dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/base_component"
+            tools:layout_editor_absoluteX="0dp">
+
+            <EditText
+                android:gravity="center"
+                android:id="@+id/titleEditTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="제목을 입력해주세요."
+                android:textSize="25dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="15dp"
+                android:background="@color/gray_line" />
+
+            <EditText
+                android:gravity="center"
+                android:id="@+id/contentEditTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="내용을 입력해주세요." />
+        </LinearLayout>
+
+        <include
+            android:visibility="invisible"
+            android:id="@+id/layoutLoadingProgress"
+            layout="@layout/progressbar_loading"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/gray_line"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="40dp"
-        >
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="제목"
-            android:textColor="@color/main_font_black"
-            android:textSize="20sp"
-            android:layout_marginEnd="20dp"
-            />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:gravity="start"
-            android:ems="13"
-            android:hint="제목을 입력해주세요!" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingBottom="150dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:paddingTop="40dp"
-        >
-
-        <TextView
-            android:layout_gravity="top"
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="내용"
-            android:textSize="20sp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/main_font_black"
-            />
-
-        <EditText
-            android:padding="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="top"
-            android:ems="13"
-            android:hint="내용을 입력해주세요!"
-            android:background="@drawable/memo_border"
-            />
-    </LinearLayout>
-
-
-
-</LinearLayout>
+</layout>

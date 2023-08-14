@@ -25,18 +25,11 @@ import javax.inject.Inject
 class LoginActivityViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val preferenceManager: PreferenceManager
-    //sharedpreference 사용해서 로그인한 핸드폰은 자동로그인
 ): BaseViewModel() {
-    init {
-        Log.e("TAG", "LoginActivityViewModel 생성: ", )
-    }
+
     //서버 연결 유무 관리
     private var _connectedState = MutableLiveData<ConnectedState>()
-    val connectedState: LiveData<ConnectedState>
-        // get 의 경우 해당 connectedState 가 호출될때 사용되는 부분임
-        // 원래 connectedState 가 호출되면 get 이 호출되며 connectedState를 가져오는데
-        // 다음과 같이 get을 수정하면 호출시 _connectedState 을 호출
-        get() = _connectedState
+    val connectedState: LiveData<ConnectedState> get() = _connectedState
     fun changeState(state: ConnectedState){
         _connectedState.value = state
     }
@@ -87,4 +80,6 @@ class LoginActivityViewModel @Inject constructor(
         super.onCleared()
         Log.e("TAG", "LoginActivityViewModel 삭제: ", )
     }
+
+    init { Log.e("TAG", "LoginActivityViewModel 생성: ", ) }
 }

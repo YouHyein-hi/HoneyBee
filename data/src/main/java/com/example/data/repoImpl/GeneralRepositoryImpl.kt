@@ -40,7 +40,8 @@ class GeneralRepositoryImpl @Inject constructor(
             storeName = domainSendData.storeName,
             billSubmitTime = domainSendData.date,
             file = domainSendData.picture
-        )    }
+        )
+    }
 
     override suspend fun updateDataUseCaseRepository(domainResendData: DomainUpadateData): DomainServerReponse {
         return generalDataSource.updateDataSource(

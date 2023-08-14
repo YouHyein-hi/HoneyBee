@@ -1,9 +1,8 @@
-package com.example.receiptcareapp.ui.fragment
+package com.example.receiptcareapp.ui.fragment.record
 
 import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.local.toRecyclerShowData
@@ -14,7 +13,7 @@ import com.example.receiptcareapp.databinding.FragmentRecordLocalBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.adapter.RecordLocalAdapter
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import com.example.receiptcareapp.viewModel.fragmentViewModel.RecordViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -45,7 +44,6 @@ class RecordLocalFragment(
         //로컬 목록에서 리스트를 누를경우
         recordLocalAdapter.onLocalSaveClic = {
             Log.e("TAG", "initListener: local")
-
             //Activity ViewModel 값 저장
             activityViewModel.changeSelectedData(
                 RecyclerData(
@@ -58,9 +56,6 @@ class RecordLocalFragment(
                     file = it.file
                 )
             )
-//            activityViewModel.changeSelectedData(myData)
-//            activityViewModel.changeNullPicture()
-//            viewModel.changeStartGap(ShowType.LOCAL)
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
     }

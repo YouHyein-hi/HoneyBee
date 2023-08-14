@@ -9,27 +9,24 @@
         android:id="@+id/homeFragment"
         android:name="com.example.receiptcareapp.ui.fragment.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home"
-        >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_cameraFragment"
             app:destination="@id/cameraFragment"
-            app:popUpTo="@id/homeFragment"
-            />
+            app:popUpTo="@id/homeFragment" />
         <action
             android:id="@+id/action_homeFragment_to_galleryFragment"
             app:destination="@id/galleryFragment"
-            app:popUpTo="@id/homeFragment"
-            />
+            app:popUpTo="@id/homeFragment" />
         <action
             android:id="@+id/action_homeFragment_to_recyclerFragment"
             app:destination="@id/recordFrameFragment"
-            app:popUpTo="@id/homeFragment"/>
+            app:popUpTo="@id/homeFragment" />
 
         <action
             android:id="@+id/action_homeFragment_to_menuFragment"
             app:destination="@id/menuFragment"
-            app:popUpTo="@id/homeFragment"/>
+            app:popUpTo="@id/homeFragment" />
         <action
             android:id="@+id/action_homeFragment_to_noticeFragment"
             app:destination="@id/noticeFragment" />
@@ -46,109 +43,114 @@
         <action
             android:id="@+id/action_menuFragment_to_noticeFragment"
             app:destination="@id/noticeFragment"
-            app:popUpTo="@id/menuFragment"
-        />
+            app:popUpTo="@id/menuFragment" />
+
+        <action
+            android:id="@+id/action_noticeFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/noticeFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.example.receiptcareapp.ui.fragment.CameraFragment"
         android:label="fragment_camera"
-        tools:layout="@layout/fragment_camera" >
+        tools:layout="@layout/fragment_camera">
         <action
             android:id="@+id/action_cameraFragment_to_showFragment"
             app:destination="@id/sendBillFragment"
-            app:popUpTo="@id/homeFragment"
-            />
+            app:popUpTo="@id/homeFragment" />
         <action
             android:id="@+id/action_cameraFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
-            />
+            app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/galleryFragment"
         android:name="com.example.receiptcareapp.ui.fragment.GalleryFragment"
         android:label="fragment_gallery"
-        tools:layout="@layout/fragment_gallery" >
+        tools:layout="@layout/fragment_gallery">
         <action
             android:id="@+id/action_galleryFragment_to_showFragment"
             app:destination="@id/sendBillFragment"
-            app:popUpTo="@id/homeFragment"
-            />
+            app:popUpTo="@id/homeFragment" />
         <action
             android:id="@+id/action_galleryFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
-            />
+            app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/recordFrameFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.RecordFrameFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.record.RecordFrameFragment"
         android:label="fragment_recycler"
-        tools:layout="@layout/fragment_record_frame" >
+        tools:layout="@layout/fragment_record_frame">
         <action
             android:id="@+id/action_recyclerFragment_to_recyclerShowFragment"
             app:destination="@id/recordShowFragment"
-            app:popUpTo="@id/recordFrameFragment"
-            />
+            app:popUpTo="@id/recordFrameFragment" />
         <action
             android:id="@+id/action_recyclerFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
-            />
+            app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/recordShowFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.RecordShowFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.record.RecordShowFragment"
         android:label="fragment_recycler_show"
-        tools:layout="@layout/fragment_record_show" >
+        tools:layout="@layout/fragment_record_show">
         <action
             android:id="@+id/action_recyclerShowFragment_to_recyclerFragment"
             app:destination="@id/recordFrameFragment"
             app:popUpTo="@id/recordFrameFragment"
-            app:popUpToInclusive="false"
-            />
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/sendBillFragment"
         android:name="com.example.receiptcareapp.ui.fragment.SendBillFragment"
         android:label="fragment_success"
-        tools:layout="@layout/fragment_send_bill" >
+        tools:layout="@layout/fragment_send_bill">
         <action
             android:id="@+id/action_showFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
-            />
+            app:popUpTo="@id/homeFragment" />
         <action
             android:id="@+id/action_showFragment_to_cameraFragment"
             app:destination="@id/cameraFragment"
-            app:popUpTo="@id/homeFragment"
-            />
+            app:popUpTo="@id/homeFragment" />
         <action
             android:id="@+id/action_showFragment_to_galleryFragment"
             app:destination="@id/galleryFragment"
-            app:popUpTo="@id/homeFragment"
-            />
+            app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/noticeFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.NoticeFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.notice.NoticeFragment"
         android:label="fragment_notice"
-        tools:layout="@layout/fragment_notice" >
+        tools:layout="@layout/fragment_notice">
 
         <action
             android:id="@+id/action_noticeFragment_to_addNoticeFragment"
-            app:destination="@id/addnoticeFragment"
-            app:popUpTo="@id/noticeFragment"
-            />
+            app:destination="@id/addNoticeFragment"
+            app:popUpTo="@id/noticeFragment" />
+
+        <action
+            android:id="@+id/action_noticeFragment_to_showNoticeFragment"
+            app:destination="@id/noticeShowFragment"
+            app:popUpTo="@id/noticeFragment" />
 
     </fragment>
     <fragment
-        android:id="@+id/addnoticeFragment"
-        android:name="com.example.receiptcareapp.ui.fragment.NoticeAddUpdateFragment"
+        android:id="@+id/addNoticeFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.notice.NoticeAddFragment"
         android:label="fragment_addnotice"
         tools:layout="@layout/fragment_notice_add" />
+
+    <fragment
+        android:id="@+id/noticeShowFragment"
+        android:name="com.example.receiptcareapp.ui.fragment.notice.NoticeShowFragment"
+        android:label="NoticeShowFragment"
+        tools:layout="@layout/fragment_notice_show">
+    </fragment>
 
 
 </navigation>

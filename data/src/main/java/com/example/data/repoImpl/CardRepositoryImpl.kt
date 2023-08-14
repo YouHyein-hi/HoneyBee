@@ -2,6 +2,7 @@ package com.example.data.repoImpl
 
 import android.util.Log
 import com.example.data.remote.dataSource.CardDataSource
+import com.example.data.remote.model.ServerResponse
 import com.example.data.remote.model.toDomainLoginResponse
 import com.example.data.remote.model.toDomainReceiveCardData
 import com.example.domain.model.receive.DomainReceiveCardData
@@ -24,7 +25,7 @@ class CardRepositoryImpl @Inject constructor(
             .toMutableList()
     }
 
-    override suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): String {
+    override suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): DomainServerReponse {
         return cardDataSource.sendCardDataSource(
             cardName = domainSendCardData.cardName,
             amount = domainSendCardData.cardAmount,

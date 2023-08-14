@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_honey"
-    tools:context=".ui.fragment.RecordShowFragment">
+    tools:context=".ui.fragment.record.RecordShowFragment">
 
     <ImageView
         android:id="@+id/back_btn"
@@ -42,8 +42,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="70dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="-140dp"
+        android:layout_marginBottom="-70dp"
         android:elevation="20dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
         app:layout_constraintEnd_toEndOf="parent"
@@ -192,9 +193,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendardsemibold"
-        android:text="이미지가 비었어요.."
-        android:textColor="@color/black"
-        android:textSize="30dp"
+        android:text="이미지 로딩 실패..!"
+        android:textColor="@color/basic_white"
+        android:textSize="25sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
         app:layout_constraintEnd_toEndOf="parent"
@@ -211,6 +212,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

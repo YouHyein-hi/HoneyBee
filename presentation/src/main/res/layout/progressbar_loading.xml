@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="kingBee.json"
+        app:lottie_fileName="bee.json"
         app:lottie_loop="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

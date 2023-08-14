@@ -6,9 +6,10 @@
     <string name="menu_changeTime"><u>시간 변경</u></string>
     <string name="recycler_amount">%s원 남았어요!</string>
 
-    <string name="bottom_sheet_recycler_check">저번 달 청구</string>
-    <string name="notice_title">공지사항</string>
-    <string name="notice_add_title">공지사항 추가</string>
+    <string name="bottom_sheet_recycler_check">청구 날짜</string>
+
+
+
 
     <!-- Button -->
     <string name="cancel">취소</string>
@@ -37,7 +38,8 @@
     <string name="homeAddDialog_title">영수증 추가 방법</string>
     <string name="homeAddDialog_camera">카메라로 영수증 추가</string>
     <string name="homeAddDialog_gallery">갤러리로 영수증 추가</string>
-
+    <!--    홈 카드 컴포넌트 -->
+    <string name="home_card_item_amount">%s 원</string>
 
     <!-- sendbill 전송 페이지 -->
     <string name="pictureShow_text">해당 카드와 날짜를 금액을 입력해주세요.</string>
@@ -80,4 +82,11 @@
     <string name="dialog_delete_title">영수증 삭제</string>
     <string name="dialog_delete_text">정말로 삭제하시겠어요?</string>
 
+    <!-- 공지사항 페이지 -->
+    <string name="notice_title">공지사항</string>
+    <string name="notice_add_title">공지사항 추가</string>
+    <string name="notice_show_title">공지사항</string>
+
+    <!-- 기록페이지 -->
+    <string name="record_frame_title">영수증 목록</string>
 </resources>

@@ -12,6 +12,7 @@ import com.example.receiptcareapp.databinding.ItemCardBinding
  * 2023-03-22
  * pureum
  */
+
 class CardAdapter : RecyclerView.Adapter<CardAdapter.MyHolder>(){
 
     private lateinit var cardBinding: ItemCardBinding

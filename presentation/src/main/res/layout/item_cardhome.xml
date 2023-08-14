@@ -3,8 +3,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <data></data>
+    <data>
+        <variable name="amount" type="String" />
+    </data>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,27 +15,36 @@
         android:layout_marginBottom="15dp"
         android:background="@drawable/roundsquare_yellow">
 
-
-        <TextView
-            android:id="@+id/home_cardname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:fontFamily="@font/pretendardsemibold"
-            android:text="나라사랑 카드"
-            android:textColor="@color/fontColor_black"
-            android:textSize="16sp"
+        <ImageView
+            android:id="@+id/card_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/icon_card_2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/home_cardprice"
+            android:id="@+id/home_cardName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
+            android:layout_marginStart="5dp"
             android:fontFamily="@font/pretendardsemibold"
-            android:text="19,800 원"
+            android:text="나라사랑 카드"
+            android:textColor="@color/fontColor_black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/card_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/home_cardPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/pretendardsemibold"
+            android:text="@{@string/home_card_item_amount(amount)}"
             android:textColor="@color/fontColor_black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

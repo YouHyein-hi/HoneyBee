@@ -8,6 +8,6 @@ data class DomainReceiveCardData(
     var uid:Long,
     var cardName:String,
     var cardAmount:String,
-    var billCheckDate:String
+    var billCheckDate:String?
 )
 

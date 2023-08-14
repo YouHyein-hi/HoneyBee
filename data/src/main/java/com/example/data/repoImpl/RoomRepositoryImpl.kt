@@ -2,15 +2,18 @@ package com.example.data.repoImpl
 
 import com.example.data.local.dao.MyDao
 import com.example.data.local.entity.MyEntity
+import com.example.data.local.entity.toDomainEntity
 import com.example.domain.model.local.DomainRoomData
-import com.example.domain.repo.RoomRepo
+import com.example.domain.repo.RoomRepository
 import javax.inject.Inject
 
 /**
  * 2023-02-15
  * pureum
  */
-class RoomRepoImpl @Inject constructor(private val roomDao: MyDao) : RoomRepo {
+class RoomRepositoryImpl @Inject constructor(
+    private val roomDao: MyDao
+    ) : RoomRepository {
 
     override suspend fun insertData(list: DomainRoomData) {
         val myList = MyEntity(
@@ -24,21 +27,8 @@ class RoomRepoImpl @Inject constructor(private val roomDao: MyDao) : RoomRepo {
         roomDao.insertData(myList)
     }
 
-    override suspend fun getAllData(): ArrayList<DomainRoomData> {
-        val myList = arrayListOf<DomainRoomData>()
-        roomDao.getAllData().map {
-            myList.add(
-                DomainRoomData(
-                    cardName = it.cardName,
-                    amount = it.amount,
-                    billSubmitTime = it.billSubmitTime,
-                    storeName = it.pictureName,
-                    file = it.picture,
-                    uid = it.uid
-                )
-            )
-        }
-        return myList
+    override suspend fun getAllData(): MutableList<DomainRoomData> {
+        return roomDao.getAllData().map { it.toDomainEntity() }.toMutableList()
     }
 
     override suspend fun deleteData(date: String): Int {

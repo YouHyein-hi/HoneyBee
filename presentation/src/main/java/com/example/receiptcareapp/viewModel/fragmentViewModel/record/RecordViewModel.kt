@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.viewModel.fragmentViewModel
+package com.example.receiptcareapp.viewModel.fragmentViewModel.record
 
 import android.app.Activity
 import android.app.Application
@@ -18,6 +18,7 @@ import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.File
@@ -36,11 +37,6 @@ class RecordViewModel @Inject constructor(
     private val getPictureDataUseCase: GetPictureDataUseCase,
 ): BaseViewModel() {
 
-    private var _startGap = MutableLiveData<ShowType>()
-    val startGap : LiveData<ShowType>
-        get() = _startGap
-    fun changeStartGap(type: ShowType){ _startGap.value = type }
-
     val loading : MutableLiveData<Boolean> get() = isLoading
 
     //서버에서 받은 데이터 담는 박스
@@ -53,10 +49,8 @@ class RecordViewModel @Inject constructor(
     val roomData: LiveData<MutableList<DomainRoomData>>
         get() = _roomData
 
-
-
     fun getLocalAllData() {
-        CoroutineScope(exceptionHandler).launch {
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             loading.postValue(true)
             val gap = getRoomDataListUseCase()
             Log.e("TAG", "receiveAllRoomData: $gap")
@@ -76,7 +70,7 @@ class RecordViewModel @Inject constructor(
 
     // Server 데이터 불러오는 부분
     fun getServerAllBillData() {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             withTimeoutOrNull(waitTime){
                 loading.postValue(true)
                 Log.e("TAG", "receiveServerAllData: ", )

@@ -1,30 +1,33 @@
 package com.example.receiptcareapp.ui.dialog
 
-import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
 import android.util.Log
-import android.view.ViewGroup
-import android.view.Window
+import android.util.LogPrinter
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardAddBinding
+import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
+import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.text.DecimalFormat
 
-class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
+@AndroidEntryPoint
+class CardAddDialog(
+    private val homeCardViewModel: HomeCardViewModel
+) : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
+    private val viewModel : CardAddViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val cardAddViewModel : CardAddViewModel by viewModels()
 
     override fun initData() {
     }
@@ -36,16 +39,16 @@ class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inf
         with(binding){
             dialogcardEditCardprice.setOnClickListener {
                 if (dialogcardEditCardprice.text.contains(",")) {
-                    dialogcardEditCardprice.setText(cardAddViewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
+                    dialogcardEditCardprice.setText(viewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
                     dialogcardEditCardprice.setSelection(dialogcardEditCardprice.text.length)
                 }
             }
             dialogcardEditCardprice.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_NEXT && dialogcardEditCardprice.text.isNotEmpty()) {
-                    val gap = DecimalFormat("#,###")
-                    dialogcardEditCardprice.setText(gap.format(dialogcardEditCardprice.text.toString().replace(",","").toInt()))
-//                    dialogcardEditCardprice.setText(cardAddViewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
+                    dialogcardEditCardprice.setText(viewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
+//                    val gap = DecimalFormat("#,###")
+//                    dialogcardEditCardprice.setText(gap.format(dialogcardEditCardprice.text.toString().replace(",","").toInt()))
                 }
                 handled
             }
@@ -120,8 +123,9 @@ class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inf
                     if (price.contains(","))
                         price = dialogcardEditCardprice.text.toString().replace(",", "")
 
-                    activityViewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt(), dialogcardEditBillCardCheck.text.toString()))
-                    dismiss()
+                    viewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt(), dialogcardEditBillCardCheck.text.toString()))
+                    homeCardViewModel.getServerCardData()
+//                    dismiss()
                 }
             }
 
@@ -134,6 +138,15 @@ class CardAddDialog : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inf
     }
 
     override fun initObserver() {
+        viewModel.response.observe(viewLifecycleOwner){
+            when(it){
+                ResponseState.UPDATE_SUCCESS -> {
+                    homeCardViewModel.getServerCardData()
+                    dismiss()
+                }
+                else->{}
+            }
+        }
     }
 
 

@@ -2,6 +2,7 @@ package com.example.data.remote.dataSource
 
 import com.example.data.remote.model.ReceiveCardData
 import com.example.data.remote.model.ServerResponse
+import com.example.domain.model.receive.DomainServerReponse
 import retrofit2.http.*
 
 /**
@@ -9,13 +10,14 @@ import retrofit2.http.*
  * pureum
  */
 interface CardDataSource {
+
     @FormUrlEncoded
     @POST("billCard/add")
     suspend fun sendCardDataSource(
         @Field("cardName") cardName : String?,
         @Field("cardAmount") amount : Int?,
         @Field("billCheckDate") billCheckDate : String?
-    ): String
+    ): DomainServerReponse
 
     @Streaming
     @GET("billCard/list")

@@ -31,8 +31,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
 
     override fun initObserver() {
         activityViewModel.fetchState.observe(this) {
-            //프로그래스 바 풀어주기
-            activityViewModel.changeConnectedState(ConnectedState.CONNECTING_FALSE)
             // 에러라는것을 알리기
             val message = when (it.second) {
                 FetchState.BAD_INTERNET -> "인터넷 연결 실패"

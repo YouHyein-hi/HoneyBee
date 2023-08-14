@@ -12,16 +12,21 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.data.remote.model.changeDate
 import com.example.domain.model.local.DomainRoomData
+import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
+import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.data.InsertDataUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase
+import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.util.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -39,7 +44,8 @@ import javax.inject.Inject
 class SendBillViewModel @Inject constructor(
     @ApplicationContext private val application: Context,
     private val insertDataUseCase: InsertDataUseCase,
-    private val insertDataRoomUseCase: InsertDataRoomUseCase
+    private val insertDataRoomUseCase: InsertDataRoomUseCase,
+    private val getCardListUseCase: GetCardListUseCase
 ) : BaseViewModel() {
 
     val loading: LiveData<Boolean> get() = isLoading
@@ -51,9 +57,24 @@ class SendBillViewModel @Inject constructor(
         Log.e("TAG", "ShowPictureViewModel")
     }
 
+    //서버 응답 일관화 이전에 사용할 박스
+    private var _cardList = MutableLiveData<MutableList<DomainReceiveCardData>>()
+    val cardList : LiveData<MutableList<DomainReceiveCardData>> get() = _cardList
+
+    //여러 Fragment에서 사용되는 함수
+    fun getServerCardData() {
+        modelScope.launch {
+            withTimeoutOrNull(waitTime) {
+                isLoading.postValue(true)
+                _cardList.postValue(getCardListUseCase()!!)
+                isLoading.postValue(false)
+            }?:throw SocketTimeoutException()
+        }
+    }
+
     //insertData 분리해야함
     fun insertBillData(sendData: AppSendData) {
-        CoroutineScope(exceptionHandler).launch {
+        modelScope.launch {
             isLoading.postValue(true)
             Log.e("TAG", "insertBillData isloading: ${isLoading.value}", )
             withTimeoutOrNull(waitTime) {
@@ -86,6 +107,7 @@ class SendBillViewModel @Inject constructor(
         }
     }
 
+    //TODO 여기도 서버 값 통일되면 바꿔야 함
     private fun updateResponse(response: String, data: AppSendData) {
         Log.e("TAG", "updateResponse: $response", )
         //uid로 넘어옴
@@ -96,7 +118,7 @@ class SendBillViewModel @Inject constructor(
                 _response.postValue(ResponseState.SUCCESS)
                 ///
                 if (data.billSubmitTime.contains("-") && data.billSubmitTime.contains("T") && data.billSubmitTime.contains(":")) {
-                    data.billSubmitTime = dateTimeToString(data.billSubmitTime)
+                    data.billSubmitTime = changeDate(data.billSubmitTime)
                 }
                 insertRoomData(
                     DomainRoomData(
@@ -114,54 +136,11 @@ class SendBillViewModel @Inject constructor(
 
     // 이 기능을 따로 빼야할듯
     private fun insertRoomData(domainRoomData: DomainRoomData) {
-        CoroutineScope(exceptionHandler).launch {
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             insertDataRoomUseCase(domainRoomData)
             _response.postValue(ResponseState.SUCCESS)
         }
     }
-
-
-//    fun insertBillData(sendData: AppSendData) {
-//        Log.e("TAG", "sendData: $sendData", )
-//        CoroutineScope(exceptionHandler).launch {
-//            withTimeoutOrNull(waitTime) {
-//                val result = insertDataUseCase(
-//                    DomainSendData(
-//                        cardName = MultipartBody.Part.createFormData("cardName", sendData.cardName),
-//                        storeName = MultipartBody.Part.createFormData(
-//                            "storeName",
-//                            sendData.storeName
-//                        ),
-//                        date = MultipartBody.Part.createFormData("billSubmitTime", sendData.billSubmitTime),
-//                        amount = MultipartBody.Part.createFormData("amount", sendData.amount.replace(",","")),
-//                        picture = compressEncodePicture(sendData.picture)
-//                    )
-//                )
-//                Log.e("TAG", "sendData 응답 : $result ")
-//
-//                if (result != "0") { //TODO uid != "0"이 아니라 실패했을 때 서버에서 받아오는 메세지로 조건식 바꾸자!!
-//                    var splitData =""
-//                    if(sendData.billSubmitTime.contains("-") && sendData.billSubmitTime.contains("T") && sendData.billSubmitTime.contains(":")){
-//                        splitData = dateTimeToString(sendData.billSubmitTime)
-//                    }
-//                    insertRoomData(
-//                        DomainRoomData(
-//                            cardName = sendData.cardName,
-//                            amount = sendData.amount,
-//                            storeName = sendData.storeName,
-//                            billSubmitTime = splitData,
-//                            file = sendData.picture.toString(),
-//                            uid = result
-//                        )
-//                    )
-//                } else {
-//                    Log.e("TAG", "sendData: 실패입니다!")
-//                    Exception("오류! 전송 실패.")
-//                }
-//            } ?: throw SocketTimeoutException()
-//        }
-//    }
-
 
     fun compressEncodePicture(uri: Uri): MultipartBody.Part{
         val file = File(absolutelyPath(uri, application))
@@ -265,7 +244,9 @@ class SendBillViewModel @Inject constructor(
         )
     }
 
-
+    fun amountCheck(price: String, cardAmount: String):Boolean{
+        return price.replace(",","").toInt() <= cardAmount.replace(",","").toInt()
+    }
 
 
 }

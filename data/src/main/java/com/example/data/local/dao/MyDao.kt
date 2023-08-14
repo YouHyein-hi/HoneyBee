@@ -12,7 +12,7 @@ import okhttp3.MultipartBody
 interface MyDao {
 
     @Query("Select * From MyDataTable")
-    fun getAllData(): List<MyEntity>
+    fun getAllData(): MutableList<MyEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) //err
     fun insertData(list: MyEntity)

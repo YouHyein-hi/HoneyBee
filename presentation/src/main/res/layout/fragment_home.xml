@@ -169,7 +169,7 @@
             <LinearLayout
                 android:id="@+id/noticeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="145dp"
                 android:layout_weight="1"
                 android:background="@drawable/roundsquare_white"
                 android:gravity="left|center"
@@ -202,7 +202,7 @@
                 <ImageView
                     android:id="@+id/history_btn"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -223,7 +223,7 @@
             <LinearLayout
                 android:id="@+id/home_add_gallery"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="145dp"
                 android:layout_weight="1"
                 android:background="@drawable/roundsquare_white"
                 android:gravity="right|center"
@@ -256,7 +256,7 @@
                 <ImageView
                     android:id="@+id/add_btn"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -281,7 +281,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/notice_btn"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/roundsquare_white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout19">

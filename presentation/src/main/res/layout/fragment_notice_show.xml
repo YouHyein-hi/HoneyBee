@@ -45,7 +45,7 @@
             android:gravity="center">
 
             <TextView
-                android:textSize="30dp"
+                android:textSize="24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{title, default = 제목}"/>
@@ -66,8 +66,11 @@
                 />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="@{content, default = 내용}"/>
         </LinearLayout>
     </LinearLayout>

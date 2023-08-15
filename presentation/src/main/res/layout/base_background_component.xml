@@ -25,11 +25,12 @@
 
         <TextView
             android:id="@+id/title"
-            android:textColor="@color/main_font_black"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/pretendardbold"
             android:gravity="center"
             android:text="@{title ?? `Err`}"
+            android:textColor="@color/main_font_black"
             android:textSize="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

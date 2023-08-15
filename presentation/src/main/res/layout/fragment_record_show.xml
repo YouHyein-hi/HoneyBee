@@ -69,7 +69,7 @@
             android:layout_marginTop="100dp"
             android:fontFamily="@font/pretendardbold"
             android:text="나라사랑 카드"
-            android:textColor="@color/gray"
+            android:textColor="@color/main_font_black"
             android:textSize="35sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +82,7 @@
             android:layout_marginTop="3dp"
             android:fontFamily="@font/pretendardbold"
             android:text="2023.04.27.05"
-            android:textColor="@color/sub_font2_gray"
+            android:textColor="@color/main_font_black"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +126,7 @@
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="right"
                     android:text="카드 이름 : 10,000원"
-                    android:textColor="@color/sub_font2_gray"
+                    android:textColor="@color/main_font_black"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -154,7 +154,7 @@
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="right"
                     android:text="55,000"
-                    android:textColor="@color/sub_font2_gray"
+                    android:textColor="@color/main_font_black"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -182,7 +182,7 @@
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="right"
                     android:text="15"
-                    android:textColor="@color/sub_font2_gray"
+                    android:textColor="@color/main_font_black"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>

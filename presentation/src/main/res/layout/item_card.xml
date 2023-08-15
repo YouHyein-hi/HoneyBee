@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="25dp"
                     android:fontFamily="@font/pretendardsemibold"
-                    android:text="@{check, default = `로딩중..`}"
+                    android:text="@{billCheckDate, default = `로딩중..`}"
                     android:textColor="@color/main_font_black"
                     android:textSize="22sp" />
             </LinearLayout>

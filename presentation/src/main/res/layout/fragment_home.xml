@@ -316,6 +316,7 @@
                     android:fontFamily="@font/pretendardmedium"
                     android:text="허니비 1.0.0 업데이트!"
                     android:textColor="@color/fontColor_black"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView28"
                     app:layout_constraintTop_toTopOf="parent" />

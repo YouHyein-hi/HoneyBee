@@ -247,7 +247,7 @@ class RecordShowViewModel @Inject constructor(
     }
 
     fun dateReplace(date : String): List<String> {
-        return date.replace(" ", "").split("년", "월", "일", "시", "분", "초")
+        return date.replace(" ", "").split(".", "시", "분")
     }
 
     fun compressEncodePicture(uri:Uri): MultipartBody.Part{

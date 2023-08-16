@@ -121,10 +121,13 @@ class CardAddDialog(
                 }
                 else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
                     var price = dialogcardEditCardprice.text.toString()
+                    var cardName = dialogcardEditCardname.text.toString()
                     if (price.contains(","))
-                        price = dialogcardEditCardprice.text.toString().replace(",", "")
+                        price = price.replace(",", "")
+                    if (cardName.contains("카드"))
+                        cardName = cardName.replace("카드", "")
 
-                    viewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt(), dialogcardEditBillCardCheck.text.toString()))
+                    viewModel.insertServerCardData(AppSendCardData(cardName, price.toInt(), dialogcardEditBillCardCheck.text.toString()))
                     homeCardViewModel.getServerCardData()
 //                    dismiss()
                 }

@@ -241,6 +241,11 @@
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/bottomsheet_send.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/card_item.xml" value="0.2604166666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_add.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_card_add.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_change.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_delete.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_permission.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_permission_check.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/fragment_home.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/fragment_menu.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/fragment_record_frame.xml" value="0.24947916666666667" />
@@ -248,6 +253,7 @@
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/fragment_record_show.xml" value="0.1935185185185185" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/fragment_send_bill.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/item_card.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/progressbar_loading.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee2/HoneyBee/app/src/main/res/layout/dialog_card.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee2/HoneyBee/app/src/main/res/layout/fragment_card.xml" value="0.186328125" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee2/HoneyBee/app/src/main/res/layout/fragment_home.xml" value="0.24947916666666667" />

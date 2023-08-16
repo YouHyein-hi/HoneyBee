@@ -2,6 +2,7 @@ package com.example.receiptcareapp.ui.dialog
 
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.UpdateData
@@ -65,99 +66,118 @@ class ChangeDialog(
     }
 
     override fun initListener() {
-        binding.changeBtnPositive.setOnClickListener {
-            myYear = binding.changeDatepicker.year
-            myMonth = binding.changeDatepicker.month + 1
-            myDay = binding.changeDatepicker.dayOfMonth
-            Log.e("TAG", "onCreateDialog: $myYear, $myMonth, $myDay")
+        with(binding){
+            changeBtnPositive.setOnClickListener {
+                myYear = changeDatepicker.year
+                myMonth = changeDatepicker.month + 1
+                myDay = changeDatepicker.dayOfMonth
+                Log.e("TAG", "onCreateDialog: $myYear, $myMonth, $myDay")
 
-            val myLocalDateTime = viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
+                val myLocalDateTime = viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
 
-            Log.e("TAG", "onCreateView: ${viewModelData.uid}",)
-            Log.e(
-                "TAG",
-                "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${checked}, ${binding.changeBtnStore.text}, ${viewModelData.file}",
-            )
+                Log.e("TAG", "onCreateView: ${viewModelData.uid}",)
+                Log.e(
+                    "TAG",
+                    "onCreateDialog: ${myLocalDateTime}, ${changeBtnPrice.text}, ${checked}, ${changeBtnStore.text}, ${viewModelData.file}",
+                )
 
-            when {
-                checked == "" -> { showShortToast("카드를 입력하세요.") }
-                binding.changeBtnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
-                binding.changeBtnPrice.text!!.isEmpty() -> { showShortToast("금액을 입력하세요.") }
-                myLocalDateTime.toString() == "" -> { showShortToast("날짜를 입력하세요.") }
-                else -> {
-                    Log.e("TAG", "initListener myData: $viewModelData",)
-                    if (viewModelData.type == ShowType.SERVER) {
-                        viewModel.updateServerBillData(
-                            sendData = UpdateData(
-                                billSubmitTime = myLocalDateTime.toString(),
-                                amount = binding.changeBtnPrice.text.toString(),
-                                cardName = checked,
-                                storeName = binding.changeBtnStore.text.toString()
-                            ),
-                            uid = viewModelData.uid,
-                        )
-                    } else {
-                        viewModel.updateLocalBillData(
-                            sendData = AppSendData(
-                                billSubmitTime = myLocalDateTime.toString(),
-                                amount = binding.changeBtnPrice.text.toString(),
-                                cardName = checked,
-                                storeName = binding.changeBtnStore.text.toString(),
+                when {
+                    checked == "" -> { showShortToast("카드를 입력하세요.") }
+                    changeBtnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
+                    changeBtnPrice.text!!.isEmpty() -> { showShortToast("금액을 입력하세요.") }
+                    myLocalDateTime.toString() == "" -> { showShortToast("날짜를 입력하세요.") }
+                    else -> {
+                        Log.e("TAG", "initListener myData: $viewModelData",)
+                        if (viewModelData.type == ShowType.SERVER) {
+                            viewModel.updateServerBillData(
+                                sendData = UpdateData(
+                                    billSubmitTime = myLocalDateTime.toString(),
+                                    amount = changeBtnPrice.text.toString(),
+                                    cardName = checked,
+                                    storeName = changeBtnStore.text.toString()
+                                ),
+                                uid = viewModelData.uid,
+                            )
+                        } else {
+                            viewModel.updateLocalBillData(
+                                sendData = AppSendData(
+                                    billSubmitTime = myLocalDateTime.toString(),
+                                    amount = binding.changeBtnPrice.text.toString(),
+                                    cardName = checked,
+                                    storeName = binding.changeBtnStore.text.toString(),
 //                                picture = activityViewModel.bitmapToUri(requireActivity(),activityViewModel.picture.value)
-                                picture = viewModelData.file!!
-                            ),
-                            viewModelData.uid
-                        )
+                                    picture = viewModelData.file!!
+                                ),
+                                viewModelData.uid
+                            )
+                        }
+                        dismiss()
                     }
-                    dismiss()
                 }
+
+                changeBtnNegative.setOnClickListener { dismiss() }
             }
 
-            binding.changeBtnNegative.setOnClickListener { dismiss() }
+            changeBtnPrice.setOnEditorActionListener { v, actionId, event ->
+                var handled = false
+                if (actionId == EditorInfo.IME_ACTION_NEXT && changeBtnPrice.text.isNotEmpty()) {
+                    changeBtnPrice.setText(viewModel.PriceFormat(changeBtnPrice.text.toString()))
+                }
+                handled
+            }
+            changeBtnPrice.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    if (changeBtnPrice.text.contains(",")) {
+                        changeBtnPrice.setText(viewModel.CommaReplaceSpace(changeBtnPrice.text.toString()))
+                        changeBtnPrice.setSelection(changeBtnPrice.text.length)
+                    }
+                }
+                else { changeBtnPrice.setText(viewModel.PriceFormat(changeBtnPrice.text.toString())) }
+            }
+
         }
     }
 
-            override fun initObserver() {
-                val dataCardName = viewModelData.cardName
+    override fun initObserver() {
+        val dataCardName = viewModelData.cardName
 
-                //TODO 코드 단순화 필요해보이는데,, if문의 필요성이 뭘까
-                viewModel.cardData.observe(viewLifecycleOwner) {
-                    myArray.clear()
-                    it!!.forEach { myArray.add("${it.cardName} : ${it.cardAmount}") }
-                    val adapter = SpinnerAdapter(requireContext(), myArray)
-                    binding.changeCardspinner.adapter = adapter
-                    var position = viewModel.AdapterPosition(adapter, dataCardName)
-                    if (position != -1) {
-                        binding.changeCardspinner.setSelection(position)
-                    } else {
-                        dismiss()
-                        showShortToast("카드 불러오기 실패!")
-                    }
+        //TODO 코드 단순화 필요해보이는데,, if문의 필요성이 뭘까
+        viewModel.cardData.observe(viewLifecycleOwner) {
+            myArray.clear()
+            it!!.forEach { myArray.add("${it.cardName} : ${it.cardAmount}") }
+            val adapter = SpinnerAdapter(requireContext(), myArray)
+            binding.changeCardspinner.adapter = adapter
+            var position = viewModel.AdapterPosition(adapter, dataCardName)
+            if (position != -1) {
+                binding.changeCardspinner.setSelection(position)
+            } else {
+                dismiss()
+                showShortToast("카드 불러오기 실패!")
+            }
+        }
+    }
+
+    private fun getSpinner() {
+        viewModel.getServerCardData()
+        val adapter = SpinnerAdapter(requireContext(), myArray)
+
+        binding.changeCardspinner?.adapter = adapter
+        binding.changeCardspinner?.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    Log.e("TAG", "getSpinner onItemSelected: ${position}")
+                    Log.e("TAG", "getSpinner onItemSelected: ${myArray[position]}")
+                    val spiltCard = viewModel.splitColon(myArray[position])
+                    cardId = position
+                    checked = spiltCard[0]
+                    Log.e("TAG", "onItemSelected checked: ${checked}")
                 }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
-
-            private fun getSpinner() {
-                viewModel.getServerCardData()
-                val adapter = SpinnerAdapter(requireContext(), myArray)
-
-                binding.changeCardspinner?.adapter = adapter
-                binding.changeCardspinner?.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            adapterView: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            Log.e("TAG", "getSpinner onItemSelected: ${position}")
-                            Log.e("TAG", "getSpinner onItemSelected: ${myArray[position]}")
-                            val spiltCard = viewModel.splitColon(myArray[position])
-                            cardId = position
-                            checked = spiltCard[0]
-                            Log.e("TAG", "onItemSelected checked: ${checked}")
-                        }
-
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
-                    }
-            }
+    }
 }

@@ -21,7 +21,9 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
     private val viewModel: RecordViewModel by viewModels()
     private lateinit var callback : OnBackPressedCallback
 
-    override fun initData() {}
+    override fun initData() {
+
+    }
 
     override fun initUI() {
         Log.e(TAG, "initUI", )

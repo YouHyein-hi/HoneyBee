@@ -40,11 +40,6 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initUI() {
-        // TODO 재전송 버튼은 일단 비활성화
-/*        Glide.with(binding.imageView)
-            .load(viewModel.picture)
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
-            .into(binding.imageView)*/
         initView()
         checkImageData()
     }
@@ -93,17 +88,20 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     private fun initView(){
-        if(viewModelData.type == ShowType.LOCAL) binding.imageView.setImageURI(viewModelData.file)
-        else viewModel.getServerPictureData(viewModelData.uid)
+        if(viewModelData.type == ShowType.LOCAL)
+            binding.imageView.setImageURI(viewModelData.file)
+        else
+            viewModel.getServerPictureData(viewModelData.uid)
         binding.imageView.clipToOutline = true
-        binding.cardTxt.text = viewModelData.cardName
-        binding.dateTxt.text = viewModelData.billSubmitTime
-        binding.amountTxt.text = "${viewModelData.amount}원"
-        binding.cardAmount.text = viewModelData.storeName
+//        binding.cardTxt.text = viewModelData.cardName
+//        binding.dateTxt.text = viewModelData.billSubmitTime
+//        binding.amountTxt.text = "${viewModelData.amount}원"
+//        binding.cardAmount.text = viewModelData.storeName
     }
 
     private fun checkImageData(){
-        if(binding.imageView.drawable == null) binding.emptyText.visibility = View.VISIBLE
+        if(binding.imageView.drawable == null)
+            binding.emptyText.visibility = View.VISIBLE
     }
 
     //수정

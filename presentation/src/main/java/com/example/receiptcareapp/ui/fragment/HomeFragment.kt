@@ -37,7 +37,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             noticeBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_noticeFragment) }
 
             addBtn.setOnClickListener{ addDialog.show(parentFragmentManager, "addDialog") }
-            cardListBtn.setOnClickListener{
+            cardListComponent.setOnClickListener{
                 homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet")
             }
             homeCardRecyclerview.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
@@ -60,8 +60,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         viewModel.cardList.observe(viewLifecycleOwner) { dataList ->
-            if (dataList.isEmpty()) {/*setCenterText("데이터가 비었어요!", true)*/ }
-            else { adapter.dataList = dataList }
+            if (dataList.isEmpty()) { binding.emptyText.visibility = View.VISIBLE }
+            else {
+                adapter.dataList = dataList
+                binding.emptyText.visibility = View.INVISIBLE
+            }
         }
 
         viewModel.notice.observe(viewLifecycleOwner){

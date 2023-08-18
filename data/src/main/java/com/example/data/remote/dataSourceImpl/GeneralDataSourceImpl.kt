@@ -51,7 +51,7 @@ class GeneralDataSourceImpl @Inject constructor(
         cardName: String,
         storeName: String,
         billSubmitTime: LocalDateTime,
-        amount: String
+        amount: Int
     ): ServerResponse {
         return retrofit.create(GeneralDataSource::class.java).updateDataSource(
             id,

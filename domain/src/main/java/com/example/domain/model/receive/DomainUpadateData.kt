@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 data class DomainUpadateData(
     val id : Long,
     val cardName: String,
-    val amount: String,
+    val amount: Int,
     var billSubmitTime: LocalDateTime,
     val storeName: String,
 )

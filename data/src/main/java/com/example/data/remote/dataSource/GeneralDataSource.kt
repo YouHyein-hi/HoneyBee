@@ -44,7 +44,6 @@ interface GeneralDataSource {
         @Field("cardName") cardName: String,
         @Field("storeName") storeName: String,
         @Field("billSubmitTime") billSubmitTime: LocalDateTime,
-        @Field("amount") amount: String,
+        @Field("amount") amount: Int,
     ): ServerResponse
-
 }

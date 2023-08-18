@@ -31,10 +31,7 @@ import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.util.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -44,6 +41,7 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 import java.time.LocalDateTime
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 
 /**
  * 2023-06-21
@@ -91,7 +89,7 @@ class RecordShowViewModel @Inject constructor(
                             cardName = sendData.cardName,
                             storeName = sendData.storeName,
                             billSubmitTime = LocalDateTime.parse(sendData.billSubmitTime),
-                            amount = sendData.amount.replace(",", "")
+                            amount = sendData.amount.replace(",", "").toInt()
                         )
                     ),
                     ResponseState.UPDATE_SUCCESS
@@ -149,7 +147,7 @@ class RecordShowViewModel @Inject constructor(
     }
 
     fun deleteRoomBillData(date: String) {
-        modelScope.launch {
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
             val result = deleteDataRoomUseCase(date)
             Log.e("TAG", "deleteRoomData result : $result")

@@ -37,7 +37,7 @@ abstract class BaseViewModel : ViewModel(){
 
     protected val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         isLoading.postValue(false)
-
+        job.cancel()
         throwable.printStackTrace()
         Log.e("TAG", "base : $throwable", )
         when(throwable){

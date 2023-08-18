@@ -101,25 +101,26 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             }
 
 
-            /** 금액 EidtText , 추가 **/
+/*            *//** 금액 EidtText , 추가 **//*
             btnPrice.setOnClickListener {
+                Log.e("TAG", "btnPrice.setOnClickListener", )
                 if (btnPrice.text.contains(",")) {
                     btnPrice.setText(viewModel.commaReplaceSpace(btnPrice.text.toString()))
                     btnPrice.setSelection(btnPrice.text.length)
                 }
-            }
+            }*/
 
             /** 금액 EidtText , 추가 **/
             btnPrice.setOnEditorActionListener { v, actionId, event ->
+                Log.e("TAG", "btnPrice.setOnEditorActionListener", )
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_DONE && btnPrice.text.isNotEmpty()) {
-                    val gap = DecimalFormat("#,###")
-                    btnPrice.setText(gap.format(btnPrice.text.toString().replace(",","").toInt()))
+                    btnPrice.setText(viewModel.PriceFormat(btnPrice.text.toString()))
                 }
                 handled
             }
 
-            btnDate.addTextChangedListener(object : TextWatcher {
+            btnStore.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable?) {
@@ -137,6 +138,15 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     }
                 }
             })
+            btnPrice.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    if (btnPrice.text.contains(",")) {
+                        btnPrice.setText(viewModel.CommaReplaceSpace(btnPrice.text.toString()))
+                        btnPrice.setSelection(btnPrice.text.length)
+                    }
+                }
+                else { btnPrice.setText(viewModel.PriceFormat(btnPrice.text.toString())) }
+            }
 
             /** 완료 Button **/
             completeBtn.setOnClickListener {

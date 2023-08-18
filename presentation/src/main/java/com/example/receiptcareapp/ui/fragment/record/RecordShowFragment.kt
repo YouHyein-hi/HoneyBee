@@ -96,7 +96,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         if(viewModelData.type == ShowType.LOCAL) binding.imageView.setImageURI(viewModelData.file)
         else viewModel.getServerPictureData(viewModelData.uid)
         binding.imageView.clipToOutline = true
-        binding.cardTxt.text = viewModelData.cardName
+        binding.cardTxt.text = "${viewModelData.cardName}카드"
         binding.dateTxt.text = viewModelData.billSubmitTime
         binding.amountTxt.text = "${viewModelData.amount}원"
         binding.cardAmount.text = viewModelData.storeName

@@ -65,7 +65,7 @@
                 android:fontFamily="@font/pretendardsemibold"
                 android:text="@{amount+`원`,default = `19,800원`}"
                 android:textColor="@color/main_font_black"
-                android:textSize="24sp" />
+                android:textSize="30sp" />
 
             <LinearLayout
                 android:layout_marginTop="40dp"

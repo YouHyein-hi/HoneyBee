@@ -25,7 +25,7 @@ class RecordServerAdapter:RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
         fun bind(list: DomainReceiveAllData){
             with(binding){
                 storeName.text = list.storeName
-                cardName.text = list.cardName
+                cardName.text = "${list.cardName}카드"
                 amount.text = list.amount
                 dateTxt.text = list.date
                 listLayout.setOnClickListener{ onServerSaveClick(list) }

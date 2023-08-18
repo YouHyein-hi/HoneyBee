@@ -33,7 +33,10 @@ class CardAddViewModel @Inject constructor(
     }
 
     fun PriceFormat(price : String): String? {
-        return DecimalFormat("#,###").format(price.toInt())
+        if (price.isEmpty()) { return "" }
+        val numericValue = try { price.toInt()
+        } catch (e: NumberFormatException) { return price }
+        return DecimalFormat("#,###").format(numericValue)
     }
 
     fun insertServerCardData(sendData: AppSendCardData) {

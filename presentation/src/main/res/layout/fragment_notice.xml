@@ -50,7 +50,7 @@
             android:layout_height="match_parent"
             android:visibility="invisible"
             android:gravity="center"
-            android:text="데이터가 비었어요.."
+            android:text="@string/notice_empty_txt"
             android:textColor="@color/black"
             android:textSize="20dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>

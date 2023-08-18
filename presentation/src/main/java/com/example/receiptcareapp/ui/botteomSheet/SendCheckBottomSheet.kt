@@ -22,8 +22,11 @@ class SendCheckBottomSheet(
     private val bottomSheetData: BottomSheetData
 ) : BaseBottomSheet<BottomsheetSendBinding>(
     BottomsheetSendBinding::inflate,
-    "BottomsheetSendBinding"
+    "BottomSheetSendBinding"
 ) {
+
+    private val gap = 0
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
     }
@@ -33,11 +36,8 @@ class SendCheckBottomSheet(
     }
 
     override fun initUI() {
-        binding.cardName = bottomSheetData.cardName
-        binding.amount = bottomSheetData.amount
-        binding.cardAmount = bottomSheetData.cardAmount
-        binding.storeName = bottomSheetData.storeName
-        binding.date = bottomSheetData.date.split("T").first()
+        binding.data = bottomSheetData
+//        binding.date = bottomSheetData.date.split("T").first()
     }
 
     override fun initListener() {

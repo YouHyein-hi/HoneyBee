@@ -15,5 +15,6 @@ interface GeneralRepository {
     suspend fun getDataListRepository():MutableList<DomainReceiveAllData>
     suspend fun getPictureDataUseCaseRepository(uid:String): Bitmap
     suspend fun insertDataRepository(domainSendData: DomainSendData): String
-    suspend fun updateDataUseCaseRepository(domainResendData: DomainUpadateData): DomainServerResponse
+    suspend fun updateDataUseCaseRepository(domainResendData: DomainUpadateData)
+//    suspend fun updateDataUseCaseRepository(domainResendData: DomainUpadateData): DomainServerResponse
 }

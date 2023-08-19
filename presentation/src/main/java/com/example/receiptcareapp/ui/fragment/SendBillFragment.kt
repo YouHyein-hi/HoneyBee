@@ -25,6 +25,7 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentSendBillBinding
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
@@ -209,15 +210,15 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             }
         }
 
-        with(binding){
-            /** CardData 관련 **/
-            //TODO 해당 프레그먼트에선 카드를 추가할 수 없으니,
-            // 애초에 홈에서 카메라나 겔러리로 넘어가기전에 막아야할듯함
-            viewModel.cardList.observe(viewLifecycleOwner){
-                myArray.clear()
+        viewModel.cardList.observe(viewLifecycleOwner){
+            myArray.clear()
 //                it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
-                spinner.adapter = SpinnerAdapter(requireContext(), myArray)
-            }
+            binding.spinner.adapter = SpinnerAdapter(requireContext(), myArray)
+        }
+
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
     /** Spinner 관련 **/

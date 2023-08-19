@@ -1,7 +1,6 @@
 package com.example.receiptcareapp.ui.fragment
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -14,20 +13,21 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.ui.botteomSheet.CardBottomSheet
 import com.example.receiptcareapp.ui.dialog.AddDialog
-import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
+import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate, "HomeFragment") {
 
-    private val viewModel : HomeCardViewModel by viewModels()
+    private val viewModel : HomeViewModel by viewModels()
     private lateinit var callback: OnBackPressedCallback
-    private lateinit var homeCardBottomSheet: CardBottomSheet
+    private val homeCardBottomSheet: CardBottomSheet by lazy { CardBottomSheet() }
     private val addDialog : AddDialog = AddDialog()
     private val adapter: HomeCardAdapter = HomeCardAdapter()
 
     override fun initData() {
-        homeCardBottomSheet = CardBottomSheet(viewModel)
+
     }
 
     override fun initUI() {
@@ -69,6 +69,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         viewModel.notice.observe(viewLifecycleOwner){
             binding.homeNoticeTxt.text = it
+        }
+
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
 

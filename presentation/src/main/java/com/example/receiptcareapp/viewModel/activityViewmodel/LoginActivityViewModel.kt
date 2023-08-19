@@ -43,10 +43,11 @@ class LoginActivityViewModel @Inject constructor(
             withTimeoutOrNull(waitTime){
                 isLoading.postValue(true)
                 updateLoginState(
-                    loginUseCase.invoke(
-                        email = email,
-                        password = password
-                    ),
+                    DomainServerResponse("","", emptyList()),
+//                    loginUseCase.invoke(
+//                        email = email,
+//                        password = password
+//                    ),
                     email,
                     password
                 )

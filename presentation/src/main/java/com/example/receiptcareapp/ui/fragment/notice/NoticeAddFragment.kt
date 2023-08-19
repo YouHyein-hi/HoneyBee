@@ -8,6 +8,7 @@ import com.example.domain.model.send.DomainAddNoticeData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentNoticeAddBinding
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.notice.NoticeAddViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +44,11 @@ class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
+        }
+
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
 

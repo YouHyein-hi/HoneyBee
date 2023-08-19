@@ -12,8 +12,6 @@ class GetCardListUseCase(
     private val cardRepository: CardRepository
 ) {
     suspend operator fun invoke() : CardResponseData{
-        var gap = cardRepository.getCardListRepository()
-        Log.e("TAG", "invoke: gap", )
-        return gap
+        return cardRepository.getCardListRepository()
     }
 }

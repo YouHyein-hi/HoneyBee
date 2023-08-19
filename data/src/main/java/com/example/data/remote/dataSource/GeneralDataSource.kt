@@ -2,6 +2,7 @@ package com.example.data.remote.dataSource
 
 import com.example.data.remote.model.ReceiveData
 import com.example.data.remote.model.ServerResponse
+import com.example.domain.model.receive.SimpleResponse
 import okhttp3.MultipartBody
 import retrofit2.http.*
 import java.time.LocalDateTime
@@ -45,5 +46,5 @@ interface GeneralDataSource {
         @Field("storeName") storeName: String,
         @Field("billSubmitTime") billSubmitTime: LocalDateTime,
         @Field("amount") amount: Int,
-    ): ServerResponse
+    ): ServerResponse<SimpleResponse>
 }

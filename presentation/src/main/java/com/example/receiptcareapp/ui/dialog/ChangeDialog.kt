@@ -11,6 +11,7 @@ import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ChangeDialog(
     private val viewModel: RecordShowViewModel
-    ) : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
+) : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var viewModelData: RecyclerData
     private var myArray = arrayListOf<String>()
@@ -36,10 +37,10 @@ class ChangeDialog(
         if (activityViewModel.selectedData.value != null) {
             viewModelData = activityViewModel.selectedData.value!!
             newDate = viewModel.dateReplace(viewModelData.billSubmitTime)
-            Log.e("TAG", "initData myData : $viewModelData",)
+            Log.e("TAG", "initData myData : $viewModelData")
         } else {
             showShortToast("데이터가 없습니다!")
-            Log.e("TAG", "initData: 데이터가 없다", )
+            Log.e("TAG", "initData: 데이터가 없다")
             dismiss()
         }
     }
@@ -52,7 +53,7 @@ class ChangeDialog(
         binding.changeCardspinner
         binding.changeBtnStore.setText(viewModelData.storeName)
         binding.changeBtnPrice.setText(viewModelData.amount)
-        try{
+        try {
             settingYear = newDate[0].toInt()
             settingMonth = newDate[1].toInt()
             settingDay = newDate[2].toInt()
@@ -73,19 +74,27 @@ class ChangeDialog(
 
             val myLocalDateTime = viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
 
-            Log.e("TAG", "onCreateView: ${viewModelData.uid}",)
+            Log.e("TAG", "onCreateView: ${viewModelData.uid}")
             Log.e(
                 "TAG",
                 "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${checked}, ${binding.changeBtnStore.text}, ${viewModelData.file}",
             )
 
             when {
-                checked == "" -> { showShortToast("카드를 입력하세요.") }
-                binding.changeBtnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
-                binding.changeBtnPrice.text!!.isEmpty() -> { showShortToast("금액을 입력하세요.") }
-                myLocalDateTime.toString() == "" -> { showShortToast("날짜를 입력하세요.") }
+                checked == "" -> {
+                    showShortToast("카드를 입력하세요.")
+                }
+                binding.changeBtnStore.text!!.isEmpty() -> {
+                    showShortToast("가게 이름을 입력하세요.")
+                }
+                binding.changeBtnPrice.text!!.isEmpty() -> {
+                    showShortToast("금액을 입력하세요.")
+                }
+                myLocalDateTime.toString() == "" -> {
+                    showShortToast("날짜를 입력하세요.")
+                }
                 else -> {
-                    Log.e("TAG", "initListener myData: $viewModelData",)
+                    Log.e("TAG", "initListener myData: $viewModelData")
                     if (viewModelData.type == ShowType.SERVER) {
                         viewModel.updateServerBillData(
                             sendData = UpdateData(
@@ -117,47 +126,51 @@ class ChangeDialog(
         }
     }
 
-            override fun initObserver() {
-                val dataCardName = viewModelData.cardName
+    override fun initObserver() {
+        val dataCardName = viewModelData.cardName
 
-                //TODO 코드 단순화 필요해보이는데,, if문의 필요성이 뭘까
-                viewModel.cardData.observe(viewLifecycleOwner) {
-                    myArray.clear()
+        //TODO 코드 단순화 필요해보이는데,, if문의 필요성이 뭘까
+        viewModel.cardData.observe(viewLifecycleOwner) {
+            myArray.clear()
 //                    it!!.forEach { myArray.add("${it.cardName} : ${it.cardAmount}") }
-                    val adapter = SpinnerAdapter(requireContext(), myArray)
-                    binding.changeCardspinner.adapter = adapter
-                    var position = viewModel.AdapterPosition(adapter, dataCardName)
-                    if (position != -1) {
-                        binding.changeCardspinner.setSelection(position)
-                    } else {
-                        dismiss()
-                        showShortToast("카드 불러오기 실패!")
-                    }
+            val adapter = SpinnerAdapter(requireContext(), myArray)
+            binding.changeCardspinner.adapter = adapter
+            var position = viewModel.AdapterPosition(adapter, dataCardName)
+            if (position != -1) {
+                binding.changeCardspinner.setSelection(position)
+            } else {
+                dismiss()
+                showShortToast("카드 불러오기 실패!")
+            }
+        }
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
+        }
+    }
+
+    private fun getSpinner() {
+        viewModel.getServerCardData()
+        val adapter = SpinnerAdapter(requireContext(), myArray)
+
+        binding.changeCardspinner?.adapter = adapter
+        binding.changeCardspinner?.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    Log.e("TAG", "getSpinner onItemSelected: ${position}")
+                    Log.e("TAG", "getSpinner onItemSelected: ${myArray[position]}")
+                    val spiltCard = viewModel.splitColon(myArray[position])
+                    cardId = position
+                    checked = spiltCard[0]
+                    Log.e("TAG", "onItemSelected checked: ${checked}")
                 }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
-
-            private fun getSpinner() {
-                viewModel.getServerCardData()
-                val adapter = SpinnerAdapter(requireContext(), myArray)
-
-                binding.changeCardspinner?.adapter = adapter
-                binding.changeCardspinner?.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            adapterView: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            Log.e("TAG", "getSpinner onItemSelected: ${position}")
-                            Log.e("TAG", "getSpinner onItemSelected: ${myArray[position]}")
-                            val spiltCard = viewModel.splitColon(myArray[position])
-                            cardId = position
-                            checked = spiltCard[0]
-                            Log.e("TAG", "onItemSelected checked: ${checked}")
-                        }
-
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
-                    }
-            }
+    }
 }

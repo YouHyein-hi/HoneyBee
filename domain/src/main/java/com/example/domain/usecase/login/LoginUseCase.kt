@@ -10,7 +10,10 @@ import com.example.domain.repo.LoginRepository
 class LoginUseCase(
     private val loginRepository: LoginRepository
 ) {
-    suspend operator fun invoke(email:String, password:String): DomainServerResponse {
-        return loginRepository.requestLogin(email = email, password = password)
+//    suspend operator fun invoke(email:String, password:String): DomainServerResponse {
+//        return loginRepository.requestLogin(email = email, password = password)
+//    }
+    suspend operator fun invoke(email:String, password:String) {
+        loginRepository.requestLogin(email = email, password = password)
     }
 }

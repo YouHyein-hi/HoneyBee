@@ -22,8 +22,6 @@ import com.example.domain.model.receive.DomainUpadateData
 import com.example.domain.model.receive.DomainUpdateCardData
 import com.example.domain.model.send.*
 import com.example.domain.usecase.card.GetCardListUseCase
-import com.example.domain.usecase.card.InsertCardUseCase
-import com.example.domain.usecase.card.UpdateCardUseCase
 import com.example.domain.usecase.data.*
 import com.example.domain.usecase.room.DeleteDataRoomUseCase
 import com.example.domain.usecase.room.GetDataListRoomUseCase
@@ -77,5 +75,9 @@ class MainActivityViewModel @Inject constructor(
 
     fun clearAll(){
         preferenceManager.clearAll()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

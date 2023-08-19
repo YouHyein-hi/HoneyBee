@@ -15,8 +15,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.CardResponseData
-import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.model.receive.DomainUpadateData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
@@ -163,12 +161,19 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-    private fun updateResponse(response: DomainServerResponse, type: ResponseState){
-        when(response.status){
-            "200" -> _response.postValue(type)
-            else -> _response.postValue(ResponseState.FALSE)
-        }
+    private fun updateResponse(updateDataUseCase: Unit, updateSuccess: ResponseState) {
+//        when(response.status){
+//            "200" -> _response.postValue(type)
+//            else -> _response.postValue(ResponseState.FALSE)
+//        }
     }
+
+//    private fun updateResponse(response: DomainServerResponse, type: ResponseState){
+//        when(response.status){
+//            "200" -> _response.postValue(type)
+//            else -> _response.postValue(ResponseState.FALSE)
+//        }
+//    }
 
     //TODO 들어오는 값이 통일되면 하나로 합치기 + 응답값에 맞춰서 움직여야함
     private fun imsiUpdateResponse(response: String, type: ResponseState, uid: String, sendData: AppSendData){

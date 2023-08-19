@@ -12,6 +12,7 @@ import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityMainBinding
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.util.FetchState
+import com.example.receiptcareapp.util.FetchStateHandler
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,19 +32,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
 
     override fun initObserver() {
         activityViewModel.fetchState.observe(this) {
-            // 에러라는것을 알리기
-            val message = when (it.second) {
-                FetchState.BAD_INTERNET -> "인터넷 연결 실패"
-                FetchState.PARSE_ERROR -> "PARSE_ERROR 오류"
-                FetchState.WRONG_CONNECTION -> "WRONG_CONNECTION 오류"
-                FetchState.SQLITE_CONSTRAINT_PRIMARYKEY -> "이미 값이 저장되어있습니다."
-                FetchState.SOCKET_TIMEOUT_EXCEPTION -> " 연결 시간이 초과되었습니다."
-                FetchState.STOP -> ""
-                FetchState.HIDE_STOP -> ""
-                else -> "저장 안된 오류!  ${it.first.message} "
-            }
-            if(message.isNotEmpty()) Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            Log.e("TAG", "onCreate: $message")
+            showShortToast(FetchStateHandler(it))
         }
     }
 
@@ -54,6 +43,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
         if (currentFocus is EditText) { currentFocus!!.clearFocus() }
         return super.dispatchTouchEvent(ev)
     }
-
-
 }

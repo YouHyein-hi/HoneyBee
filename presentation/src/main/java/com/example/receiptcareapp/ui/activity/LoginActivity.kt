@@ -17,11 +17,13 @@ import com.example.receiptcareapp.databinding.ActivityLoginBinding
 import com.example.receiptcareapp.dto.LoginData
 import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
 import com.example.receiptcareapp.util.FetchState
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
+//class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
 class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
     private val viewModel: LoginActivityViewModel by viewModels()
     private var backPressedTime: Long = 0
@@ -73,24 +75,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     }
 
     override fun initObserver() {
-
-        //에러 대응
-        viewModel.fetchState.observe(this) {
-            viewModel.changeState(ConnectedState.DISCONNECTED)
-            val message = when (it.second) {
-                FetchState.BAD_INTERNET -> "인터넷 연결 실패"
-                FetchState.PARSE_ERROR -> "아이디 또는 비밀번호를 잘못 입력하셨습니다."
-                FetchState.WRONG_CONNECTION -> "WRONG_CONNECTION 오류"
-                FetchState.SQLITE_CONSTRAINT_PRIMARYKEY -> "이미 값이 저장되어있습니다."
-                FetchState.SOCKET_TIMEOUT_EXCEPTION -> " 연결 시간이 초과되었습니다."
-                FetchState.STOP -> ""
-                FetchState.HIDE_STOP -> ""
-                else -> "저장 안된 오류!  ${it.first.message} "
-            }
-            if(message.isNotEmpty()) showShortToast(message)
-            Log.e("TAG", "onCreate: $message")
-        }
-
         viewModel.loading.observe(this){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
@@ -107,13 +91,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
                     showShortToast("로그인 실패")
                 }
             }
+        }
 
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
 
     private fun nextActivity(){
         showShortToast("환영합니다.")
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         finish()
     }
 

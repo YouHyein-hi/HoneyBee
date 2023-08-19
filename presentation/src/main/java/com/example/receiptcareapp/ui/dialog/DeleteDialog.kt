@@ -8,6 +8,7 @@ import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogDeleteBinding
 import com.example.receiptcareapp.dto.RecyclerData
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,6 +58,10 @@ class DeleteDialog : BaseDialog<DialogDeleteBinding>(DialogDeleteBinding::inflat
     }
 
     override fun initObserver() {
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
+        }
     }
 
 }

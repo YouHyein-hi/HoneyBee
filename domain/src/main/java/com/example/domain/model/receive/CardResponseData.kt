@@ -7,7 +7,7 @@ package com.example.domain.model.receive
 data class CardResponseData(
     val status: String,
     val message: String,
-    val body: List<CardData>
+    val body: List<CardData>?
 )
 
 data class CardData(

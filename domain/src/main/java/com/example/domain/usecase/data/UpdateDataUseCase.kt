@@ -11,7 +11,11 @@ import com.example.domain.repo.GeneralRepository
 class UpdateDataUseCase(
     private val generalRepository: GeneralRepository
 ) {
-    suspend operator fun invoke(domainResendData: DomainUpadateData): DomainServerResponse {
-        return generalRepository.updateDataUseCaseRepository(domainResendData)
+//    suspend operator fun invoke(domainResendData: DomainUpadateData): DomainServerResponse {
+//        return generalRepository.updateDataUseCaseRepository(domainResendData)
+//    }
+
+    suspend operator fun invoke(domainResendData: DomainUpadateData) {
+        generalRepository.updateDataUseCaseRepository(domainResendData)
     }
 }

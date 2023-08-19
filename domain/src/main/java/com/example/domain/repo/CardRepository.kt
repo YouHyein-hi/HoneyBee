@@ -3,6 +3,7 @@ package com.example.domain.repo
 import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.model.receive.DomainUpdateCardData
 import com.example.domain.model.receive.CardResponseData
+import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.DomainSendCardData
 
 /**
@@ -11,6 +12,6 @@ import com.example.domain.model.send.DomainSendCardData
  */
 interface CardRepository {
     suspend fun getCardListRepository(): CardResponseData
-    suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): DomainServerResponse
-    suspend fun updateCardUseCase(domainUpdateCardData: DomainUpdateCardData):DomainServerResponse
+    suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): ServerResponseData
+//    suspend fun updateCardUseCase(domainUpdateCardData: DomainUpdateCardData):DomainServerResponse
 }

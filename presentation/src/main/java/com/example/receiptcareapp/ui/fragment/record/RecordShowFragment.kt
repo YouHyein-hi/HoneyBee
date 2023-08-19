@@ -18,6 +18,7 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.dialog.DeleteDialog
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -84,6 +85,11 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                 .into(binding.imageView)
             checkImageData()
+        }
+
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
 

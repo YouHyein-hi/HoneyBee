@@ -7,5 +7,6 @@ import com.example.domain.model.receive.DomainServerResponse
  * pureum
  */
 interface LoginRepository {
-    suspend fun requestLogin(email:String, password:String): DomainServerResponse
+//    suspend fun requestLogin(email:String, password:String): DomainServerResponse
+    suspend fun requestLogin(email:String, password:String)
 }

@@ -1,17 +1,21 @@
-package com.example.data.remote.model
+@file:JvmName("ServerResponseKt")
 
-import com.example.domain.model.receive.DomainServerResponse
+package com.example.data.remote.model
+import com.example.domain.model.receive.CardData
+import com.example.domain.model.receive.CardResponseData
+import com.example.domain.model.receive.ServerResponseData
+import com.example.domain.model.receive.SimpleResponse
 
 /**
- * 2023-06-22
+ * 2023-08-19
  * pureum
  */
-data class ServerResponse(
+data class ServerResponse<T>(
     val status: String,
     val message: String,
-    val body: List<Any>? = emptyList()
+    val body: List<T>? =null
 )
 
-fun ServerResponse.toDomainServerResponse(): DomainServerResponse {
-    return DomainServerResponse(status,message, body)
-}
+fun <T: CardData> ServerResponse<T>.toServerCardData() = CardResponseData(status, message, body)
+
+fun ServerResponse<SimpleResponse>.toServerResponseData() = ServerResponseData(status, message, body)

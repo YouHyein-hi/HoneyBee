@@ -3,6 +3,7 @@ package com.example.data.remote.dataSourceImpl
 import com.example.data.remote.dataSource.GeneralDataSource
 import com.example.data.remote.model.ReceiveData
 import com.example.data.remote.model.ServerResponse
+import com.example.domain.model.receive.SimpleResponse
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
 import java.time.LocalDateTime
@@ -52,7 +53,7 @@ class GeneralDataSourceImpl @Inject constructor(
         storeName: String,
         billSubmitTime: LocalDateTime,
         amount: Int
-    ): ServerResponse {
+    ): ServerResponse<SimpleResponse> {
         return retrofit.create(GeneralDataSource::class.java).updateDataSource(
             id,
             cardName,

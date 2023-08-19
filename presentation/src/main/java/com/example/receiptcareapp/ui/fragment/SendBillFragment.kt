@@ -215,7 +215,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             // 애초에 홈에서 카메라나 겔러리로 넘어가기전에 막아야할듯함
             viewModel.cardList.observe(viewLifecycleOwner){
                 myArray.clear()
-                it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
+//                it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
                 spinner.adapter = SpinnerAdapter(requireContext(), myArray)
             }
         }

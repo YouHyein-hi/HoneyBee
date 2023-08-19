@@ -14,6 +14,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.data.remote.model.changeDate
 import com.example.domain.model.local.DomainRoomData
+import com.example.domain.model.receive.CardResponseData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
@@ -58,8 +59,8 @@ class SendBillViewModel @Inject constructor(
     }
 
     //서버 응답 일관화 이전에 사용할 박스
-    private var _cardList = MutableLiveData<MutableList<DomainReceiveCardData>>()
-    val cardList : LiveData<MutableList<DomainReceiveCardData>> get() = _cardList
+    private var _cardList = MutableLiveData<CardResponseData>()
+    val cardList : LiveData<CardResponseData> get() = _cardList
 
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {

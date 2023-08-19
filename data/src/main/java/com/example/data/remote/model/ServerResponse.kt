@@ -1,6 +1,6 @@
 package com.example.data.remote.model
 
-import com.example.domain.model.receive.DomainServerReponse
+import com.example.domain.model.receive.DomainServerResponse
 
 /**
  * 2023-06-22
@@ -9,8 +9,9 @@ import com.example.domain.model.receive.DomainServerReponse
 data class ServerResponse(
     val status: String,
     val message: String,
+    val body: List<Any>? = emptyList()
 )
 
-fun ServerResponse.toDomainLoginResponse(): DomainServerReponse {
-    return DomainServerReponse(status,message)
+fun ServerResponse.toDomainServerResponse(): DomainServerResponse {
+    return DomainServerResponse(status,message, body)
 }

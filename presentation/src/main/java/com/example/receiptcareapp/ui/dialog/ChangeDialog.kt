@@ -123,7 +123,7 @@ class ChangeDialog(
                 //TODO 코드 단순화 필요해보이는데,, if문의 필요성이 뭘까
                 viewModel.cardData.observe(viewLifecycleOwner) {
                     myArray.clear()
-                    it!!.forEach { myArray.add("${it.cardName} : ${it.cardAmount}") }
+//                    it!!.forEach { myArray.add("${it.cardName} : ${it.cardAmount}") }
                     val adapter = SpinnerAdapter(requireContext(), myArray)
                     binding.changeCardspinner.adapter = adapter
                     var position = viewModel.AdapterPosition(adapter, dataCardName)

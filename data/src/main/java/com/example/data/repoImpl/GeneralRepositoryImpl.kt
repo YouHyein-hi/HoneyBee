@@ -4,10 +4,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import com.example.data.remote.dataSource.GeneralDataSource
-import com.example.data.remote.model.toDomainLoginResponse
 import com.example.data.remote.model.toDomainReceiveData
+import com.example.data.remote.model.toDomainServerResponse
 import com.example.domain.model.receive.DomainReceiveAllData
-import com.example.domain.model.receive.DomainServerReponse
+import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.model.receive.DomainUpadateData
 import com.example.domain.model.send.DomainSendData
 import com.example.domain.repo.GeneralRepository
@@ -43,12 +43,13 @@ class GeneralRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateDataUseCaseRepository(domainResendData: DomainUpadateData): DomainServerReponse {
+    override suspend fun updateDataUseCaseRepository(domainResendData: DomainUpadateData): DomainServerResponse {
         return generalDataSource.updateDataSource(
             id = domainResendData.id,
             cardName = domainResendData.cardName,
             amount = domainResendData.amount,
             storeName = domainResendData.storeName,
             billSubmitTime = domainResendData.billSubmitTime,
-        ).toDomainLoginResponse()    }
+        ).toDomainServerResponse()
+    }
 }

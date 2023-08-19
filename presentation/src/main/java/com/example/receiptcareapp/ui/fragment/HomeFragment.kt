@@ -60,9 +60,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         viewModel.cardList.observe(viewLifecycleOwner) { dataList ->
-            if (dataList.isEmpty()) { binding.emptyText.visibility = View.VISIBLE }
+            if (dataList?.body!!.isEmpty()) { binding.emptyText.visibility = View.VISIBLE }
             else {
-                adapter.dataList = dataList
+                adapter.dataList = dataList.body!!.toMutableList()
                 binding.emptyText.visibility = View.INVISIBLE
             }
         }

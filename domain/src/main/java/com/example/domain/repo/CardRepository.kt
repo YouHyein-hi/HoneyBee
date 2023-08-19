@@ -1,9 +1,8 @@
 package com.example.domain.repo
 
-import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.receive.DomainServerReponse
-import com.example.domain.model.receive.DomainUpadateData
+import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.model.receive.DomainUpdateCardData
+import com.example.domain.model.receive.CardResponseData
 import com.example.domain.model.send.DomainSendCardData
 
 /**
@@ -11,7 +10,7 @@ import com.example.domain.model.send.DomainSendCardData
  * pureum
  */
 interface CardRepository {
-    suspend fun getCardListRepository():MutableList<DomainReceiveCardData>
-    suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): DomainServerReponse
-    suspend fun updateCardUseCase(domainUpdateCardData: DomainUpdateCardData):DomainServerReponse
+    suspend fun getCardListRepository(): CardResponseData
+    suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): DomainServerResponse
+    suspend fun updateCardUseCase(domainUpdateCardData: DomainUpdateCardData):DomainServerResponse
 }

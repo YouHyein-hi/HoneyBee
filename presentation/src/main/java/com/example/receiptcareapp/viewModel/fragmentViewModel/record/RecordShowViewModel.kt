@@ -12,11 +12,11 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
+import com.example.domain.model.receive.CardResponseData
 import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.receive.DomainServerReponse
+import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.model.receive.DomainUpadateData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
@@ -41,7 +41,6 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 import java.time.LocalDateTime
 import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 /**
  * 2023-06-21
@@ -65,8 +64,8 @@ class RecordShowViewModel @Inject constructor(
     val response : LiveData<ResponseState> get() = _response
 
     // 서버 카드 전달받은 값 관리
-    private var _cardData = MutableLiveData<MutableList<DomainReceiveCardData>?>()
-    val cardData: LiveData<MutableList<DomainReceiveCardData>?>
+    private var _cardData = MutableLiveData<CardResponseData?>()
+    val cardData: LiveData<CardResponseData?>
         get() = _cardData
 
     private var _picture = MutableLiveData<Bitmap?>()
@@ -164,7 +163,7 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-    private fun updateResponse(response: DomainServerReponse, type: ResponseState){
+    private fun updateResponse(response: DomainServerResponse, type: ResponseState){
         when(response.status){
             "200" -> _response.postValue(type)
             else -> _response.postValue(ResponseState.FALSE)

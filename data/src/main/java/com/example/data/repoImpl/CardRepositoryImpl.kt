@@ -2,13 +2,11 @@ package com.example.data.repoImpl
 
 import android.util.Log
 import com.example.data.remote.dataSource.CardDataSource
-import com.example.data.remote.model.ServerResponse
-import com.example.data.remote.model.toDomainLoginResponse
-import com.example.data.remote.model.toDomainReceiveCardData
-import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.receive.DomainServerReponse
-import com.example.domain.model.receive.DomainUpadateData
+import com.example.data.remote.model.toDomainServerResponse
+import com.example.data.remote.model.toServerCardData
+import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.model.receive.DomainUpdateCardData
+import com.example.domain.model.receive.CardResponseData
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.repo.CardRepository
 import javax.inject.Inject
@@ -20,12 +18,11 @@ import javax.inject.Inject
 class CardRepositoryImpl @Inject constructor(
     private val cardDataSource: CardDataSource
 ): CardRepository {
-    override suspend fun getCardListRepository(): MutableList<DomainReceiveCardData> {
-        return cardDataSource.receiveCardDataSource().map { it.toDomainReceiveCardData() }
-            .toMutableList()
+    override suspend fun getCardListRepository(): CardResponseData {
+        return cardDataSource.getCardDataSource().toServerCardData()
     }
 
-    override suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): DomainServerReponse {
+    override suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): DomainServerResponse {
         return cardDataSource.sendCardDataSource(
             cardName = domainSendCardData.cardName,
             amount = domainSendCardData.cardAmount,
@@ -34,16 +31,12 @@ class CardRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun updateCardUseCase(domainUpdateCardData: DomainUpdateCardData): DomainServerReponse {
+    override suspend fun updateCardUseCase(domainUpdateCardData: DomainUpdateCardData): DomainServerResponse {
         Log.e("TAG", "updateCardDataRepo: ", )
         return cardDataSource.updateCardDataSource(
             id = domainUpdateCardData.id,
             cardName = domainUpdateCardData.cardName,
             cardAmount = domainUpdateCardData.cardAmount
-        ).toDomainLoginResponse()
+        ).toDomainServerResponse()
     }
-
-
-
-
 }

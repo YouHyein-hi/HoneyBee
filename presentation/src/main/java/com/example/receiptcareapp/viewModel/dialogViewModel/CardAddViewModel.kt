@@ -3,7 +3,7 @@ package com.example.receiptcareapp.viewModel.dialogViewModel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.domain.model.receive.DomainServerReponse
+import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.usecase.card.GetCardListUseCase
@@ -55,7 +55,7 @@ class CardAddViewModel @Inject constructor(
         }
     }
 
-    fun updateResponse(response:DomainServerReponse, type: ResponseState){
+    fun updateResponse(response:DomainServerResponse, type: ResponseState){
         when(response.status){
             "200" ->{
                 _response.postValue(type)

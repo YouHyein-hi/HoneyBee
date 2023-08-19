@@ -1,23 +1,15 @@
 package com.example.receiptcareapp.viewModel.dialogViewModel
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.domain.model.UpdateCardData
+import com.example.domain.model.receive.CardResponseData
 import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.receive.DomainServerReponse
-import com.example.domain.model.receive.DomainUpdateCardData
-import com.example.domain.model.send.DomainGetNoticeListData
 import com.example.domain.usecase.card.GetCardListUseCase
-import com.example.domain.usecase.card.UpdateCardUseCase
 import com.example.domain.usecase.notice.GetNoticeListUseCase
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.util.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import java.net.SocketTimeoutException
@@ -37,8 +29,8 @@ class HomeCardViewModel @Inject constructor(
     val response : LiveData<ResponseState> get() = _response
 
     //서버 응답 일관화 이전에 사용할 박스
-    private var _cardList = MutableLiveData<MutableList<DomainReceiveCardData>>()
-    val cardList : LiveData<MutableList<DomainReceiveCardData>> get() = _cardList
+    private var _cardList = MutableLiveData<CardResponseData?>()
+    val cardList : LiveData<CardResponseData?> get() = _cardList
 
     //서버 응답 일관화 이전에 사용할 박스
     private var _notice = MutableLiveData<String>()
@@ -49,7 +41,7 @@ class HomeCardViewModel @Inject constructor(
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                _cardList.postValue(getCardListUseCase()!!)
+                _cardList.postValue(getCardListUseCase())
             } ?:throw SocketTimeoutException()
             isLoading.postValue(false)
         }

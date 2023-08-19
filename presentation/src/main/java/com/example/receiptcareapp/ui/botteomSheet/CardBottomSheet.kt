@@ -66,7 +66,7 @@ class CardBottomSheet(
         }
 
         viewModel.cardList.observe(viewLifecycleOwner){
-            adapter.dataList = it
+            adapter.dataList = it?.body!!.toMutableList()
 //            when(it){
 //                ResponseState.SUCCESS -> {
 //                    setCenterText("추가 성공!", true)

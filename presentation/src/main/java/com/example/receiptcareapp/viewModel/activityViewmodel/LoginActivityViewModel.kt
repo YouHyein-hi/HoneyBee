@@ -1,11 +1,10 @@
 package com.example.receiptcareapp.viewModel.activityViewmodel
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.data.manager.PreferenceManager
-import com.example.domain.model.receive.DomainServerReponse
+import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.usecase.login.LoginUseCase
 import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
@@ -58,7 +57,7 @@ class LoginActivityViewModel @Inject constructor(
 
     //여기는 어차피 항상 성공할때만 들어오는것같음
     //이걸 지워야하나
-    private fun updateLoginState(response: DomainServerReponse,email: String, password: String){
+    private fun updateLoginState(response: DomainServerResponse, email: String, password: String){
         when(response.status){
             "200"->{
                 putLoginData(email, password)

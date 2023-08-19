@@ -2,11 +2,7 @@ package com.example.data.remote.dataSourceImpl
 
 import com.example.data.remote.dataSource.CardDataSource
 import com.example.data.remote.model.ServerResponse
-import com.example.data.remote.model.toServerResponseData
 import com.example.domain.model.receive.CardData
-import com.example.domain.model.receive.DomainServerResponse
-import com.example.domain.model.receive.ServerResponseData
-import com.example.domain.model.receive.SimpleResponse
 import retrofit2.Retrofit
 import javax.inject.Inject
 
@@ -21,7 +17,7 @@ class CardDataSourceImpl @Inject constructor(
         cardName: String?,
         amount: Int?,
         billCheckDate: String?
-    ): ServerResponse<SimpleResponse> {
+    ): ServerResponse<com.example.domain.model.receive.SimpleResponse> {
         val gap = retrofit.create(CardDataSource::class.java)
             .sendCardDataSource(cardName = cardName, amount = amount, billCheckDate = billCheckDate)
 

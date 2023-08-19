@@ -1,9 +1,7 @@
 package com.example.domain.repo
 
 import android.graphics.Bitmap
-import com.example.domain.model.receive.DomainReceiveAllData
-import com.example.domain.model.receive.DomainServerResponse
-import com.example.domain.model.receive.DomainUpadateData
+import com.example.domain.model.receive.*
 import com.example.domain.model.send.DomainSendData
 
 /**
@@ -11,10 +9,9 @@ import com.example.domain.model.send.DomainSendData
  * pureum
  */
 interface GeneralRepository {
-    suspend fun deleteDataRepository(id: Long):String
-    suspend fun getDataListRepository():MutableList<DomainReceiveAllData>
-    suspend fun getPictureDataUseCaseRepository(uid:String): Bitmap
-    suspend fun insertDataRepository(domainSendData: DomainSendData): String
-    suspend fun updateDataUseCaseRepository(domainResendData: DomainUpadateData)
-//    suspend fun updateDataUseCaseRepository(domainResendData: DomainUpadateData): DomainServerResponse
+    suspend fun deleteDataRepository(id: Long): ServerResponseData
+    suspend fun getDataListRepository(): BillResponseData
+    suspend fun getPictureDataUseCaseRepository(uid:String): ServerPictureData
+    suspend fun insertDataRepository(domainSendData: DomainSendData): ServerResponseData
+    suspend fun updateDataUseCaseRepository(domainResendData: DomainUpadateData): ServerResponseData
 }

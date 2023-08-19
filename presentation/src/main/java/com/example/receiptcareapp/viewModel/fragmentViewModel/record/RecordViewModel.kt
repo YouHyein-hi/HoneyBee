@@ -1,20 +1,17 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel.record
 
 import android.app.Activity
-import android.app.Application
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.domain.model.local.DomainRoomData
+import com.example.domain.model.receive.BillResponseData
 import com.example.domain.model.receive.DomainReceiveAllData
-import com.example.domain.usecase.data.GetDataListUseCase
-import com.example.domain.usecase.data.GetPictureDataUseCase
+import com.example.domain.usecase.bill.GetDataListUseCase
+import com.example.domain.usecase.bill.GetPictureDataUseCase
 import com.example.domain.usecase.room.GetDataListRoomUseCase
-import com.example.receiptcareapp.State.ConnectedState
-import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -40,14 +37,12 @@ class RecordViewModel @Inject constructor(
     val loading : MutableLiveData<Boolean> get() = isLoading
 
     //서버에서 받은 데이터 담는 박스
-    private val _serverData = MutableLiveData<MutableList<DomainReceiveAllData>>()
-    val serverData: LiveData<MutableList<DomainReceiveAllData>>
-        get() = _serverData
+    private val _billList = MutableLiveData<BillResponseData>()
+    val billList: LiveData<BillResponseData> get() = _billList
 
     //룸에서 받은 데이터 담는 박스
     private var _roomData = MutableLiveData<MutableList<DomainRoomData>>()
-    val roomData: LiveData<MutableList<DomainRoomData>>
-        get() = _roomData
+    val roomData: LiveData<MutableList<DomainRoomData>> get() = _roomData
 
     fun getLocalAllData() {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -76,7 +71,7 @@ class RecordViewModel @Inject constructor(
                 Log.e("TAG", "receiveServerAllData: ", )
                 val gap = getDataListUseCase()
                 Log.e("TAG", "receiveServerAllData: $gap", )
-                _serverData.postValue(gap)
+                _billList.postValue(gap)
                 loading.postValue(false)
             } ?: throw SocketTimeoutException()
         }

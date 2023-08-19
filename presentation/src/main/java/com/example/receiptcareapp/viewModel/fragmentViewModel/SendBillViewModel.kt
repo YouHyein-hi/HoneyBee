@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel
 
-import android.app.Application
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -15,13 +14,12 @@ import androidx.lifecycle.MutableLiveData
 import com.example.data.remote.model.changeDate
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.CardResponseData
-import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
 import com.example.domain.usecase.card.GetCardListUseCase
-import com.example.domain.usecase.data.InsertDataUseCase
+import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.util.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,12 +49,10 @@ class SendBillViewModel @Inject constructor(
 
     val loading: LiveData<Boolean> get() = isLoading
 
-    private var _response = MutableLiveData<ResponseState>()
-    val response : LiveData<ResponseState> get() = _response
+    private var _response = MutableLiveData<ServerResponseData?>()
+    val response : LiveData<ServerResponseData?> get() = _response
 
-    init {
-        Log.e("TAG", "ShowPictureViewModel")
-    }
+    private lateinit var savedData : AppSendData
 
     //서버 응답 일관화 이전에 사용할 박스
     private var _cardList = MutableLiveData<CardResponseData>()
@@ -77,9 +73,9 @@ class SendBillViewModel @Inject constructor(
     fun insertBillData(sendData: AppSendData) {
         modelScope.launch {
             isLoading.postValue(true)
-            Log.e("TAG", "insertBillData isloading: ${isLoading.value}", )
+            Log.e("TAG", "insertBillData isloading: ${isLoading.value}",)
             withTimeoutOrNull(waitTime) {
-                updateResponse(
+                _response.postValue(
                     insertDataUseCase(
                         DomainSendData(
                             cardName = MultipartBody.Part.createFormData(
@@ -100,46 +96,55 @@ class SendBillViewModel @Inject constructor(
                             ),
                             picture = compressEncodePicture(sendData.picture)
                         )
-                    ),
-                    sendData
+                    )
                 )
-                isLoading.postValue(false)
             } ?: throw SocketTimeoutException()
+            savedData = sendData
+            isLoading.postValue(false)
         }
     }
 
     //TODO 여기도 서버 값 통일되면 바꿔야 함
-    private fun updateResponse(response: String, data: AppSendData) {
-        Log.e("TAG", "updateResponse: $response", )
-        //uid로 넘어옴
-        when (response) {
-            "0" -> {} // 실패
-            else -> {
-                /// TODO 여기는 임시방편
-                _response.postValue(ResponseState.SUCCESS)
-                ///
-                if (data.billSubmitTime.contains("-") && data.billSubmitTime.contains("T") && data.billSubmitTime.contains(":")) {
-                    data.billSubmitTime = changeDate(data.billSubmitTime)
-                }
-                insertRoomData(
-                    DomainRoomData(
-                        cardName = data.cardName,
-                        amount = data.amount,
-                        storeName = data.storeName,
-                        billSubmitTime = data.billSubmitTime,
-                        file = data.picture.toString(),
-                        uid = response
-                    )
-                )
-            }
-        }
-    }
+//    private fun updateResponse(response: String, data: AppSendData) {
+//        Log.e("TAG", "updateResponse: $response", )
+//        //uid로 넘어옴
+//        when (response) {
+//            "0" -> {} // 실패
+//            else -> {
+//                /// TODO 여기는 임시방편
+//                _response.postValue(ResponseState.SUCCESS)
+//                ///
+//                if (data.billSubmitTime.contains("-") && data.billSubmitTime.contains("T") && data.billSubmitTime.contains(":")) {
+//                    data.billSubmitTime = changeDate(data.billSubmitTime)
+//                }
+//                insertRoomData(
+//                    DomainRoomData(
+//                        cardName = data.cardName,
+//                        amount = data.amount,
+//                        storeName = data.storeName,
+//                        billSubmitTime = data.billSubmitTime,
+//                        file = data.picture.toString(),
+//                        uid = response
+//                    )
+//                )
+//            }
+//        }
+//    }
 
     // 이 기능을 따로 빼야할듯
-    private fun insertRoomData(domainRoomData: DomainRoomData) {
+    fun insertRoomData(response:String) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            insertDataRoomUseCase(domainRoomData)
-            _response.postValue(ResponseState.SUCCESS)
+            insertDataRoomUseCase(
+                DomainRoomData(
+                    cardName = savedData.cardName,
+                    amount = savedData.amount,
+                    storeName = savedData.storeName,
+                    billSubmitTime = savedData.billSubmitTime,
+                    file = savedData.picture.toString(),
+                    uid = response
+                )
+            )
+//            _response.postValue(ResponseState.SUCCESS)
         }
     }
 

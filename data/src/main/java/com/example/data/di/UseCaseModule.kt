@@ -3,7 +3,7 @@ package com.example.data.di
 import com.example.domain.repo.*
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.card.InsertCardUseCase
-import com.example.domain.usecase.data.*
+import com.example.domain.usecase.bill.*
 import com.example.domain.usecase.login.LoginUseCase
 import com.example.domain.usecase.notice.AddNoticeUseCase
 import com.example.domain.usecase.notice.GetNoticeListUseCase

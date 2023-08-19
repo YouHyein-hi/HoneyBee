@@ -1,44 +1,13 @@
 package com.example.receiptcareapp.viewModel.activityViewmodel
 
-import android.app.Application
-import android.content.Context
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.media.ExifInterface
 import android.net.Uri
-import android.provider.MediaStore
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.data.manager.PreferenceManager
-import com.example.domain.model.UpdateCardData
-import com.example.domain.model.UpdateData
-import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.DomainReceiveAllData
-import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.receive.DomainUpadateData
-import com.example.domain.model.receive.DomainUpdateCardData
 import com.example.domain.model.send.*
-import com.example.domain.usecase.card.GetCardListUseCase
-import com.example.domain.usecase.data.*
-import com.example.domain.usecase.room.DeleteDataRoomUseCase
-import com.example.domain.usecase.room.GetDataListRoomUseCase
-import com.example.domain.usecase.room.InsertDataRoomUseCase
-import com.example.domain.usecase.room.UpdateRoomData
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.dto.RecyclerData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.*
-import java.net.SocketTimeoutException
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 /**

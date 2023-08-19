@@ -63,9 +63,9 @@ class RecordServerFragment(
 
     override fun initObserver() {
         //서버에서 받아온 데이터 옵져버
-        viewModel.serverData.observe(viewLifecycleOwner) {
+        viewModel.billList.observe(viewLifecycleOwner) {
             recordServerAdapter.dataList.clear()
-            recordServerAdapter.dataList = it
+            recordServerAdapter.dataList = it.body?.toMutableList()!!
             setTextAndVisible("데이터가 비었어요!", recordServerAdapter.dataList.isEmpty())
         }
 

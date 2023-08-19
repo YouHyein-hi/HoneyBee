@@ -56,7 +56,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 
     override fun initObserver() {
         //Todo api 요청에서 ViewModel 전부 State 처리해야함
-        viewModel.response.observe(viewLifecycleOwner){
+        viewModel.roomResponse.observe(viewLifecycleOwner){
             when(it){
                 ResponseState.UPDATE_SUCCESS -> {
                     showShortToast("수정 완료!")
@@ -70,6 +70,18 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
                     showShortToast("전송 실패...")
                     findNavController().popBackStack()
                 }
+            }
+        }
+
+        viewModel.response.observe(viewLifecycleOwner){
+            when(it.second?.status){
+                "200" -> {
+                    if(it.first==ShowType.SERVER)
+                    else
+                        viewModel.deleteRoomBillData()
+                        viewModel.insertRoomData(it.second.body.first().)
+                }
+                else-> {}
             }
         }
 

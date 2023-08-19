@@ -1,8 +1,6 @@
 package com.example.data.repoImpl
 
 import com.example.data.remote.dataSource.LoginDataSource
-import com.example.data.remote.model.toServerCardData
-import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.repo.LoginRepository
 import javax.inject.Inject
 

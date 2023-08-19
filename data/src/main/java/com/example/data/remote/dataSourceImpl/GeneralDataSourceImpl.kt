@@ -3,6 +3,8 @@ package com.example.data.remote.dataSourceImpl
 import com.example.data.remote.dataSource.GeneralDataSource
 import com.example.data.remote.model.ReceiveData
 import com.example.data.remote.model.ServerResponse
+import com.example.domain.model.receive.BillData
+import com.example.domain.model.receive.PictureData
 import com.example.domain.model.receive.SimpleResponse
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
@@ -16,15 +18,13 @@ import javax.inject.Inject
 class GeneralDataSourceImpl @Inject constructor(
     private val retrofit: Retrofit
 ): GeneralDataSource {
-
-
     override suspend fun sendDataSource(
         cardName: MultipartBody.Part,
         amount: MultipartBody.Part,
         pictureName: MultipartBody.Part,
         timestmap: MultipartBody.Part,
         bill: MultipartBody.Part
-    ): String {
+    ): ServerResponse<SimpleResponse> {
         return retrofit.create(GeneralDataSource::class.java).sendDataSource(
             cardName = cardName,
             amount = amount,
@@ -34,18 +34,17 @@ class GeneralDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun receiveDataSource(): MutableList<ReceiveData> {
+    override suspend fun receiveDataSource(): ServerResponse<BillData> {
         return retrofit.create(GeneralDataSource::class.java).receiveDataSource()
     }
 
-    override suspend fun receivePictureDataSource(uid:String): String {
+    override suspend fun receivePictureDataSource(uid:String): ServerResponse<SimpleResponse> {
         return retrofit.create(GeneralDataSource::class.java).receivePictureDataSource(uid)
     }
 
-    override suspend fun deleteServerData(uid:Long): String {
+    override suspend fun deleteServerData(uid:Long): ServerResponse<SimpleResponse> {
         return retrofit.create(GeneralDataSource::class.java).deleteServerData(uid)
     }
-
 
     override suspend fun updateDataSource(
         id: Long,

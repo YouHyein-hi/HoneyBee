@@ -1,7 +1,8 @@
 package com.example.data.remote.dataSource
 
-import com.example.data.remote.model.ReceiveData
 import com.example.data.remote.model.ServerResponse
+import com.example.domain.model.receive.BillData
+import com.example.domain.model.receive.PictureData
 import com.example.domain.model.receive.SimpleResponse
 import okhttp3.MultipartBody
 import retrofit2.http.*
@@ -20,22 +21,22 @@ interface GeneralDataSource {
         @Part billSubmitTime: MultipartBody.Part,
         @Part amount: MultipartBody.Part,
         @Part file: MultipartBody.Part,
-    ): String
+    ): ServerResponse<SimpleResponse>
 
     @Streaming
     @GET("bill/list")   // 전체 데이터 요청
-    suspend fun receiveDataSource(): MutableList<ReceiveData>
+    suspend fun receiveDataSource(): ServerResponse<BillData>
 
     @Streaming
     @GET("bill/image/{id}")
     suspend fun receivePictureDataSource(
         @Path("id") user: String
-    ): String
+    ): ServerResponse<SimpleResponse>
 
     @DELETE("bill/delete/{uid}")
     suspend fun deleteServerData(
         @Path("uid") uid: Long
-    ): String
+    ): ServerResponse<SimpleResponse>
 
     //    @PUT("bill/update/{id}/{cardName}/{storeName}/{date}/{amount}")
     @FormUrlEncoded

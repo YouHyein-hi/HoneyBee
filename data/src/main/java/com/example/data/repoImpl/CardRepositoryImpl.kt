@@ -1,11 +1,8 @@
 package com.example.data.repoImpl
 
-import android.util.Log
 import com.example.data.remote.dataSource.CardDataSource
-import com.example.data.remote.model.toServerCardData
+import com.example.data.remote.model.toCardResponseData
 import com.example.data.remote.model.toServerResponseData
-import com.example.domain.model.receive.DomainServerResponse
-import com.example.domain.model.receive.DomainUpdateCardData
 import com.example.domain.model.receive.CardResponseData
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.DomainSendCardData
@@ -20,17 +17,15 @@ class CardRepositoryImpl @Inject constructor(
     private val cardDataSource: CardDataSource
 ): CardRepository {
     override suspend fun getCardListRepository(): CardResponseData {
-        return cardDataSource.getCardDataSource().toServerCardData()
+        return cardDataSource.getCardDataSource().toCardResponseData()
     }
 
     override suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): ServerResponseData {
-        val gap = cardDataSource.sendCardDataSource(
+        return cardDataSource.sendCardDataSource(
             cardName = domainSendCardData.cardName,
             amount = domainSendCardData.cardAmount,
             billCheckDate = domainSendCardData.billCheckDate
         ).toServerResponseData()
-        Log.e("TAG", "insertCardUseCase@@@@@@@@@@@@: $gap", )
-        return gap
     }
 
 

@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.example.domain.model.BottomSheetData
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
@@ -201,12 +202,13 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
         viewModel.response.observe(viewLifecycleOwner){
             Log.e("TAG", "initObserver: com", )
-            when(it){
-                ResponseState.SUCCESS -> {
+            when(it?.status){
+                "200" -> {
+                    viewModel.insertRoomData(it.body?.first().toString())
                     findNavController().navigate(R.id.action_showFragment_to_homeFragment)
                     showShortToast("전송 성공")
                 }
-                else -> {}
+                else -> {showShortToast("전송 실패")}
             }
         }
 

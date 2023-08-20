@@ -52,7 +52,7 @@ class RecordLocalFragment(
                     uid = it.uid,
                     cardName = it.cardName,
                     amount = it.amount,
-                    billSubmitTime = it.date,
+                    date = it.date,
                     storeName = it.storeName,
                     file = it.file
                 )

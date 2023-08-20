@@ -8,7 +8,6 @@
         <variable
             name="data"
             type="com.example.domain.model.BottomSheetData" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

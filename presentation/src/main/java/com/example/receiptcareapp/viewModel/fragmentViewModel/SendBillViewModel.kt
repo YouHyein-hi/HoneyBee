@@ -11,17 +11,16 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.data.remote.model.changeDate
 import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.CardResponseData
+import com.example.domain.model.receive.ServerCardData
 import com.example.domain.model.receive.ServerResponseData
+import com.example.domain.model.receive.ServerUidData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase
 import com.example.receiptcareapp.base.BaseViewModel
-import com.example.receiptcareapp.util.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -49,14 +48,14 @@ class SendBillViewModel @Inject constructor(
 
     val loading: LiveData<Boolean> get() = isLoading
 
-    private var _response = MutableLiveData<ServerResponseData?>()
-    val response : LiveData<ServerResponseData?> get() = _response
+    private var _response = MutableLiveData<ServerUidData?>()
+    val response : LiveData<ServerUidData?> get() = _response
 
     private lateinit var savedData : AppSendData
 
     //서버 응답 일관화 이전에 사용할 박스
-    private var _cardList = MutableLiveData<CardResponseData>()
-    val cardList : LiveData<CardResponseData> get() = _cardList
+    private var _cardList = MutableLiveData<ServerCardData>()
+    val cardList : LiveData<ServerCardData> get() = _cardList
 
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {

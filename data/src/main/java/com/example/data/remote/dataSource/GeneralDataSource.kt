@@ -1,9 +1,9 @@
 package com.example.data.remote.dataSource
 
-import com.example.data.remote.model.ServerResponse
+import ServerResponse
+import com.example.data.remote.model.ServerBillResponse
 import com.example.domain.model.receive.BillData
-import com.example.domain.model.receive.PictureData
-import com.example.domain.model.receive.SimpleResponse
+import com.example.domain.model.receive.ServerBillData
 import okhttp3.MultipartBody
 import retrofit2.http.*
 import java.time.LocalDateTime
@@ -21,24 +21,23 @@ interface GeneralDataSource {
         @Part billSubmitTime: MultipartBody.Part,
         @Part amount: MultipartBody.Part,
         @Part file: MultipartBody.Part,
-    ): ServerResponse<SimpleResponse>
+    ): ServerResponse<Int>
 
     @Streaming
     @GET("bill/list")   // 전체 데이터 요청
-    suspend fun receiveDataSource(): ServerResponse<BillData>
+    suspend fun receiveDataSource(): ServerResponse<List<ServerBillResponse>>
 
     @Streaming
     @GET("bill/image/{id}")
     suspend fun receivePictureDataSource(
         @Path("id") user: String
-    ): ServerResponse<SimpleResponse>
+    ): ServerResponse<String>
 
     @DELETE("bill/delete/{uid}")
     suspend fun deleteServerData(
         @Path("uid") uid: Long
-    ): ServerResponse<SimpleResponse>
+    ): ServerResponse<Int>
 
-    //    @PUT("bill/update/{id}/{cardName}/{storeName}/{date}/{amount}")
     @FormUrlEncoded
     @PUT("bill/update/{id}")
     suspend fun updateDataSource(
@@ -47,5 +46,5 @@ interface GeneralDataSource {
         @Field("storeName") storeName: String,
         @Field("billSubmitTime") billSubmitTime: LocalDateTime,
         @Field("amount") amount: Int,
-    ): ServerResponse<SimpleResponse>
+    ): ServerResponse<Int>
 }

@@ -12,7 +12,8 @@ data class RecyclerData(
     val uid : String,
     val cardName: String,
     val amount: String,
-    var billSubmitTime: String,
+    var date: String,
     val storeName: String,
     var file: Uri?
+
 )

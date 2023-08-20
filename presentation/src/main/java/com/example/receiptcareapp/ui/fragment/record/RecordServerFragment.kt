@@ -50,10 +50,10 @@ class RecordServerFragment(
                     type = ShowType.SERVER,
                     uid = it.uid,
                     cardName = it.cardName,
-                    amount = it.amount,
-                    billSubmitTime = it.date,
+                    amount = it.storeAmount,
+                    date = it.date,
                     storeName = it.storeName,
-                    file = null
+                    file = null,
                 )
             )
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
@@ -65,7 +65,7 @@ class RecordServerFragment(
         //서버에서 받아온 데이터 옵져버
         viewModel.billList.observe(viewLifecycleOwner) {
             recordServerAdapter.dataList.clear()
-            recordServerAdapter.dataList = it.body?.toMutableList()!!
+            recordServerAdapter.dataList = it?.body?.toMutableList()!!
             setTextAndVisible("데이터가 비었어요!", recordServerAdapter.dataList.isEmpty())
         }
 

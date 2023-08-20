@@ -91,7 +91,6 @@
     <string name="record_frame_title">영수증 목록</string>
 
     <!-- 상세 기록 페이지 -->
-    <string name="record_show_bill_check_data_text">%s일</string>
     <string name="record_show_fail_txt">이미지 로딩 실패..!</string>
     <string name="recrod_show_bill_check_txt">청구 날짜</string>
     <string name="record_show_amount_txt">금액</string>

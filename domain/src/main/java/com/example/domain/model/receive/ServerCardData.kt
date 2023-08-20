@@ -1,13 +1,12 @@
 package com.example.domain.model.receive
 
-import android.graphics.Bitmap
-
 /**
  * 2023-08-19
  * pureum
  */
-data class SimpleResponse(
+data class ServerCardData(
     val status: String,
     val message: String,
-    val body: String
+    val body: List<CardData>?
 )
+

@@ -7,8 +7,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.BillResponseData
-import com.example.domain.model.receive.DomainReceiveAllData
+import com.example.domain.model.receive.ServerBillData
 import com.example.domain.usecase.bill.GetDataListUseCase
 import com.example.domain.usecase.bill.GetPictureDataUseCase
 import com.example.domain.usecase.room.GetDataListRoomUseCase
@@ -31,14 +30,13 @@ import javax.inject.Inject
 class RecordViewModel @Inject constructor(
     private val getRoomDataListUseCase: GetDataListRoomUseCase,
     private val getDataListUseCase: GetDataListUseCase,
-    private val getPictureDataUseCase: GetPictureDataUseCase,
 ): BaseViewModel() {
 
     val loading : MutableLiveData<Boolean> get() = isLoading
 
     //서버에서 받은 데이터 담는 박스
-    private val _billList = MutableLiveData<BillResponseData>()
-    val billList: LiveData<BillResponseData> get() = _billList
+    private val _billList = MutableLiveData<ServerBillData?>()
+    val billList: LiveData<ServerBillData?> get() = _billList
 
     //룸에서 받은 데이터 담는 박스
     private var _roomData = MutableLiveData<MutableList<DomainRoomData>>()
@@ -46,11 +44,11 @@ class RecordViewModel @Inject constructor(
 
     fun getLocalAllData() {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            loading.postValue(true)
+            isLoading.postValue(true)
             val gap = getRoomDataListUseCase()
             Log.e("TAG", "receiveAllRoomData: $gap")
             _roomData.postValue(gap)
-            loading.postValue(false)
+            isLoading.postValue(false)
         }
     }
 
@@ -66,14 +64,11 @@ class RecordViewModel @Inject constructor(
     // Server 데이터 불러오는 부분
     fun getServerAllBillData() {
         modelScope.launch {
+            isLoading.postValue(true)
             withTimeoutOrNull(waitTime){
-                loading.postValue(true)
-                Log.e("TAG", "receiveServerAllData: ", )
-                val gap = getDataListUseCase()
-                Log.e("TAG", "receiveServerAllData: $gap", )
-                _billList.postValue(gap)
-                loading.postValue(false)
+                _billList.postValue(getDataListUseCase())
             } ?: throw SocketTimeoutException()
+            isLoading.postValue(false)
         }
     }
 }

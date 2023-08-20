@@ -132,7 +132,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             }
         })
         permissionDialog.show(supportFragmentManager, "permissiondDialog")
-        Log.e(TAG, "다이알로그 실행", )
     }
 
     // 권한 체크

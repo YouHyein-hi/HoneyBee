@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.receive.NoticeData
+import com.example.domain.model.receive.ServerNoticeData
 import com.example.domain.model.send.DomainAddNoticeData
 import com.example.domain.model.send.DomainGetNoticeListData
 import com.example.receiptcareapp.R
@@ -15,18 +17,18 @@ import com.example.receiptcareapp.databinding.ItemNoticeBinding
  */
 class NoticeAdapter : RecyclerView.Adapter<NoticeAdapter.MyHolder>(){
 
-    lateinit var onNoticeClic: (DomainGetNoticeListData)-> Unit
+    lateinit var onNoticeClic: (NoticeData)-> Unit
     private lateinit var binding: ItemNoticeBinding
-    var dataList = mutableListOf<DomainGetNoticeListData>()
+    var dataList = mutableListOf<NoticeData>()
         set(value){
             field = value.reversed().toMutableList()
             notifyDataSetChanged()
         }
 
     inner class MyHolder(private val binding : ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DomainGetNoticeListData) {
+        fun bind(item: NoticeData) {
             binding.noticeItemTitle.text = item.title
-            binding.noticeItemDate.text = item.date.toString()
+            binding.noticeItemDate.text = item.date
             binding.noticeLayout.setOnClickListener { onNoticeClic(item) }
         }
     }

@@ -52,7 +52,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
     override fun initObserver() {
         viewModel.response.observe(viewLifecycleOwner){
             adapter.dataList.clear()
-            adapter.dataList = it
+            adapter.dataList = it?.body!!.toMutableList()
         }
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding. layoutLoadingProgress.root.visibility = View.VISIBLE

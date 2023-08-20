@@ -2,6 +2,7 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel.notice
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.DomainAddNoticeData
 import com.example.domain.usecase.notice.AddNoticeUseCase
 import com.example.receiptcareapp.base.BaseViewModel
@@ -23,11 +24,14 @@ class NoticeAddViewModel @Inject constructor(
 
     val loading : MutableLiveData<Boolean> get() = isLoading
 
+    private val _response = MutableLiveData<ServerResponseData?>()
+    val response : MutableLiveData<ServerResponseData?> get() = _response
+
     fun insertNotice(data: DomainAddNoticeData){
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 isLoading.postValue(true)
-                Log.e("TAG", "insertNotice: ${addNoticeUseCase(data)}", )
+                _response.postValue(addNoticeUseCase(data))
                 isLoading.postValue(false)
             }
         }

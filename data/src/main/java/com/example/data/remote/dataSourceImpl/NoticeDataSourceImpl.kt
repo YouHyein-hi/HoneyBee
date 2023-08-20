@@ -1,7 +1,8 @@
 package com.example.data.remote.dataSourceImpl
 
+import ServerResponse
 import com.example.data.remote.dataSource.NoticeDataSource
-import com.example.data.remote.model.GetNoticeListData
+import com.example.data.remote.model.ServerNoticeResponse
 import retrofit2.Retrofit
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -13,7 +14,7 @@ import javax.inject.Inject
 class NoticeDataSourceImpl @Inject constructor(
     private val retrofit: Retrofit
 ) : NoticeDataSource {
-    override suspend fun getNoticeListDataSource(): MutableList<GetNoticeListData> {
+    override suspend fun getNoticeListDataSource(): ServerResponse<List<ServerNoticeResponse>> {
         return retrofit.create(NoticeDataSource::class.java).getNoticeListDataSource()
     }
 
@@ -21,7 +22,7 @@ class NoticeDataSourceImpl @Inject constructor(
         title: String,
         date: LocalDateTime,
         content: String
-    ): String {
+    ): ServerResponse<String> {
         return retrofit.create(NoticeDataSource::class.java).addNoticeDataSource(
             title = title,
             date = date,

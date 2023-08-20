@@ -1,6 +1,7 @@
 package com.example.receiptcareapp.ui.fragment
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -22,7 +23,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private val viewModel : HomeViewModel by viewModels()
     private lateinit var callback: OnBackPressedCallback
-    private val homeCardBottomSheet: CardBottomSheet by lazy { CardBottomSheet() }
+    private val homeCardBottomSheet: CardBottomSheet by lazy { CardBottomSheet(viewModel) }
     private val addDialog : AddDialog = AddDialog()
     private val adapter: HomeCardAdapter = HomeCardAdapter()
 

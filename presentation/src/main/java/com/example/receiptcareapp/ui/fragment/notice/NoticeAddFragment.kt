@@ -46,6 +46,16 @@ class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
+        viewModel.response.observe(viewLifecycleOwner){
+            when(it?.status){
+                "200" -> {
+                    showShortToast("전송 성공!")
+                    findNavController().popBackStack()
+                }
+                else -> showShortToast("전송 실패..")
+            }
+        }
+
         // Err관리
         viewModel.fetchState.observe(this) {
             showShortToast(FetchStateHandler(it))

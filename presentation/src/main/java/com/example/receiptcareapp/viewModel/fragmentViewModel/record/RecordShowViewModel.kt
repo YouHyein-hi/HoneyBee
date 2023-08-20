@@ -14,9 +14,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.CardResponseData
+import com.example.domain.model.receive.ServerCardData
 import com.example.domain.model.receive.DomainUpadateData
-import com.example.domain.model.receive.ServerResponseData
+import com.example.domain.model.receive.ServerUidData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
 import com.example.domain.usecase.card.GetCardListUseCase
@@ -26,9 +26,12 @@ import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.bill.UpdateDataUseCase
 import com.example.domain.usecase.room.DeleteDataRoomUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase
-import com.example.receiptcareapp.State.ShowType
+import com.example.domain.usecase.room.UpdateRoomData
+import com.example.domain.util.changeDate
 import com.example.receiptcareapp.base.BaseViewModel
+import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.util.ResponseState
+import com.example.receiptcareapp.util.RoomState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
@@ -49,27 +52,28 @@ import javax.inject.Inject
 @HiltViewModel
 class RecordShowViewModel @Inject constructor(
     @ApplicationContext private val application: Context,
-    private val deleteDataRoomUseCase: DeleteDataRoomUseCase,
     private val getPictureDataUseCase: GetPictureDataUseCase,
     private val deleteDataUseCase: DeleteDataUseCase,
     private val updateDataUseCase: UpdateDataUseCase,
     private val getCardListUseCase: GetCardListUseCase,
     private val insertDataUseCase: InsertDataUseCase,
-    private val insertDataRoomUseCase: InsertDataRoomUseCase
-) : BaseViewModel() {
+    private val insertDataRoomUseCase: InsertDataRoomUseCase,
+    private val deleteDataRoomUseCase: DeleteDataRoomUseCase,
+    private val updateRoomData: UpdateRoomData
+    ) : BaseViewModel() {
 
     val loading: MutableLiveData<Boolean> get() = isLoading
 
-    private var _response = MutableLiveData<Pair<ShowType,ServerResponseData?>>()
-    val response : LiveData<Pair<ShowType,ServerResponseData?>> get() = _response
+    private var _response = MutableLiveData<Pair<ResponseState,ServerUidData?>>()
+    val response : LiveData<Pair<ResponseState,ServerUidData?>> get() = _response
 
-    private var _roomResponse = MutableLiveData<ResponseState?>()
-    val roomResponse : LiveData<ResponseState?> get() = _roomResponse
+    private val _roomState = MutableLiveData<RoomState>()
+    val roomState: LiveData<RoomState> get() = _roomState
 
     // 서버 카드 전달받은 값 관리
-    private var _cardData = MutableLiveData<CardResponseData?>()
-    val cardData: LiveData<CardResponseData?>
-        get() = _cardData
+    private var _cardList = MutableLiveData<ServerCardData?>()
+    val cardList: LiveData<ServerCardData?>
+        get() = _cardList
 
     private var _picture = MutableLiveData<Bitmap?>()
     val picture : LiveData<Bitmap?> get(){
@@ -88,7 +92,7 @@ class RecordShowViewModel @Inject constructor(
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
                 _response.postValue(Pair(
-                        ShowType.SERVER,
+                        ResponseState.UPDATE_SUCCESS,
                         updateDataUseCase(
                             DomainUpadateData(
                                 id = uid.toLong(),
@@ -111,7 +115,7 @@ class RecordShowViewModel @Inject constructor(
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 _response.postValue(Pair(
-                        ShowType.LOCAL,
+                        ResponseState.LOCAL_UPDATE_SUCCESS,
                         insertDataUseCase(
                             DomainSendData(
                                 cardName = MultipartBody.Part.createFormData(
@@ -135,37 +139,36 @@ class RecordShowViewModel @Inject constructor(
                         )
                     )
                 )
-                Log.e("TAG", "sendData 응답 : $response ")
             } ?: throw SocketTimeoutException()
-
         }
     }
 
     fun deleteServerBillData(id: Long) {
-        Log.e("TAG", "deleteServerData: 들어감")
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                deleteDataUseCase(id)
-                isLoading.postValue(false)
+                _response.value = Pair(ResponseState.DELETE_SUCCESS, deleteDataUseCase(id))
             } ?: throw SocketTimeoutException()
+            isLoading.postValue(false)
         }
     }
 
-    fun deleteRoomBillData() {
+    fun deleteRoomBillData(date: String? = savedLocalData.billSubmitTime) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
-            val result = deleteDataRoomUseCase(savedLocalData.billSubmitTime)
+            val result = deleteDataRoomUseCase(date!!)
             Log.e("TAG", "deleteRoomData result : $result")
-            isLoading.postValue(false)
             //삭제 후에 데이터 끌어오기 위한 구성
 //            getLocalAllBillData()
-            _roomResponse.postValue(ResponseState.DELETE_SUCCESS)
+            _roomState.postValue(RoomState.DELETE_SUCCESS)
+            isLoading.postValue(false)
+
         }
+
     }
     // 이 기능을 따로 빼야할듯
     fun insertRoomData(uid:String) {
-        modelScope.launch {
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             insertDataRoomUseCase(
                 DomainRoomData(
                     uid = uid,
@@ -176,38 +179,32 @@ class RecordShowViewModel @Inject constructor(
                     file = savedLocalData.picture.toString()
                 )
             )
-            _roomResponse.postValue(ResponseState.SUCCESS)
+//            _roomState.postValue(RoomState.INSERT_SUCCESS)
         }
     }
 
-//    //TODO 들어오는 값이 통일되면 하나로 합치기 + 응답값에 맞춰서 움직여야함
-//    private fun imsiUpdateResponse(response: String, type: ResponseState, uid: String, sendData: AppSendData){
-//        when(response) {
-//            else -> {
-//                _response.postValue(type)
-//                deleteRoomBillData(uid)
-//                insertRoomData(
-//                    DomainRoomData(
-//                        uid,
-//                        sendData.cardName,
-//                        sendData.amount,
-//                        sendData.billSubmitTime,
-//                        sendData.storeName,
-//                        sendData.picture.toString()
-//                    )
-//                )
-//            }
-////            "200" -> _response.postValue(type)
-////            else -> _response.postValue(ResponseState.FALSE)
-//        }
-//    }
+    fun upDataRoomData(uid: String){
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch{
+            updateRoomData(
+                DomainRoomData(
+                    uid = uid,
+                    cardName = savedLocalData.cardName,
+                    amount = savedLocalData.amount,
+                    billSubmitTime = savedLocalData.billSubmitTime,
+                    storeName = savedLocalData.storeName,
+                    file = savedLocalData.picture.toString()
+                )
+            )
+//            _roomState.postValue(RoomState.UPDATE_SUCCESS)
+        }
+    }
 
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                _cardData.postValue(getCardListUseCase())
+                _cardList.postValue(getCardListUseCase())
                 isLoading.postValue(false)
             }?:throw SocketTimeoutException()
         }
@@ -219,7 +216,6 @@ class RecordShowViewModel @Inject constructor(
             withTimeoutOrNull(waitTime) {
                 loading.postValue(true)
                 _picture.postValue(getPictureDataUseCase(uid).picture)
-
                 loading.postValue(false)
             }?:throw SocketTimeoutException()
         }
@@ -254,7 +250,10 @@ class RecordShowViewModel @Inject constructor(
     }
 
     fun dateReplace(date : String): List<String> {
-        return date.replace(" ", "").split("년", "월", "일", "시", "분", "초")
+        var gap = date
+        if(date.contains("T"))
+            gap = changeDate(gap)
+        return gap.split(".","  ")
     }
 
     fun compressEncodePicture(uri:Uri): MultipartBody.Part{

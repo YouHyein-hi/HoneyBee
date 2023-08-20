@@ -1,9 +1,8 @@
 package com.example.domain.repo
 
-import com.example.domain.model.receive.DomainServerResponse
-import com.example.domain.model.receive.DomainUpdateCardData
-import com.example.domain.model.receive.CardResponseData
+import com.example.domain.model.receive.ServerCardData
 import com.example.domain.model.receive.ServerResponseData
+import com.example.domain.model.receive.ServerUidData
 import com.example.domain.model.send.DomainSendCardData
 
 /**
@@ -11,7 +10,7 @@ import com.example.domain.model.send.DomainSendCardData
  * pureum
  */
 interface CardRepository {
-    suspend fun getCardListRepository(): CardResponseData
+    suspend fun getCardListRepository(): ServerCardData
     suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): ServerResponseData
 //    suspend fun updateCardUseCase(domainUpdateCardData: DomainUpdateCardData):DomainServerResponse
 }

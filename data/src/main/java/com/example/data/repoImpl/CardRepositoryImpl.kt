@@ -1,12 +1,14 @@
 package com.example.data.repoImpl
 
 import com.example.data.remote.dataSource.CardDataSource
-import com.example.data.remote.model.toCardResponseData
-import com.example.data.remote.model.toServerResponseData
-import com.example.domain.model.receive.CardResponseData
+import com.example.domain.model.receive.ServerCardData
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.repo.CardRepository
+import com.example.domain.util.changeAmount
+import com.example.domain.util.changeDate
+import toServerCardData
+import toServerResponseData
 import javax.inject.Inject
 
 /**
@@ -16,8 +18,10 @@ import javax.inject.Inject
 class CardRepositoryImpl @Inject constructor(
     private val cardDataSource: CardDataSource
 ): CardRepository {
-    override suspend fun getCardListRepository(): CardResponseData {
-        return cardDataSource.getCardDataSource().toCardResponseData()
+    override suspend fun getCardListRepository(): ServerCardData {
+        val response = cardDataSource.getCardDataSource().toServerCardData()
+        val newList = response.body?.map { it.copy(amount = changeAmount(it.amount)) }
+        return ServerCardData(response.status, response.message, newList)
     }
 
     override suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): ServerResponseData {

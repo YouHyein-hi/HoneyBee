@@ -5,8 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.receive.BillData
-import com.example.domain.model.receive.BillResponseData
-import com.example.domain.model.receive.DomainReceiveAllData
 import com.example.receiptcareapp.databinding.ItemBillListServerBinding
 
 /**
@@ -28,7 +26,7 @@ class RecordServerAdapter:RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
             with(binding){
                 storeName.text = list.storeName
                 cardName.text = list.cardName
-                amount.text = list.amount
+                amount.text = list.storeAmount
                 dateTxt.text = list.date
                 listLayout.setOnClickListener{ onServerSaveClick(list) }
                 if(list.billCheck) {

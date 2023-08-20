@@ -1,7 +1,6 @@
-@file:JvmName("ServerResponseKt")
-
-package com.example.data.remote.model
+import com.example.data.remote.model.*
 import com.example.domain.model.receive.*
+import com.example.domain.util.changeDate
 
 /**
  * 2023-08-19
@@ -10,12 +9,17 @@ import com.example.domain.model.receive.*
 data class ServerResponse<T>(
     val status: String,
     val message: String,
-    val body: List<T>? =null
+    val     body: T? = null
 )
 
-fun <T: CardData> ServerResponse<T>.toCardResponseData() = CardResponseData(status, message, body)
+fun <T: List<ServerCardResponse>> ServerResponse<T>.toServerCardData() = ServerCardData(status, message, body?.map { it.toCardData() })
 
-fun ServerResponse<SimpleResponse>.toServerResponseData() = ServerResponseData(status, message, body)
+fun ServerResponse<String>.toServerResponseData() = ServerResponseData(status, message, body!!)
 
-fun ServerResponse<BillData>.toServerBillData() = BillResponseData(status, message, body)
+fun ServerResponse<List<ServerBillResponse>>.toServerBillData():ServerBillData = ServerBillData(status, message, body?.map { it.toBillData() } )
+
+
+fun ServerResponse<List<ServerNoticeResponse>>.toServerNoticeData() = ServerNoticeData(status, message, body?.map { it.toNoticeData() })
+
+fun ServerResponse<Int>.toUidServerResponseData() = ServerUidData(status, message, body)
 

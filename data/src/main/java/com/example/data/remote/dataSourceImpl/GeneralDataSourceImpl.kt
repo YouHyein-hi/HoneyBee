@@ -1,11 +1,8 @@
 package com.example.data.remote.dataSourceImpl
 
+import ServerResponse
 import com.example.data.remote.dataSource.GeneralDataSource
-import com.example.data.remote.model.ReceiveData
-import com.example.data.remote.model.ServerResponse
-import com.example.domain.model.receive.BillData
-import com.example.domain.model.receive.PictureData
-import com.example.domain.model.receive.SimpleResponse
+import com.example.data.remote.model.ServerBillResponse
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
 import java.time.LocalDateTime
@@ -24,7 +21,7 @@ class GeneralDataSourceImpl @Inject constructor(
         pictureName: MultipartBody.Part,
         timestmap: MultipartBody.Part,
         bill: MultipartBody.Part
-    ): ServerResponse<SimpleResponse> {
+    ): ServerResponse<Int> {
         return retrofit.create(GeneralDataSource::class.java).sendDataSource(
             cardName = cardName,
             amount = amount,
@@ -34,15 +31,15 @@ class GeneralDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun receiveDataSource(): ServerResponse<BillData> {
+    override suspend fun receiveDataSource(): ServerResponse<List<ServerBillResponse>> {
         return retrofit.create(GeneralDataSource::class.java).receiveDataSource()
     }
 
-    override suspend fun receivePictureDataSource(uid:String): ServerResponse<SimpleResponse> {
+    override suspend fun receivePictureDataSource(uid:String): ServerResponse<String> {
         return retrofit.create(GeneralDataSource::class.java).receivePictureDataSource(uid)
     }
 
-    override suspend fun deleteServerData(uid:Long): ServerResponse<SimpleResponse> {
+    override suspend fun deleteServerData(uid:Long): ServerResponse<Int> {
         return retrofit.create(GeneralDataSource::class.java).deleteServerData(uid)
     }
 
@@ -52,7 +49,7 @@ class GeneralDataSourceImpl @Inject constructor(
         storeName: String,
         billSubmitTime: LocalDateTime,
         amount: Int
-    ): ServerResponse<SimpleResponse> {
+    ): ServerResponse<Int> {
         return retrofit.create(GeneralDataSource::class.java).updateDataSource(
             id,
             cardName,

@@ -29,6 +29,7 @@ class MenuViewModel @Inject constructor(
     }
 
     fun putTime(hour: Int, minute: Int) {
+        //생성자
         preferenceManager.putHour(hour)
         preferenceManager.putMinute(minute)
         _pushTime.value = TimeData(hour, minute)

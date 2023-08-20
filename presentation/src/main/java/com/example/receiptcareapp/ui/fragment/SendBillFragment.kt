@@ -90,7 +90,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     myMonth = month + 1
                     myDay = day
                     btnDate.text = "${myYear}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
-
                     selectedDate = LocalDate.of(year, month + 1, day)
                 }
                 val dataDialog = DatePickerDialog(requireContext(), data,
@@ -204,7 +203,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             Log.e("TAG", "initObserver: com", )
             when(it?.status){
                 "200" -> {
-                    viewModel.insertRoomData(it.body?.first().toString())
+                    viewModel.insertRoomData(it.uid.toString())
                     findNavController().navigate(R.id.action_showFragment_to_homeFragment)
                     showShortToast("전송 성공")
                 }
@@ -214,7 +213,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
         viewModel.cardList.observe(viewLifecycleOwner){
             myArray.clear()
-//                it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
+            it.body?.forEach{myArray.add("${it.name} : ${it.amount}")}
             binding.spinner.adapter = SpinnerAdapter(requireContext(), myArray)
         }
 

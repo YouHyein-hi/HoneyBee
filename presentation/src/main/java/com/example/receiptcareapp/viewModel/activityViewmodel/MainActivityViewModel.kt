@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.data.manager.PreferenceManager
+import com.example.domain.model.receive.NoticeData
 import com.example.domain.model.send.*
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.dto.RecyclerData
@@ -40,7 +41,7 @@ class MainActivityViewModel @Inject constructor(
         get() = _selectedData
     fun changeSelectedData(data: RecyclerData?){ _selectedData.value = data }
 
-    lateinit var selectedNoticeData : DomainGetNoticeListData
+    lateinit var selectedNoticeData : NoticeData
 
     fun clearAll(){
         preferenceManager.clearAll()

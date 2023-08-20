@@ -36,7 +36,7 @@ class ChangeDialog(
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
             viewModelData = activityViewModel.selectedData.value!!
-            newDate = viewModel.dateReplace(viewModelData.billSubmitTime)
+            newDate = viewModel.dateReplace(viewModelData.date)
             Log.e("TAG", "initData myData : $viewModelData")
         } else {
             showShortToast("데이터가 없습니다!")
@@ -115,7 +115,6 @@ class ChangeDialog(
 //                                picture = activityViewModel.bitmapToUri(requireActivity(),activityViewModel.picture.value)
                                 picture = viewModelData.file!!
                             ),
-                            viewModelData.uid
                         )
                     }
                     dismiss()
@@ -130,19 +129,26 @@ class ChangeDialog(
         val dataCardName = viewModelData.cardName
 
         //TODO 코드 단순화 필요해보이는데,, if문의 필요성이 뭘까
-        viewModel.cardData.observe(viewLifecycleOwner) {
+//        viewModel.cardList.observe(viewLifecycleOwner) {
+//            myArray.clear()
+//            it?.body?.forEach { myArray.add("${it} : ${it.cardAmount}") }
+//            val adapter = SpinnerAdapter(requireContext(), myArray)
+//            binding.changeCardspinner.adapter = adapter
+//            var position = viewModel.AdapterPosition(adapter, dataCardName)
+//            if (position != -1) {
+//                binding.changeCardspinner.setSelection(position)
+//            } else {
+//                dismiss()
+//                showShortToast("카드 불러오기 실패!")
+//            }
+//        }
+
+        viewModel.cardList.observe(viewLifecycleOwner){
             myArray.clear()
-//                    it!!.forEach { myArray.add("${it.cardName} : ${it.cardAmount}") }
-            val adapter = SpinnerAdapter(requireContext(), myArray)
-            binding.changeCardspinner.adapter = adapter
-            var position = viewModel.AdapterPosition(adapter, dataCardName)
-            if (position != -1) {
-                binding.changeCardspinner.setSelection(position)
-            } else {
-                dismiss()
-                showShortToast("카드 불러오기 실패!")
-            }
+            it?.body?.forEach{myArray.add("${it.name} : ${it.amount}")}
+            binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), myArray)
         }
+
         // Err관리
         viewModel.fetchState.observe(this) {
             showShortToast(FetchStateHandler(it))

@@ -1,12 +1,14 @@
 package com.example.domain.model.receive
 
 /**
- * 2023-08-19
+ * 2023-08-20
  * pureum
  */
-data class ServerResponseData(
+data class ServerBillData(
     val status: String,
     val message: String,
-    val body: String
+    val body: List<BillData>?
 )
+
+
 

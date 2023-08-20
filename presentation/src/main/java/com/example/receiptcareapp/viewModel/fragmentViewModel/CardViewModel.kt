@@ -3,15 +3,13 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.domain.model.receive.CardResponseData
+import com.example.domain.model.receive.ServerCardData
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.card.InsertCardUseCase
 import com.example.receiptcareapp.base.BaseViewModel
-import com.example.receiptcareapp.util.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
@@ -30,8 +28,8 @@ class CardViewModel @Inject constructor(
 
     val loading: MutableLiveData<Boolean> get() = isLoading
 
-    private var _cardList = MutableLiveData<CardResponseData?>()
-    val cardList: LiveData<CardResponseData?> get() = _cardList
+    private var _cardList = MutableLiveData<ServerCardData?>()
+    val cardList: LiveData<ServerCardData?> get() = _cardList
 
     private var _response = MutableLiveData<ServerResponseData?>()
     val response: LiveData<ServerResponseData?> get() = _response

@@ -24,7 +24,9 @@ import dagger.hilt.android.AndroidEntryPoint
  * pureum
  */
 @AndroidEntryPoint
-class CardBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
+class CardBottomSheet(
+    private val homeViewModel: HomeViewModel
+): BaseBottomSheet<BottomsheetCardBinding>(
     BottomsheetCardBinding::inflate,
     "BottomsheetCardBinding"
 ) {
@@ -90,6 +92,11 @@ class CardBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
 
     private fun changeEmptyTxt(state:Boolean){
         binding.emptyTxt.isVisible = state
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        homeViewModel.getServerCardData()
     }
 
 

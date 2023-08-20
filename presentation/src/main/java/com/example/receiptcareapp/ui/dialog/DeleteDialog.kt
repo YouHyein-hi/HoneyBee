@@ -11,15 +11,16 @@ import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DeleteDialog : BaseDialog<DialogDeleteBinding>(DialogDeleteBinding::inflate) {
+class DeleteDialog(
+    private val viewModel:RecordShowViewModel
+) : BaseDialog<DialogDeleteBinding>(DialogDeleteBinding::inflate) {
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val viewModel : RecordShowViewModel by viewModels()
     private lateinit var viewModelData: RecyclerData
-    private lateinit var myData: RecyclerData
 
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
@@ -46,11 +47,9 @@ class DeleteDialog : BaseDialog<DialogDeleteBinding>(DialogDeleteBinding::inflat
                 if(viewModelData.type == ShowType.SERVER){
                     viewModel.deleteServerBillData(viewModelData.uid.toLong())
                     dismiss()
-                    findNavController().popBackStack()
                 }else{
-                    viewModel.deleteRoomBillData(viewModelData.billSubmitTime)
+                    viewModel.deleteRoomBillData(viewModelData.date)
                     dismiss()
-                    findNavController().popBackStack()
                 }
             }
 

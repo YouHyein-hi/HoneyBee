@@ -3,10 +3,7 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.domain.model.receive.CardResponseData
-import com.example.domain.model.receive.ServerResponseData
-import com.example.domain.model.send.AppSendCardData
-import com.example.domain.model.send.DomainSendCardData
+import com.example.domain.model.receive.ServerCardData
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.card.InsertCardUseCase
 import com.example.domain.usecase.notice.GetNoticeListUseCase
@@ -35,8 +32,8 @@ class HomeViewModel @Inject constructor(
     val response: LiveData<ResponseState> get() = _response
 
     //서버 응답 일관화 이전에 사용할 박스
-    private var _cardList = MutableLiveData<CardResponseData?>()
-    val cardList: LiveData<CardResponseData?> get() = _cardList
+    private var _cardList = MutableLiveData<ServerCardData?>()
+    val cardList: LiveData<ServerCardData?> get() = _cardList
 
     //서버 응답 일관화 이전에 사용할 박스
     private var _notice = MutableLiveData<String>()
@@ -57,10 +54,11 @@ class HomeViewModel @Inject constructor(
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                if (getNoticeListUseCase().isEmpty())
+                val gap = getNoticeListUseCase().body
+                if (gap?.isEmpty() == true)
                     _notice.postValue("Honey Bee 영수증 관리 앱 사용을 환영합니다!")
                 else
-                    _notice.postValue(getNoticeListUseCase().last().title)
+                    _notice.postValue(gap?.last()?.title)
             }
             isLoading.postValue(false)
         }

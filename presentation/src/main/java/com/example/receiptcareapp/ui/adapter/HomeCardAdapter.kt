@@ -4,8 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.receive.CardData
-import com.example.domain.model.receive.CardResponseData
-import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.ItemHomeCardListBinding
 
@@ -21,8 +19,8 @@ class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
 
     inner class MyHolder(private val binding : ItemHomeCardListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CardData, position:Int) {
-            binding.homeCardName.text = item.cardName
-            binding.amount = item.cardAmount
+            binding.homeCardName.text = item.name
+            binding.amount = item.amount
             when(position) {
                 1 -> binding.cardIcon.setImageResource(R.drawable.icon_card_1)
                 2 -> binding.cardIcon.setImageResource(R.drawable.icon_card_2)

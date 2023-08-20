@@ -9,5 +9,7 @@ import android.graphics.Bitmap
 data class ServerUidData(
     val status: String,
     val message: String,
-    val uid: String
+    val uid: Int?
 )
+
+

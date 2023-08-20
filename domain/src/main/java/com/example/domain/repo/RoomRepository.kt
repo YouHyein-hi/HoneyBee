@@ -12,5 +12,4 @@ interface RoomRepository {
     suspend fun getAllData():MutableList<DomainRoomData>
     suspend fun deleteData(date: String) : Int
     suspend fun updateData(list: DomainRoomData)
-
 }

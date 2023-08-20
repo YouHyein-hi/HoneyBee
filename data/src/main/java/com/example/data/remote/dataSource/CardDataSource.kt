@@ -1,8 +1,9 @@
 package com.example.data.remote.dataSource
 
-import com.example.data.remote.model.ServerResponse
+import ServerResponse
+import com.example.data.remote.model.ServerCardResponse
 import com.example.domain.model.receive.CardData
-import com.example.domain.model.receive.SimpleResponse
+import com.example.domain.model.receive.ResponseData
 import retrofit2.http.*
 
 /**
@@ -17,11 +18,11 @@ interface CardDataSource {
         @Field("cardName") cardName : String?,
         @Field("cardAmount") amount : Int?,
         @Field("billCheckDate") billCheckDate : String?
-    ): ServerResponse<SimpleResponse>
+    ): ServerResponse<String>
 
     @Streaming
     @GET("billCard/list")
-    suspend fun getCardDataSource() : ServerResponse<CardData>
+    suspend fun getCardDataSource() : ServerResponse<List<ServerCardResponse>>
 
 //    //아직 안쓰이는 기능
 //    @DELETE("billCard/delete/{uid}")

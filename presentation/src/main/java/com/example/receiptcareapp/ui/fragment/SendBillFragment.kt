@@ -21,6 +21,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.CardData
+import com.example.domain.model.receive.CardSpinnerData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
@@ -50,7 +51,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     private var todayDate : LocalDate? = null
     private var selectedDate : LocalDate? = null
     private lateinit var callback: OnBackPressedCallback
-    private var cardDataList: MutableList<CardData> = mutableListOf()
+    private var cardDataList: MutableList<CardSpinnerData> = mutableListOf()
     private var newCard = 0
 
     override fun initData() {
@@ -224,15 +225,10 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         viewModel.cardList.observe(viewLifecycleOwner){
             //myArray.clear()
             it.body?.forEach { cardDataList.add(it) }
-            val cardArrayList = ArrayList<CardData>(cardDataList)
+            val cardArrayList = ArrayList<CardSpinnerData>(cardDataList)
+            Log.e("TAG", "cardList.observe : ${cardDataList}", )
             binding.spinner.adapter = SpinnerAdapter(requireContext(), cardArrayList)
         }
-/*        viewModel.cardList.observe(viewLifecycleOwner) { response ->
-            myArray.clear()
-            response.body?.forEach { cardData ->
-                cardDataList.add(cardData)
-            }
-        }*/
 
         // Err관리
         viewModel.fetchState.observe(this) {

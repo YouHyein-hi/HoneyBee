@@ -7,6 +7,7 @@ import android.widget.*
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.UpdateData
 import com.example.domain.model.receive.CardData
+import com.example.domain.model.receive.CardSpinnerData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseDialog
@@ -35,7 +36,7 @@ class ChangeDialog(
     private var myMonth = 0
     private var myDay = 0
     private var newDate = listOf<String>()
-    private var cardDataList: MutableList<CardData> = mutableListOf()
+    private var cardDataList: MutableList<CardSpinnerData> = mutableListOf()
 
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
@@ -131,25 +132,11 @@ class ChangeDialog(
     override fun initObserver() {
         val dataCardName = viewModelData.cardName
 
-        //TODO 코드 단순화 필요해보이는데,, if문의 필요성이 뭘까
-//        viewModel.cardList.observe(viewLifecycleOwner) {
-//            myArray.clear()
-//            it?.body?.forEach { myArray.add("${it} : ${it.cardAmount}") }
-//            val adapter = SpinnerAdapter(requireContext(), myArray)
-//            binding.changeCardspinner.adapter = adapter
-//            var position = viewModel.AdapterPosition(adapter, dataCardName)
-//            if (position != -1) {
-//                binding.changeCardspinner.setSelection(position)
-//            } else {
-//                dismiss()
-//                showShortToast("카드 불러오기 실패!")
-//            }
-//        }
-
         viewModel.cardList.observe(viewLifecycleOwner){
-            myArray.clear()
-            it?.body?.forEach{myArray.add("${it.name} : ${it.amount}")}
-            //binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), myArray)
+            it?.body?.forEach { cardDataList.add(it) }
+            val cardArrayList = ArrayList<CardSpinnerData>(cardDataList)
+            Log.e("TAG", "cardList.observe : ${cardDataList}", )
+            binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), cardArrayList)
         }
 
         // Err관리
@@ -160,21 +147,9 @@ class ChangeDialog(
 
     private fun getSpinner() {
         viewModel.getServerCardData()
-        val cardArrayList = ArrayList<CardData>(cardDataList)
-
-        binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), cardArrayList)
+        binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), arrayListOf())
         binding.changeCardspinner?.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
-/*
-                override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    Log.e("TAG", "getSpinner onItemSelected: ${position}")
-                    Log.e("TAG", "getSpinner onItemSelected: ${myArray[position]}")
-                    val spiltCard = viewModel.splitColon(myArray[position])
-                    cardId = position
-                    checked = spiltCard[0]
-                    Log.e("TAG", "onItemSelected checked: ${checked}")
-                }
-*/
                 override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     val selectedCardData = cardDataList[position]
                     cardId = position

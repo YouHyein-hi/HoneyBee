@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.domain.model.receive.CardData
+import com.example.domain.model.receive.CardSpinnerData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.SpinnerCustomItemLayoutBinding
 import com.example.receiptcareapp.databinding.SpinnerCustomLayoutBinding
 
-class SpinnerAdapter(context: Context, items: ArrayList<CardData>) : ArrayAdapter<CardData>(context, R.layout.spinner_custom_item_layout, items) {
+class SpinnerAdapter(context: Context, items: ArrayList<CardSpinnerData>) : ArrayAdapter<CardSpinnerData>(context, R.layout.spinner_custom_item_layout, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val binding = SpinnerCustomLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)

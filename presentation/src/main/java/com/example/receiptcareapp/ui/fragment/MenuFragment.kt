@@ -117,24 +117,38 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
 
 
     private fun setAlarm() {
-        val targetTime = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
+        val intervalDays = listOf(-5, -3, -1, 0, 1, 3, 5) // -5, -3, -1, 0, +1, +3, +5일 간격 리스트
+        val targetDate = Calendar.getInstance().apply {
+            // 여기에 원하는 날짜 설정
+            set(Calendar.YEAR, get(Calendar.YEAR))
+            set(Calendar.MONTH, get(Calendar.MONTH)) // 0부터 시작하므로 7은 8월을 나타냄
+            set(Calendar.DAY_OF_MONTH, 21)
             set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
             set(Calendar.MINUTE, viewModel.getTime().minute!!)
         }
-        alarmManager.setExact(
-            AlarmManager.RTC_WAKEUP,
-            targetTime.timeInMillis,
-            pendingIntent
-        )
 
+        for (intervalDay in intervalDays) {
+            val targetTime = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                timeInMillis = targetDate.timeInMillis // 설정한 날짜로 변경
+                add(Calendar.DAY_OF_MONTH, intervalDay)
+            }
+
+            // 정확한 시간에 알람 예약
+            alarmManager.setExact(
+                AlarmManager.RTC_WAKEUP,
+                targetTime.timeInMillis,
+                pendingIntent
+            )
+
+            // 다음 알람을 위해 intervalDay만큼 시간 증가
+            targetDate.add(Calendar.DAY_OF_MONTH, intervalDay)
+        }
     }
 
     private fun cancelAlarm() {
         alarmManager.cancel(pendingIntent)
     }
 
-    private fun updatePushTimeText() {
-    }
 
 }

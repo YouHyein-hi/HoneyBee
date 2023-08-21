@@ -1,11 +1,16 @@
 package com.example.receiptcareapp.ui.activity
 
+import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.audiofx.BassBoost
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -15,6 +20,8 @@ import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityLoginBinding
 import com.example.receiptcareapp.dto.LoginData
+import com.example.receiptcareapp.ui.adapter.PermissionHandler
+import com.example.receiptcareapp.ui.dialog.PermissiondCheck_Dialog
 import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
@@ -26,9 +33,9 @@ import dagger.hilt.android.AndroidEntryPoint
 //class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
 class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
     private val viewModel: LoginActivityViewModel by viewModels()
+    private lateinit var permissionHandler: PermissionHandler
     private var backPressedTime: Long = 0
     private val loginData = LoginData(null,null)
-    private val handler = Handler(Looper.getMainLooper())
     private val ALL_PERMISSIONS = arrayOf(
         android.Manifest.permission.CAMERA,
         android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -49,6 +56,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         else{
             showShortToast("권한 있음")
         }
+
+        permissionHandler = PermissionHandler(this@LoginActivity)
 
     }
 
@@ -126,8 +135,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     //권한 Dialog
     private fun permissionDialog() {
         val permissionDialog = Permissiond_Dialog()
-        permissionDialog.setOnPermissionButtonClickListener(object : Permissiond_Dialog.OnPermissionButtonClickListener {
-            override fun onPermissionButtonClicked() {
+        permissionDialog.setOnDismissListener(object : Permissiond_Dialog.OnDismissListener {
+            override fun onDialogDismissed() {
                 checkPermission(ALL_PERMISSIONS, ALL_PERMISSIONS_CODE)
             }
         })
@@ -158,37 +167,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         Log.e("TAG", "onRequestPermissionsResult: 에 접근",)
         super.onRequestPermissionsResult(requestCode, permissions, grantResults) // 두 개의 배열 파라미터를 모두 전달합니다.
 
-        for (i in permissions.indices) {
-            val grantResult = grantResults[i]
-            when (permissions[i]) {
-                android.Manifest.permission.CAMERA -> {
-                    if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                        Log.e("TAG", "카메라 권한이 허용됐습니다!")
-                        showShortToast("카메라 권한이 허용됐습니다!")
-                    } else {
-                        handlePermissionDenied("카메라")
-                    }
-                }
-                android.Manifest.permission.READ_EXTERNAL_STORAGE -> {
-                    if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                        Log.e("TAG", "갤러리 권한이 허용됐습니다!")
-                        showShortToast("갤러리 권한이 허용됐습니다!")
-                    } else {
-                        handlePermissionDenied("갤러리")
-                    }
-                }
-            }
-        }
+        permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-    }
-
-    private fun handlePermissionDenied(permission: String) {
-        Log.e("TAG", permission)
-        showShortToast("$permission 는 서비스에 필요한 권한입니다. 권한에 동의해주세요.")
-
-        handler.postDelayed({
-            checkPermission(ALL_PERMISSIONS, ALL_PERMISSIONS_CODE)
-        }, 2000)
     }
 
 }

@@ -12,13 +12,12 @@ import com.example.receiptcareapp.databinding.DialogPermissionBinding
 
 class Permissiond_Dialog : BaseDialog<DialogPermissionBinding>(DialogPermissionBinding::inflate)  {
 
-    interface OnPermissionButtonClickListener {
-        fun onPermissionButtonClicked()
+    interface OnDismissListener {
+        fun onDialogDismissed()
     }
-    private var onPermissionButtonClickListener: OnPermissionButtonClickListener? = null
-
-    fun setOnPermissionButtonClickListener(listener: OnPermissionButtonClickListener) {
-        onPermissionButtonClickListener = listener
+    private var onDismissListener: OnDismissListener? = null
+    fun setOnDismissListener(listener: OnDismissListener) {
+        onDismissListener = listener
     }
 
     override fun initData() {
@@ -28,9 +27,9 @@ class Permissiond_Dialog : BaseDialog<DialogPermissionBinding>(DialogPermissionB
     }
 
     override fun initListener() {
+        dialog?.setCancelable(false)
         binding.permissionButton.setOnClickListener {
-            // 다이얼로그가 닫힐 때 콜백 호출
-            onPermissionButtonClickListener?.onPermissionButtonClicked()
+            onDismissListener?.onDialogDismissed()
             dismiss()
         }
     }

@@ -42,6 +42,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.text.DecimalFormat
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -322,6 +323,15 @@ class RecordShowViewModel @Inject constructor(
         Log.e("TAG", "absolutelyPath result: $result", )
         return result!!
     }
+
+    fun CommaReplaceSpace(text : String): String {
+        return text.replace(",", "")
+    }
+
+    fun PriceFormat(price : String): String? {
+        return DecimalFormat("#,###").format(price.toInt())
+    }
+
 //    fun getLocalAllBillData() {
 //        CoroutineScope(exceptionHandler).launch {
 //            val gap = getRoomDataListUseCase()

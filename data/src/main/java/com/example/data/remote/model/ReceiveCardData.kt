@@ -20,6 +20,7 @@ fun ReceiveCardData.toDomainReceiveCardData():DomainReceiveCardData{
     Log.e("TAG", "toDomainReceiveCardData: cardAmount $cardAmount", )
     val myCardAmount = DecimalFormat("#,###")
     val newCardAmount = myCardAmount.format(cardAmount.toString().toInt())
+    val newCardName = "${cardName}카드"
     Log.e("TAG", "toDomainReceiveCardData: newCarAmount $newCardAmount", )
-    return DomainReceiveCardData(billcardId,cardName, newCardAmount, billCheckDate)
+    return DomainReceiveCardData(billcardId,newCardName, newCardAmount, billCheckDate)
 }

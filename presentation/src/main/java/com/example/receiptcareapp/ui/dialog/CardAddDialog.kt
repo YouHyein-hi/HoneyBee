@@ -35,18 +35,11 @@ class CardAddDialog(
 
     override fun initListener() {
         with(binding){
-            dialogcardEditCardprice.setOnClickListener {
-                if (dialogcardEditCardprice.text.contains(",")) {
-                    dialogcardEditCardprice.setText(viewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
-                    dialogcardEditCardprice.setSelection(dialogcardEditCardprice.text.length)
-                }
-            }
+
             dialogcardEditCardprice.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_NEXT && dialogcardEditCardprice.text.isNotEmpty()) {
                     dialogcardEditCardprice.setText(viewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
-//                    val gap = DecimalFormat("#,###")
-//                    dialogcardEditCardprice.setText(gap.format(dialogcardEditCardprice.text.toString().replace(",","").toInt()))
                 }
                 handled
             }
@@ -67,6 +60,14 @@ class CardAddDialog(
             }
             val hintCardPrice = dialogcardEditCardprice.hint
             dialogcardEditCardprice.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    if (dialogcardEditCardprice.text.contains(",")) {
+                        dialogcardEditCardprice.setText(viewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
+                        dialogcardEditCardprice.setSelection(dialogcardEditCardprice.text.length)
+                    }
+                }
+                else { dialogcardEditCardprice.setText(viewModel.PriceFormat(dialogcardEditCardprice.text.toString())) }
+
                 if (!hasFocus && dialogcardEditCardprice.text.isEmpty()) {
                     // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
                     dialogcardEditCardprice.hint = getString(R.string.dialog_cardAdd_price_err)
@@ -118,12 +119,13 @@ class CardAddDialog(
                 }
                 else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
                     var price = dialogcardEditCardprice.text.toString()
+                    var cardName = dialogcardEditCardname.text.toString()
                     if (price.contains(","))
-                        price = dialogcardEditCardprice.text.toString().replace(",", "")
+                        price = price.replace(",", "")
+                    if (cardName.contains("카드"))
+                        cardName = cardName.replace("카드", "")
 
                     homeViewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt(), dialogcardEditBillCardCheck.text.toString()))
-                    //TODO 이걸 여기서하면 안됨
-//                    homeCardViewModel.getServerCardData()
                     dismiss()
                 }
             }

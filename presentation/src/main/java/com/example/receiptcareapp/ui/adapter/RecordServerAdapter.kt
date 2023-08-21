@@ -25,8 +25,8 @@ class RecordServerAdapter:RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
         fun bind(list: BillData){
             with(binding){
                 storeName.text = list.storeName
-                cardName.text = list.cardName
-                amount.text = list.storeAmount
+                cardName.text = "${list.cardName}카드"
+                amount.text = list.amount
                 dateTxt.text = list.date
                 listLayout.setOnClickListener{ onServerSaveClick(list) }
                 if(list.billCheck) {

@@ -53,7 +53,7 @@
                 android:fontFamily="@font/pretendardsemibold"
                 android:text="@{data.amount, default = `금액`}"
                 android:textColor="@color/main_font_black"
-                android:textSize="24sp" />
+                android:textSize="30sp" />
 
             <LinearLayout
                 android:layout_marginTop="40dp"

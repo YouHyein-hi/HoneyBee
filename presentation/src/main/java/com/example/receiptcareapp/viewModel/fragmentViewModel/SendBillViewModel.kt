@@ -34,6 +34,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -251,6 +252,17 @@ class SendBillViewModel @Inject constructor(
 
     fun amountCheck(price: String, cardAmount: String):Boolean{
         return price.replace(",","").toInt() <= cardAmount.replace(",","").toInt()
+    }
+
+    fun CommaReplaceSpace(text : String): String {
+        return text.replace(",", "")
+    }
+
+    fun PriceFormat(price : String): String? {
+        if (price.isEmpty()) { return "" }
+        val numericValue = try { price.toInt()
+        } catch (e: NumberFormatException) { return price }
+        return DecimalFormat("#,###").format(numericValue)
     }
 
 

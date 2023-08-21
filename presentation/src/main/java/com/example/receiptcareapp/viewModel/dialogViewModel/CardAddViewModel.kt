@@ -37,39 +37,10 @@ class CardAddViewModel @Inject constructor(
         return text.replace(",", "")
     }
 
-    fun PriceFormat(price: String): String? {
-        return DecimalFormat("#,###").format(price.toInt())
+    fun PriceFormat(price : String): String? {
+        if (price.isEmpty()) { return "" }
+        val numericValue = try { price.toInt()
+        } catch (e: NumberFormatException) { return price }
+        return DecimalFormat("#,###").format(numericValue)
     }
-
-//    fun insertServerCardData(sendData: AppSendCardData) {
-//        Log.e("TAG", "sendCardData: 카드 보내기 $sendData")
-//        modelScope.launch {
-//            withTimeoutOrNull(waitTime) {
-//                updateResponse(
-//                    insertCardUseCase(
-//                        DomainSendCardData(
-//                            cardName = sendData.cardName,
-//                            cardAmount = sendData.cardAmount,
-//                            billCheckDate = sendData.billCheckDate
-//                        )
-//                    ),
-//                    ResponseState.UPDATE_SUCCESS
-//                )
-//                //TODO 이런 유기적인 관계로 걸려있으면 안됨
-//            } ?: throw SocketTimeoutException()
-//        }
-//    }
-//
-//    private fun updateResponse(response: ServerResponseData, type: ResponseState) {
-//        Log.e("TAG", "updateResponse: $response, $type", )
-//        when (response.status) {
-//            "200" -> {
-//                _response.postValue(type)
-//                Log.e("TAG", "updateResponse 200", )
-//            }
-//            else -> {
-//                Log.e("TAG", "updateResponse else", )
-//            }
-//        }
-//    }
 }

@@ -156,6 +156,10 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         checkImageData()
         binding.imageView.clipToOutline = true
         binding.data = viewModelData
+//         binding.cardTxt.text = "${viewModelData.cardName}카드"
+//         binding.dateTxt.text = viewModelData.billSubmitTime
+//         binding.amountTxt.text = "${viewModelData.amount}원"
+//         binding.cardAmount.text = viewModelData.storeName
     }
 
     private fun checkImageData(){

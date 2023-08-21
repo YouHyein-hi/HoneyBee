@@ -2,6 +2,7 @@ package com.example.receiptcareapp.ui.dialog
 
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.UpdateData
@@ -119,11 +120,8 @@ class ChangeDialog(
                     }
                     dismiss()
                 }
+                changeBtnNegative.setOnClickListener { dismiss() }
             }
-
-            binding.changeBtnNegative.setOnClickListener { dismiss() }
-        }
-    }
 
     override fun initObserver() {
         val dataCardName = viewModelData.cardName
@@ -178,5 +176,23 @@ class ChangeDialog(
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
+            changeBtnPrice.setOnEditorActionListener { v, actionId, event ->
+                var handled = false
+                if (actionId == EditorInfo.IME_ACTION_NEXT && changeBtnPrice.text.isNotEmpty()) {
+                    changeBtnPrice.setText(viewModel.PriceFormat(changeBtnPrice.text.toString()))
+                }
+                handled
+            }
+            changeBtnPrice.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    if (changeBtnPrice.text.contains(",")) {
+                        changeBtnPrice.setText(viewModel.CommaReplaceSpace(changeBtnPrice.text.toString()))
+                        changeBtnPrice.setSelection(changeBtnPrice.text.length)
+                    }
+                }
+                else { changeBtnPrice.setText(viewModel.PriceFormat(changeBtnPrice.text.toString())) }
+            }
+
+        }
     }
 }

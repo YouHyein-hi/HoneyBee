@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.domain.model.UpdateData
 import com.example.domain.model.receive.CardData
 import com.example.domain.model.receive.CardSpinnerData
+import com.example.domain.model.receive.DateData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseDialog
@@ -26,15 +27,12 @@ class ChangeDialog(
 ) : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var viewModelData: RecyclerData
-    private var myArray = arrayListOf<String>()
-    private var checked = ""
+    private var cardName = ""
     private var cardId = 0
     private var settingYear = 0
     private var settingMonth = 0
     private var settingDay = 0
-    private var myYear = 0
-    private var myMonth = 0
-    private var myDay = 0
+    private lateinit var dateData : DateData
     private var newDate = listOf<String>()
     private var cardDataList: MutableList<CardSpinnerData> = mutableListOf()
 
@@ -59,10 +57,12 @@ class ChangeDialog(
         binding.changeBtnStore.setText(viewModelData.storeName)
         binding.changeBtnPrice.setText(viewModelData.amount)
         try {
-            settingYear = newDate[0].toInt()
-            settingMonth = newDate[1].toInt()
-            settingDay = newDate[2].toInt()
-            binding.changeDatepicker.init(settingYear, settingMonth - 1, settingDay, null)
+            dateData = DateData(
+                year = newDate[0].toInt(),
+                month = newDate[1].toInt(),
+                day = newDate[2].toInt()
+            )
+            binding.changeDatepicker.init(dateData.year, dateData.month - 1, dateData.day, null)
         } catch (e: NullPointerException) {
             dismiss()
             showShortToast("날짜 불러오기를 실패했습니다.")
@@ -72,21 +72,24 @@ class ChangeDialog(
 
     override fun initListener() {
         binding.changeBtnPositive.setOnClickListener {
-            myYear = binding.changeDatepicker.year
-            myMonth = binding.changeDatepicker.month + 1
-            myDay = binding.changeDatepicker.dayOfMonth
-            Log.e("TAG", "onCreateDialog: $myYear, $myMonth, $myDay")
 
-            val myLocalDateTime = viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
+            dateData = DateData(
+                year = binding.changeDatepicker.year,
+                month = binding.changeDatepicker.month + 1,
+                day = binding.changeDatepicker.dayOfMonth
+            )
+            Log.e("TAG", "onCreateDialog: ${dateData.year}, ${dateData.month}, ${dateData.day}")
+
+            val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
 
             Log.e("TAG", "onCreateView: ${viewModelData.uid}")
             Log.e(
                 "TAG",
-                "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${checked}, ${binding.changeBtnStore.text}, ${viewModelData.file}",
+                "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${cardName}, ${binding.changeBtnStore.text}, ${viewModelData.file}",
             )
 
             when {
-                checked == "" -> {
+                cardName == "" -> {
                     showShortToast("카드를 입력하세요.")
                 }
                 binding.changeBtnStore.text!!.isEmpty() -> {
@@ -105,7 +108,7 @@ class ChangeDialog(
                             sendData = UpdateData(
                                 billSubmitTime = myLocalDateTime.toString(),
                                 amount = binding.changeBtnPrice.text.toString(),
-                                cardName = checked,
+                                cardName = cardName,
                                 storeName = binding.changeBtnStore.text.toString()
                             ),
                             uid = viewModelData.uid,
@@ -115,7 +118,7 @@ class ChangeDialog(
                             sendData = AppSendData(
                                 billSubmitTime = myLocalDateTime.toString(),
                                 amount = binding.changeBtnPrice.text.toString(),
-                                cardName = checked,
+                                cardName = cardName,
                                 storeName = binding.changeBtnStore.text.toString(),
 //                                picture = activityViewModel.bitmapToUri(requireActivity(),activityViewModel.picture.value)
                                 picture = viewModelData.file!!
@@ -130,8 +133,6 @@ class ChangeDialog(
     }
 
     override fun initObserver() {
-        val dataCardName = viewModelData.cardName
-
         viewModel.cardList.observe(viewLifecycleOwner){
             it?.body?.forEach { cardDataList.add(it) }
             val cardArrayList = ArrayList<CardSpinnerData>(cardDataList)
@@ -153,7 +154,7 @@ class ChangeDialog(
                 override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     val selectedCardData = cardDataList[position]
                     cardId = position
-                    checked = selectedCardData.name
+                    cardName = selectedCardData.name
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }

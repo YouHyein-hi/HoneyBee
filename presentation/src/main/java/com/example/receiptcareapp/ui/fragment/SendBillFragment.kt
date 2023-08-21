@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.CardData
 import com.example.domain.model.receive.CardSpinnerData
+import com.example.domain.model.receive.DateData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
@@ -43,20 +44,23 @@ import java.util.*
 class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillBinding::inflate, "ShowPictureFragment") {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel : SendBillViewModel by viewModels()
+    private var cardDataList: MutableList<CardSpinnerData> = mutableListOf()
     private var cardName = ""
     private var cardAmount = ""
-    private var myYear = 0
-    private var myMonth = 0
-    private var myDay = 0
     private var todayDate : LocalDate? = null
-    private var selectedDate : LocalDate? = null
+    private var selectedDate : LocalDate ? = null
+    private lateinit var dateData : DateData
     private lateinit var callback: OnBackPressedCallback
-    private var cardDataList: MutableList<CardSpinnerData> = mutableListOf()
-    private var newCard = 0
 
     override fun initData() {
         todayDate = viewModel.dateNow()
         selectedDate = viewModel.dateNow()
+
+        dateData = DateData(
+            year = viewModel.dateNow().year,
+            month = viewModel.dateNow().monthValue,
+            day = viewModel.dateNow().dayOfMonth
+        )
     }
 
     override fun initUI() {
@@ -68,9 +72,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 .into(pictureView)
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
             btnDate.text = "${viewModel.dateNow().format(formatterDate)}"
-            myYear = viewModel.dateNow().year
-            myMonth = viewModel.dateNow().monthValue
-            myDay = viewModel.dateNow().dayOfMonth
         }
         /** Spinner 호출 **/
         getSpinner()
@@ -87,10 +88,12 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             btnDate.setOnClickListener {
                 val cal = Calendar.getInstance()
                 val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
-                    myYear = year
-                    myMonth = month + 1
-                    myDay = day
-                    btnDate.text = "${myYear}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
+                    dateData = DateData(
+                        year = year,
+                        month = month + 1,
+                        day = day
+                    )
+                    btnDate.text = "${year}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
                     selectedDate = LocalDate.of(year, month + 1, day)
                 }
                 val dataDialog = DatePickerDialog(requireContext(), data,
@@ -101,16 +104,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 dataDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
                     .setTextColor(Color.BLACK)
             }
-
-
-/*            *//** 금액 EidtText , 추가 **//*
-            btnPrice.setOnClickListener {
-                Log.e("TAG", "btnPrice.setOnClickListener", )
-                if (btnPrice.text.contains(",")) {
-                    btnPrice.setText(viewModel.commaReplaceSpace(btnPrice.text.toString()))
-                    btnPrice.setSelection(btnPrice.text.length)
-                }
-            }*/
 
             /** 금액 EidtText , 추가 **/
             btnPrice.setOnEditorActionListener { v, actionId, event ->
@@ -179,7 +172,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                             showShortToast("보유금액보다 많은 비용입니다.")
                             return@setOnClickListener
                         }
-                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
+                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.month)
                         SendCheckBottomSheet(
                             viewModel,
                             BottomSheetData(
@@ -264,9 +257,5 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     override fun onDetach() {
         super.onDetach()
         callback.remove()
-    }
-
-    fun setNewCardValue(value: Int) {
-        newCard = value
     }
 }

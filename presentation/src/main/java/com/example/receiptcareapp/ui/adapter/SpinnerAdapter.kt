@@ -5,19 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.example.domain.model.receive.CardData
+import com.example.domain.model.receive.CardSpinnerData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.SpinnerCustomItemLayoutBinding
 import com.example.receiptcareapp.databinding.SpinnerCustomLayoutBinding
 
-class SpinnerAdapter(context: Context, items: ArrayList<String>) : ArrayAdapter<String>(context, R.layout.spinner_custom_item_layout, items) {
+class SpinnerAdapter(context: Context, items: ArrayList<CardSpinnerData>) : ArrayAdapter<CardSpinnerData>(context, R.layout.spinner_custom_item_layout, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        //TODO 여기를 바꾸면 Spinner UI 수정 성공할 수 있지 않을까?
         val binding = SpinnerCustomLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.spinnerItem.height = 35 // 높이를 35dp로 설정합니다.
 
         val item = getItem(position)
-        binding.spinnerItem.text = item
+        binding.spinnerItem.text = "${item?.name} : ${item?.amount}" // 이름과 금액을 보여줌
         return binding.root
     }
 
@@ -26,7 +27,7 @@ class SpinnerAdapter(context: Context, items: ArrayList<String>) : ArrayAdapter<
         binding.spinnerItem.height = 35 // 높이를 35dp로 설정합니다.
 
         val item = getItem(position)
-        binding.spinnerItem.text = item
+        binding.spinnerItem.text = "${item?.name} : ${item?.amount}" // 이름과 금액을 보여줌
         return binding.root
     }
 }

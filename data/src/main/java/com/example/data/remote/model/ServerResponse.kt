@@ -14,6 +14,8 @@ data class ServerResponse<T>( //
 
 fun <T: List<ServerCardResponse>> ServerResponse<T>.toServerCardData() = ServerCardData(status, message, body?.map { it.toCardData() })
 
+fun <T: List<ServerCardResponse>> ServerResponse<T>.toServerCardSpinnerData() = ServerCardSpinnerData(status, message, body?.map { it.toCardSpinnerData() })
+
 fun ServerResponse<String>.toServerResponseData() = ServerResponseData(status, message, body!!)
 
 fun ServerResponse<List<ServerBillResponse>>.toServerBillData():ServerBillData = ServerBillData(status, message, body?.map { it.toBillData() } )

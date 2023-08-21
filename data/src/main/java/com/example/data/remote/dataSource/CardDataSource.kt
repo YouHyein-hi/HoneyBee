@@ -22,7 +22,7 @@ interface CardDataSource {
 
     @Streaming
     @GET("billCard/list")
-    suspend fun getCardDataSource() : ServerResponse<List<ServerCardResponse>>
+    suspend fun getCardDataSource() : ServerResponse<List<ServerCardResponse>> //바디에 카드
 
 //    //아직 안쓰이는 기능
 //    @DELETE("billCard/delete/{uid}")

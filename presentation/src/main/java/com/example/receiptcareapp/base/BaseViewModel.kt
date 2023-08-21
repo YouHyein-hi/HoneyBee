@@ -3,6 +3,7 @@ package com.example.receiptcareapp.base
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
 import androidx.lifecycle.*
+import com.bumptech.glide.manager.Lifecycle
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.RoomState
 import kotlinx.coroutines.*
@@ -52,4 +53,5 @@ abstract class BaseViewModel : ViewModel(){
     //TODO IO 에서 돌아가는 Retrofit도 해당 스코프로도 잘 돌아가는데 왜그럴까?
     // 레트로핏 자체적으로 IO에서 실행시키는 기능때문에.
     protected val modelScope = viewModelScope + job + exceptionHandler
+    protected val ioScope = CoroutineScope(Dispatchers.IO) + job + exceptionHandler
 }

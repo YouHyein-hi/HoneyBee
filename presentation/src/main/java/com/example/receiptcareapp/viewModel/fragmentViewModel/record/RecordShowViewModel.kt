@@ -322,7 +322,6 @@ class RecordShowViewModel @Inject constructor(
         Log.e("TAG", "absolutelyPath result: $result", )
         return result!!
     }
-
 //    fun getLocalAllBillData() {
 //        CoroutineScope(exceptionHandler).launch {
 //            val gap = getRoomDataListUseCase()

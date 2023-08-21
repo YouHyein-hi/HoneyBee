@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.RecyclerShowData
+import com.example.domain.util.changeDate
 import com.example.receiptcareapp.databinding.ItemBillListLocalBinding
 
 /**
@@ -25,7 +26,7 @@ class RecordLocalAdapter: RecyclerView.Adapter<RecordLocalAdapter.MyAdapter>(){
             binding.storeName.text = list.storeName
             binding.cardName.text = list.cardName
             binding.amount.text = list.amount
-            binding.dateTxt.text = list.date
+            binding.dateTxt.text = changeDate(list.date)
             binding.listLayout.setOnClickListener{ onLocalSaveClic(list) }
         }
     }

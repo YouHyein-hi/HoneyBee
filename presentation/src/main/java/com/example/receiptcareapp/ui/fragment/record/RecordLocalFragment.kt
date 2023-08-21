@@ -6,6 +6,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.local.toRecyclerShowData
+import com.example.domain.util.changeDate
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseFragment
@@ -44,7 +45,6 @@ class RecordLocalFragment(
     override fun initListener() {
         //로컬 목록에서 리스트를 누를경우
         recordLocalAdapter.onLocalSaveClic = {
-            Log.e("TAG", "initListener: local")
             //Activity ViewModel 값 저장
             activityViewModel.changeSelectedData(
                 RecyclerData(
@@ -52,7 +52,7 @@ class RecordLocalFragment(
                     uid = it.uid,
                     cardName = it.cardName,
                     amount = it.amount,
-                    date = it.date,
+                    date = changeDate(it.date),
                     storeName = it.storeName,
                     file = it.file
                 )

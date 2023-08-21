@@ -4,8 +4,10 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -23,6 +25,7 @@ import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.util.RoomState
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -37,9 +40,8 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initData() {
-        if(activityViewModel.selectedData.value != null) {
+        if(activityViewModel.selectedData.value != null)
             viewModelData = activityViewModel.selectedData.value!!
-        }
         else
             findNavController().popBackStack()
     }
@@ -145,18 +147,22 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     private fun initView(){
-        if(viewModelData.type == ShowType.SERVER)
+        Log.e("TAG", "initView: $viewModelData", )
+        if(viewModelData.type == ShowType.LOCAL)
             binding.imageView.setImageURI(viewModelData.file)
         else
             viewModel.getServerPictureData(viewModelData.uid)
 
+        checkImageData()
         binding.imageView.clipToOutline = true
         binding.data = viewModelData
     }
 
     private fun checkImageData(){
         if(binding.imageView.drawable == null)
-            binding.emptyText.visibility = View.VISIBLE
+            binding.emptyText.isVisible = true
+        if(viewModel.picture.value==null)
+            binding.emptyText.isVisible =true
     }
 
     //수정

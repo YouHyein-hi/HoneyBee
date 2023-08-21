@@ -35,8 +35,8 @@ class RoomRepositoryImpl @Inject constructor(
         return roomDao.deleteData(date = date)
     }
 
-    override suspend fun updateData(list: DomainRoomData) {
-        roomDao.updateData(
+    override suspend fun updateData(list: DomainRoomData):Int {
+        return roomDao.updateData(
             MyEntity(
                 uid = list.uid,
                 billSubmitTime = list.billSubmitTime,

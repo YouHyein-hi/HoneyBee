@@ -43,7 +43,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val ALL_PERMISSIONS_CODE = 123
 
     override fun initData() {
-//        nextActivity()
         var getLogin = viewModel.getLoginData()
         if(getLogin.id != null){
             nextActivity()
@@ -56,9 +55,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         else{
             showShortToast("권한 있음")
         }
-
         permissionHandler = PermissionHandler(this@LoginActivity)
-
     }
 
     override fun initUI() {
@@ -73,8 +70,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             loginData.pw = binding.loginPassword.text.toString()
             downKeyBoard()
             with(loginData){
-                if(id.isNullOrEmpty()) showShortToast("아이디를 입력해주세요.")
-                else if(pw.isNullOrEmpty()) showShortToast("비밀번호를 입력해주세요.")
+                if(id.isNullOrEmpty())
+                    showShortToast("아이디를 입력해주세요.")
+                else if(pw.isNullOrEmpty())
+                    showShortToast("비밀번호를 입력해주세요.")
                 else viewModel.requestLogin(
                     binding.loginEmail.text.toString().replace(" ",""),
                     binding.loginPassword.text.toString().replace(" ","")
@@ -92,13 +91,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         //응답 성공 시
         viewModel.response.observe(this) { response ->
             Log.e("TAG", "initObserver: $response")
-            when (response) {
-                ResponseState.SUCCESS -> {
+            when (response.status) {
+                "200" -> {
+                    viewModel.putLoginData(loginData)
                     nextActivity()
                 }
-                ResponseState.FALSE -> {
-                    showShortToast("로그인 실패")
-                }
+                else -> {showShortToast("로그인 실패")}
             }
         }
 

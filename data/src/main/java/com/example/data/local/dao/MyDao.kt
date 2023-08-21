@@ -21,5 +21,5 @@ interface MyDao {
     fun deleteData(date: String): Int
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateData(list: MyEntity)
+    fun updateData(list: MyEntity): Int
 }

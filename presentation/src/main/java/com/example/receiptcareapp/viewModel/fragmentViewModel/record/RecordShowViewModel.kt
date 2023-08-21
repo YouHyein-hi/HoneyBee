@@ -29,6 +29,7 @@ import com.example.domain.usecase.room.InsertDataRoomUseCase
 import com.example.domain.usecase.room.UpdateRoomData
 import com.example.domain.util.changeDate
 import com.example.receiptcareapp.base.BaseViewModel
+import com.example.receiptcareapp.dto.LocalBillData
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.util.RoomState
@@ -83,7 +84,7 @@ class RecordShowViewModel @Inject constructor(
     }
 
     private lateinit var savedServerData: UpdateData
-    private lateinit var savedLocalData: AppSendData
+    private lateinit var savedLocalData: LocalBillData
 
 
     // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
@@ -92,7 +93,8 @@ class RecordShowViewModel @Inject constructor(
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                _response.postValue(Pair(
+                _response.postValue(
+                    Pair(
                         ResponseState.UPDATE_SUCCESS,
                         updateDataUseCase(
                             DomainUpadateData(
@@ -112,7 +114,7 @@ class RecordShowViewModel @Inject constructor(
     }
 
     //로컬 데이터 재전송
-    fun updateLocalBillData(sendData: AppSendData) {
+    fun updateLocalBillData(sendData: LocalBillData) {
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 _response.postValue(Pair(
@@ -141,6 +143,7 @@ class RecordShowViewModel @Inject constructor(
                     )
                 )
             } ?: throw SocketTimeoutException()
+            savedLocalData = sendData
         }
     }
 
@@ -157,13 +160,11 @@ class RecordShowViewModel @Inject constructor(
     fun deleteRoomBillData(date: String? = savedLocalData.billSubmitTime) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
-            val result = deleteDataRoomUseCase(date!!)
-            Log.e("TAG", "deleteRoomData result : $result")
-            //삭제 후에 데이터 끌어오기 위한 구성
-//            getLocalAllBillData()
-            _roomState.postValue(RoomState.DELETE_SUCCESS)
+            when(deleteDataRoomUseCase(date!!)){
+                1 -> _roomState.postValue(RoomState.DELETE_SUCCESS)
+                else -> _roomState.postValue(RoomState.FALSE)
+            }
             isLoading.postValue(false)
-
         }
 
     }
@@ -184,11 +185,12 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-    fun upDataRoomData(uid: String){
+    fun upDataRoomData(){
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch{
-            updateRoomData(
+            Log.e("TAG", "upDataRoomData: $savedLocalData", )
+            val gap = updateRoomData(
                 DomainRoomData(
-                    uid = uid,
+                    uid = savedLocalData.uid,
                     cardName = savedLocalData.cardName,
                     amount = savedLocalData.amount,
                     billSubmitTime = savedLocalData.billSubmitTime,
@@ -196,6 +198,7 @@ class RecordShowViewModel @Inject constructor(
                     file = savedLocalData.picture.toString()
                 )
             )
+            Log.e("TAG", "upDataRoomData: $gap", )
 //            _roomState.postValue(RoomState.UPDATE_SUCCESS)
         }
     }

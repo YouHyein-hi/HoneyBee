@@ -76,7 +76,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     }
 
     override fun initListener() {
-
         //TODO 여기 왜있지?
         val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager.beginTransaction().add(this, "showPictureFragment").commit()

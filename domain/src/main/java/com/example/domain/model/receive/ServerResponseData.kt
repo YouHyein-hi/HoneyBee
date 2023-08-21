@@ -7,6 +7,6 @@ package com.example.domain.model.receive
 data class ServerResponseData(
     val status: String,
     val message: String,
-    val body: String
+    val body: String?
 )
 

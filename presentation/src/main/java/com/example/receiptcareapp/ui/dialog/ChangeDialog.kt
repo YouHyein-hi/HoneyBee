@@ -10,6 +10,7 @@ import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
+import com.example.receiptcareapp.dto.LocalBillData
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.util.FetchStateHandler
@@ -108,7 +109,8 @@ class ChangeDialog(
                         )
                     } else {
                         viewModel.updateLocalBillData(
-                            sendData = AppSendData(
+                            sendData = LocalBillData(
+                                uid= viewModelData.uid,
                                 billSubmitTime = myLocalDateTime.toString(),
                                 amount = binding.changeBtnPrice.text.toString(),
                                 cardName = checked,

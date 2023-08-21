@@ -20,6 +20,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val preferenceManager: PreferenceManager
 ) : BaseViewModel() {
+
     private val _image = MutableLiveData<Uri>()
     val image: LiveData<Uri>
         get() = _image

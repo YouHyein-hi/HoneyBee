@@ -59,7 +59,6 @@ class RecordShowViewModel @Inject constructor(
     private val updateDataUseCase: UpdateDataUseCase,
     private val getCardListUseCase: GetCardListUseCase,
     private val insertDataUseCase: InsertDataUseCase,
-    private val insertDataRoomUseCase: InsertDataRoomUseCase,
     private val deleteDataRoomUseCase: DeleteDataRoomUseCase,
     private val updateRoomData: UpdateRoomData
     ) : BaseViewModel() {

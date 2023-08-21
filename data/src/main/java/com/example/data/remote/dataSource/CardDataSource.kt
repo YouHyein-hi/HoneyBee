@@ -2,8 +2,6 @@ package com.example.data.remote.dataSource
 
 import ServerResponse
 import com.example.data.remote.model.ServerCardResponse
-import com.example.domain.model.receive.CardData
-import com.example.domain.model.receive.ResponseData
 import retrofit2.http.*
 
 /**

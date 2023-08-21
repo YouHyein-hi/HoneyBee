@@ -6,10 +6,10 @@ import com.example.domain.util.changeDate
  * 2023-08-19
  * pureum
  */
-data class ServerResponse<T>( //
+data class ServerResponse<T>(
     val status: String,
     val message: String,
-    val body: T? = null //계속 바뀌잖아
+    val body: T? = null
 )
 
 fun <T: List<ServerCardResponse>> ServerResponse<T>.toServerCardData() = ServerCardData(status, message, body?.map { it.toCardData() })

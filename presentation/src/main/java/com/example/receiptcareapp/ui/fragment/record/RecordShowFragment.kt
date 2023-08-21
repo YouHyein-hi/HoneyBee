@@ -61,23 +61,6 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initObserver() {
-        //Todo api 요청에서 ViewModel 전부 State 처리해야함
-//        viewModel.roomState.observe(viewLifecycleOwner){
-//            when(it){
-//                RoomState.UPDATE_SUCCESS -> {
-//                    showShortToast("수정 완료!")
-//                    findNavController().popBackStack()
-//                }
-//                RoomState.DELETE_SUCCESS -> {
-//                    showShortToast("삭제 완료!")
-//                    findNavController().popBackStack()
-//                }
-//                else -> {
-//                    showShortToast("룸 실패...")
-//                    findNavController().popBackStack()
-//                }
-//            }
-//        }
 
         viewModel.response.observe(viewLifecycleOwner){
             Log.e("TAG", "initObserver: $it", )
@@ -98,28 +81,8 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
                             findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
                         }
                     }
-//                    if(it.first==ShowType.SERVER_DELETE)
-//                    else {
-//                        showShortToast("서버 수정 완료!")
-//                        viewModel.deleteRoomBillData()
-//                        viewModel.insertRoomData(it.second?.uid.toString())
-////                        viewModel.upDataRoomData(it.second?.body!!)
-//                    }
                 }
                 else-> showShortToast("실패..")
-            }
-        }
-
-        viewModel.roomState.observe(viewLifecycleOwner){
-            when(it){
-//                RoomState.UPDATE_SUCCESS -> {
-//                    showShortToast("전송 완료!")
-//                    findNavController().popBackStack()
-//                }
-                RoomState.DELETE_SUCCESS -> {
-                    showShortToast("삭제 완료")
-                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
-                }
             }
         }
 
@@ -156,10 +119,6 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
             viewModelData.type, viewModelData.uid, viewModelData.cardName, viewModelData.amount,
             changeDate(viewModelData.date), viewModelData.storeName, viewModelData.file
         )
-//         binding.cardTxt.text = "${viewModelData.cardName}카드"
-//         binding.dateTxt.text = viewModelData.billSubmitTime
-//         binding.amountTxt.text = "${viewModelData.amount}원"
-//         binding.cardAmount.text = viewModelData.storeName
     }
 
     private fun checkImageData(){

@@ -4,13 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.data.manager.PreferenceManager
-import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.usecase.login.LoginUseCase
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.dto.LoginData
-import com.example.receiptcareapp.util.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
@@ -49,30 +46,10 @@ class LoginActivityViewModel @Inject constructor(
         }
     }
 
-    //여기는 어차피 항상 성공할때만 들어오는것같음
-    //이걸 지워야하나
-//    private fun updateLoginState(response: DomainServerResponse, email: String, password: String){
-//        when(response.status){
-//            "200"->{
-//                putLoginData(email, password)
-//                _response.postValue(ResponseState.SUCCESS)
-//            }
-//            else -> _response.postValue(ResponseState.FALSE)
-//        }
-//    }
-
     fun putLoginData(data: LoginData){
         preferenceManager.putLogin(data.id!!)
         preferenceManager.putPassword(data.pw!!)
     }
 
     fun getLoginData(): LoginData = LoginData(preferenceManager.getLogin(), preferenceManager.getPassword())
-
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.e("TAG", "LoginActivityViewModel 삭제: ", )
-    }
-
-    init { Log.e("TAG", "LoginActivityViewModel 생성: ", ) }
 }

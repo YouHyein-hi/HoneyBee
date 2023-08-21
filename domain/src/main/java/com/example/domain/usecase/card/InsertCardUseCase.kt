@@ -1,6 +1,5 @@
 package com.example.domain.usecase.card
 
-import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.repo.CardRepository

@@ -18,4 +18,12 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
+    <View
+        android:background="@color/gray_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerItem" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

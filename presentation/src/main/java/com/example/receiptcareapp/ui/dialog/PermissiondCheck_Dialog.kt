@@ -49,8 +49,6 @@ class PermissiondCheck_Dialog : BaseDialog<DialogPermissionCheckBinding>(DialogP
         }
     }
 
-    override fun initObserver() {
-
-    }
+    override fun initObserver() {}
 
 }

@@ -1,36 +1,24 @@
 package com.example.receiptcareapp.ui.activity
 
-import android.app.AlertDialog
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.audiofx.BassBoost
-import android.net.Uri
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
-import android.provider.Settings
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityLoginBinding
 import com.example.receiptcareapp.dto.LoginData
 import com.example.receiptcareapp.ui.adapter.PermissionHandler
-import com.example.receiptcareapp.ui.dialog.PermissiondCheck_Dialog
 import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
-import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
-import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-//class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
 class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
     private val viewModel: LoginActivityViewModel by viewModels()
     private lateinit var permissionHandler: PermissionHandler

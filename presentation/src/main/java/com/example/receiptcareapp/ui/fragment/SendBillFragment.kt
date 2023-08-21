@@ -4,10 +4,12 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.Rect
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
@@ -20,7 +22,6 @@ import com.bumptech.glide.Glide
 import com.example.domain.model.BottomSheetData
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentSendBillBinding
@@ -48,7 +49,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     private var todayDate : LocalDate? = null
     private var selectedDate : LocalDate? = null
     private lateinit var callback: OnBackPressedCallback
-
     private var cardArray = arrayListOf<String>()
     private var storeArray = arrayListOf<String>()
 
@@ -74,14 +74,9 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         /** Spinner 호출 **/
         getSpinner()
         //생성
-//        binding.editTxtStore.setAdapter(ArrayAdapter(requireContext(), R.layout.spinner_custom_item_layout, storeArray))
     }
 
     override fun initListener() {
-        //TODO 여기 왜있지?
-        val fragmentManager = requireActivity().supportFragmentManager
-        fragmentManager.beginTransaction().add(this, "showPictureFragment").commit()
-
         with(binding){
             /** Date Button -> DatePickerDialog 생성 **/
             btnDate.setOnClickListener {
@@ -104,7 +99,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
             /** 금액 EidtText , 추가 **/
             editTxtPrice.setOnEditorActionListener { v, actionId, event ->
-                Log.e("TAG", "btnPrice.setOnEditorActionListener", )
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_DONE && editTxtPrice.text.isNotEmpty()) {
                     editTxtPrice.setText(viewModel.PriceFormat(editTxtPrice.text.toString()))
@@ -121,6 +115,26 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     }
                 }
             })
+            //키보드 오르락 내리락 감지
+            binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+                try {
+                    val layoutParams = binding.bottomLayout.layoutParams as ViewGroup.MarginLayoutParams
+                    val rect = Rect()
+                    binding.root.getWindowVisibleDisplayFrame(rect)
+                    val screenHeight = binding.root.height
+                    val keypadHeight = screenHeight - rect.bottom
+
+                    if (keypadHeight > screenHeight * 0.15) {
+                        layoutParams.bottomMargin = 700
+                        binding.bottomLayout.layoutParams = layoutParams
+
+                    } else {
+                        layoutParams.bottomMargin = 50
+                        binding.bottomLayout.layoutParams = layoutParams
+                    }
+                }catch (e:Exception){}
+            }
+
             editTxtPrice.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -186,7 +200,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 }
             }
 
-            /** 취소 Button **/
             cancleBtn.setOnClickListener {
                 findNavController().navigate(R.id.action_showFragment_to_homeFragment)
             }
@@ -194,7 +207,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     }
 
     override fun initObserver() {
-        /** 프로그래스바 컨트롤 **/
         viewModel.loading.observe(viewLifecycleOwner){
             binding.layoutLoadingProgress.root.isVisible = it
         }
@@ -219,8 +231,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         viewModel.storeList.observe(viewLifecycleOwner){response ->
             if(!response?.body.isNullOrEmpty()){
                 response?.body?.map { storeArray.add(it) }
-                binding.editTxtStore.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, storeArray))
-//                binding.editTxtStore.setAdapter(StoreSpinner(requireContext(), storeArray))
+                binding.editTxtStore.setAdapter(StoreSpinner(requireContext(), storeArray))
             }
         }
 
@@ -239,6 +250,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
+
     override fun onDetach() {
         super.onDetach()
         callback.remove()

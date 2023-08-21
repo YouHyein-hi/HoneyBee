@@ -69,9 +69,6 @@ class RecordShowViewModel @Inject constructor(
     private var _response = MutableLiveData<Pair<ResponseState,ServerUidData?>>()
     val response : LiveData<Pair<ResponseState,ServerUidData?>> get() = _response
 
-    private val _roomState = MutableLiveData<RoomState>()
-    val roomState: LiveData<RoomState> get() = _roomState
-
     // 서버 카드 전달받은 값 관리
     private var _cardList = MutableLiveData<ServerCardData?>()
     val cardList: LiveData<ServerCardData?>
@@ -160,29 +157,10 @@ class RecordShowViewModel @Inject constructor(
     fun deleteRoomBillData(date: String? = savedLocalData.billSubmitTime) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
-            when(deleteDataRoomUseCase(date!!)){
-                1 -> _roomState.postValue(RoomState.DELETE_SUCCESS)
-                else -> _roomState.postValue(RoomState.FALSE)
-            }
+            deleteDataRoomUseCase(date!!)
             isLoading.postValue(false)
         }
 
-    }
-    // 이 기능을 따로 빼야할듯
-    fun insertRoomData(uid:String) {
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            insertDataRoomUseCase(
-                DomainRoomData(
-                    uid = uid,
-                    cardName = savedLocalData.cardName,
-                    amount = savedLocalData.amount,
-                    billSubmitTime = savedLocalData.billSubmitTime,
-                    storeName = savedLocalData.storeName,
-                    file = savedLocalData.picture.toString()
-                )
-            )
-//            _roomState.postValue(RoomState.INSERT_SUCCESS)
-        }
     }
 
     fun upDataRoomData(){
@@ -230,23 +208,6 @@ class RecordShowViewModel @Inject constructor(
             myYear, myMonth, myDay,
             LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second
         )
-    }
-
-    fun AdapterPosition(adapter: ArrayAdapter<String>, dataCardName: String): Int {
-        // position, adapter,
-        for (i in 0 until adapter.count) {
-            val item = adapter.getItem(i)
-            if (item!!.startsWith(dataCardName)) {
-                return i
-            }
-        }
-        return -1
-    }
-
-    //TODO 이건 두군대서 쓰는함수,, 아래친구들도 전부
-    private fun dateTimeToString(date:String): String{
-        val myList = date.split("-","T",":")
-        return "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
     }
 
     fun splitColon(text : String): List<String> {
@@ -334,26 +295,4 @@ class RecordShowViewModel @Inject constructor(
     fun PriceFormat(price : String): String? {
         return DecimalFormat("#,###").format(price.toInt())
     }
-
-//    fun getLocalAllBillData() {
-//        CoroutineScope(exceptionHandler).launch {
-//            val gap = getRoomDataListUseCase()
-//            Log.e("TAG", "receiveAllRoomData: $gap")
-//            _roomData.postValue(gap)
-//        }
-//    }
-
-
-//    fun bitmapToUri(activity: Activity, bitmap: Bitmap): Uri {
-//        val file = File(activity.cacheDir, "temp_image.jpg")
-//        val outputStream = FileOutputStream(file)
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-//        outputStream.flush()
-//        outputStream.close()
-//        return Uri.fromFile(file)
-//    }
-
-//    fun uriToBitmap(activity:Activity, uri:Uri):Bitmap{
-//        return ImageDecoder.decodeBitmap(ImageDecoder.createSource(activity.contentResolver,uri))
-//    }
 }

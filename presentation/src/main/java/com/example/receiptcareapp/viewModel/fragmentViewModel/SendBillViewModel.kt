@@ -120,34 +120,6 @@ class SendBillViewModel @Inject constructor(
         }
     }
 
-    //TODO 여기도 서버 값 통일되면 바꿔야 함
-//    private fun updateResponse(response: String, data: AppSendData) {
-//        Log.e("TAG", "updateResponse: $response", )
-//        //uid로 넘어옴
-//        when (response) {
-//            "0" -> {} // 실패
-//            else -> {
-//                /// TODO 여기는 임시방편
-//                _response.postValue(ResponseState.SUCCESS)
-//                ///
-//                if (data.billSubmitTime.contains("-") && data.billSubmitTime.contains("T") && data.billSubmitTime.contains(":")) {
-//                    data.billSubmitTime = changeDate(data.billSubmitTime)
-//                }
-//                insertRoomData(
-//                    DomainRoomData(
-//                        cardName = data.cardName,
-//                        amount = data.amount,
-//                        storeName = data.storeName,
-//                        billSubmitTime = data.billSubmitTime,
-//                        file = data.picture.toString(),
-//                        uid = response
-//                    )
-//                )
-//            }
-//        }
-//    }
-
-    // 이 기능을 따로 빼야할듯
     fun insertRoomData(response:String) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             insertDataRoomUseCase(
@@ -160,7 +132,6 @@ class SendBillViewModel @Inject constructor(
                     uid = response
                 )
             )
-//            _response.postValue(ResponseState.SUCCESS)
         }
     }
 
@@ -198,11 +169,6 @@ class SendBillViewModel @Inject constructor(
         return outputFile
     }
 
-    private fun dateTimeToString(date:String): String{
-        val myList = date.split("-","T",":")
-        return "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
-    }
-
     fun rotateImageIfRequired(bitmap: Bitmap, imagePath: String): Bitmap {
         val exif = ExifInterface(imagePath)
         val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
@@ -235,10 +201,6 @@ class SendBillViewModel @Inject constructor(
         Log.e("TAG", "absolutelyPath index: $index", )
         Log.e("TAG", "absolutelyPath result: $result", )
         return result!!
-    }
-
-    fun commaReplaceSpace(text: String): String {
-        return text.replace(",", "")
     }
 
     fun dateNow(): LocalDate {

@@ -127,22 +127,6 @@ class ChangeDialog(
     }
 
     override fun initObserver() {
-        val dataCardName = viewModelData.cardName
-
-        //TODO 코드 단순화 필요해보이는데,, if문의 필요성이 뭘까
-//        viewModel.cardList.observe(viewLifecycleOwner) {
-//            myArray.clear()
-//            it?.body?.forEach { myArray.add("${it} : ${it.cardAmount}") }
-//            val adapter = SpinnerAdapter(requireContext(), myArray)
-//            binding.changeCardspinner.adapter = adapter
-//            var position = viewModel.AdapterPosition(adapter, dataCardName)
-//            if (position != -1) {
-//                binding.changeCardspinner.setSelection(position)
-//            } else {
-//                dismiss()
-//                showShortToast("카드 불러오기 실패!")
-//            }
-//        }
 
         viewModel.cardList.observe(viewLifecycleOwner){
             myArray.clear()

@@ -20,6 +20,7 @@ import com.example.domain.model.BottomSheetData
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.domain.model.local.DomainRoomData
+import com.example.domain.model.receive.CardData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
@@ -49,8 +50,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     private var todayDate : LocalDate? = null
     private var selectedDate : LocalDate? = null
     private lateinit var callback: OnBackPressedCallback
-    private var arrayCardList : MutableList<DomainReceiveCardData> = mutableListOf()
-    private var myArray = arrayListOf<String>()
+    private var cardDataList: MutableList<CardData> = mutableListOf()
     private var newCard = 0
 
     override fun initData() {
@@ -222,10 +222,17 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         }
 
         viewModel.cardList.observe(viewLifecycleOwner){
-            myArray.clear()
-            it.body?.forEach{myArray.add("${it.name} : ${it.amount}")}
-            binding.spinner.adapter = SpinnerAdapter(requireContext(), myArray)
+            //myArray.clear()
+            it.body?.forEach { cardDataList.add(it) }
+            val cardArrayList = ArrayList<CardData>(cardDataList)
+            binding.spinner.adapter = SpinnerAdapter(requireContext(), cardArrayList)
         }
+/*        viewModel.cardList.observe(viewLifecycleOwner) { response ->
+            myArray.clear()
+            response.body?.forEach { cardData ->
+                cardDataList.add(cardData)
+            }
+        }*/
 
         // Err관리
         viewModel.fetchState.observe(this) {
@@ -235,18 +242,13 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     /** Spinner 관련 **/
     private fun getSpinner() {
         viewModel.getServerCardData()
+        Log.e("TAG", "getSpinner: ${cardDataList}", )
         binding.spinner.adapter = SpinnerAdapter(requireContext(), arrayListOf())
-        Log.e("TAG", "getSpinner: 현재 들어가있는값 arrayCardList : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Log.e("TAG", "onItemSelected: ${myArray[position]}")
-                Log.e("TAG", "onItemSelected: ${position}")
-                //TODO myArray / "카드이름 :" 50000
-                // 배열 두개로 관리를 하는게 낫지않을까
-                val spiltCard = myArray[position].split(" : ")
-                cardName = spiltCard[0]
-                cardAmount = spiltCard[1]
-                Log.e("TAG", "onItemSelected: ${cardName}")
+                val selectedCardData = cardDataList[position]
+                cardName = selectedCardData.name
+                cardAmount = selectedCardData.amount
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }

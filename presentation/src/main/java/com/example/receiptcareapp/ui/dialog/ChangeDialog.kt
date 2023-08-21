@@ -6,6 +6,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.UpdateData
+import com.example.domain.model.receive.CardData
 import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseDialog
@@ -16,6 +17,7 @@ import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.ArrayList
 
 @AndroidEntryPoint
 class ChangeDialog(
@@ -33,6 +35,7 @@ class ChangeDialog(
     private var myMonth = 0
     private var myDay = 0
     private var newDate = listOf<String>()
+    private var cardDataList: MutableList<CardData> = mutableListOf()
 
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
@@ -146,7 +149,7 @@ class ChangeDialog(
         viewModel.cardList.observe(viewLifecycleOwner){
             myArray.clear()
             it?.body?.forEach{myArray.add("${it.name} : ${it.amount}")}
-            binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), myArray)
+            //binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), myArray)
         }
 
         // Err관리
@@ -157,17 +160,13 @@ class ChangeDialog(
 
     private fun getSpinner() {
         viewModel.getServerCardData()
-        val adapter = SpinnerAdapter(requireContext(), myArray)
+        val cardArrayList = ArrayList<CardData>(cardDataList)
 
-        binding.changeCardspinner?.adapter = adapter
+        binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), cardArrayList)
         binding.changeCardspinner?.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    adapterView: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
+/*
+                override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     Log.e("TAG", "getSpinner onItemSelected: ${position}")
                     Log.e("TAG", "getSpinner onItemSelected: ${myArray[position]}")
                     val spiltCard = viewModel.splitColon(myArray[position])
@@ -175,7 +174,12 @@ class ChangeDialog(
                     checked = spiltCard[0]
                     Log.e("TAG", "onItemSelected checked: ${checked}")
                 }
-
+*/
+                override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val selectedCardData = cardDataList[position]
+                    cardId = position
+                    checked = selectedCardData.name
+                }
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
             binding.changeBtnPrice.setOnEditorActionListener { v, actionId, event ->

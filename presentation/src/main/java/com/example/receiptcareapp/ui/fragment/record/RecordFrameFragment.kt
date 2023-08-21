@@ -5,13 +5,16 @@ import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
+import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordFrameBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,14 +24,18 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
     init { Log.e("TAG", "RecordFrameFragment", ) }
 
     private val viewModel: RecordViewModel by viewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var callback : OnBackPressedCallback
-    private lateinit var myData : RecyclerData
 
     override fun initData() {}
 
     override fun initUI() {
         Log.e(TAG, "initUI", )
-        changeFragment(RecordServerFragment(viewModel))
+        if(activityViewModel.selectedData.value?.type == ShowType.LOCAL)
+            changeFragment(RecordLocalFragment(viewModel))
+        else
+            changeFragment(RecordServerFragment(viewModel))
+        activityViewModel.removeSelectedData()
     }
 
     override fun initListener() {

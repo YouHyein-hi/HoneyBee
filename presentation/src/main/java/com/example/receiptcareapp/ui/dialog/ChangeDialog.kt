@@ -6,7 +6,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.UpdateData
-import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
@@ -148,7 +147,8 @@ class ChangeDialog(
         viewModel.cardList.observe(viewLifecycleOwner){
             myArray.clear()
             it?.body?.forEach{myArray.add("${it.name} : ${it.amount}")}
-            binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), myArray)
+            binding.changeCardspinner.adapter =
+                SpinnerAdapter(requireContext(), myArray)
         }
 
         // Err관리

@@ -31,12 +31,16 @@ class GeneralDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun receiveDataSource(): ServerResponse<List<ServerBillResponse>> {
-        return retrofit.create(GeneralDataSource::class.java).receiveDataSource()
+    override suspend fun getBillListDataSource(): ServerResponse<List<ServerBillResponse>> {
+        return retrofit.create(GeneralDataSource::class.java).getBillListDataSource()
     }
 
-    override suspend fun receivePictureDataSource(uid:String): ServerResponse<String> {
-        return retrofit.create(GeneralDataSource::class.java).receivePictureDataSource(uid)
+    override suspend fun getStoreListDataSource(): ServerResponse<List<String>> {
+        return retrofit.create(GeneralDataSource::class.java).getStoreListDataSource()
+    }
+
+    override suspend fun getPictureDataSource(uid:String): ServerResponse<String> {
+        return retrofit.create(GeneralDataSource::class.java).getPictureDataSource(uid)
     }
 
     override suspend fun deleteServerData(uid:Long): ServerResponse<Int> {

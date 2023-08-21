@@ -23,3 +23,5 @@ fun ServerResponse<List<ServerNoticeResponse>>.toServerNoticeData() = ServerNoti
 
 fun ServerResponse<Int>.toUidServerResponseData() = ServerUidData(status, message, body)
 
+fun ServerResponse<List<String>>.toServerStoreData() = ServerStoreData(status, message, body)
+

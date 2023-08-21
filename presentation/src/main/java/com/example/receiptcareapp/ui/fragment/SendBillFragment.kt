@@ -11,6 +11,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -19,19 +20,17 @@ import com.bumptech.glide.Glide
 import com.example.domain.model.BottomSheetData
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentSendBillBinding
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
+import com.example.receiptcareapp.ui.adapter.StoreSpinner
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
 import com.example.receiptcareapp.util.FetchStateHandler
-import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -49,13 +48,14 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     private var todayDate : LocalDate? = null
     private var selectedDate : LocalDate? = null
     private lateinit var callback: OnBackPressedCallback
-    private var arrayCardList : MutableList<DomainReceiveCardData> = mutableListOf()
-    private var myArray = arrayListOf<String>()
-    private var newCard = 0
+
+    private var cardArray = arrayListOf<String>()
+    private var storeArray = arrayListOf<String>()
 
     override fun initData() {
         todayDate = viewModel.dateNow()
         selectedDate = viewModel.dateNow()
+        viewModel.getServerStoreData()
     }
 
     override fun initUI() {
@@ -73,6 +73,8 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         }
         /** Spinner 호출 **/
         getSpinner()
+        //생성
+//        binding.editTxtStore.setAdapter(ArrayAdapter(requireContext(), R.layout.spinner_custom_item_layout, storeArray))
     }
 
     override fun initListener() {
@@ -100,27 +102,17 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     .setTextColor(Color.BLACK)
             }
 
-
-/*            *//** 금액 EidtText , 추가 **//*
-            btnPrice.setOnClickListener {
-                Log.e("TAG", "btnPrice.setOnClickListener", )
-                if (btnPrice.text.contains(",")) {
-                    btnPrice.setText(viewModel.commaReplaceSpace(btnPrice.text.toString()))
-                    btnPrice.setSelection(btnPrice.text.length)
-                }
-            }*/
-
             /** 금액 EidtText , 추가 **/
-            btnPrice.setOnEditorActionListener { v, actionId, event ->
+            editTxtPrice.setOnEditorActionListener { v, actionId, event ->
                 Log.e("TAG", "btnPrice.setOnEditorActionListener", )
                 var handled = false
-                if (actionId == EditorInfo.IME_ACTION_DONE && btnPrice.text.isNotEmpty()) {
-                    btnPrice.setText(viewModel.PriceFormat(btnPrice.text.toString()))
+                if (actionId == EditorInfo.IME_ACTION_DONE && editTxtPrice.text.isNotEmpty()) {
+                    editTxtPrice.setText(viewModel.PriceFormat(editTxtPrice.text.toString()))
                 }
                 handled
             }
 
-            btnStore.addTextChangedListener(object : TextWatcher {
+            editTxtStore.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable?) {
@@ -129,7 +121,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     }
                 }
             })
-            btnPrice.addTextChangedListener(object : TextWatcher {
+            editTxtPrice.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable?) {
@@ -138,14 +130,14 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     }
                 }
             })
-            btnPrice.setOnFocusChangeListener { view, hasFocus ->
+            editTxtPrice.setOnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
-                    if (btnPrice.text.contains(",")) {
-                        btnPrice.setText(viewModel.CommaReplaceSpace(btnPrice.text.toString()))
-                        btnPrice.setSelection(btnPrice.text.length)
+                    if (editTxtPrice.text.contains(",")) {
+                        editTxtPrice.setText(viewModel.CommaReplaceSpace(editTxtPrice.text.toString()))
+                        editTxtPrice.setSelection(editTxtPrice.text.length)
                     }
                 }
-                else { btnPrice.setText(viewModel.PriceFormat(btnPrice.text.toString())) }
+                else { editTxtPrice.setText(viewModel.PriceFormat(editTxtPrice.text.toString())) }
             }
 
             /** 완료 Button **/
@@ -155,10 +147,10 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     cardName == "" -> {
                         showShortToast("카드를 입력하세요.")
                     }
-                    btnStore.text!!.isEmpty() -> {
+                    editTxtStore.text!!.isEmpty() -> {
                         showShortToast("가게 이름을 입력하세요.")
                     }
-                    btnPrice.text.isEmpty() -> {
+                    editTxtPrice.text.isEmpty() -> {
                         showShortToast("금액을 입력하세요.")
                     }
                     btnDate.text.isEmpty() -> {
@@ -173,7 +165,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                         NavHostFragment.findNavController(this@SendBillFragment).navigate(R.id.action_showFragment_to_homeFragment)
                     }
                     else -> {
-                        if(!viewModel.amountCheck(btnPrice.text.toString(), cardAmount)) {
+                        if(!viewModel.amountCheck(editTxtPrice.text.toString(), cardAmount)) {
                             showShortToast("보유금액보다 많은 비용입니다.")
                             return@setOnClickListener
                         }
@@ -182,9 +174,9 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                             viewModel,
                             BottomSheetData(
                                 cardName = cardName,
-                                amount = btnPrice.text.toString(),
+                                amount = editTxtPrice.text.toString(),
                                 cardAmount = cardAmount,
-                                storeName = binding.btnStore.text.toString(),
+                                storeName = binding.editTxtStore.text.toString(),
                                 date = myLocalDateTime.toString(),
                                 picture = activityViewModel.image.value!!
                             )
@@ -204,12 +196,10 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     override fun initObserver() {
         /** 프로그래스바 컨트롤 **/
         viewModel.loading.observe(viewLifecycleOwner){
-            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
-            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
+            binding.layoutLoadingProgress.root.isVisible = it
         }
 
         viewModel.response.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: com", )
             when(it?.status){
                 "200" -> {
                     viewModel.insertRoomData(it.uid.toString())
@@ -221,34 +211,22 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         }
 
         viewModel.cardList.observe(viewLifecycleOwner){
-            myArray.clear()
-            it.body?.forEach{myArray.add("${it.name} : ${it.amount}")}
-            binding.spinner.adapter = SpinnerAdapter(requireContext(), myArray)
+            cardArray.clear()
+            it?.body?.forEach{cardArray.add("${it.name} : ${it.amount}")}
+            binding.spinnerCard.adapter = SpinnerAdapter(requireContext(), cardArray)
+        }
+
+        viewModel.storeList.observe(viewLifecycleOwner){response ->
+            if(!response?.body.isNullOrEmpty()){
+                response?.body?.map { storeArray.add(it) }
+                binding.editTxtStore.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, storeArray))
+//                binding.editTxtStore.setAdapter(StoreSpinner(requireContext(), storeArray))
+            }
         }
 
         // Err관리
         viewModel.fetchState.observe(this) {
             showShortToast(FetchStateHandler(it))
-        }
-    }
-    /** Spinner 관련 **/
-    private fun getSpinner() {
-        viewModel.getServerCardData()
-        binding.spinner.adapter = SpinnerAdapter(requireContext(), arrayListOf())
-        Log.e("TAG", "getSpinner: 현재 들어가있는값 arrayCardList : ${arrayCardList}")
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Log.e("TAG", "onItemSelected: ${myArray[position]}")
-                Log.e("TAG", "onItemSelected: ${position}")
-                //TODO myArray / "카드이름 :" 50000
-                // 배열 두개로 관리를 하는게 낫지않을까
-                val spiltCard = myArray[position].split(" : ")
-                cardName = spiltCard[0]
-                cardAmount = spiltCard[1]
-                Log.e("TAG", "onItemSelected: ${cardName}")
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
         }
     }
     /** Fragment 뒤로가기 **/
@@ -261,13 +239,29 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
-
     override fun onDetach() {
         super.onDetach()
         callback.remove()
     }
 
-    fun setNewCardValue(value: Int) {
-        newCard = value
+    /** Spinner 관련 **/
+    private fun getSpinner() {
+        viewModel.getServerCardData()
+        binding.spinnerCard.adapter = SpinnerAdapter(requireContext(), arrayListOf())
+
+        binding.spinnerCard.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Log.e("TAG", "onItemSelected: ${cardArray[position]}")
+                Log.e("TAG", "onItemSelected: ${position}")
+                //TODO myArray / "카드이름 :" 50000
+                // 배열 두개로 관리를 하는게 낫지않을까
+                val spiltCard = cardArray[position].split(" : ")
+                cardName = spiltCard[0]
+                cardAmount = spiltCard[1]
+                Log.e("TAG", "onItemSelected: ${cardName}")
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
     }
 }

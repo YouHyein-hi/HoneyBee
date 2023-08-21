@@ -40,6 +40,7 @@ class MainActivityViewModel @Inject constructor(
     val selectedData : LiveData<RecyclerData?>
         get() = _selectedData
     fun changeSelectedData(data: RecyclerData?){ _selectedData.value = data }
+    fun removeSelectedData(){ _selectedData.value = null }
 
     lateinit var selectedNoticeData : NoticeData
 

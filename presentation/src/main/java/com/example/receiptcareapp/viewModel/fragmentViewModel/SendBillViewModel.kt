@@ -14,9 +14,11 @@ import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.ServerCardData
 import com.example.domain.model.receive.ServerResponseData
+import com.example.domain.model.receive.ServerStoreData
 import com.example.domain.model.receive.ServerUidData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
+import com.example.domain.usecase.bill.GetStoreListUseCase
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase
@@ -44,7 +46,8 @@ class SendBillViewModel @Inject constructor(
     @ApplicationContext private val application: Context,
     private val insertDataUseCase: InsertDataUseCase,
     private val insertDataRoomUseCase: InsertDataRoomUseCase,
-    private val getCardListUseCase: GetCardListUseCase
+    private val getCardListUseCase: GetCardListUseCase,
+    private val getStoreListUseCase: GetStoreListUseCase
 ) : BaseViewModel() {
 
     val loading: LiveData<Boolean> get() = isLoading
@@ -55,20 +58,33 @@ class SendBillViewModel @Inject constructor(
     private lateinit var savedData : AppSendData
 
     //서버 응답 일관화 이전에 사용할 박스
-    private var _cardList = MutableLiveData<ServerCardData>()
-    val cardList : LiveData<ServerCardData> get() = _cardList
+    private var _cardList = MutableLiveData<ServerCardData?>()
+    val cardList : LiveData<ServerCardData?> get() = _cardList
+
+    //서버 응답 일관화 이전에 사용할 박스
+    private var _storeList = MutableLiveData<ServerStoreData?>()
+    val storeList : LiveData<ServerStoreData?> get() = _storeList
 
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 isLoading.postValue(true)
-                _cardList.postValue(getCardListUseCase()!!)
+                _cardList.postValue(getCardListUseCase())
                 isLoading.postValue(false)
             }?:throw SocketTimeoutException()
         }
     }
 
+    fun getServerStoreData(){
+        modelScope.launch {
+            withTimeoutOrNull(waitTime){
+                isLoading.postValue(true)
+                _storeList.postValue(getStoreListUseCase())
+                isLoading.postValue(false)
+            }?:throw SocketTimeoutException()
+        }
+    }
     //insertData 분리해야함
     fun insertBillData(sendData: AppSendData) {
         modelScope.launch {

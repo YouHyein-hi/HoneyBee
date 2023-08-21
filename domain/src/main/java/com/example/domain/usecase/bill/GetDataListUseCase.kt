@@ -1,6 +1,6 @@
-package com.example.domain.usecase.data
+package com.example.domain.usecase.bill
 
-import com.example.domain.model.receive.DomainReceiveAllData
+import com.example.domain.model.receive.ServerBillData
 import com.example.domain.repo.GeneralRepository
 
 /**
@@ -10,7 +10,7 @@ import com.example.domain.repo.GeneralRepository
 class GetDataListUseCase(
     private val generalRepository: GeneralRepository
 ) {
-    suspend operator fun invoke(): MutableList<DomainReceiveAllData> {
+    suspend operator fun invoke(): ServerBillData {
         return generalRepository.getDataListRepository()
     }
 }

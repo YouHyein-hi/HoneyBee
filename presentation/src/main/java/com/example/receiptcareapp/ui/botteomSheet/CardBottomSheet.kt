@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +13,9 @@ import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.BottomsheetCardBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
 import com.example.receiptcareapp.ui.adapter.CardAdapter
-import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
+import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,13 +25,13 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class CardBottomSheet(
-    private val viewModel: HomeCardViewModel
+    private val homeViewModel: HomeViewModel
 ): BaseBottomSheet<BottomsheetCardBinding>(
     BottomsheetCardBinding::inflate,
     "BottomsheetCardBinding"
 ) {
     private val adapter: CardAdapter = CardAdapter()
-//    private val viewModel : HomeCardViewModel by viewModels()
+    private val viewModel: CardViewModel by viewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
@@ -66,21 +69,34 @@ class CardBottomSheet(
         }
 
         viewModel.cardList.observe(viewLifecycleOwner){
-            adapter.dataList = it
-//            when(it){
-//                ResponseState.SUCCESS -> {
-//                    setCenterText("추가 성공!", true)
-//                }
-//                else -> {
-//                    setCenterText("전송 실패!", true)
-//                }
-//            }
+            adapter.dataList = it?.body!!.toMutableList()
+            changeEmptyTxt(it.body!!.isEmpty())
+        }
+
+        viewModel.response.observe(viewLifecycleOwner){
+            Log.e("TAG", "initObserver: 카드 리턴값 $it", )
+            when(it?.status) {
+                "200" -> {
+                    showLongToast("카드 추가 완료!")
+                    viewModel.getServerCardData()
+                }
+                else -> {showLongToast("카드 추가 실패..")}
+            }
+        }
+
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
 
-    fun setCenterText(text:String, state:Boolean){
-        binding.centerStateTxt.text = text
-        binding.centerStateTxt.isVisible = state
+    private fun changeEmptyTxt(state:Boolean){
+        binding.emptyTxt.isVisible = state
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        homeViewModel.getServerCardData()
     }
 
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.example.domain.model.receive.NoticeData
 import com.example.domain.model.send.DomainGetNoticeListData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
@@ -20,7 +21,7 @@ class NoticeShowFragment : BaseFragment<FragmentNoticeShowBinding>(
     FragmentNoticeShowBinding::inflate, "ShowNoticeFragment"
 ) {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private lateinit var viewModelData: DomainGetNoticeListData
+    private lateinit var viewModelData: NoticeData
 
     override fun initData() {
         viewModelData = activityViewModel.selectedNoticeData
@@ -29,7 +30,7 @@ class NoticeShowFragment : BaseFragment<FragmentNoticeShowBinding>(
     override fun initUI() {
         with(binding){
             title = viewModelData.title
-            date = viewModelData.date.toString()
+            date = viewModelData.date
             content = viewModelData.content
         }
     }

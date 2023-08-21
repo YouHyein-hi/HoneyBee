@@ -3,27 +3,25 @@ package com.example.receiptcareapp.ui.dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.Log
-import android.util.LogPrinter
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardAddBinding
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
-import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.text.DecimalFormat
 
 @AndroidEntryPoint
 class CardAddDialog(
-    private val homeCardViewModel: HomeCardViewModel
+    private val homeViewModel: CardViewModel
 ) : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
     private val viewModel : CardAddViewModel by viewModels()
@@ -127,9 +125,8 @@ class CardAddDialog(
                     if (cardName.contains("카드"))
                         cardName = cardName.replace("카드", "")
 
-                    viewModel.insertServerCardData(AppSendCardData(cardName, price.toInt(), dialogcardEditBillCardCheck.text.toString()))
-                    homeCardViewModel.getServerCardData()
-//                    dismiss()
+                    homeViewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt(), dialogcardEditBillCardCheck.text.toString()))
+                    dismiss()
                 }
             }
 
@@ -137,19 +134,23 @@ class CardAddDialog(
                 Log.e("TAG", "onResume: 카드 추가 취소", )
                 dismiss()
             }
-
         }
     }
 
     override fun initObserver() {
         viewModel.response.observe(viewLifecycleOwner){
+            Log.e("TAG", "initObserver?????: $it", )
             when(it){
                 ResponseState.UPDATE_SUCCESS -> {
-                    homeCardViewModel.getServerCardData()
+                    homeViewModel.getServerCardData()
                     dismiss()
                 }
                 else->{}
             }
+        }
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
 

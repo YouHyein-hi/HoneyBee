@@ -19,12 +19,14 @@ import com.bumptech.glide.Glide
 import com.example.domain.model.BottomSheetData
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentSendBillBinding
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
@@ -88,7 +90,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     myMonth = month + 1
                     myDay = day
                     btnDate.text = "${myYear}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
-
                     selectedDate = LocalDate.of(year, month + 1, day)
                 }
                 val dataDialog = DatePickerDialog(requireContext(), data,
@@ -210,24 +211,25 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
         viewModel.response.observe(viewLifecycleOwner){
             Log.e("TAG", "initObserver: com", )
-            when(it){
-                ResponseState.SUCCESS -> {
+            when(it?.status){
+                "200" -> {
+                    viewModel.insertRoomData(it.uid.toString())
                     findNavController().navigate(R.id.action_showFragment_to_homeFragment)
                     showShortToast("전송 성공")
                 }
-                else -> {}
+                else -> {showShortToast("전송 실패")}
             }
         }
 
-        with(binding){
-            /** CardData 관련 **/
-            //TODO 해당 프레그먼트에선 카드를 추가할 수 없으니,
-            // 애초에 홈에서 카메라나 겔러리로 넘어가기전에 막아야할듯함
-            viewModel.cardList.observe(viewLifecycleOwner){
-                myArray.clear()
-                it.forEach{myArray.add("${it.cardName} : ${it.cardAmount}")}
-                spinner.adapter = SpinnerAdapter(requireContext(), myArray)
-            }
+        viewModel.cardList.observe(viewLifecycleOwner){
+            myArray.clear()
+            it.body?.forEach{myArray.add("${it.name} : ${it.amount}")}
+            binding.spinner.adapter = SpinnerAdapter(requireContext(), myArray)
+        }
+
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
     /** Spinner 관련 **/

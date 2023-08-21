@@ -1,6 +1,7 @@
 package com.example.domain.usecase.login
 
-import com.example.domain.model.receive.DomainServerReponse
+import com.example.domain.model.receive.DomainServerResponse
+import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.repo.LoginRepository
 
 /**
@@ -10,7 +11,7 @@ import com.example.domain.repo.LoginRepository
 class LoginUseCase(
     private val loginRepository: LoginRepository
 ) {
-    suspend operator fun invoke(email:String, password:String): DomainServerReponse {
+    suspend operator fun invoke(email:String, password:String): ServerResponseData {
         return loginRepository.requestLogin(email = email, password = password)
     }
 }

@@ -1,8 +1,6 @@
 package com.example.domain.usecase.notice
 
-import android.util.Log
-import com.example.domain.model.send.DomainAddNoticeData
-import com.example.domain.model.send.DomainGetNoticeListData
+import com.example.domain.model.receive.ServerNoticeData
 import com.example.domain.repo.NoticeRepository
 
 /**
@@ -12,10 +10,7 @@ import com.example.domain.repo.NoticeRepository
 class GetNoticeListUseCase(
     private val getNoticeUseCase: NoticeRepository
 ) {
-    suspend operator fun invoke(): MutableList<DomainGetNoticeListData> {
-        Log.e("TAG", "invoke", )
-        val gap = getNoticeUseCase.getNoticeListRepository()
-        Log.e("TAG", "invoke: $gap", )
-        return gap
+    suspend operator fun invoke(): ServerNoticeData {
+        return getNoticeUseCase.getNoticeListRepository()
     }
 }

@@ -6,20 +6,8 @@
 
     <data>
         <variable
-            name="cardName"
-            type="String" />
-        <variable
-            name="amount"
-            type="String" />
-        <variable
-            name="cardAmount"
-            type="String" />
-        <variable
-            name="storeName"
-            type="String" />
-        <variable
-            name="date"
-            type="String" />
+            name="data"
+            type="com.example.domain.model.BottomSheetData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,14 +44,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:fontFamily="@font/pretendardsemibold"
-                android:text="@{cardName, default = 나라사랑카드}"
+                android:text="@{data.cardName, default = `카드 이름`}"
                 android:textColor="@color/fontColor_black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardsemibold"
-                android:text="@{amount+`원`,default = `19,800원`}"
+                android:text="@{data.amount, default = `금액`}"
                 android:textColor="@color/main_font_black"
                 android:textSize="30sp" />
 
@@ -88,7 +76,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardsemibold"
                     android:gravity="right"
-                    android:text="@{cardAmount+`원`, default = `354,000`}"
+                    android:text="@{data.cardAmount}"
                     android:textColor="@color/fontColor_black" />
             </LinearLayout>
 
@@ -113,7 +101,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardsemibold"
                     android:gravity="right"
-                    android:text="@{storeName,default = `짬뽕만세`}"
+                    android:text="@{data.storeName}"
                     android:textColor="@color/fontColor_black" />
             </LinearLayout>
 
@@ -138,7 +126,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardsemibold"
                     android:gravity="right"
-                    android:text="@{date, default = `23.07.05`}"
+                    android:text="@{data.date}"
                     android:textColor="@color/fontColor_black" />
             </LinearLayout>
 

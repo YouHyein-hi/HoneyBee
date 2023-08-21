@@ -4,12 +4,14 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordFrameBinding
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,7 +23,9 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
     private val viewModel: RecordViewModel by viewModels()
     private lateinit var callback : OnBackPressedCallback
 
-    override fun initData() {}
+    override fun initData() {
+
+    }
 
     override fun initUI() {
         Log.e(TAG, "initUI", )
@@ -53,12 +57,11 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
     override fun initObserver() {
         //프로그래스 바 컨트롤
         viewModel.loading.observe(viewLifecycleOwner){
-            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
-            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
+            binding.layoutLoadingProgress.root.isVisible = it
         }
     }
 
-    fun changeFragment(fragment: Fragment){
+    private fun changeFragment(fragment: Fragment){
         parentFragmentManager.beginTransaction()
             .replace(binding.frameLayout.id,fragment).commit()
     }

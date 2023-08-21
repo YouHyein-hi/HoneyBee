@@ -18,7 +18,7 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentMenuBinding
 import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.ui.adapter.PushReceiver
-import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -112,6 +112,10 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     override fun initObserver() {
         viewModel.pushTime.observe(viewLifecycleOwner) { pushTime ->
             binding.pushTime.text = viewModel.timePickerText(pushTime.hour!!, pushTime.minute!!)
+        }
+
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
 

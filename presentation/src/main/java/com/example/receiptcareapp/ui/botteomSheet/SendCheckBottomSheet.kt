@@ -2,9 +2,9 @@ package com.example.receiptcareapp.ui.botteomSheet
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.viewModels
 import com.example.domain.model.BottomSheetData
 import com.example.domain.model.send.AppSendData
+import com.example.domain.util.changeDate
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.BottomsheetSendBinding
@@ -19,11 +19,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SendCheckBottomSheet(
     private val viewModel: SendBillViewModel,
-    private val bottomSheetData: BottomSheetData
+    private val data: BottomSheetData
 ) : BaseBottomSheet<BottomsheetSendBinding>(
     BottomsheetSendBinding::inflate,
-    "BottomsheetSendBinding"
+    "BottomSheetSendBinding"
 ) {
+
+    private val gap = 0
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
     }
@@ -33,11 +36,7 @@ class SendCheckBottomSheet(
     }
 
     override fun initUI() {
-        binding.cardName = bottomSheetData.cardName
-        binding.amount = bottomSheetData.amount
-        binding.cardAmount = bottomSheetData.cardAmount
-        binding.storeName = bottomSheetData.storeName
-        binding.date = bottomSheetData.date.split("T").first()
+        binding.data = BottomSheetData(data.cardName, data.amount,data.cardAmount, data.storeName, changeDate(data.date),data.picture)
     }
 
     override fun initListener() {
@@ -46,11 +45,11 @@ class SendCheckBottomSheet(
         binding.sendBtn.setOnClickListener {
             viewModel.insertBillData(
                 AppSendData(
-                    billSubmitTime = bottomSheetData.date,
-                    amount = bottomSheetData.amount,
-                    cardName = bottomSheetData.cardName,
-                    picture = bottomSheetData.picture,
-                    storeName = bottomSheetData.storeName
+                    billSubmitTime = data.date,
+                    amount = data.amount,
+                    cardName = data.cardName,
+                    picture = data.picture,
+                    storeName = data.storeName
                 )
             )
             dismiss()

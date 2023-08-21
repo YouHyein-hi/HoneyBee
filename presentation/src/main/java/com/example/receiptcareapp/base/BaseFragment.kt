@@ -111,7 +111,4 @@ abstract class BaseFragment<VB: ViewBinding>(
             Toast.makeText(it, message ?: "", Toast.LENGTH_LONG).show()
         }
     }
-//    companion object{
-//        var TAG = ""
-//    }
 }

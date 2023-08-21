@@ -3,7 +3,8 @@ package com.example.receiptcareapp.viewModel.dialogViewModel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.domain.model.receive.DomainServerReponse
+import com.example.domain.model.receive.DomainServerResponse
+import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.usecase.card.GetCardListUseCase
@@ -21,14 +22,18 @@ import javax.inject.Inject
 class CardAddViewModel @Inject constructor(
     private val insertCardUseCase: InsertCardUseCase,
     private val getCardListUseCase: GetCardListUseCase,
-) : BaseViewModel(){
+) : BaseViewModel() {
 
-    init { Log.e("TAG", "CardAddBottomViewModel", ) }
+    init {
+        Log.e("TAG", "CardAddBottomViewModel")
+    }
+
+    val loading : MutableLiveData<Boolean> get() = isLoading
 
     private var _response = MutableLiveData<ResponseState>()
-    val response : LiveData<ResponseState> get() = _response
+    val response: LiveData<ResponseState> get() = _response
 
-    fun CommaReplaceSpace(text : String): String {
+    fun CommaReplaceSpace(text: String): String {
         return text.replace(",", "")
     }
 
@@ -37,33 +42,5 @@ class CardAddViewModel @Inject constructor(
         val numericValue = try { price.toInt()
         } catch (e: NumberFormatException) { return price }
         return DecimalFormat("#,###").format(numericValue)
-    }
-
-    fun insertServerCardData(sendData: AppSendCardData) {
-        Log.e("TAG", "sendCardData: 카드 보내기 $sendData",)
-        modelScope.launch {
-            withTimeoutOrNull(waitTime) {
-                updateResponse(
-                    insertCardUseCase(
-                        DomainSendCardData(
-                            cardName = sendData.cardName,
-                            cardAmount = sendData.cardAmount,
-                            billCheckDate = sendData.billCheckDate
-                        )
-                    ),
-                    ResponseState.UPDATE_SUCCESS
-                )
-                //TODO 이런 유기적인 관계로 걸려있으면 안됨
-            } ?: throw SocketTimeoutException()
-        }
-    }
-
-    fun updateResponse(response:DomainServerReponse, type: ResponseState){
-        when(response.status){
-            "200" ->{
-                _response.postValue(type)
-            }
-            else -> {}
-        }
     }
 }

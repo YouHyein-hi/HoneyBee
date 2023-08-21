@@ -17,14 +17,6 @@ fun GetNoticeListData.toDomainGetNoticeListData(): DomainGetNoticeListData =
     DomainGetNoticeListData(
         billNoticeId,
         billNoticeTitle,
-        changeDate(billNoticeDate),
+        billNoticeDate,
         billNoticeContent
 )
-
-fun changeDate(inputDate: String): String {
-    return if (inputDate.contains(":")) {
-        val gap = inputDate.replace("-", ".").split("T")
-        val time = gap[1].split(":")
-        "${gap[0]}.  ${time[0]}시 ${time[1]}분"
-    } else{ inputDate }
-}

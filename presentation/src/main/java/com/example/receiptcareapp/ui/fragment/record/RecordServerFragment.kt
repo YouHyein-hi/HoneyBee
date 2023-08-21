@@ -11,6 +11,7 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordServerBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.adapter.RecordServerAdapter
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,10 +50,10 @@ class RecordServerFragment(
                     type = ShowType.SERVER,
                     uid = it.uid,
                     cardName = it.cardName,
-                    amount = it.amount,
-                    billSubmitTime = it.date,
+                    amount = it.storeAmount,
+                    date = it.date,
                     storeName = it.storeName,
-                    file = null
+                    file = null,
                 )
             )
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
@@ -62,10 +63,15 @@ class RecordServerFragment(
 
     override fun initObserver() {
         //서버에서 받아온 데이터 옵져버
-        viewModel.serverData.observe(viewLifecycleOwner) {
+        viewModel.billList.observe(viewLifecycleOwner) {
             recordServerAdapter.dataList.clear()
-            recordServerAdapter.dataList = it
+            recordServerAdapter.dataList = it?.body?.toMutableList()!!
             setTextAndVisible("데이터가 비었어요!", recordServerAdapter.dataList.isEmpty())
+        }
+
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
 

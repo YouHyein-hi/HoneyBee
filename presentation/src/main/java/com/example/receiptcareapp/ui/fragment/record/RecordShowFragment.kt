@@ -4,8 +4,10 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -18,9 +20,12 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.dialog.DeleteDialog
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.ResponseState
+import com.example.receiptcareapp.util.RoomState
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -35,18 +40,14 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initData() {
-        if(activityViewModel.selectedData.value != null) viewModelData = activityViewModel.selectedData.value!!
-        else findNavController().popBackStack()
+        if(activityViewModel.selectedData.value != null)
+            viewModelData = activityViewModel.selectedData.value!!
+        else
+            findNavController().popBackStack()
     }
 
     override fun initUI() {
-        // TODO 재전송 버튼은 일단 비활성화
-/*        Glide.with(binding.imageView)
-            .load(viewModel.picture)
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
-            .into(binding.imageView)*/
         initView()
-        checkImageData()
     }
 
     override fun initListener() {
@@ -60,19 +61,67 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 
     override fun initObserver() {
         //Todo api 요청에서 ViewModel 전부 State 처리해야함
+//        viewModel.roomState.observe(viewLifecycleOwner){
+//            when(it){
+//                RoomState.UPDATE_SUCCESS -> {
+//                    showShortToast("수정 완료!")
+//                    findNavController().popBackStack()
+//                }
+//                RoomState.DELETE_SUCCESS -> {
+//                    showShortToast("삭제 완료!")
+//                    findNavController().popBackStack()
+//                }
+//                else -> {
+//                    showShortToast("룸 실패...")
+//                    findNavController().popBackStack()
+//                }
+//            }
+//        }
+
         viewModel.response.observe(viewLifecycleOwner){
+            Log.e("TAG", "initObserver: $it", )
+            when(it.second?.status){
+                "200" -> {
+                    when(it.first){
+                        ResponseState.DELETE_SUCCESS -> {
+                            showShortToast("삭제 완료!")
+                            findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+                        }
+                        ResponseState.UPDATE_SUCCESS-> {
+                            showShortToast("업데이트 완료!")
+                            findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+                        }
+                        ResponseState.LOCAL_UPDATE_SUCCESS -> {
+                            showShortToast("업데이트 완료!")
+                            viewModel.upDataRoomData(it.second?.uid.toString())
+                            findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+                        }
+//                        ShowType.LOCAL_UPDATE -> {
+//                            showShortToast("업데이트 완료!")
+//                            findNavController().popBackStack()
+//                        }
+                    }
+//                    if(it.first==ShowType.SERVER_DELETE)
+//                    else {
+//                        showShortToast("서버 수정 완료!")
+//                        viewModel.deleteRoomBillData()
+//                        viewModel.insertRoomData(it.second?.uid.toString())
+////                        viewModel.upDataRoomData(it.second?.body!!)
+//                    }
+                }
+                else-> showShortToast("실패..")
+            }
+        }
+
+        viewModel.roomState.observe(viewLifecycleOwner){
             when(it){
-                ResponseState.UPDATE_SUCCESS -> {
-                    showShortToast("수정 완료!")
-                    findNavController().popBackStack()
-                }
-                ResponseState.DELETE_SUCCESS -> {
-                    showShortToast("삭제 완료!")
-                    findNavController().popBackStack()
-                }
-                else -> {
-                    showShortToast("전송 실패...")
-                    findNavController().popBackStack()
+//                RoomState.UPDATE_SUCCESS -> {
+//                    showShortToast("전송 완료!")
+//                    findNavController().popBackStack()
+//                }
+                RoomState.DELETE_SUCCESS -> {
+                    showShortToast("삭제 완료")
+                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
                 }
             }
         }
@@ -90,20 +139,34 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
                 .into(binding.imageView)
             checkImageData()
         }
+
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
+        }
     }
 
     private fun initView(){
-        if(viewModelData.type == ShowType.LOCAL) binding.imageView.setImageURI(viewModelData.file)
-        else viewModel.getServerPictureData(viewModelData.uid)
+        Log.e("TAG", "initView: $viewModelData", )
+        if(viewModelData.type == ShowType.LOCAL)
+            binding.imageView.setImageURI(viewModelData.file)
+        else
+            viewModel.getServerPictureData(viewModelData.uid)
+
+        checkImageData()
         binding.imageView.clipToOutline = true
-        binding.cardTxt.text = "${viewModelData.cardName}카드"
-        binding.dateTxt.text = viewModelData.billSubmitTime
-        binding.amountTxt.text = "${viewModelData.amount}원"
-        binding.cardAmount.text = viewModelData.storeName
+        binding.data = viewModelData
+//         binding.cardTxt.text = "${viewModelData.cardName}카드"
+//         binding.dateTxt.text = viewModelData.billSubmitTime
+//         binding.amountTxt.text = "${viewModelData.amount}원"
+//         binding.cardAmount.text = viewModelData.storeName
     }
 
     private fun checkImageData(){
-        if(binding.imageView.drawable == null) binding.emptyText.visibility = View.VISIBLE
+        if(binding.imageView.drawable == null)
+            binding.emptyText.isVisible = true
+        if(viewModel.picture.value==null)
+            binding.emptyText.isVisible =true
     }
 
     //수정
@@ -114,7 +177,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 
     //서버와 로컬 삭제
     private fun deleteDialog(){
-       val deleteDialog = DeleteDialog()
+       val deleteDialog = DeleteDialog(viewModel)
         deleteDialog.show(parentFragmentManager, "deleteDialog")
     }
 

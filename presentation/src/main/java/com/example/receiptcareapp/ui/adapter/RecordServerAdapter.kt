@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.receive.DomainReceiveAllData
+import com.example.domain.model.receive.BillData
 import com.example.receiptcareapp.databinding.ItemBillListServerBinding
 
 /**
@@ -13,16 +13,16 @@ import com.example.receiptcareapp.databinding.ItemBillListServerBinding
  */
 class RecordServerAdapter:RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
 
-    lateinit var onServerSaveClick : (DomainReceiveAllData)->Unit
+    lateinit var onServerSaveClick : (BillData)->Unit
     private lateinit var serverBinding:ItemBillListServerBinding
-    var dataList = mutableListOf<DomainReceiveAllData>()
+    var dataList = mutableListOf<BillData>()
         set(value){
             field = value.reversed().toMutableList()
             notifyDataSetChanged()
         }
 
     inner class MyAdapter(private val binding: ItemBillListServerBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(list: DomainReceiveAllData){
+        fun bind(list: BillData){
             with(binding){
                 storeName.text = list.storeName
                 cardName.text = "${list.cardName}카드"

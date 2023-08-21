@@ -2,10 +2,9 @@ package com.example.receiptcareapp.ui.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.receive.CardData
 import com.example.receiptcareapp.databinding.ItemCardBinding
 
 /**
@@ -16,17 +15,17 @@ import com.example.receiptcareapp.databinding.ItemCardBinding
 class CardAdapter : RecyclerView.Adapter<CardAdapter.MyHolder>(){
 
     private lateinit var cardBinding: ItemCardBinding
-    var dataList = mutableListOf<DomainReceiveCardData>()
+    var dataList = mutableListOf<CardData>()
         set(value){
             field = value.reversed().toMutableList()
             notifyDataSetChanged()
         }
     inner class MyHolder(private val binding : ItemCardBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DomainReceiveCardData) {
+        fun bind(item: CardData) {
             Log.e("TAG", "bind: inin", )
-            Log.e("TAG", "bind: cardName=${item.cardName}, amount=${item.cardAmount}", )
-            binding.cardName = item.cardName
-            binding.amount = item.cardAmount
+            Log.e("TAG", "bind: cardName=${item.name}, amount=${item.amount}", )
+            binding.cardName = item.name
+            binding.amount = item.amount
             binding.billCheckDate = "${item.billCheckDate}일"
         }
     }

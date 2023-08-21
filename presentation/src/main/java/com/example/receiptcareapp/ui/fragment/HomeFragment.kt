@@ -22,6 +22,8 @@ import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.ui.adapter.PermissionHandler
 import com.example.receiptcareapp.ui.botteomSheet.CardBottomSheet
 import com.example.receiptcareapp.ui.dialog.AddDialog
+import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import com.example.receiptcareapp.ui.dialog.PermissiondCheck_Dialog
 import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,10 +31,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate, "HomeFragment") {
 
-    private val viewModel : HomeCardViewModel by viewModels()
+    private val viewModel : HomeViewModel by viewModels()
     private lateinit var callback: OnBackPressedCallback
+    private val homeCardBottomSheet: CardBottomSheet by lazy { CardBottomSheet(viewModel) }
     private val adapter: HomeCardAdapter = HomeCardAdapter()
-    private lateinit var homeCardBottomSheet: CardBottomSheet
     private val addDialog : AddDialog = AddDialog()
     private val permissiondcheckDialog = PermissiondCheck_Dialog()
     private val ALL_PERMISSIONS = arrayOf(
@@ -45,7 +47,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     override fun initData() {
-        homeCardBottomSheet = CardBottomSheet(viewModel)
+
     }
 
     override fun initUI() {
@@ -73,7 +75,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             historyBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment) }
             menuBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_menuFragment) }
             noticeBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_noticeFragment) }
-
             addBtn.setOnClickListener{
                 if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) {
                     permissionLauncher.launch(ALL_PERMISSIONS)
@@ -99,12 +100,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         viewModel.cardList.observe(viewLifecycleOwner) { dataList ->
-            if (dataList.isEmpty()) {/*setCenterText("데이터가 비었어요!", true)*/ }
-            else { adapter.dataList = dataList }
+            if (dataList?.body!!.isEmpty()) { binding.emptyText.visibility = View.VISIBLE }
+            else {
+                adapter.dataList = dataList.body!!.toMutableList()
+                binding.emptyText.visibility = View.INVISIBLE
+            }
         }
 
         viewModel.notice.observe(viewLifecycleOwner){
             binding.homeNoticeTxt.text = it
+        }
+
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
 

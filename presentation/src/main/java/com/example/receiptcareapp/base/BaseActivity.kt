@@ -15,12 +15,8 @@ import androidx.viewbinding.ViewBinding
  */
 abstract class BaseActivity<VB:ViewBinding>(
     private val inflate: (LayoutInflater) -> VB,
-    name: String
+    private val TAG: String
 ) : AppCompatActivity(){
-
-    init {
-        TAG = name
-    }
 
     private var _binding: VB? = null
     val binding get() = _binding!!
@@ -76,8 +72,4 @@ abstract class BaseActivity<VB:ViewBinding>(
 
     protected fun showLongToast(message: String?) =
         Toast.makeText(this, message ?: "", Toast.LENGTH_LONG).show()
-
-    companion object{
-        var TAG = ""
-    }
 }

@@ -12,29 +12,29 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.DomainReceiveCardData
-import com.example.domain.model.receive.DomainServerReponse
+import com.example.domain.model.receive.ServerCardData
 import com.example.domain.model.receive.DomainUpadateData
+import com.example.domain.model.receive.ServerUidData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
 import com.example.domain.usecase.card.GetCardListUseCase
-import com.example.domain.usecase.data.DeleteDataUseCase
-import com.example.domain.usecase.data.GetPictureDataUseCase
-import com.example.domain.usecase.data.InsertDataUseCase
-import com.example.domain.usecase.data.UpdateDataUseCase
+import com.example.domain.usecase.bill.DeleteDataUseCase
+import com.example.domain.usecase.bill.GetPictureDataUseCase
+import com.example.domain.usecase.bill.InsertDataUseCase
+import com.example.domain.usecase.bill.UpdateDataUseCase
 import com.example.domain.usecase.room.DeleteDataRoomUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase
+import com.example.domain.usecase.room.UpdateRoomData
+import com.example.domain.util.changeDate
 import com.example.receiptcareapp.base.BaseViewModel
+import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.util.ResponseState
+import com.example.receiptcareapp.util.RoomState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -53,30 +53,37 @@ import javax.inject.Inject
 @HiltViewModel
 class RecordShowViewModel @Inject constructor(
     @ApplicationContext private val application: Context,
-    private val deleteDataRoomUseCase: DeleteDataRoomUseCase,
     private val getPictureDataUseCase: GetPictureDataUseCase,
     private val deleteDataUseCase: DeleteDataUseCase,
     private val updateDataUseCase: UpdateDataUseCase,
     private val getCardListUseCase: GetCardListUseCase,
     private val insertDataUseCase: InsertDataUseCase,
-    private val insertDataRoomUseCase: InsertDataRoomUseCase
-) : BaseViewModel() {
+    private val insertDataRoomUseCase: InsertDataRoomUseCase,
+    private val deleteDataRoomUseCase: DeleteDataRoomUseCase,
+    private val updateRoomData: UpdateRoomData
+    ) : BaseViewModel() {
 
     val loading: MutableLiveData<Boolean> get() = isLoading
 
-    private var _response = MutableLiveData<ResponseState>()
-    val response : LiveData<ResponseState> get() = _response
+    private var _response = MutableLiveData<Pair<ResponseState,ServerUidData?>>()
+    val response : LiveData<Pair<ResponseState,ServerUidData?>> get() = _response
+
+    private val _roomState = MutableLiveData<RoomState>()
+    val roomState: LiveData<RoomState> get() = _roomState
 
     // 서버 카드 전달받은 값 관리
-    private var _cardData = MutableLiveData<MutableList<DomainReceiveCardData>?>()
-    val cardData: LiveData<MutableList<DomainReceiveCardData>?>
-        get() = _cardData
+    private var _cardList = MutableLiveData<ServerCardData?>()
+    val cardList: LiveData<ServerCardData?>
+        get() = _cardList
 
     private var _picture = MutableLiveData<Bitmap?>()
     val picture : LiveData<Bitmap?> get(){
         Log.e("TAG", "@@@@picture ${_picture.value}: ", )
         return _picture
     }
+
+    private lateinit var savedServerData: UpdateData
+    private lateinit var savedLocalData: AppSendData
 
 
     // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
@@ -85,114 +92,111 @@ class RecordShowViewModel @Inject constructor(
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                updateResponse(
-                    updateDataUseCase(
-                        DomainUpadateData(
-                            id = uid.toLong(),
-                            cardName = sendData.cardName,
-                            storeName = sendData.storeName,
-                            billSubmitTime = LocalDateTime.parse(sendData.billSubmitTime),
-                            amount = sendData.amount.replace(",", "")
+                _response.postValue(Pair(
+                        ResponseState.UPDATE_SUCCESS,
+                        updateDataUseCase(
+                            DomainUpadateData(
+                                id = uid.toLong(),
+                                cardName = sendData.cardName,
+                                storeName = sendData.storeName,
+                                billSubmitTime = LocalDateTime.parse(sendData.billSubmitTime),
+                                amount = sendData.amount.replace(",", "").toInt()
+                            )
                         )
-                    ),
-                    ResponseState.UPDATE_SUCCESS
+                    )
                 )
             } ?: throw SocketTimeoutException()
+            savedServerData = sendData
             isLoading.postValue(false)
         }
     }
 
     //로컬 데이터 재전송
-    fun updateLocalBillData(sendData: AppSendData, uid: String) {
+    fun updateLocalBillData(sendData: AppSendData) {
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
-                imsiUpdateResponse(
-                    insertDataUseCase(
-                        DomainSendData(
-                            cardName = MultipartBody.Part.createFormData(
-                                "cardName",
-                                sendData.cardName
-                            ),
-                            storeName = MultipartBody.Part.createFormData(
-                                "storeName",
-                                sendData.storeName
-                            ),
-                            date = MultipartBody.Part.createFormData(
-                                "billSubmitTime",
-                                sendData.billSubmitTime
-                            ),
-                            amount = MultipartBody.Part.createFormData(
-                                "amount",
-                                sendData.amount.replace(",", "")
-                            ),
-                            picture = compressEncodePicture(sendData.picture)
+                _response.postValue(Pair(
+                        ResponseState.LOCAL_UPDATE_SUCCESS,
+                        insertDataUseCase(
+                            DomainSendData(
+                                cardName = MultipartBody.Part.createFormData(
+                                    "cardName",
+                                    sendData.cardName
+                                ),
+                                storeName = MultipartBody.Part.createFormData(
+                                    "storeName",
+                                    sendData.storeName
+                                ),
+                                date = MultipartBody.Part.createFormData(
+                                    "billSubmitTime",
+                                    sendData.billSubmitTime
+                                ),
+                                amount = MultipartBody.Part.createFormData(
+                                    "amount",
+                                    sendData.amount.replace(",", "")
+                                ),
+                                picture = compressEncodePicture(sendData.picture)
+                            )
                         )
-                    ),
-                    ResponseState.UPDATE_SUCCESS,
-                    uid,
-                    sendData
-                )
-                Log.e("TAG", "sendData 응답 : $response ")
-            } ?: throw SocketTimeoutException()
-        }
-    }
-    fun deleteServerBillData(id: Long) {
-        Log.e("TAG", "deleteServerData: 들어감")
-        modelScope.async {
-            isLoading.postValue(true)
-            withTimeoutOrNull(waitTime) {
-                deleteDataUseCase(id)
-                isLoading.postValue(false)
-                //TODO 이거 updateResponse로 빼야함
-                _response.postValue(ResponseState.DELETE_SUCCESS)
-            } ?: throw SocketTimeoutException()
-        }
-    }
-
-    fun deleteRoomBillData(date: String) {
-        modelScope.launch {
-            isLoading.postValue(true)
-            val result = deleteDataRoomUseCase(date)
-            Log.e("TAG", "deleteRoomData result : $result")
-            isLoading.postValue(false)
-            //삭제 후에 데이터 끌어오기 위한 구성
-//            getLocalAllBillData()
-        }
-    }
-    // 이 기능을 따로 빼야할듯
-    private fun insertRoomData(domainRoomData: DomainRoomData) {
-        modelScope.launch {
-            insertDataRoomUseCase(domainRoomData)
-            _response.postValue(ResponseState.SUCCESS)
-        }
-    }
-
-    private fun updateResponse(response: DomainServerReponse, type: ResponseState){
-        when(response.status){
-            "200" -> _response.postValue(type)
-            else -> _response.postValue(ResponseState.FALSE)
-        }
-    }
-
-    //TODO 들어오는 값이 통일되면 하나로 합치기 + 응답값에 맞춰서 움직여야함
-    private fun imsiUpdateResponse(response: String, type: ResponseState, uid: String, sendData: AppSendData){
-        when(response) {
-            else -> {
-                _response.postValue(type)
-                deleteRoomBillData(uid)
-                insertRoomData(
-                    DomainRoomData(
-                        uid,
-                        sendData.cardName,
-                        sendData.amount,
-                        sendData.billSubmitTime,
-                        sendData.storeName,
-                        sendData.picture.toString()
                     )
                 )
-            }
-//            "200" -> _response.postValue(type)
-//            else -> _response.postValue(ResponseState.FALSE)
+            } ?: throw SocketTimeoutException()
+        }
+    }
+
+    fun deleteServerBillData(id: Long) {
+        modelScope.launch {
+            isLoading.postValue(true)
+            withTimeoutOrNull(waitTime) {
+                _response.value = Pair(ResponseState.DELETE_SUCCESS, deleteDataUseCase(id))
+            } ?: throw SocketTimeoutException()
+            isLoading.postValue(false)
+        }
+    }
+
+    fun deleteRoomBillData(date: String? = savedLocalData.billSubmitTime) {
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            isLoading.postValue(true)
+            val result = deleteDataRoomUseCase(date!!)
+            Log.e("TAG", "deleteRoomData result : $result")
+            //삭제 후에 데이터 끌어오기 위한 구성
+//            getLocalAllBillData()
+            _roomState.postValue(RoomState.DELETE_SUCCESS)
+            isLoading.postValue(false)
+
+        }
+
+    }
+    // 이 기능을 따로 빼야할듯
+    fun insertRoomData(uid:String) {
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            insertDataRoomUseCase(
+                DomainRoomData(
+                    uid = uid,
+                    cardName = savedLocalData.cardName,
+                    amount = savedLocalData.amount,
+                    billSubmitTime = savedLocalData.billSubmitTime,
+                    storeName = savedLocalData.storeName,
+                    file = savedLocalData.picture.toString()
+                )
+            )
+//            _roomState.postValue(RoomState.INSERT_SUCCESS)
+        }
+    }
+
+    fun upDataRoomData(uid: String){
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch{
+            updateRoomData(
+                DomainRoomData(
+                    uid = uid,
+                    cardName = savedLocalData.cardName,
+                    amount = savedLocalData.amount,
+                    billSubmitTime = savedLocalData.billSubmitTime,
+                    storeName = savedLocalData.storeName,
+                    file = savedLocalData.picture.toString()
+                )
+            )
+//            _roomState.postValue(RoomState.UPDATE_SUCCESS)
         }
     }
 
@@ -201,7 +205,7 @@ class RecordShowViewModel @Inject constructor(
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                _cardData.postValue(getCardListUseCase())
+                _cardList.postValue(getCardListUseCase())
                 isLoading.postValue(false)
             }?:throw SocketTimeoutException()
         }
@@ -212,8 +216,7 @@ class RecordShowViewModel @Inject constructor(
             Log.e("TAG", "getServerPictureData: ", )
             withTimeoutOrNull(waitTime) {
                 loading.postValue(true)
-                _picture.postValue(getPictureDataUseCase(uid))
-
+                _picture.postValue(getPictureDataUseCase(uid).picture)
                 loading.postValue(false)
             }?:throw SocketTimeoutException()
         }
@@ -248,7 +251,10 @@ class RecordShowViewModel @Inject constructor(
     }
 
     fun dateReplace(date : String): List<String> {
-        return date.replace(" ", "").split(".", "시", "분")
+        var gap = date
+        if(date.contains("T"))
+            gap = changeDate(gap)
+        return gap.split(".","  ")
     }
 
     fun compressEncodePicture(uri:Uri): MultipartBody.Part{

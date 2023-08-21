@@ -15,6 +15,7 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentMenuBinding
 import com.example.receiptcareapp.databinding.FragmentNoticeBinding
 import com.example.receiptcareapp.ui.adapter.NoticeAdapter
+import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.notice.NoticeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,12 +52,17 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
     override fun initObserver() {
         viewModel.response.observe(viewLifecycleOwner){
             adapter.dataList.clear()
-            adapter.dataList = it
+            adapter.dataList = it?.body!!.toMutableList()
         }
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding. layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
             checkDataList()
+        }
+
+        // Err관리
+        viewModel.fetchState.observe(this) {
+            showShortToast(FetchStateHandler(it))
         }
     }
 

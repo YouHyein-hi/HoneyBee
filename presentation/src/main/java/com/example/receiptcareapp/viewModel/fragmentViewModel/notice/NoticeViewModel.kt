@@ -2,6 +2,7 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel.notice
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.domain.model.receive.ServerNoticeData
 import com.example.domain.model.send.DomainGetNoticeListData
 import com.example.domain.usecase.notice.GetNoticeListUseCase
 import com.example.receiptcareapp.base.BaseViewModel
@@ -20,14 +21,14 @@ class NoticeViewModel @Inject constructor(
 
     val loading : MutableLiveData<Boolean> get() = isLoading
 
-    private val _response = MutableLiveData<MutableList<DomainGetNoticeListData>>()
-    val response: MutableLiveData<MutableList<DomainGetNoticeListData>> get() = _response
+    private val _response = MutableLiveData<ServerNoticeData?>()
+    val response: MutableLiveData<ServerNoticeData?> get() = _response
 
     fun getNoticeList(){
         modelScope.launch {
             withTimeoutOrNull(waitTime){
                 isLoading.postValue(true)
-                _response.postValue(getNoticeListUseCase()!!)
+                _response.postValue(getNoticeListUseCase())
                 isLoading.postValue(false)
             }
         }

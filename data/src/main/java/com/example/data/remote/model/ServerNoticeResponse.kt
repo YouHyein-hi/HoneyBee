@@ -1,6 +1,7 @@
 package com.example.data.remote.model
 
 import com.example.domain.model.receive.NoticeData
+import java.time.LocalDateTime
 
 /**
  * 2023-08-20
@@ -13,4 +14,4 @@ data class ServerNoticeResponse(
     val billNoticeContent: String,
 )
 
-fun ServerNoticeResponse.toNoticeData(): NoticeData = NoticeData(id = billNoticeId, title =  billNoticeTitle, date = billNoticeDate, content = billNoticeContent)
+fun ServerNoticeResponse.toNoticeData(): NoticeData = NoticeData(id = billNoticeId, title =  billNoticeTitle, date = billNoticeDate.toString(), content = billNoticeContent)

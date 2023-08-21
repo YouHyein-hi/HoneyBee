@@ -114,7 +114,7 @@ class ChangeDialog(
                                 storeName = binding.changeBtnStore.text.toString(),
 //                                picture = activityViewModel.bitmapToUri(requireActivity(),activityViewModel.picture.value)
                                 picture = viewModelData.file!!
-                            ),
+                            )
                         )
                     }
                     dismiss()

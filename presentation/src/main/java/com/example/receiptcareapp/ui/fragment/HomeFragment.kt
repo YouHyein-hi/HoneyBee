@@ -25,7 +25,6 @@ import com.example.receiptcareapp.ui.dialog.AddDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import com.example.receiptcareapp.ui.dialog.PermissiondCheck_Dialog
-import com.example.receiptcareapp.viewModel.dialogViewModel.HomeCardViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -83,7 +82,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     addDialog.show(parentFragmentManager, "addDialog")
                 }
             }
-            cardListBtn.setOnClickListener{
+            cardListComponent.setOnClickListener{
                 homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet")
             }
             homeCardRecyclerview.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }

@@ -236,7 +236,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     private fun getSpinner() {
         viewModel.getServerCardData()
         binding.spinner.adapter = SpinnerAdapter(requireContext(), arrayListOf())
-        Log.e("TAG", "getSpinner: 현재 들어가있는값 : ${arrayCardList}")
+        Log.e("TAG", "getSpinner: 현재 들어가있는값 arrayCardList : ${arrayCardList}")
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 Log.e("TAG", "onItemSelected: ${myArray[position]}")

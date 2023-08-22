@@ -1,6 +1,5 @@
 package com.example.domain.usecase.login
 
-import com.example.domain.model.receive.DomainServerResponse
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.repo.LoginRepository
 

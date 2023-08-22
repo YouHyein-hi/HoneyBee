@@ -22,7 +22,7 @@ class PreferenceManager @Inject constructor(
         sharedPreference.edit().putString("sharedPreference_pw",pw).apply()
     }
 
-    fun getLogin(): String?{
+    fun getLogin(): String? {
         return sharedPreference.getString("sharedPreference_id",null)
     }
 

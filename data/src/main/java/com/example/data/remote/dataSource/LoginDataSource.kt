@@ -1,7 +1,6 @@
 package com.example.data.remote.dataSource
 
 import ServerResponse
-import com.example.domain.model.receive.ResponseData
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST

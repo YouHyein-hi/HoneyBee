@@ -13,8 +13,8 @@ class UpdateRoomData(
 ) {
     suspend operator fun invoke(
         list: DomainRoomData
-    ){
+    ): Int{
         Log.e("TAG", "updateData: $list", )
-        roomRepository.updateData(list)
+        return roomRepository.updateData(list)
     }
 }

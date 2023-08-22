@@ -1,5 +1,6 @@
 package com.example.domain.util
 
+import android.util.Log
 import java.text.DecimalFormat
 
 /**
@@ -8,7 +9,9 @@ import java.text.DecimalFormat
  */
 
 fun changeDate(inputDate: String?): String {
-    return if (inputDate?.contains(":")!=null) {
+    Log.e("TAG", "changeDate: $inputDate", )
+    //2023.08.21  15시 48분
+    return if (inputDate?.contains("T")==true) {
         val gap = inputDate.replace("-", ".").split("T")
         val time = gap[1].split(":")
         "${gap[0]}  ${time[0]}시 ${time[1]}분"

@@ -31,6 +31,7 @@ import com.example.domain.usecase.room.InsertDataRoomUseCase
 import com.example.domain.usecase.room.UpdateRoomData
 import com.example.domain.util.changeDate
 import com.example.receiptcareapp.base.BaseViewModel
+import com.example.receiptcareapp.dto.LocalBillData
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.util.RoomState
@@ -60,7 +61,6 @@ class RecordShowViewModel @Inject constructor(
     private val updateDataUseCase: UpdateDataUseCase,
     private val getCardSpinnerUseCase: GetCardSpinnerUseCase,
     private val insertDataUseCase: InsertDataUseCase,
-    private val insertDataRoomUseCase: InsertDataRoomUseCase,
     private val deleteDataRoomUseCase: DeleteDataRoomUseCase,
     private val updateRoomData: UpdateRoomData
     ) : BaseViewModel() {
@@ -69,9 +69,6 @@ class RecordShowViewModel @Inject constructor(
 
     private var _response = MutableLiveData<Pair<ResponseState,ServerUidData?>>()
     val response : LiveData<Pair<ResponseState,ServerUidData?>> get() = _response
-
-    private val _roomState = MutableLiveData<RoomState>()
-    val roomState: LiveData<RoomState> get() = _roomState
 
     // 서버 카드 전달받은 값 관리
     private var _cardList = MutableLiveData<ServerCardSpinnerData?>()
@@ -85,7 +82,7 @@ class RecordShowViewModel @Inject constructor(
     }
 
     private lateinit var savedServerData: UpdateData
-    private lateinit var savedLocalData: AppSendData
+    private lateinit var savedLocalData: LocalBillData
 
 
     // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
@@ -94,7 +91,8 @@ class RecordShowViewModel @Inject constructor(
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                _response.postValue(Pair(
+                _response.postValue(
+                    Pair(
                         ResponseState.UPDATE_SUCCESS,
                         updateDataUseCase(
                             DomainUpadateData(
@@ -114,7 +112,7 @@ class RecordShowViewModel @Inject constructor(
     }
 
     //로컬 데이터 재전송
-    fun updateLocalBillData(sendData: AppSendData) {
+    fun updateLocalBillData(sendData: LocalBillData) {
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 _response.postValue(Pair(
@@ -143,6 +141,7 @@ class RecordShowViewModel @Inject constructor(
                     )
                 )
             } ?: throw SocketTimeoutException()
+            savedLocalData = sendData
         }
     }
 
@@ -159,38 +158,18 @@ class RecordShowViewModel @Inject constructor(
     fun deleteRoomBillData(date: String? = savedLocalData.billSubmitTime) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
-            val result = deleteDataRoomUseCase(date!!)
-            Log.e("TAG", "deleteRoomData result : $result")
-            //삭제 후에 데이터 끌어오기 위한 구성
-//            getLocalAllBillData()
-            _roomState.postValue(RoomState.DELETE_SUCCESS)
+            deleteDataRoomUseCase(date!!)
             isLoading.postValue(false)
-
         }
 
     }
-    // 이 기능을 따로 빼야할듯
-    fun insertRoomData(uid:String) {
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            insertDataRoomUseCase(
-                DomainRoomData(
-                    uid = uid,
-                    cardName = savedLocalData.cardName,
-                    amount = savedLocalData.amount,
-                    billSubmitTime = savedLocalData.billSubmitTime,
-                    storeName = savedLocalData.storeName,
-                    file = savedLocalData.picture.toString()
-                )
-            )
-//            _roomState.postValue(RoomState.INSERT_SUCCESS)
-        }
-    }
 
-    fun upDataRoomData(uid: String){
+    fun upDataRoomData(){
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch{
-            updateRoomData(
+            Log.e("TAG", "upDataRoomData: $savedLocalData", )
+            val gap = updateRoomData(
                 DomainRoomData(
-                    uid = uid,
+                    uid = savedLocalData.uid,
                     cardName = savedLocalData.cardName,
                     amount = savedLocalData.amount,
                     billSubmitTime = savedLocalData.billSubmitTime,
@@ -198,6 +177,7 @@ class RecordShowViewModel @Inject constructor(
                     file = savedLocalData.picture.toString()
                 )
             )
+            Log.e("TAG", "upDataRoomData: $gap", )
 //            _roomState.postValue(RoomState.UPDATE_SUCCESS)
         }
     }
@@ -229,23 +209,6 @@ class RecordShowViewModel @Inject constructor(
             myYear, myMonth, myDay,
             LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second
         )
-    }
-
-    fun AdapterPosition(adapter: ArrayAdapter<String>, dataCardName: String): Int {
-        // position, adapter,
-        for (i in 0 until adapter.count) {
-            val item = adapter.getItem(i)
-            if (item!!.startsWith(dataCardName)) {
-                return i
-            }
-        }
-        return -1
-    }
-
-    //TODO 이건 두군대서 쓰는함수,, 아래친구들도 전부
-    private fun dateTimeToString(date:String): String{
-        val myList = date.split("-","T",":")
-        return "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
     }
 
     fun splitColon(text : String): List<String> {
@@ -333,26 +296,4 @@ class RecordShowViewModel @Inject constructor(
     fun PriceFormat(price : String): String? {
         return DecimalFormat("#,###").format(price.toInt())
     }
-
-//    fun getLocalAllBillData() {
-//        CoroutineScope(exceptionHandler).launch {
-//            val gap = getRoomDataListUseCase()
-//            Log.e("TAG", "receiveAllRoomData: $gap")
-//            _roomData.postValue(gap)
-//        }
-//    }
-
-
-//    fun bitmapToUri(activity: Activity, bitmap: Bitmap): Uri {
-//        val file = File(activity.cacheDir, "temp_image.jpg")
-//        val outputStream = FileOutputStream(file)
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-//        outputStream.flush()
-//        outputStream.close()
-//        return Uri.fromFile(file)
-//    }
-
-//    fun uriToBitmap(activity:Activity, uri:Uri):Bitmap{
-//        return ImageDecoder.decodeBitmap(ImageDecoder.createSource(activity.contentResolver,uri))
-//    }
 }

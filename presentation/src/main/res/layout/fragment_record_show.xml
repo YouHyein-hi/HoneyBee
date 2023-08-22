@@ -11,7 +11,7 @@
 <!--            type="com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel" />-->
 <!--        <variable-->
 <!--            name="fragment"-->
-<!--            type="com.example.receiptcareapp.ui.fragment.RecordFrameFragment" />-->
+<!--            type="com.example.receiptcareapp.ui.fragment.record.RecordFrameFragment" />-->
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

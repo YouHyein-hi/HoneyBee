@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.ServerCardData
+import com.example.domain.model.receive.ServerCardSpinnerData
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.receive.ServerStoreData
 import com.example.domain.model.receive.ServerUidData
@@ -21,6 +22,7 @@ import com.example.domain.model.send.DomainSendData
 import com.example.domain.usecase.bill.GetStoreListUseCase
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
+import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,8 +48,8 @@ class SendBillViewModel @Inject constructor(
     @ApplicationContext private val application: Context,
     private val insertDataUseCase: InsertDataUseCase,
     private val insertDataRoomUseCase: InsertDataRoomUseCase,
-    private val getCardListUseCase: GetCardListUseCase,
     private val getStoreListUseCase: GetStoreListUseCase
+    private val getCardSpinnerUseCase: GetCardSpinnerUseCase
 ) : BaseViewModel() {
 
     val loading: LiveData<Boolean> get() = isLoading
@@ -58,19 +60,20 @@ class SendBillViewModel @Inject constructor(
     private lateinit var savedData : AppSendData
 
     //서버 응답 일관화 이전에 사용할 박스
-    private var _cardList = MutableLiveData<ServerCardData?>()
-    val cardList : LiveData<ServerCardData?> get() = _cardList
 
     //서버 응답 일관화 이전에 사용할 박스
     private var _storeList = MutableLiveData<ServerStoreData?>()
     val storeList : LiveData<ServerStoreData?> get() = _storeList
+
+    private var _cardList = MutableLiveData<ServerCardSpinnerData?>()
+    val cardList : LiveData<ServerCardSpinnerData?> get() = _cardList
 
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 isLoading.postValue(true)
-                _cardList.postValue(getCardListUseCase())
+                _cardList.postValue(getCardSpinnerUseCase())
                 isLoading.postValue(false)
             }?:throw SocketTimeoutException()
         }

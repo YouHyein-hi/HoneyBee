@@ -22,6 +22,11 @@ import com.bumptech.glide.Glide
 import com.example.domain.model.BottomSheetData
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.domain.model.local.DomainRoomData
+import com.example.domain.model.receive.CardData
+import com.example.domain.model.receive.CardSpinnerData
+import com.example.domain.model.receive.DateData
+import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentSendBillBinding
@@ -41,21 +46,27 @@ import java.util.*
 class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillBinding::inflate, "ShowPictureFragment") {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel : SendBillViewModel by viewModels()
+    private var cardDataList: MutableList<CardSpinnerData> = mutableListOf()
     private var cardName = ""
     private var cardAmount = ""
-    private var myYear = 0
-    private var myMonth = 0
-    private var myDay = 0
     private var todayDate : LocalDate? = null
-    private var selectedDate : LocalDate? = null
+    private var selectedDate : LocalDate ? = null
+    private lateinit var dateData : DateData
     private lateinit var callback: OnBackPressedCallback
     private var cardArray = arrayListOf<String>()
     private var storeArray = arrayListOf<String>()
+
 
     override fun initData() {
         todayDate = viewModel.dateNow()
         selectedDate = viewModel.dateNow()
         viewModel.getServerStoreData()
+        //TODO 이 부분 한번만 둘러오기
+        dateData = DateData(
+            year = viewModel.dateNow().year,
+            month = viewModel.dateNow().monthValue,
+            day = viewModel.dateNow().dayOfMonth
+        )
     }
 
     override fun initUI() {
@@ -67,9 +78,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 .into(pictureView)
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
             btnDate.text = "${viewModel.dateNow().format(formatterDate)}"
-            myYear = viewModel.dateNow().year
-            myMonth = viewModel.dateNow().monthValue
-            myDay = viewModel.dateNow().dayOfMonth
         }
         /** Spinner 호출 **/
         getSpinner()
@@ -82,10 +90,12 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             btnDate.setOnClickListener {
                 val cal = Calendar.getInstance()
                 val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
-                    myYear = year
-                    myMonth = month + 1
-                    myDay = day
-                    btnDate.text = "${myYear}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
+                    dateData = DateData(
+                        year = year,
+                        month = month + 1,
+                        day = day
+                    )
+                    btnDate.text = "${year}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
                     selectedDate = LocalDate.of(year, month + 1, day)
                 }
                 val dataDialog = DatePickerDialog(requireContext(), data,
@@ -115,27 +125,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     }
                 }
             })
-//            키보드 오르락 내리락 감지
-//            binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-//                try {
-//                    val layoutParams = binding.bottomLayout.layoutParams as ViewGroup.MarginLayoutParams
-//                    val rect = Rect()
-//                    binding.root.getWindowVisibleDisplayFrame(rect)
-//                    val screenHeight = binding.root.height
-//                    val keypadHeight = screenHeight - rect.bottom
-//
-//                    //키보드 올라옴
-//                    if (keypadHeight > screenHeight * 0.15) {
-//                        layoutParams.bottomMargin = 700
-//                        binding.bottomLayout.layoutParams = layoutParams
-//
-//                    //키보드 내려옴
-//                    } else {
-//                        layoutParams.bottomMargin = 50
-//                        binding.bottomLayout.layoutParams = layoutParams
-//                    }
-//                }catch (e:Exception){}
-//            }
 
             editTxtPrice.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -185,7 +174,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                             showShortToast("보유금액보다 많은 비용입니다.")
                             return@setOnClickListener
                         }
-                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(myYear, myMonth, myDay)
+                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.month)
                         SendCheckBottomSheet(
                             viewModel,
                             BottomSheetData(
@@ -224,10 +213,10 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             }
         }
 
+        //TODO 비었을경우에 대처, 카드리스트가 비었을때 홈으로 등등
         viewModel.cardList.observe(viewLifecycleOwner){
-            cardArray.clear()
-            it?.body?.forEach{cardArray.add("${it.name} : ${it.amount}")}
-            binding.spinnerCard.adapter = SpinnerAdapter(requireContext(), cardArray)
+            it.body?.forEach { cardDataList.add(it) }
+            binding.spinner.adapter = SpinnerAdapter(requireContext(), ArrayList<CardSpinnerData>(cardDataList))
         }
 
         viewModel.storeList.observe(viewLifecycleOwner){response ->
@@ -258,25 +247,44 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         super.onDetach()
         callback.remove()
     }
-
     /** Spinner 관련 **/
+    //TODO setonClick리스너는 밖으로 빼기
     private fun getSpinner() {
         viewModel.getServerCardData()
-        binding.spinnerCard.adapter = SpinnerAdapter(requireContext(), arrayListOf())
-
-        binding.spinnerCard.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        Log.e("TAG", "getSpinner: ${cardDataList}", )
+        //TODO 이부분 빼도 오류없는지 보고 빼기
+        binding.spinner.adapter = SpinnerAdapter(requireContext(), arrayListOf())
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Log.e("TAG", "onItemSelected: ${cardArray[position]}")
-                Log.e("TAG", "onItemSelected: ${position}")
-                //TODO myArray / "카드이름 :" 50000
-                // 배열 두개로 관리를 하는게 낫지않을까
-                val spiltCard = cardArray[position].split(" : ")
-                cardName = spiltCard[0]
-                cardAmount = spiltCard[1]
-                Log.e("TAG", "onItemSelected: ${cardName}")
+                val selectedCardData = cardDataList[position]
+                cardName = selectedCardData.name
+                cardAmount = selectedCardData.amount
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
     }
 }
+
+
+//            키보드 오르락 내리락 감지
+//            binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+//                try {
+//                    val layoutParams = binding.bottomLayout.layoutParams as ViewGroup.MarginLayoutParams
+//                    val rect = Rect()
+//                    binding.root.getWindowVisibleDisplayFrame(rect)
+//                    val screenHeight = binding.root.height
+//                    val keypadHeight = screenHeight - rect.bottom
+//
+//                    //키보드 올라옴
+//                    if (keypadHeight > screenHeight * 0.15) {
+//                        layoutParams.bottomMargin = 700
+//                        binding.bottomLayout.layoutParams = layoutParams
+//
+//                    //키보드 내려옴
+//                    } else {
+//                        layoutParams.bottomMargin = 50
+//                        binding.bottomLayout.layoutParams = layoutParams
+//                    }
+//                }catch (e:Exception){}
+//            }

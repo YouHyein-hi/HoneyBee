@@ -28,7 +28,7 @@ interface GeneralDataSource {
     suspend fun getBillListDataSource(): ServerResponse<List<ServerBillResponse>>
 
     @Streaming
-    @GET("bill/list/store")   // 전체 데이터 요청
+    @GET("bill/list/store")   // 전체 스토어 데이터 요청
     suspend fun getStoreListDataSource(): ServerResponse<List<String>>
 
     @Streaming

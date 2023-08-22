@@ -115,25 +115,27 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     }
                 }
             })
-            //키보드 오르락 내리락 감지
-            binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-                try {
-                    val layoutParams = binding.bottomLayout.layoutParams as ViewGroup.MarginLayoutParams
-                    val rect = Rect()
-                    binding.root.getWindowVisibleDisplayFrame(rect)
-                    val screenHeight = binding.root.height
-                    val keypadHeight = screenHeight - rect.bottom
-
-                    if (keypadHeight > screenHeight * 0.15) {
-                        layoutParams.bottomMargin = 700
-                        binding.bottomLayout.layoutParams = layoutParams
-
-                    } else {
-                        layoutParams.bottomMargin = 50
-                        binding.bottomLayout.layoutParams = layoutParams
-                    }
-                }catch (e:Exception){}
-            }
+//            키보드 오르락 내리락 감지
+//            binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+//                try {
+//                    val layoutParams = binding.bottomLayout.layoutParams as ViewGroup.MarginLayoutParams
+//                    val rect = Rect()
+//                    binding.root.getWindowVisibleDisplayFrame(rect)
+//                    val screenHeight = binding.root.height
+//                    val keypadHeight = screenHeight - rect.bottom
+//
+//                    //키보드 올라옴
+//                    if (keypadHeight > screenHeight * 0.15) {
+//                        layoutParams.bottomMargin = 700
+//                        binding.bottomLayout.layoutParams = layoutParams
+//
+//                    //키보드 내려옴
+//                    } else {
+//                        layoutParams.bottomMargin = 50
+//                        binding.bottomLayout.layoutParams = layoutParams
+//                    }
+//                }catch (e:Exception){}
+//            }
 
             editTxtPrice.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -230,6 +232,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
         viewModel.storeList.observe(viewLifecycleOwner){response ->
             if(!response?.body.isNullOrEmpty()){
+                storeArray.clear()
                 response?.body?.map { storeArray.add(it) }
                 binding.editTxtStore.setAdapter(StoreSpinner(requireContext(), storeArray))
             }

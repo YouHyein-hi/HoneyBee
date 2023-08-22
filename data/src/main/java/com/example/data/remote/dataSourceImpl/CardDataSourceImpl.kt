@@ -15,9 +15,9 @@ class CardDataSourceImpl @Inject constructor(
     private val retrofit: Retrofit
 ) : CardDataSource {
     override suspend fun sendCardDataSource(
-        cardName: String?,
-        amount: Int?,
-        billCheckDate: String?
+        cardName: String,
+        amount: Int,
+        billCheckDate: String
     ): ServerResponse<String> {
         val gap = retrofit.create(CardDataSource::class.java)
             .sendCardDataSource(cardName = cardName, amount = amount, billCheckDate = billCheckDate)

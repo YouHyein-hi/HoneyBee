@@ -12,7 +12,7 @@ import java.text.DecimalFormat
 import javax.inject.Inject
 
 @HiltViewModel
-class CardAddViewModel : BaseViewModel() {
+class CardAddViewModel @Inject constructor() : BaseViewModel() {
 
     init {
         Log.e("TAG", "CardAddBottomViewModel")

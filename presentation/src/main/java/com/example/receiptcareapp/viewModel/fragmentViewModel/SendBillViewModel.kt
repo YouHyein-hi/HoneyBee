@@ -15,9 +15,11 @@ import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.ServerCardData
 import com.example.domain.model.receive.ServerCardSpinnerData
 import com.example.domain.model.receive.ServerResponseData
+import com.example.domain.model.receive.ServerStoreData
 import com.example.domain.model.receive.ServerUidData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
+import com.example.domain.usecase.bill.GetStoreListUseCase
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
@@ -46,6 +48,7 @@ class SendBillViewModel @Inject constructor(
     @ApplicationContext private val application: Context,
     private val insertDataUseCase: InsertDataUseCase,
     private val insertDataRoomUseCase: InsertDataRoomUseCase,
+    private val getStoreListUseCase: GetStoreListUseCase,
     private val getCardSpinnerUseCase: GetCardSpinnerUseCase
 ) : BaseViewModel() {
 
@@ -57,20 +60,34 @@ class SendBillViewModel @Inject constructor(
     private lateinit var savedData : AppSendData
 
     //서버 응답 일관화 이전에 사용할 박스
-    private var _cardList = MutableLiveData<ServerCardSpinnerData>()
-    val cardList : LiveData<ServerCardSpinnerData> get() = _cardList
+
+    //서버 응답 일관화 이전에 사용할 박스
+    private var _storeList = MutableLiveData<ServerStoreData?>()
+    val storeList : LiveData<ServerStoreData?> get() = _storeList
+
+    private var _cardList = MutableLiveData<ServerCardSpinnerData?>()
+    val cardList : LiveData<ServerCardSpinnerData?> get() = _cardList
 
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
-                isLoading.postValue(true)
-                _cardList.postValue(getCardSpinnerUseCase()!!)
-                isLoading.postValue(false)
+                isLoading.value = true
+                _cardList.postValue(getCardSpinnerUseCase())
+                isLoading.value = false
             }?:throw SocketTimeoutException()
         }
     }
 
+    fun getServerStoreData(){
+        modelScope.launch {
+            withTimeoutOrNull(waitTime){
+                isLoading.value = true
+                _storeList.postValue(getStoreListUseCase())
+                isLoading.value = false
+            }?:throw SocketTimeoutException()
+        }
+    }
     //insertData 분리해야함
     fun insertBillData(sendData: AppSendData) {
         modelScope.launch {
@@ -106,34 +123,6 @@ class SendBillViewModel @Inject constructor(
         }
     }
 
-    //TODO 여기도 서버 값 통일되면 바꿔야 함
-//    private fun updateResponse(response: String, data: AppSendData) {
-//        Log.e("TAG", "updateResponse: $response", )
-//        //uid로 넘어옴
-//        when (response) {
-//            "0" -> {} // 실패
-//            else -> {
-//                /// TODO 여기는 임시방편
-//                _response.postValue(ResponseState.SUCCESS)
-//                ///
-//                if (data.billSubmitTime.contains("-") && data.billSubmitTime.contains("T") && data.billSubmitTime.contains(":")) {
-//                    data.billSubmitTime = changeDate(data.billSubmitTime)
-//                }
-//                insertRoomData(
-//                    DomainRoomData(
-//                        cardName = data.cardName,
-//                        amount = data.amount,
-//                        storeName = data.storeName,
-//                        billSubmitTime = data.billSubmitTime,
-//                        file = data.picture.toString(),
-//                        uid = response
-//                    )
-//                )
-//            }
-//        }
-//    }
-
-    // 이 기능을 따로 빼야할듯
     fun insertRoomData(response:String) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             insertDataRoomUseCase(
@@ -146,7 +135,6 @@ class SendBillViewModel @Inject constructor(
                     uid = response
                 )
             )
-//            _response.postValue(ResponseState.SUCCESS)
         }
     }
 
@@ -184,11 +172,6 @@ class SendBillViewModel @Inject constructor(
         return outputFile
     }
 
-    private fun dateTimeToString(date:String): String{
-        val myList = date.split("-","T",":")
-        return "${myList[0]}년 ${myList[1]}월 ${myList[2]}일 ${myList[3]}시 ${myList[4]}분"
-    }
-
     fun rotateImageIfRequired(bitmap: Bitmap, imagePath: String): Bitmap {
         val exif = ExifInterface(imagePath)
         val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
@@ -221,10 +204,6 @@ class SendBillViewModel @Inject constructor(
         Log.e("TAG", "absolutelyPath index: $index", )
         Log.e("TAG", "absolutelyPath result: $result", )
         return result!!
-    }
-
-    fun commaReplaceSpace(text: String): String {
-        return text.replace(",", "")
     }
 
     fun dateNow(): LocalDate {

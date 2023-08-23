@@ -52,15 +52,6 @@ class RecordViewModel @Inject constructor(
         }
     }
 
-    fun bitmapToUri(activity: Activity, bitmap: Bitmap): Uri {
-        val file = File(activity.cacheDir, "temp_image.jpg")
-        val outputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        outputStream.flush()
-        outputStream.close()
-        return Uri.fromFile(file)
-    }
-
     // Server 데이터 불러오는 부분
     fun getServerAllBillData() {
         modelScope.launch {

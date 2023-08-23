@@ -25,11 +25,15 @@ interface GeneralDataSource {
 
     @Streaming
     @GET("bill/list")   // 전체 데이터 요청
-    suspend fun receiveDataSource(): ServerResponse<List<ServerBillResponse>>
+    suspend fun getBillListDataSource(): ServerResponse<List<ServerBillResponse>>
+
+    @Streaming
+    @GET("bill/list/store")   // 전체 스토어 데이터 요청
+    suspend fun getStoreListDataSource(): ServerResponse<List<String>>
 
     @Streaming
     @GET("bill/image/{id}")
-    suspend fun receivePictureDataSource(
+    suspend fun getPictureDataSource(
         @Path("id") user: String
     ): ServerResponse<String>
 

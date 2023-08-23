@@ -2,7 +2,6 @@ package com.example.receiptcareapp.ui.fragment
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log

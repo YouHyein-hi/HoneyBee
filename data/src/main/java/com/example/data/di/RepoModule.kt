@@ -18,11 +18,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepoModule {
-//    @Provides
-//    @Singleton
-//    fun provideRepoReceiveData(source : RetrofitSource): RetrofitRepo {
-//        return RetrofitRepoImpl(source)
-//    }
 
     @Provides
     @Singleton

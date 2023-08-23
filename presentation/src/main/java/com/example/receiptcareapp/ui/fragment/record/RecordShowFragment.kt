@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.domain.util.changeDate
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
@@ -60,23 +61,6 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initObserver() {
-        //Todo api 요청에서 ViewModel 전부 State 처리해야함
-//        viewModel.roomState.observe(viewLifecycleOwner){
-//            when(it){
-//                RoomState.UPDATE_SUCCESS -> {
-//                    showShortToast("수정 완료!")
-//                    findNavController().popBackStack()
-//                }
-//                RoomState.DELETE_SUCCESS -> {
-//                    showShortToast("삭제 완료!")
-//                    findNavController().popBackStack()
-//                }
-//                else -> {
-//                    showShortToast("룸 실패...")
-//                    findNavController().popBackStack()
-//                }
-//            }
-//        }
 
         viewModel.response.observe(viewLifecycleOwner){
             Log.e("TAG", "initObserver: $it", )
@@ -93,36 +77,12 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
                         }
                         ResponseState.LOCAL_UPDATE_SUCCESS -> {
                             showShortToast("업데이트 완료!")
-                            viewModel.upDataRoomData(it.second?.uid.toString())
+                            viewModel.upDataRoomData()
                             findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
                         }
-//                        ShowType.LOCAL_UPDATE -> {
-//                            showShortToast("업데이트 완료!")
-//                            findNavController().popBackStack()
-//                        }
                     }
-//                    if(it.first==ShowType.SERVER_DELETE)
-//                    else {
-//                        showShortToast("서버 수정 완료!")
-//                        viewModel.deleteRoomBillData()
-//                        viewModel.insertRoomData(it.second?.uid.toString())
-////                        viewModel.upDataRoomData(it.second?.body!!)
-//                    }
                 }
                 else-> showShortToast("실패..")
-            }
-        }
-
-        viewModel.roomState.observe(viewLifecycleOwner){
-            when(it){
-//                RoomState.UPDATE_SUCCESS -> {
-//                    showShortToast("전송 완료!")
-//                    findNavController().popBackStack()
-//                }
-                RoomState.DELETE_SUCCESS -> {
-                    showShortToast("삭제 완료")
-                    findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
-                }
             }
         }
 
@@ -146,20 +106,19 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         }
     }
 
-    private fun initView(){
-        Log.e("TAG", "initView: $viewModelData", )
-        if(viewModelData.type == ShowType.LOCAL)
+    private fun initView() {
+        Log.e("TAG", "initView: $viewModelData",)
+        if (viewModelData.type == ShowType.LOCAL)
             binding.imageView.setImageURI(viewModelData.file)
         else
             viewModel.getServerPictureData(viewModelData.uid)
 
         checkImageData()
         binding.imageView.clipToOutline = true
-        binding.data = viewModelData
-//         binding.cardTxt.text = "${viewModelData.cardName}카드"
-//         binding.dateTxt.text = viewModelData.billSubmitTime
-//         binding.amountTxt.text = "${viewModelData.amount}원"
-//         binding.cardAmount.text = viewModelData.storeName
+        binding.data = RecyclerData(
+            viewModelData.type, viewModelData.uid, viewModelData.cardName, viewModelData.amount,
+            changeDate(viewModelData.date), viewModelData.storeName, viewModelData.file
+        )
     }
 
     private fun checkImageData(){
@@ -191,7 +150,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+                findNavController().popBackStack()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)

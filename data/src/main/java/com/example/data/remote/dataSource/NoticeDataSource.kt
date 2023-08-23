@@ -2,8 +2,6 @@ package com.example.data.remote.dataSource
 
 import ServerResponse
 import com.example.data.remote.model.ServerNoticeResponse
-import com.example.domain.model.receive.NoticeData
-import com.example.domain.model.receive.ResponseData
 import retrofit2.http.*
 import java.time.LocalDateTime
 

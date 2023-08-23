@@ -25,15 +25,11 @@ class SendCheckBottomSheet(
     "BottomSheetSendBinding"
 ) {
 
-    private val gap = 0
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
     }
 
-    override fun initData() {
-
-    }
+    override fun initData() {}
 
     override fun initUI() {
         binding.data = BottomSheetData(data.cardName, data.amount,data.cardAmount, data.storeName, changeDate(data.date),data.picture)

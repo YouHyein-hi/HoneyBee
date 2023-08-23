@@ -4,13 +4,16 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.Rect
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -28,13 +31,14 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentSendBillBinding
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
+import com.example.receiptcareapp.ui.adapter.StoreSpinner
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
+import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
-import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.DecimalFormat
+import java.net.SocketTimeoutException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -51,18 +55,20 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     private var selectedDate : LocalDate ? = null
     private lateinit var dateData : DateData
     private lateinit var callback: OnBackPressedCallback
+    private var cardArray = arrayListOf<String>()
+    private var storeArray = arrayListOf<String>()
+
 
     override fun initData() {
         todayDate = viewModel.dateNow()
         selectedDate = viewModel.dateNow()
-
+        viewModel.getServerStoreData()
+        //TODO 이 부분 한번만 둘러오기
         dateData = DateData(
             year = todayDate!!.year,
             month = todayDate!!.monthValue,
             day = todayDate!!.dayOfMonth
         )
-
-        viewModel.getServerCardData()
     }
 
     override fun initUI() {
@@ -78,11 +84,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     }
 
     override fun initListener() {
-
-        //TODO 여기 왜있지?
-        val fragmentManager = requireActivity().supportFragmentManager
-        fragmentManager.beginTransaction().add(this, "showPictureFragment").commit()
-
         with(binding){
             /** Date Button -> DatePickerDialog 생성 **/
             btnDate.setOnClickListener {
@@ -105,26 +106,16 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     .setTextColor(Color.BLACK)
             }
 
-            btnPrice.setOnEditorActionListener { v, actionId, event ->
-                Log.e("TAG", "btnPrice.setOnEditorActionListener", )
+            /** 금액 EidtText , 추가 **/
+            editTxtPrice.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
-                if (actionId == EditorInfo.IME_ACTION_DONE && btnPrice.text.isNotEmpty()) {
-                    btnPrice.setText(viewModel.PriceFormat(btnPrice.text.toString()))
+                if (actionId == EditorInfo.IME_ACTION_DONE && editTxtPrice.text.isNotEmpty()) {
+                    editTxtPrice.setText(viewModel.PriceFormat(editTxtPrice.text.toString()))
                 }
                 handled
             }
 
-            btnPrice.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    if (btnPrice.text.contains(",")) {
-                        btnPrice.setText(viewModel.CommaReplaceSpace(btnPrice.text.toString()))
-                        btnPrice.setSelection(btnPrice.text.length)
-                    }
-                }
-                else { btnPrice.setText(viewModel.PriceFormat(btnPrice.text.toString())) }
-            }
-
-            btnStore.addTextChangedListener(object : TextWatcher {
+            editTxtStore.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable?) {
@@ -133,7 +124,8 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     }
                 }
             })
-            btnPrice.addTextChangedListener(object : TextWatcher {
+
+            editTxtPrice.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable?) {
@@ -143,6 +135,16 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 }
             })
 
+            editTxtPrice.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    if (editTxtPrice.text.contains(",")) {
+                        editTxtPrice.setText(viewModel.CommaReplaceSpace(editTxtPrice.text.toString()))
+                        editTxtPrice.setSelection(editTxtPrice.text.length)
+                    }
+                }
+                else { editTxtPrice.setText(viewModel.PriceFormat(editTxtPrice.text.toString())) }
+            }
+
             /** 완료 Button **/
             completeBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
@@ -150,10 +152,10 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     cardName == "" -> {
                         showShortToast("카드를 입력하세요.")
                     }
-                    btnStore.text!!.isEmpty() -> {
+                    editTxtStore.text!!.isEmpty() -> {
                         showShortToast("가게 이름을 입력하세요.")
                     }
-                    btnPrice.text.isEmpty() -> {
+                    editTxtPrice.text.isEmpty() -> {
                         showShortToast("금액을 입력하세요.")
                     }
                     btnDate.text.isEmpty() -> {
@@ -168,7 +170,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                         NavHostFragment.findNavController(this@SendBillFragment).navigate(R.id.action_showFragment_to_homeFragment)
                     }
                     else -> {
-                        if(!viewModel.amountCheck(btnPrice.text.toString(), cardAmount)) {
+                        if(!viewModel.amountCheck(editTxtPrice.text.toString(), cardAmount)) {
                             showShortToast("보유금액보다 많은 비용입니다.")
                             return@setOnClickListener
                         }
@@ -177,9 +179,9 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                             viewModel,
                             BottomSheetData(
                                 cardName = cardName,
-                                amount = btnPrice.text.toString(),
+                                amount = editTxtPrice.text.toString(),
                                 cardAmount = cardAmount,
-                                storeName = binding.btnStore.text.toString(),
+                                storeName = binding.editTxtStore.text.toString(),
                                 date = myLocalDateTime.toString(),
                                 picture = activityViewModel.image.value!!
                             )
@@ -189,13 +191,12 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 }
             }
 
-            /** 취소 Button **/
             cancleBtn.setOnClickListener {
                 findNavController().navigate(R.id.action_showFragment_to_homeFragment)
             }
         }
 
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinnerCard.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedCardData = cardDataList[position]
                 cardName = selectedCardData.name
@@ -208,14 +209,12 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     }
 
     override fun initObserver() {
-        /** 프로그래스바 컨트롤 **/
         viewModel.loading.observe(viewLifecycleOwner){
-            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
-            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
+            Log.e("TAG", "initObserver: $it", )
+            binding.layoutLoadingProgress.root.isVisible = it
         }
 
         viewModel.response.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: com", )
             when(it?.status){
                 "200" -> {
                     viewModel.insertRoomData(it.uid.toString())
@@ -226,16 +225,25 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             }
         }
 
+        //TODO 비었을경우에 대처, 카드리스트가 비었을때 홈으로 등등
         viewModel.cardList.observe(viewLifecycleOwner){
-            //myArray.clear()
-            it.body?.forEach { cardDataList.add(it) }
-            val cardArrayList = ArrayList<CardSpinnerData>(cardDataList)
-            Log.e("TAG", "cardList.observe : ${cardDataList}", )
-            binding.spinner.adapter = SpinnerAdapter(requireContext(), cardArrayList)
+            it?.body?.forEach { cardDataList.add(it) }
+            binding.spinnerCard.adapter = SpinnerAdapter(requireContext(), ArrayList<CardSpinnerData>(cardDataList))
+        }
+
+        viewModel.storeList.observe(viewLifecycleOwner){response ->
+            if(!response?.body.isNullOrEmpty()){
+                storeArray.clear()
+                response?.body?.map { storeArray.add(it) }
+                binding.editTxtStore.setAdapter(StoreSpinner(requireContext(), storeArray))
+            }
         }
 
         // Err관리
         viewModel.fetchState.observe(this) {
+            when(it.second){
+                FetchState.SOCKET_TIMEOUT_EXCEPTION -> findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+            }
             showShortToast(FetchStateHandler(it))
         }
     }
@@ -256,3 +264,26 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         callback.remove()
     }
 }
+
+
+//            키보드 오르락 내리락 감지
+//            binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+//                try {
+//                    val layoutParams = binding.bottomLayout.layoutParams as ViewGroup.MarginLayoutParams
+//                    val rect = Rect()
+//                    binding.root.getWindowVisibleDisplayFrame(rect)
+//                    val screenHeight = binding.root.height
+//                    val keypadHeight = screenHeight - rect.bottom
+//
+//                    //키보드 올라옴
+//                    if (keypadHeight > screenHeight * 0.15) {
+//                        layoutParams.bottomMargin = 700
+//                        binding.bottomLayout.layoutParams = layoutParams
+//
+//                    //키보드 내려옴
+//                    } else {
+//                        layoutParams.bottomMargin = 50
+//                        binding.bottomLayout.layoutParams = layoutParams
+//                    }
+//                }catch (e:Exception){}
+//            }

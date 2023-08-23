@@ -48,7 +48,7 @@ class SendBillViewModel @Inject constructor(
     @ApplicationContext private val application: Context,
     private val insertDataUseCase: InsertDataUseCase,
     private val insertDataRoomUseCase: InsertDataRoomUseCase,
-    private val getStoreListUseCase: GetStoreListUseCase
+    private val getStoreListUseCase: GetStoreListUseCase,
     private val getCardSpinnerUseCase: GetCardSpinnerUseCase
 ) : BaseViewModel() {
 
@@ -73,7 +73,7 @@ class SendBillViewModel @Inject constructor(
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 isLoading.value = true
-                _cardList.postValue(getCardListUseCase())
+                _cardList.postValue(getCardSpinnerUseCase())
                 isLoading.value = false
             }?:throw SocketTimeoutException()
         }

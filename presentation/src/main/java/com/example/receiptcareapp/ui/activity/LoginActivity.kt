@@ -40,7 +40,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
 
         if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) {
             permissionDialog()
-            Log.e("TAG", "initData: 권한 없음", )
         }
         else{
             showShortToast("권한 있음")

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendardmedium"
         android:gravity="center"
-        android:text="서버의 데이터입니다."
+        android:text="@string/record_server_text"
         android:textColor="@color/sub_font2_gray"
         android:textSize="14dp" />
 
@@ -45,12 +45,11 @@
         />
 
     <TextView
-        android:gravity="center"
         android:id="@+id/empty_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="데이터가 비었어요.."
+        android:gravity="center"
+        android:text="@string/record__empty"
         android:textColor="@color/black"
-        android:textSize="20dp"
-        />
+        android:textSize="20dp" />
 </LinearLayout>

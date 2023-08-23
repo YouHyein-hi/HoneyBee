@@ -139,7 +139,7 @@
             android:elevation="0dp"
             android:fontFamily="@font/pretendardsemibold"
             android:stateListAnimator="@null"
-            android:text="취소"
+            android:text="@string/cancel"
             android:textColor="@color/fontColor_black"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"

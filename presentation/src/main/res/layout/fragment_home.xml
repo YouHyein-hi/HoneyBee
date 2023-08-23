@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:fontFamily="@font/pretendardextrabold"
-            android:shadowColor="@color/bottom_Sheet_Orange"
+            android:shadowColor="@color/shadow2_orange2"
             android:shadowDx="3"
             android:shadowDy="3"
             android:shadowRadius="5"
@@ -131,7 +131,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view5"
-                    tools:listitem="@layout/item_cardhome">
+                    tools:listitem="@layout/item_home_card_list">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
@@ -161,7 +161,7 @@
                     android:id="@+id/empty_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="카드를 추가해주세요!"
+                    android:text="@string/home_cardlist_empty"
                     android:textSize="20dp"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="@+id/home_card_recyclerview"
@@ -341,7 +341,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:fontFamily="@font/pretendardmedium"
-                    android:text="허니비 1.0.0 업데이트!"
                     android:textColor="@color/fontColor_black"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -99,7 +99,7 @@
     <!-- 기록페이지 -->
     <string name="record_frame_title">영수증 목록</string>
     <string name="record_server_text">서버의 데이터입니다.</string>
-    <string name="record_local_text">서버의 데이터입니다.</string>
+    <string name="record_local_text">로컬의 데이터입니다.</string>
     <string name="record__empty">데이터가 비었어요...</string>
     <string name="record__price">원</string>
 

@@ -46,7 +46,6 @@ class CardViewModel @Inject constructor(
     }
 
     fun insertServerCardData(sendData: AppSendCardData) {
-        Log.e("TAG", "sendCardData: 카드 보내기 $sendData")
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {

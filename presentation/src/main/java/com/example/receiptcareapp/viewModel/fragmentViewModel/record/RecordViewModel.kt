@@ -40,7 +40,6 @@ class RecordViewModel @Inject constructor(
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
             val gap = getRoomDataListUseCase()
-            Log.e("TAG", "receiveAllRoomData: $gap")
             _roomData.postValue(gap)
             isLoading.postValue(false)
         }

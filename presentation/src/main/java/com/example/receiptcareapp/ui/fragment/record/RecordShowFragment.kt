@@ -7,13 +7,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.domain.util.changeDate
-import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
@@ -21,13 +19,10 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.dialog.DeleteDialog
-import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.ResponseState
-import com.example.receiptcareapp.util.RoomState
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint

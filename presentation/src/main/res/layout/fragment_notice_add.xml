@@ -64,8 +64,9 @@
                 android:id="@+id/titleEditTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardsemibold"
                 android:gravity="center"
-                android:hint="제목을 입력해주세요."
+                android:hint="@string/notice_add_title"
                 android:textSize="24dp" />
 
             <View
@@ -82,8 +83,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:fontFamily="@font/pretendardmedium"
                 android:gravity="center"
-                android:hint="내용을 입력해주세요."
+                android:hint="@string/notice_add_content"
                 android:textSize="18sp" />
         </LinearLayout>
 

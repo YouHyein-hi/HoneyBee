@@ -10,10 +10,10 @@
     >
 
     <TextView
-        android:fontFamily="@font/pretendardbold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="겔러리 로딩중···"
+        android:fontFamily="@font/pretendardbold"
+        android:text="@string/gallery_text"
         android:textColor="@color/black"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"

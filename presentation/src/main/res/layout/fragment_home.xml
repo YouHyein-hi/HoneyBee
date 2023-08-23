@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:fontFamily="@font/pretendardextrabold"
-            android:shadowColor="@color/shadow2_orange"
+            android:shadowColor="@color/bottom_Sheet_Orange"
             android:shadowDx="3"
             android:shadowDy="3"
             android:shadowRadius="5"
@@ -49,7 +49,7 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout1"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -64,14 +64,19 @@
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="15dp"
             android:layout_weight="0"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cardList_component"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/roundsquare_white"
@@ -117,10 +122,12 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/home_card_recyclerview"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="0dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="15dp"
+                    app:layout_constraintBottom_toTopOf="@+id/view6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view5"
@@ -132,12 +139,10 @@
                     android:id="@+id/view6"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/sub_button3_white_gray"
                     app:layout_constraintBottom_toTopOf="@+id/textView7"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_card_recyclerview" />
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -153,12 +158,12 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
-                    android:visibility="invisible"
-                    android:textSize="20dp"
                     android:id="@+id/empty_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="카드를 추가해주세요!"
+                    android:textSize="20dp"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="@+id/home_card_recyclerview"
                     app:layout_constraintEnd_toEndOf="@+id/home_card_recyclerview"
                     app:layout_constraintStart_toStartOf="@+id/home_card_recyclerview"
@@ -169,19 +174,23 @@
 
         <LinearLayout
             android:id="@+id/linearLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_marginBottom="15dp"
             android:layout_weight="2.8"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:weightSum="2">
+            android:weightSum="2"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/noticeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/roundsquare_white"
                 android:gravity="left|center"
@@ -192,11 +201,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="center"
                     android:text="@string/home_list_title"
                     android:textColor="@color/fontColor_black"
                     android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@+id/view10"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -205,25 +216,24 @@
                     android:id="@+id/view10"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:background="@color/sub_button3_white_gray"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView29" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                 <ImageView
                     android:id="@+id/history_btn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view9"
+                    app:layout_constraintTop_toBottomOf="@+id/view10"
                     app:srcCompat="@drawable/icon_list" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout5"
@@ -232,10 +242,10 @@
                 android:gravity="center|left"
                 android:orientation="vertical" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_add_gallery"
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/roundsquare_white"
                 android:gravity="right|center"
@@ -246,11 +256,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="center"
                     android:text="@string/home_add_title"
                     android:textColor="@color/fontColor_black"
                     android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@+id/view11"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -259,42 +271,44 @@
                     android:id="@+id/view11"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:background="@color/sub_button3_white_gray"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView26" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
                 <ImageView
                     android:id="@+id/add_btn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view7"
+                    app:layout_constraintTop_toBottomOf="@+id/view11"
                     app:srcCompat="@drawable/icon_add" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout7"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="30dp"
             android:layout_weight="3.5"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/notice_btn"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="10dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/roundsquare_white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout19">
@@ -336,7 +350,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,6 +31,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val ALL_PERMISSIONS_CODE = 123
 
     override fun initData() {
+        nextActivity()
+
         var getLogin = viewModel.getLoginData()
         if(getLogin.id != null){
             nextActivity()

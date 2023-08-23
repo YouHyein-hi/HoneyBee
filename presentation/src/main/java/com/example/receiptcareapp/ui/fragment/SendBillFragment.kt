@@ -33,10 +33,12 @@ import com.example.receiptcareapp.databinding.FragmentSendBillBinding
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.ui.adapter.StoreSpinner
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
+import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.net.SocketTimeoutException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -135,6 +137,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     }
                 }
             })
+
             editTxtPrice.setOnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
                     if (editTxtPrice.text.contains(",")) {
@@ -199,6 +202,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
     override fun initObserver() {
         viewModel.loading.observe(viewLifecycleOwner){
+            Log.e("TAG", "initObserver: $it", )
             binding.layoutLoadingProgress.root.isVisible = it
         }
 
@@ -215,8 +219,8 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
         //TODO 비었을경우에 대처, 카드리스트가 비었을때 홈으로 등등
         viewModel.cardList.observe(viewLifecycleOwner){
-            it.body?.forEach { cardDataList.add(it) }
-            binding.spinner.adapter = SpinnerAdapter(requireContext(), ArrayList<CardSpinnerData>(cardDataList))
+            it?.body?.forEach { cardDataList.add(it) }
+            binding.spinnerCard.adapter = SpinnerAdapter(requireContext(), ArrayList<CardSpinnerData>(cardDataList))
         }
 
         viewModel.storeList.observe(viewLifecycleOwner){response ->
@@ -229,7 +233,11 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
         // Err관리
         viewModel.fetchState.observe(this) {
+            when(it.second){
+                FetchState.SOCKET_TIMEOUT_EXCEPTION -> findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+            }
             showShortToast(FetchStateHandler(it))
+
         }
     }
     /** Fragment 뒤로가기 **/
@@ -253,8 +261,8 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         viewModel.getServerCardData()
         Log.e("TAG", "getSpinner: ${cardDataList}", )
         //TODO 이부분 빼도 오류없는지 보고 빼기
-        binding.spinner.adapter = SpinnerAdapter(requireContext(), arrayListOf())
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinnerCard.adapter = SpinnerAdapter(requireContext(), arrayListOf())
+        binding.spinnerCard.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedCardData = cardDataList[position]
                 cardName = selectedCardData.name

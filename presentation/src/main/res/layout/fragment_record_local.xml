@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:layout_marginTop="15dp"
-        android:background="@drawable/btn_general_orange"
+        android:background="@drawable/box_yellow"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="10"

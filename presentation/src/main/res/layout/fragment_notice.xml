@@ -5,7 +5,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/main_background_white"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,6 +39,7 @@
         </LinearLayout>
 
         <include
+            android:visibility="invisible"
             android:id="@+id/layoutLoadingProgress"
             layout="@layout/progressbar_loading"
             bind:layout_constraintBottom_toBottomOf="parent"
@@ -51,7 +54,7 @@
             android:visibility="invisible"
             android:gravity="center"
             android:text="@string/notice_empty_txt"
-            android:textColor="@color/black"
+            android:textColor="@color/main_font_black"
             android:textSize="20dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

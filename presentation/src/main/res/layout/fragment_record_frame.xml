@@ -66,7 +66,7 @@
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/base_component"></FrameLayout>
+            app:layout_constraintTop_toBottomOf="@+id/base_component"/>
 
         <include
             android:elevation="10dp"

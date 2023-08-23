@@ -60,8 +60,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/pretendardbold"
-                android:textColor="@color/gray"
-                android:textSize="16sp" />
+                android:textColor="@color/sub_font1_gray"
+                android:textSize="16sp"
+                android:text="날짜" />
 
             <TextView
                 android:id="@+id/cardName"
@@ -70,7 +71,8 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/pretendardbold"
                 android:gravity="center"
-                android:textColor="@color/gray" />
+                android:textColor="@color/sub_font1_gray"
+                android:text="카드 이름"/>
 
             <TextView
                 android:id="@+id/storeName"
@@ -80,7 +82,8 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/pretendardbold"
                 android:gravity="center"
-                android:textColor="@color/gray" />
+                android:textColor="@color/sub_font1_gray"
+                android:text="가게 이름"/>
         </LinearLayout>
 
         <LinearLayout
@@ -95,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardbold"
                 android:gravity="left"
-                android:textColor="@color/black"
+                android:textColor="@color/main_font_black"
                 android:textSize="30dp" />
 
             <TextView
@@ -106,7 +109,7 @@
                 android:gravity="bottom"
                 android:paddingLeft="5dp"
                 android:text="@string/record__price"
-                android:textColor="@color/gray"
+                android:textColor="@color/sub_font2_gray"
                 android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>

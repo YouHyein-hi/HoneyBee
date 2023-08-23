@@ -56,7 +56,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="@color/gray_line"
+        android:background="@color/stork_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

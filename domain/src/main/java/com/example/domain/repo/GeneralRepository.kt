@@ -10,6 +10,7 @@ import com.example.domain.model.send.DomainSendData
 interface GeneralRepository {
     suspend fun deleteDataRepository(id: Long): ServerUidData
     suspend fun getDataListRepository(): ServerBillData
+    suspend fun getStoreListRepository(): ServerStoreData
     suspend fun getPictureDataUseCaseRepository(uid:String): ServerPictureData
     suspend fun insertDataRepository(domainSendData: DomainSendData): ServerUidData
     suspend fun updateDataUseCaseRepository(domainResendData: DomainUpadateData): ServerUidData

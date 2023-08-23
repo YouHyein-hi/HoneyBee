@@ -3,26 +3,16 @@ package com.example.receiptcareapp.viewModel.dialogViewModel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.domain.model.receive.DomainServerResponse
-import com.example.domain.model.receive.ServerResponseData
-import com.example.domain.model.send.AppSendCardData
-import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.card.InsertCardUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import com.example.receiptcareapp.util.ResponseState
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
-import java.net.SocketTimeoutException
 import java.text.DecimalFormat
 import javax.inject.Inject
 
 @HiltViewModel
-class CardAddViewModel @Inject constructor(
-    private val insertCardUseCase: InsertCardUseCase,
-    private val getCardListUseCase: GetCardListUseCase,
-) : BaseViewModel() {
+class CardAddViewModel @Inject constructor() : BaseViewModel() {
 
     init {
         Log.e("TAG", "CardAddBottomViewModel")

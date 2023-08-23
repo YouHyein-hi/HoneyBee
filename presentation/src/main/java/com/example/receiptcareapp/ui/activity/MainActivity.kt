@@ -1,17 +1,13 @@
 package com.example.receiptcareapp.ui.activity
 
 import android.content.Context
-import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.viewModels
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityMainBinding
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import dagger.hilt.android.AndroidEntryPoint
 

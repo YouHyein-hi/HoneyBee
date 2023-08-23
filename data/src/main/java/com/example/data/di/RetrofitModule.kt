@@ -23,15 +23,6 @@ object RetrofitModule {
 
     var gson = GsonBuilder().setLenient().create()
 
-
-//    @Qualifier
-//    @Retention(AnnotationRetention.BINARY)
-//    annotation class SendCard
-//
-//    @Qualifier
-//    @Retention(AnnotationRetention.BINARY)
-//    annotation class Api
-
     @Singleton
     @Provides
     fun provideSendRetrofit():Retrofit{
@@ -44,10 +35,6 @@ object RetrofitModule {
             .client(okHttpClient)
             .build()
     }
-
-
-
-
 
     private val okHttpClient = OkHttpClient.Builder().
     addInterceptor(HttpLoggingInterceptor().apply {

@@ -1,9 +1,7 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel.notice
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.receive.ServerNoticeData
-import com.example.domain.model.send.DomainGetNoticeListData
 import com.example.domain.usecase.notice.GetNoticeListUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

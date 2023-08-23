@@ -18,10 +18,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DataSourceModule {
 
-//    @Singleton
-//    @Provides
-//    fun provideDataSourceReceiveData(retrofit: Retrofit):RetrofitSource = RetrofitSourceImpl(retrofit)
-
     @Singleton
     @Provides
     fun provideCardDataSource(retrofit: Retrofit):CardDataSource = CardDataSourceImpl(retrofit)

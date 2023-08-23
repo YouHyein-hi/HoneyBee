@@ -2,7 +2,6 @@ package com.example.data.repoImpl
 
 import android.graphics.BitmapFactory
 import android.util.Base64
-import android.util.Log
 import com.example.data.remote.dataSource.GeneralDataSource
 import com.example.domain.model.receive.*
 import com.example.domain.model.send.DomainSendData
@@ -10,6 +9,7 @@ import com.example.domain.repo.GeneralRepository
 import com.example.domain.util.changeAmount
 import com.example.domain.util.changeDate
 import toServerBillData
+import toServerStoreData
 import toUidServerResponseData
 import javax.inject.Inject
 
@@ -25,13 +25,17 @@ class GeneralRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDataListRepository(): ServerBillData {
-        val result = generalDataSource.receiveDataSource().toServerBillData()
+        val result = generalDataSource.getBillListDataSource().toServerBillData()
         val newList = result.body?.map { it.copy(date = changeDate(it.date), storeAmount = changeAmount(it.storeAmount)) }
         return ServerBillData(result.status, result.message, newList)
     }
 
+    override suspend fun getStoreListRepository(): ServerStoreData {
+        return generalDataSource.getStoreListDataSource().toServerStoreData()
+    }
+
     override suspend fun getPictureDataUseCaseRepository(uid: String): ServerPictureData {
-        val response = generalDataSource.receivePictureDataSource(uid)
+        val response = generalDataSource.getPictureDataSource(uid)
         val byteData = response.body
         val decode = Base64.decode(byteData, Base64.DEFAULT)
         return ServerPictureData(status = response.status, message = response.message, picture = BitmapFactory.decodeByteArray(decode, 0, decode.size))

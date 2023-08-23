@@ -19,7 +19,6 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getCardListUseCase: GetCardListUseCase,
     private val getNoticeListUseCase: GetNoticeListUseCase,
-    private val insertCardUseCase: InsertCardUseCase
 ) : BaseViewModel() {
 
     init {

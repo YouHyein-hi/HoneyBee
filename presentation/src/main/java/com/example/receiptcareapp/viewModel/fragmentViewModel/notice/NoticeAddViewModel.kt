@@ -36,8 +36,4 @@ class NoticeAddViewModel @Inject constructor(
             }
         }
     }
-
-    fun responseUpdate(){
-
-    }
 }

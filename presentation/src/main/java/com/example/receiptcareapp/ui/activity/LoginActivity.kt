@@ -1,36 +1,24 @@
 package com.example.receiptcareapp.ui.activity
 
-import android.app.AlertDialog
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.audiofx.BassBoost
-import android.net.Uri
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
-import android.provider.Settings
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
-import com.example.receiptcareapp.State.ConnectedState
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityLoginBinding
 import com.example.receiptcareapp.dto.LoginData
 import com.example.receiptcareapp.ui.adapter.PermissionHandler
-import com.example.receiptcareapp.ui.dialog.PermissiondCheck_Dialog
 import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
-import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
-import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-//class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
 class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
     private val viewModel: LoginActivityViewModel by viewModels()
     private lateinit var permissionHandler: PermissionHandler
@@ -43,7 +31,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val ALL_PERMISSIONS_CODE = 123
 
     override fun initData() {
-//        nextActivity()
         var getLogin = viewModel.getLoginData()
         if(getLogin.id != null){
             nextActivity()
@@ -56,9 +43,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         else{
             showShortToast("권한 있음")
         }
-
         permissionHandler = PermissionHandler(this@LoginActivity)
-
     }
 
     override fun initUI() {
@@ -73,8 +58,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             loginData.pw = binding.loginPassword.text.toString()
             downKeyBoard()
             with(loginData){
-                if(id.isNullOrEmpty()) showShortToast("아이디를 입력해주세요.")
-                else if(pw.isNullOrEmpty()) showShortToast("비밀번호를 입력해주세요.")
+                if(id.isNullOrEmpty())
+                    showShortToast("아이디를 입력해주세요.")
+                else if(pw.isNullOrEmpty())
+                    showShortToast("비밀번호를 입력해주세요.")
                 else viewModel.requestLogin(
                     binding.loginEmail.text.toString().replace(" ",""),
                     binding.loginPassword.text.toString().replace(" ","")
@@ -92,13 +79,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         //응답 성공 시
         viewModel.response.observe(this) { response ->
             Log.e("TAG", "initObserver: $response")
-            when (response) {
-                ResponseState.SUCCESS -> {
+            when (response.status) {
+                "200" -> {
+                    viewModel.putLoginData(loginData)
                     nextActivity()
                 }
-                ResponseState.FALSE -> {
-                    showShortToast("로그인 실패")
-                }
+                else -> {showShortToast("로그인 실패")}
             }
         }
 

@@ -5,5 +5,5 @@ package com.example.receiptcareapp.util
  * pureum
  */
 enum class RoomState {
-    DELETE_SUCCESS, UPDATE_SUCCESS
+    DELETE_SUCCESS, UPDATE_SUCCESS, FALSE
 }

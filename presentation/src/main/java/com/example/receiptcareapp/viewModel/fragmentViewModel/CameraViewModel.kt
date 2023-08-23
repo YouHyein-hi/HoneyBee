@@ -20,7 +20,6 @@ class CameraViewModel : ViewModel(){
     val photoUri: LiveData<Uri> = _photoUri
 
     fun dispatchTakePictureIntentExViewModel(activity : Activity): Intent {
-        Log.e("TAG", "dispatchTakePictureIntentExViewModel: CameraViewModel", )
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val uri: Uri? = createImageUri(activity, "JPEG_${timeStamp}_", "image/jpeg")
@@ -29,7 +28,6 @@ class CameraViewModel : ViewModel(){
     }
 
     fun createImageUri(activity : Activity, filename:String, mimeType:String): Uri? {
-        Log.e("TAG", "createImageUri: ", )
         val values = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, filename)
             put(MediaStore.Images.Media.MIME_TYPE, mimeType)

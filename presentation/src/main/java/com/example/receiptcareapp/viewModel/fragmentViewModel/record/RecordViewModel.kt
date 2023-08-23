@@ -1,15 +1,11 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel.record
 
-import android.app.Activity
-import android.graphics.Bitmap
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.ServerBillData
+import com.example.domain.model.receive.bill.ServerBillData
 import com.example.domain.usecase.bill.GetDataListUseCase
-import com.example.domain.usecase.bill.GetPictureDataUseCase
 import com.example.domain.usecase.room.GetDataListRoomUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +13,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
-import java.io.File
-import java.io.FileOutputStream
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
@@ -46,7 +40,6 @@ class RecordViewModel @Inject constructor(
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
             val gap = getRoomDataListUseCase()
-            Log.e("TAG", "receiveAllRoomData: $gap")
             _roomData.postValue(gap)
             isLoading.postValue(false)
         }

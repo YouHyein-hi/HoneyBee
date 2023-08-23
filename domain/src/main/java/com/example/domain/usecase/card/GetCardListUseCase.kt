@@ -1,6 +1,6 @@
 package com.example.domain.usecase.card
 
-import com.example.domain.model.receive.ServerCardData
+import com.example.domain.model.receive.card.ServerCardData
 import com.example.domain.repo.CardRepository
 
 /**
@@ -10,7 +10,7 @@ import com.example.domain.repo.CardRepository
 class GetCardListUseCase(
     private val cardRepository: CardRepository
 ) {
-    suspend operator fun invoke() : ServerCardData{
+    suspend operator fun invoke() : ServerCardData {
         return cardRepository.getCardListRepository()
     }
 }

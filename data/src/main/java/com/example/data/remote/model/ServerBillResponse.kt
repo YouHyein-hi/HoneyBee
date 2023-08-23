@@ -1,7 +1,6 @@
 package com.example.data.remote.model
 
-import com.example.domain.model.receive.BillData
-import java.time.LocalDateTime
+import com.example.domain.model.receive.bill.BillData
 
 /**
  * 2023-08-20
@@ -16,4 +15,4 @@ data class ServerBillResponse(
     var billCheck: Boolean
 )
 
-fun ServerBillResponse.toBillData():BillData = BillData(uid = billId, cardName = cardName, storeAmount = amount, date = billSubmitTime.toString(), storeName = storeName, billCheck= billCheck)
+fun ServerBillResponse.toBillData(): BillData = BillData(uid = billId, cardName = cardName, storeAmount = amount, date = billSubmitTime.toString(), storeName = storeName, billCheck= billCheck)

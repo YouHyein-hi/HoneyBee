@@ -1,8 +1,6 @@
 package com.example.domain.usecase.bill
 
-import android.graphics.Bitmap
-import com.example.domain.model.receive.ServerPictureData
-import com.example.domain.model.receive.ServerResponseData
+import com.example.domain.model.receive.bill.ServerPictureData
 import com.example.domain.repo.GeneralRepository
 
 /**

@@ -3,9 +3,7 @@ package com.example.receiptcareapp.base
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
 import androidx.lifecycle.*
-import com.bumptech.glide.manager.Lifecycle
 import com.example.receiptcareapp.util.FetchState
-import com.example.receiptcareapp.util.RoomState
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.net.SocketException
@@ -27,13 +25,13 @@ abstract class BaseViewModel : ViewModel(){
     private var _fetchState = MutableLiveData<Pair<Throwable, FetchState>>()
     val fetchState : LiveData<Pair<Throwable, FetchState>> get() = _fetchState
 
-    protected val waitTime = 8000L
+    protected val waitTime = 4000L
 
     private val job = SupervisorJob()
 
     protected val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         isLoading.postValue(false)
-        job.cancel() // 여기에 coroutineContext를 붙이면 이상하게 되던데 왜?
+        coroutineContext.job.cancel() // 여기에 coroutineContext를 붙여야 정상 취소되는데 왜그럴까?
         throwable.printStackTrace()
 
         Log.e("TAG", "base err : $throwable", )

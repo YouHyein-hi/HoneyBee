@@ -1,4 +1,4 @@
-package com.example.domain.model.receive
+package com.example.domain.model.receive.card
 
 
 data class CardSpinnerData(

@@ -9,32 +9,26 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.ServerCardData
-import com.example.domain.model.receive.DomainUpadateData
-import com.example.domain.model.receive.ServerCardSpinnerData
+import com.example.domain.model.receive.card.DomainUpadateData
+import com.example.domain.model.receive.card.ServerCardSpinnerData
 import com.example.domain.model.receive.ServerUidData
-import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
-import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.bill.DeleteDataUseCase
 import com.example.domain.usecase.bill.GetPictureDataUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.bill.UpdateDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.DeleteDataRoomUseCase
-import com.example.domain.usecase.room.InsertDataRoomUseCase
 import com.example.domain.usecase.room.UpdateRoomData
 import com.example.domain.util.changeDate
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.dto.LocalBillData
-import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.util.ResponseState
-import com.example.receiptcareapp.util.RoomState
+import com.example.receiptcareapp.util.UriToBitmap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
@@ -77,7 +71,6 @@ class RecordShowViewModel @Inject constructor(
 
     private var _picture = MutableLiveData<Bitmap?>()
     val picture : LiveData<Bitmap?> get(){
-        Log.e("TAG", "@@@@picture ${_picture.value}: ", )
         return _picture
     }
 
@@ -135,7 +128,7 @@ class RecordShowViewModel @Inject constructor(
                                     "amount",
                                     sendData.amount.replace(",", "")
                                 ),
-                                picture = compressEncodePicture(sendData.picture)
+                                picture = UriToBitmap(application).compressEncodePicture(sendData.picture)
                             )
                         )
                     )
@@ -166,8 +159,7 @@ class RecordShowViewModel @Inject constructor(
 
     fun upDataRoomData(){
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch{
-            Log.e("TAG", "upDataRoomData: $savedLocalData", )
-            val gap = updateRoomData(
+            updateRoomData(
                 DomainRoomData(
                     uid = savedLocalData.uid,
                     cardName = savedLocalData.cardName,
@@ -177,12 +169,9 @@ class RecordShowViewModel @Inject constructor(
                     file = savedLocalData.picture.toString()
                 )
             )
-            Log.e("TAG", "upDataRoomData: $gap", )
-//            _roomState.postValue(RoomState.UPDATE_SUCCESS)
         }
     }
 
-    //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
         modelScope.launch {
             isLoading.postValue(true)
@@ -195,7 +184,6 @@ class RecordShowViewModel @Inject constructor(
 
     fun getServerPictureData(uid:String){
         modelScope.launch {
-            Log.e("TAG", "getServerPictureData: ", )
             withTimeoutOrNull(waitTime) {
                 loading.postValue(true)
                 _picture.postValue(getPictureDataUseCase(uid).picture)
@@ -211,82 +199,11 @@ class RecordShowViewModel @Inject constructor(
         )
     }
 
-    fun splitColon(text : String): List<String> {
-        return text.split(" : ")
-    }
-
     fun dateReplace(date : String): List<String> {
         var gap = date
         if(date.contains("T"))
             gap = changeDate(gap)
         return gap.split(".","  ")
-    }
-
-    fun compressEncodePicture(uri:Uri): MultipartBody.Part{
-        val file = File(absolutelyPath(uri, application))
-        val compressFile = compressImageFile(file)
-        val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        return MultipartBody.Part.createFormData("file", file.name, requestFile)
-    }
-
-    fun compressImageFile(file: File): File {
-        val options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true
-
-        BitmapFactory.decodeFile(file.absolutePath, options)
-
-        val resize = if(file.length() > 1000000) 5 else 1
-
-        options.inJustDecodeBounds = false
-        options.inSampleSize = resize
-
-        val bitmap = BitmapFactory.decodeFile(file.absolutePath, options)
-
-        val rotatedBitmap = rotateImageIfRequired(bitmap, file.absolutePath)
-
-        val outputFile = File.createTempFile("compressed_", ".jpg")
-        try {
-            val outputStream = FileOutputStream(outputFile)
-            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            outputStream.flush()
-            outputStream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return outputFile
-    }
-
-    fun rotateImageIfRequired(bitmap: Bitmap, imagePath: String): Bitmap {
-        val exif = ExifInterface(imagePath)
-        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-
-        return when (orientation) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90f)
-            ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180f)
-            ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270f)
-            else -> bitmap
-        }
-    }
-
-    fun rotateBitmap(bitmap: Bitmap, degree: Float): Bitmap {
-        val matrix = Matrix()
-        matrix.postRotate(degree)
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-    }
-
-    //절대경로로 변환
-    fun absolutelyPath(path: Uri?, context: Context?): String {
-        Log.e("TAG", "absolutelyPath: $path", )
-        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        val c: Cursor? = context?.contentResolver?.query(path!!, proj, null, null, null)
-        val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        c?.moveToFirst()
-        val result = c?.getString(index!!)
-        Log.e("TAG", "absolutelyPath proj: $proj", )
-        Log.e("TAG", "absolutelyPath c: $c", )
-        Log.e("TAG", "absolutelyPath index: $index", )
-        Log.e("TAG", "absolutelyPath result: $result", )
-        return result!!
     }
 
     fun CommaReplaceSpace(text : String): String {

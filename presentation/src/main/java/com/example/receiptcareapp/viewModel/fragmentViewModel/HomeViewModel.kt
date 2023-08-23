@@ -3,9 +3,8 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.domain.model.receive.ServerCardData
+import com.example.domain.model.receive.card.ServerCardData
 import com.example.domain.usecase.card.GetCardListUseCase
-import com.example.domain.usecase.card.InsertCardUseCase
 import com.example.domain.usecase.notice.GetNoticeListUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.util.ResponseState

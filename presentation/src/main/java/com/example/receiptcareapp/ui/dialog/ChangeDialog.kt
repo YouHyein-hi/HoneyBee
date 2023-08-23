@@ -6,16 +6,15 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.UpdateData
-import com.example.domain.model.receive.CardData
-import com.example.domain.model.receive.CardSpinnerData
+import com.example.domain.model.receive.card.CardSpinnerData
 import com.example.domain.model.receive.DateData
-import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
 import com.example.receiptcareapp.dto.LocalBillData
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
+import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
@@ -30,9 +29,6 @@ class ChangeDialog(
     private lateinit var viewModelData: RecyclerData
     private var cardName = ""
     private var cardId = 0
-    private var settingYear = 0
-    private var settingMonth = 0
-    private var settingDay = 0
     private lateinit var dateData : DateData
     private var newDate = listOf<String>()
     private var cardDataList: MutableList<CardSpinnerData> = mutableListOf()
@@ -53,10 +49,6 @@ class ChangeDialog(
 
     override fun initUI() {
         getSpinner()
-
-        // 수정 전 로컬 데이터 화면에 띄우기
-        // Spinner은 아직 설정 안함
-        binding.changeCardspinner
         binding.changeBtnStore.setText(viewModelData.storeName)
         binding.changeBtnPrice.setText(viewModelData.amount)
         try {
@@ -176,14 +168,17 @@ class ChangeDialog(
     override fun initObserver() {
 
         viewModel.cardList.observe(viewLifecycleOwner){
+            if(it?.body?.isEmpty()==true) dismiss()
             it?.body?.forEach { cardDataList.add(it) }
-            val cardArrayList = ArrayList<CardSpinnerData>(cardDataList)
-            Log.e("TAG", "cardList.observe : ${cardDataList}", )
+            val cardArrayList = ArrayList(cardDataList)
             binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), cardArrayList)
         }
 
         // Err관리
         viewModel.fetchState.observe(this) {
+            when (it.second) {
+                FetchState.SOCKET_TIMEOUT_EXCEPTION -> dismiss()
+            }
             showShortToast(FetchStateHandler(it))
         }
     }

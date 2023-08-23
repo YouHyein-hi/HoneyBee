@@ -1,7 +1,7 @@
 package com.example.receiptcareapp.ui.fragment.notice
 
 import androidx.fragment.app.activityViewModels
-import com.example.domain.model.receive.NoticeData
+import com.example.domain.model.receive.notice.NoticeData
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentNoticeShowBinding
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel

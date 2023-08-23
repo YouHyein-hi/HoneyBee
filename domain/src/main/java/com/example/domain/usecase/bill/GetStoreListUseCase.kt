@@ -1,6 +1,6 @@
 package com.example.domain.usecase.bill
 
-import com.example.domain.model.receive.ServerStoreData
+import com.example.domain.model.receive.bill.ServerStoreData
 import com.example.domain.repo.GeneralRepository
 
 /**

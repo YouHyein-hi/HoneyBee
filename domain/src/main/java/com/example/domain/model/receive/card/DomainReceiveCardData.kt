@@ -1,4 +1,4 @@
-package com.example.domain.model.receive
+package com.example.domain.model.receive.card
 
 /**
  * 2023-03-30

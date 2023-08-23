@@ -4,8 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.data.manager.PreferenceManager
-import com.example.domain.model.receive.NoticeData
-import com.example.domain.model.send.*
+import com.example.domain.model.receive.notice.NoticeData
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.dto.RecyclerData
 import dagger.hilt.android.lifecycle.HiltViewModel

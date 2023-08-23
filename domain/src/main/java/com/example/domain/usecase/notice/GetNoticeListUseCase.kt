@@ -1,6 +1,6 @@
 package com.example.domain.usecase.notice
 
-import com.example.domain.model.receive.ServerNoticeData
+import com.example.domain.model.receive.notice.ServerNoticeData
 import com.example.domain.repo.NoticeRepository
 
 /**

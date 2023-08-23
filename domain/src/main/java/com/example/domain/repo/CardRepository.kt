@@ -1,9 +1,8 @@
 package com.example.domain.repo
 
-import com.example.domain.model.receive.ServerCardData
-import com.example.domain.model.receive.ServerCardSpinnerData
+import com.example.domain.model.receive.card.ServerCardData
+import com.example.domain.model.receive.card.ServerCardSpinnerData
 import com.example.domain.model.receive.ServerResponseData
-import com.example.domain.model.receive.ServerUidData
 import com.example.domain.model.send.DomainSendCardData
 
 /**

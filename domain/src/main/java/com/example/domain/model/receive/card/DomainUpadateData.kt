@@ -1,4 +1,4 @@
-package com.example.domain.model.receive
+package com.example.domain.model.receive.card
 
 import okhttp3.MultipartBody
 import java.time.LocalDateTime

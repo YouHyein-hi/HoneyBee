@@ -119,40 +119,57 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
         }
     }
 
-
-    private fun setAlarm() {
-        val intervalDays = listOf(-5, -3, -1, 0, 1, 3, 5) // -5, -3, -1, 0, +1, +3, +5일 간격 리스트
-        val targetDate = Calendar.getInstance().apply {
-            // 여기에 원하는 날짜 설정
-            set(Calendar.YEAR, get(Calendar.YEAR))
-            set(Calendar.MONTH, get(Calendar.MONTH)) // 0부터 시작하므로 7은 8월을 나타냄
-            set(Calendar.DAY_OF_MONTH, 21)
+/*    private fun setAlarm() {
+        val targetTime = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
             set(Calendar.MINUTE, viewModel.getTime().minute!!)
         }
 
-        for (intervalDay in intervalDays) {
-            val targetTime = Calendar.getInstance().apply {
-                timeInMillis = System.currentTimeMillis()
-                timeInMillis = targetDate.timeInMillis // 설정한 날짜로 변경
-                add(Calendar.DAY_OF_MONTH, intervalDay)
-            }
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            targetTime.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
+    }*/
 
-            // 정확한 시간에 알람 예약
-            alarmManager.setExact(
-                AlarmManager.RTC_WAKEUP,
-                targetTime.timeInMillis,
-                pendingIntent
-            )
+    private fun setAlarm() {
 
-            // 다음 알람을 위해 intervalDay만큼 시간 증가
-            targetDate.add(Calendar.DAY_OF_MONTH, intervalDay)
+        val targetTime = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
+            set(Calendar.MINUTE, viewModel.getTime().minute!!)
+            set(Calendar.SECOND, 0) // 초를 0으로 설정하여 정확한 시간에 알림 울리도록 함
         }
+
+        // 현재 시간보다 이전이면 다음날로 설정
+        if (targetTime.before(Calendar.getInstance())) {
+            targetTime.add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        // 첫 번째 알람 설정 (정확한 시간에 알림)
+        alarmManager.setExact(
+            AlarmManager.RTC_WAKEUP,
+            targetTime.timeInMillis,
+            pendingIntent
+        )
+
+        // 다음 날 같은 시간에 알람 설정 (매일 반복)
+        targetTime.add(Calendar.DAY_OF_YEAR, 1)
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            targetTime.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
     }
 
     private fun cancelAlarm() {
         alarmManager.cancel(pendingIntent)
     }
 
+    private fun updatePushTimeText() {
+    }
 
 }

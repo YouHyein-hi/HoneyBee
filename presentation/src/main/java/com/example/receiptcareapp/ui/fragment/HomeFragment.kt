@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ import com.example.receiptcareapp.ui.dialog.AddDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import com.example.receiptcareapp.ui.dialog.PermissiondCheck_Dialog
+import com.example.receiptcareapp.util.FetchState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -98,10 +100,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         viewModel.cardList.observe(viewLifecycleOwner) { dataList ->
-            if (dataList?.body!!.isEmpty()) { binding.emptyText.visibility = View.VISIBLE }
+            if (dataList?.body!!.isEmpty()) { emptyTextControl(true) }
             else {
                 adapter.dataList = dataList.body!!.toMutableList()
-                binding.emptyText.visibility = View.INVISIBLE
+                emptyTextControl(false)
             }
         }
 
@@ -111,8 +113,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         // Err관리
         viewModel.fetchState.observe(this) {
+            when(it.second){
+                FetchState.SOCKET_TIMEOUT_EXCEPTION -> { emptyTextControl(true, "서버 연결 실패..") }
+            }
             showShortToast(FetchStateHandler(it))
         }
+    }
+
+    private fun emptyTextControl(state: Boolean, massage: String = "카드를 추가해주세요!"){
+        binding.emptyText.isVisible = state
+        binding.emptyText.text = massage
     }
 
     override fun onDetach() {

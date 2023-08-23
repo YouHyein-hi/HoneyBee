@@ -159,6 +159,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <include
+        android:visibility="invisible"
         android:elevation="10dp"
         android:id="@+id/layout_loading_progress"
         layout="@layout/progressbar_loading"

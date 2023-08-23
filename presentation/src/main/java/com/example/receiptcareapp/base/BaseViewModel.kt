@@ -27,7 +27,7 @@ abstract class BaseViewModel : ViewModel(){
     private var _fetchState = MutableLiveData<Pair<Throwable, FetchState>>()
     val fetchState : LiveData<Pair<Throwable, FetchState>> get() = _fetchState
 
-    protected val waitTime = 8000L
+    protected val waitTime = 4000L
 
     private val job = SupervisorJob()
 

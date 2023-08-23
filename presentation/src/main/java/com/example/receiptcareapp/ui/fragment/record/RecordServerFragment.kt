@@ -11,6 +11,7 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordServerBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.adapter.RecordServerAdapter
+import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
@@ -66,23 +67,26 @@ class RecordServerFragment(
         viewModel.billList.observe(viewLifecycleOwner) {
             recordServerAdapter.dataList.clear()
             recordServerAdapter.dataList = it?.body?.toMutableList()!!
-            setTextAndVisible("데이터가 비었어요!", recordServerAdapter.dataList.isEmpty())
+            emptyTextControl(recordServerAdapter.dataList.isEmpty(),"데이터가 비었어요!", )
         }
 
         // Err관리
         viewModel.fetchState.observe(this) {
+            when(it.second){
+                FetchState.SOCKET_TIMEOUT_EXCEPTION -> {emptyTextControl(true, "서버 연결 실패..")}
+            }
             showShortToast(FetchStateHandler(it))
         }
+    }
+
+    private fun emptyTextControl(state: Boolean, massage: String = "데이터가 비었어요!"){
+        binding.emptyText.isVisible = state
+        binding.emptyText.text = massage
     }
 
     private fun initServerRecyclerView() {
         binding.mainRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.mainRecycler.adapter = recordServerAdapter
         recordServerAdapter.dataList.clear()
-    }
-
-    fun setTextAndVisible(text: String, state: Boolean) {
-        binding.emptyText.text = text
-        binding.emptyText.isVisible = state
     }
 }

@@ -16,6 +16,7 @@ import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
 import com.example.domain.model.receive.ServerCardData
 import com.example.domain.model.receive.DomainUpadateData
+import com.example.domain.model.receive.ServerCardSpinnerData
 import com.example.domain.model.receive.ServerUidData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
@@ -24,6 +25,7 @@ import com.example.domain.usecase.bill.DeleteDataUseCase
 import com.example.domain.usecase.bill.GetPictureDataUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.bill.UpdateDataUseCase
+import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.DeleteDataRoomUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase
 import com.example.domain.usecase.room.UpdateRoomData
@@ -57,7 +59,7 @@ class RecordShowViewModel @Inject constructor(
     private val getPictureDataUseCase: GetPictureDataUseCase,
     private val deleteDataUseCase: DeleteDataUseCase,
     private val updateDataUseCase: UpdateDataUseCase,
-    private val getCardListUseCase: GetCardListUseCase,
+    private val getCardSpinnerUseCase: GetCardSpinnerUseCase,
     private val insertDataUseCase: InsertDataUseCase,
     private val deleteDataRoomUseCase: DeleteDataRoomUseCase,
     private val updateRoomData: UpdateRoomData
@@ -69,8 +71,8 @@ class RecordShowViewModel @Inject constructor(
     val response : LiveData<Pair<ResponseState,ServerUidData?>> get() = _response
 
     // 서버 카드 전달받은 값 관리
-    private var _cardList = MutableLiveData<ServerCardData?>()
-    val cardList: LiveData<ServerCardData?>
+    private var _cardList = MutableLiveData<ServerCardSpinnerData?>()
+    val cardList: LiveData<ServerCardSpinnerData?>
         get() = _cardList
 
     private var _picture = MutableLiveData<Bitmap?>()
@@ -185,7 +187,7 @@ class RecordShowViewModel @Inject constructor(
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                _cardList.postValue(getCardListUseCase())
+                _cardList.postValue(getCardSpinnerUseCase())
                 isLoading.postValue(false)
             }?:throw SocketTimeoutException()
         }

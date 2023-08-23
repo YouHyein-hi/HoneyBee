@@ -331,7 +331,11 @@ class RecordShowViewModel @Inject constructor(
     }
 
     fun PriceFormat(price : String): String? {
-        return DecimalFormat("#,###").format(price.toInt())
+        if (price.contains(",")) {
+            val newPrice = price.replace(",", "")
+            return DecimalFormat("#,###").format(newPrice.toInt())
+        }
+        else { return DecimalFormat("#,###").format(price.toInt()) }
     }
 
 //    fun getLocalAllBillData() {

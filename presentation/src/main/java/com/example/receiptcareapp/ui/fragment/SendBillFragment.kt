@@ -57,10 +57,12 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         selectedDate = viewModel.dateNow()
 
         dateData = DateData(
-            year = viewModel.dateNow().year,
-            month = viewModel.dateNow().monthValue,
-            day = viewModel.dateNow().dayOfMonth
+            year = todayDate!!.year,
+            month = todayDate!!.monthValue,
+            day = todayDate!!.dayOfMonth
         )
+
+        viewModel.getServerCardData()
     }
 
     override fun initUI() {
@@ -73,8 +75,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
             btnDate.text = "${viewModel.dateNow().format(formatterDate)}"
         }
-        /** Spinner 호출 **/
-        getSpinner()
     }
 
     override fun initListener() {
@@ -105,7 +105,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     .setTextColor(Color.BLACK)
             }
 
-            /** 금액 EidtText , 추가 **/
             btnPrice.setOnEditorActionListener { v, actionId, event ->
                 Log.e("TAG", "btnPrice.setOnEditorActionListener", )
                 var handled = false
@@ -113,6 +112,16 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     btnPrice.setText(viewModel.PriceFormat(btnPrice.text.toString()))
                 }
                 handled
+            }
+
+            btnPrice.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    if (btnPrice.text.contains(",")) {
+                        btnPrice.setText(viewModel.CommaReplaceSpace(btnPrice.text.toString()))
+                        btnPrice.setSelection(btnPrice.text.length)
+                    }
+                }
+                else { btnPrice.setText(viewModel.PriceFormat(btnPrice.text.toString())) }
             }
 
             btnStore.addTextChangedListener(object : TextWatcher {
@@ -133,15 +142,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                     }
                 }
             })
-            btnPrice.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    if (btnPrice.text.contains(",")) {
-                        btnPrice.setText(viewModel.CommaReplaceSpace(btnPrice.text.toString()))
-                        btnPrice.setSelection(btnPrice.text.length)
-                    }
-                }
-                else { btnPrice.setText(viewModel.PriceFormat(btnPrice.text.toString())) }
-            }
 
             /** 완료 Button **/
             completeBtn.setOnClickListener {
@@ -194,6 +194,17 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 findNavController().navigate(R.id.action_showFragment_to_homeFragment)
             }
         }
+
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedCardData = cardDataList[position]
+                cardName = selectedCardData.name
+                cardAmount = selectedCardData.amount
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+
     }
 
     override fun initObserver() {
@@ -228,21 +239,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             showShortToast(FetchStateHandler(it))
         }
     }
-    /** Spinner 관련 **/
-    private fun getSpinner() {
-        viewModel.getServerCardData()
-        Log.e("TAG", "getSpinner: ${cardDataList}", )
-        binding.spinner.adapter = SpinnerAdapter(requireContext(), arrayListOf())
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedCardData = cardDataList[position]
-                cardName = selectedCardData.name
-                cardAmount = selectedCardData.amount
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-        }
-    }
+
     /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {
         super.onAttach(context)

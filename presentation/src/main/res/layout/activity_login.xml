@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendardextrabold"
-            android:text="Honey Bee"
+            android:text="@string/app_name"
             android:textColor="@color/main_font_black"
             android:textSize="55sp"
             android:transitionName="title"
@@ -35,7 +35,7 @@
             android:layout_marginStart="-5dp"
             android:layout_marginBottom="-15dp"
             android:fontFamily="@font/pretendardmedium"
-            android:text="영수증 관리 어플리케이션"
+            android:text="@string/app_text"
             android:textColor="@color/sub_font2_gray"
             app:layout_constraintBottom_toTopOf="@+id/title"
             app:layout_constraintStart_toEndOf="@+id/lottieAnimationView" />
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingRight="5dp"
-                android:text="id"
+                android:text="@string/login_id"
                 android:textSize="15dp" />
 
             <EditText
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="15"
-                android:hint="아이디를 입력해주세요"
+                android:hint="@string/login_id_text"
                 android:inputType="textEmailAddress"
                 android:textSize="13dp" />
 
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="15"
-                android:hint="비밀번호를 입력해주세요."
+                android:hint="@string/login_pw_text"
                 android:textSize="13dp" />
 
         </LinearLayout>
@@ -130,7 +130,7 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/btn_login"
         android:fontFamily="@font/pretendardsemibold"
-        android:text="로 그 인"
+        android:text="@string/login"
         android:textColor="@color/sub_font1_gray"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout"

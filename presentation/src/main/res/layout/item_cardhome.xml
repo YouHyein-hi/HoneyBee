@@ -31,7 +31,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:fontFamily="@font/pretendardsemibold"
-            android:text="나라사랑 카드"
             android:textColor="@color/fontColor_black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

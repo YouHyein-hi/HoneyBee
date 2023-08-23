@@ -30,7 +30,7 @@
                 android:id="@+id/noticeItem_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="공지사항 TEST"
+                android:fontFamily="@font/pretendardsemibold"
                 android:textColor="@color/main_font_black"
                 android:textSize="20dp" />
 
@@ -38,7 +38,7 @@
                 android:id="@+id/noticeItem_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2023.08.31"
+                android:fontFamily="@font/pretendardmedium"
                 android:textColor="@color/sub_font2_gray" />
         </LinearLayout>
 

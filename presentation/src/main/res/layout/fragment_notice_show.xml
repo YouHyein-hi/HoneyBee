@@ -33,7 +33,7 @@
         <include
             android:id="@+id/base_component"
             layout="@layout/base_background_component"
-            bind:title="@{@string/notice_show_title}"
+            bind:title="@{@string/notice_title}"
             />
 
         <LinearLayout
@@ -49,12 +49,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardsemibold"
                 android:text="@{title, default = 제목}"
                 android:textSize="30sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardregular"
                 android:text="@{date, default = 날짜}"/>
 
             <View
@@ -68,13 +70,14 @@
                 />
 
             <TextView
-                android:layout_marginTop="30dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="14sp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@{content, default = 내용}"/>
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/pretendardmedium"
+                android:gravity="center"
+                android:text="@{content, default = 내용}"
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 </layout>

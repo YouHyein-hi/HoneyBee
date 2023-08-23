@@ -52,7 +52,6 @@ class SendBillFragment :
     private var selectedDate: LocalDate? = null
     private lateinit var dateData: DateData
     private lateinit var callback: OnBackPressedCallback
-    private var cardArray = arrayListOf<String>()
     private var storeArray = arrayListOf<String>()
 
 
@@ -194,11 +193,7 @@ class SendBillFragment :
                             showShortToast("보유금액보다 많은 비용입니다.")
                             return@setOnClickListener
                         }
-                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(
-                            dateData.year,
-                            dateData.month,
-                            dateData.month
-                        )
+                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
                         SendCheckBottomSheet(
                             viewModel,
                             BottomSheetData(

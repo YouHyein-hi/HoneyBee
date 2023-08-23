@@ -1,6 +1,7 @@
 package com.example.receiptcareapp.ui.fragment.notice
 
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.domain.model.receive.notice.NoticeData
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentNoticeShowBinding
@@ -27,7 +28,9 @@ class NoticeShowFragment : BaseFragment<FragmentNoticeShowBinding>(
         }
     }
 
-    override fun initListener() {}
+    override fun initListener() {
+        binding.baseComponent.backBtn.setOnClickListener { findNavController().popBackStack() }
+    }
 
     override fun initObserver() {}
 

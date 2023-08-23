@@ -69,9 +69,9 @@ class SendBillViewModel @Inject constructor(
     fun getServerCardData() {
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
-                isLoading.postValue(true)
+                isLoading.value = true
                 _cardList.postValue(getCardListUseCase())
-                isLoading.postValue(false)
+                isLoading.value = false
             }?:throw SocketTimeoutException()
         }
     }
@@ -79,9 +79,9 @@ class SendBillViewModel @Inject constructor(
     fun getServerStoreData(){
         modelScope.launch {
             withTimeoutOrNull(waitTime){
-                isLoading.postValue(true)
+                isLoading.value = true
                 _storeList.postValue(getStoreListUseCase())
-                isLoading.postValue(false)
+                isLoading.value = false
             }?:throw SocketTimeoutException()
         }
     }

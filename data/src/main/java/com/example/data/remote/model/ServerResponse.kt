@@ -6,7 +6,7 @@ import com.example.domain.util.changeDate
  * 2023-08-19
  * pureum
  */
-data class ServerResponse<T>( //
+data class ServerResponse<T>(
     val status: String,
     val message: String,
     val body: T? = null

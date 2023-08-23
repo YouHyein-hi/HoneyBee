@@ -69,6 +69,8 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             month = todayDate!!.monthValue,
             day = todayDate!!.dayOfMonth
         )
+
+        viewModel.getServerCardData()
     }
 
     override fun initUI() {
@@ -81,6 +83,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
             btnDate.text = "${viewModel.dateNow().format(formatterDate)}"
         }
+
     }
 
     override fun initListener() {
@@ -105,6 +108,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 dataDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
                     .setTextColor(Color.BLACK)
             }
+
 
             /** 금액 EidtText , 추가 **/
             editTxtPrice.setOnEditorActionListener { v, actionId, event ->
@@ -210,7 +214,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
 
     override fun initObserver() {
         viewModel.loading.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: $it", )
             binding.layoutLoadingProgress.root.isVisible = it
         }
 

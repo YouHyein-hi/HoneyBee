@@ -61,7 +61,6 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initObserver() {
-
         viewModel.response.observe(viewLifecycleOwner){
             Log.e("TAG", "initObserver: $it", )
             when(it.second?.status){

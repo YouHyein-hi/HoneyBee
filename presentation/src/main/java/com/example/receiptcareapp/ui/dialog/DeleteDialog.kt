@@ -8,6 +8,7 @@ import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogDeleteBinding
 import com.example.receiptcareapp.dto.RecyclerData
+import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
@@ -41,7 +42,6 @@ class DeleteDialog(
             changeBtnNegative.setOnClickListener{
                 dismiss()
             }
-
             changeBtnPositive.setOnClickListener{
                 Log.e("TAG", "initListener: changeBtnPositive 클릭", )
                 if(viewModelData.type == ShowType.SERVER){
@@ -49,16 +49,19 @@ class DeleteDialog(
                     dismiss()
                 }else{
                     viewModel.deleteRoomBillData(viewModelData.date)
+                    findNavController().popBackStack()
                     dismiss()
                 }
             }
-
         }
     }
 
     override fun initObserver() {
         // Err관리
         viewModel.fetchState.observe(this) {
+            when (it.second) {
+                FetchState.SOCKET_TIMEOUT_EXCEPTION -> dismiss()
+            }
             showShortToast(FetchStateHandler(it))
         }
     }

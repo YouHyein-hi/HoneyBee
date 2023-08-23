@@ -285,6 +285,10 @@ class SendBillFragment :
 
         //TODO 비었을경우에 대처, 카드리스트가 비었을때 홈으로 등등
         viewModel.cardList.observe(viewLifecycleOwner) {
+            if(it?.body?.isEmpty() == true){
+                showShortToast("카드 데이터를 추가해주세요!")
+                findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+            }
             it?.body?.forEach { cardDataList.add(it) }
             binding.spinnerCard.adapter =
                 SpinnerAdapter(requireContext(), ArrayList<CardSpinnerData>(cardDataList))
@@ -301,7 +305,7 @@ class SendBillFragment :
         // Err관리
         viewModel.fetchState.observe(this) {
             when (it.second) {
-                FetchState.SOCKET_TIMEOUT_EXCEPTION -> findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                FetchState.SOCKET_TIMEOUT_EXCEPTION -> findNavController().popBackStack()
             }
             showShortToast(FetchStateHandler(it))
         }

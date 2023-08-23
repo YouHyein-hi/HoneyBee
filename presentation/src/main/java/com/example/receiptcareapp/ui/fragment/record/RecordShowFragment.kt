@@ -21,6 +21,7 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.dialog.DeleteDialog
+import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.util.RoomState
@@ -57,7 +58,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         //삭제 버튼
         binding.removeBtn.setOnClickListener{ deleteDialog() }
         //뒤로가기 버튼
-        binding.backBtn.setOnClickListener{ findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment) }
+        binding.backBtn.setOnClickListener{ findNavController().popBackStack() }
     }
 
     override fun initObserver() {
@@ -68,16 +69,16 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
                     when(it.first){
                         ResponseState.DELETE_SUCCESS -> {
                             showShortToast("삭제 완료!")
-                            findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+                            findNavController().popBackStack()
                         }
                         ResponseState.UPDATE_SUCCESS-> {
                             showShortToast("업데이트 완료!")
-                            findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+                            findNavController().popBackStack()
                         }
                         ResponseState.LOCAL_UPDATE_SUCCESS -> {
                             showShortToast("업데이트 완료!")
                             viewModel.upDataRoomData()
-                            findNavController().navigate(R.id.action_recyclerShowFragment_to_recyclerFragment)
+                            findNavController().popBackStack()
                         }
                     }
                 }

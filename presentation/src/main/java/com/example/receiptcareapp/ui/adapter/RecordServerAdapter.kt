@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.receive.BillData
+import com.example.domain.model.receive.bill.BillData
 import com.example.receiptcareapp.databinding.ItemBillListServerBinding
 
 /**

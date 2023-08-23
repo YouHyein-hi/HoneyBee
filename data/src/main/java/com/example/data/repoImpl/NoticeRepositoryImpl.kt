@@ -1,7 +1,7 @@
 package com.example.data.repoImpl
 
 import com.example.data.remote.dataSource.NoticeDataSource
-import com.example.domain.model.receive.ServerNoticeData
+import com.example.domain.model.receive.notice.ServerNoticeData
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.DomainAddNoticeData
 import com.example.domain.repo.NoticeRepository

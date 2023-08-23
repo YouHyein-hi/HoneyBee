@@ -1,6 +1,10 @@
 package com.example.domain.repo
 
 import com.example.domain.model.receive.*
+import com.example.domain.model.receive.bill.ServerBillData
+import com.example.domain.model.receive.bill.ServerPictureData
+import com.example.domain.model.receive.bill.ServerStoreData
+import com.example.domain.model.receive.card.DomainUpadateData
 import com.example.domain.model.send.DomainSendData
 
 /**

@@ -3,7 +3,7 @@ package com.example.receiptcareapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.receive.NoticeData
+import com.example.domain.model.receive.notice.NoticeData
 import com.example.receiptcareapp.databinding.ItemNoticeBinding
 
 /**

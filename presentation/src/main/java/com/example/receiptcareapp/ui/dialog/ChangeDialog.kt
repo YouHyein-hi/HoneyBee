@@ -5,12 +5,9 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.example.domain.model.UpdateData
-import com.example.domain.model.receive.CardData
-import com.example.domain.model.receive.CardSpinnerData
+import com.example.domain.model.receive.card.CardSpinnerData
 import com.example.domain.model.receive.DateData
-import com.example.domain.model.send.AppSendData
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
@@ -32,9 +29,6 @@ class ChangeDialog(
     private lateinit var viewModelData: RecyclerData
     private var cardName = ""
     private var cardId = 0
-    private var settingYear = 0
-    private var settingMonth = 0
-    private var settingDay = 0
     private lateinit var dateData : DateData
     private var newDate = listOf<String>()
     private var cardDataList: MutableList<CardSpinnerData> = mutableListOf()

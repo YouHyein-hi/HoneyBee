@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import com.example.domain.model.receive.CardData
-import com.example.domain.model.receive.CardSpinnerData
+import com.example.domain.model.receive.card.CardSpinnerData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.SpinnerCustomItemLayoutBinding
 import com.example.receiptcareapp.databinding.SpinnerCustomLayoutBinding

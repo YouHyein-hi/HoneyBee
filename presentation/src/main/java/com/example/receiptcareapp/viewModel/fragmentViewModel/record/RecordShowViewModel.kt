@@ -9,32 +9,25 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.UpdateData
 import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.ServerCardData
-import com.example.domain.model.receive.DomainUpadateData
-import com.example.domain.model.receive.ServerCardSpinnerData
+import com.example.domain.model.receive.card.DomainUpadateData
+import com.example.domain.model.receive.card.ServerCardSpinnerData
 import com.example.domain.model.receive.ServerUidData
-import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
-import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.bill.DeleteDataUseCase
 import com.example.domain.usecase.bill.GetPictureDataUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.bill.UpdateDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.DeleteDataRoomUseCase
-import com.example.domain.usecase.room.InsertDataRoomUseCase
 import com.example.domain.usecase.room.UpdateRoomData
 import com.example.domain.util.changeDate
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.dto.LocalBillData
-import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.util.ResponseState
-import com.example.receiptcareapp.util.RoomState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
@@ -88,6 +81,7 @@ class RecordShowViewModel @Inject constructor(
     // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
     //서버 데이터 업데이트
     fun updateServerBillData(sendData: UpdateData, uid: String) {
+        Log.e("TAG", "updateServerBillData: 진행중인데?", )
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
@@ -146,6 +140,7 @@ class RecordShowViewModel @Inject constructor(
     }
 
     fun deleteServerBillData(id: Long) {
+        Log.e("TAG", "deleteServerBillData: 들어옴", )
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {

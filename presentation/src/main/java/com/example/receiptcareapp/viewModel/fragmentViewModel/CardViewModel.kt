@@ -3,7 +3,7 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.domain.model.receive.ServerCardData
+import com.example.domain.model.receive.card.ServerCardData
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.AppSendCardData
 import com.example.domain.model.send.DomainSendCardData

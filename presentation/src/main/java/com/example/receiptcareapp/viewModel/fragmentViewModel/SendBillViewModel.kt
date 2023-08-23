@@ -12,15 +12,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.ServerCardData
-import com.example.domain.model.receive.ServerCardSpinnerData
-import com.example.domain.model.receive.ServerResponseData
-import com.example.domain.model.receive.ServerStoreData
+import com.example.domain.model.receive.card.ServerCardSpinnerData
+import com.example.domain.model.receive.bill.ServerStoreData
 import com.example.domain.model.receive.ServerUidData
 import com.example.domain.model.send.AppSendData
 import com.example.domain.model.send.DomainSendData
 import com.example.domain.usecase.bill.GetStoreListUseCase
-import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.InsertDataRoomUseCase

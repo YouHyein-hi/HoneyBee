@@ -3,7 +3,6 @@ package com.example.data.remote.dataSourceImpl
 import ServerResponse
 import com.example.data.remote.dataSource.CardDataSource
 import com.example.data.remote.model.ServerCardResponse
-import com.example.domain.model.receive.CardData
 import retrofit2.Retrofit
 import javax.inject.Inject
 

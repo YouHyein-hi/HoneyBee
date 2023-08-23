@@ -33,7 +33,7 @@ abstract class BaseViewModel : ViewModel(){
 
     protected val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         isLoading.postValue(false)
-        job.cancel() // 여기에 coroutineContext를 붙이면 이상하게 되던데 왜?
+        coroutineContext.job.cancel() // 여기에 coroutineContext를 붙여야 정상 취소되는데 왜그럴까?
         throwable.printStackTrace()
 
         Log.e("TAG", "base err : $throwable", )

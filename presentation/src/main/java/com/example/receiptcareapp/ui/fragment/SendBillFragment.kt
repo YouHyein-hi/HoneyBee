@@ -22,11 +22,8 @@ import com.bumptech.glide.Glide
 import com.example.domain.model.BottomSheetData
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.CardData
-import com.example.domain.model.receive.CardSpinnerData
+import com.example.domain.model.receive.card.CardSpinnerData
 import com.example.domain.model.receive.DateData
-import com.example.domain.model.receive.DomainReceiveCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentSendBillBinding
@@ -38,7 +35,6 @@ import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.net.SocketTimeoutException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*

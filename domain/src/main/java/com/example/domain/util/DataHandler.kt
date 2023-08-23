@@ -10,7 +10,6 @@ import java.text.DecimalFormat
 
 fun changeDate(inputDate: String?): String {
     Log.e("TAG", "changeDate: $inputDate", )
-    //2023.08.21  15시 48분
     return if (inputDate?.contains("T")==true) {
         val gap = inputDate.replace("-", ".").split("T")
         val time = gap[1].split(":")

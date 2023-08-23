@@ -4,7 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.receive.DomainReceiveCardData
+import com.example.domain.model.receive.card.DomainReceiveCardData
 import com.example.receiptcareapp.databinding.ItemCardhomeBinding
 
 class CardHomeAdapter : RecyclerView.Adapter<CardHomeAdapter.MyHolder>(){

@@ -1,7 +1,6 @@
 package com.example.data.remote.model
 
-import com.example.domain.model.receive.NoticeData
-import java.time.LocalDateTime
+import com.example.domain.model.receive.notice.NoticeData
 
 /**
  * 2023-08-20

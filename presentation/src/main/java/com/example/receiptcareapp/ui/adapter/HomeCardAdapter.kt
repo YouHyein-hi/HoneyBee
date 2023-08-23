@@ -3,7 +3,7 @@ package com.example.receiptcareapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.receive.CardData
+import com.example.domain.model.receive.card.CardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.ItemHomeCardListBinding
 

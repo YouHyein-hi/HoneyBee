@@ -65,10 +65,12 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
         viewModel.getServerStoreData()
         //TODO 이 부분 한번만 둘러오기
         dateData = DateData(
-            year = viewModel.dateNow().year,
-            month = viewModel.dateNow().monthValue,
-            day = viewModel.dateNow().dayOfMonth
+            year = todayDate!!.year,
+            month = todayDate!!.monthValue,
+            day = todayDate!!.dayOfMonth
         )
+
+        viewModel.getServerCardData()
     }
 
     override fun initUI() {
@@ -81,9 +83,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
             btnDate.text = "${viewModel.dateNow().format(formatterDate)}"
         }
-        /** Spinner 호출 **/
-        getSpinner()
-        //생성
+
     }
 
     override fun initListener() {
@@ -108,6 +108,7 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 dataDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
                     .setTextColor(Color.BLACK)
             }
+
 
             /** 금액 EidtText , 추가 **/
             editTxtPrice.setOnEditorActionListener { v, actionId, event ->
@@ -198,11 +199,21 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 findNavController().navigate(R.id.action_showFragment_to_homeFragment)
             }
         }
+
+        binding.spinnerCard.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedCardData = cardDataList[position]
+                cardName = selectedCardData.name
+                cardAmount = selectedCardData.amount
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+
     }
 
     override fun initObserver() {
         viewModel.loading.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: $it", )
             binding.layoutLoadingProgress.root.isVisible = it
         }
 
@@ -237,9 +248,9 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> findNavController().navigate(R.id.action_showFragment_to_homeFragment)
             }
             showShortToast(FetchStateHandler(it))
-
         }
     }
+
     /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -254,23 +265,6 @@ class SendBillFragment : BaseFragment<FragmentSendBillBinding>(FragmentSendBillB
     override fun onDetach() {
         super.onDetach()
         callback.remove()
-    }
-    /** Spinner 관련 **/
-    //TODO setonClick리스너는 밖으로 빼기
-    private fun getSpinner() {
-        viewModel.getServerCardData()
-        Log.e("TAG", "getSpinner: ${cardDataList}", )
-        //TODO 이부분 빼도 오류없는지 보고 빼기
-        binding.spinnerCard.adapter = SpinnerAdapter(requireContext(), arrayListOf())
-        binding.spinnerCard.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedCardData = cardDataList[position]
-                cardName = selectedCardData.name
-                cardAmount = selectedCardData.amount
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-        }
     }
 }
 

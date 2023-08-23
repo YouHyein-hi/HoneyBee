@@ -47,6 +47,8 @@ class ChangeDialog(
             Log.e("TAG", "initData: 데이터가 없다")
             dismiss()
         }
+
+        viewModel.getServerCardData()
     }
 
     override fun initUI() {
@@ -72,8 +74,8 @@ class ChangeDialog(
     }
 
     override fun initListener() {
-        binding.changeBtnPositive.setOnClickListener {
 
+        binding.changeBtnPositive.setOnClickListener {
             dateData = DateData(
                 year = binding.changeDatepicker.year,
                 month = binding.changeDatepicker.month + 1,
@@ -132,6 +134,43 @@ class ChangeDialog(
             }
         }
         binding.changeBtnNegative.setOnClickListener { dismiss() }
+
+        binding.changeCardspinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedCardData = cardDataList[position]
+                cardId = position
+                cardName = selectedCardData.name
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }
+
+/*        binding.changeBtnPrice.setOnEditorActionListener { v, actionId, event ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_NEXT && binding.changeBtnPrice.text.isNotEmpty()) {
+                binding.changeBtnPrice.setText(viewModel.PriceFormat(binding.changeBtnPrice.text.toString()))
+            }
+            handled
+        }*/
+
+        binding.changeBtnPrice.setOnEditorActionListener { v, actionId, event ->
+            Log.e("TAG", "btnPrice.setOnEditorActionListener", )
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_DONE && binding.changeBtnPrice.text.isNotEmpty()) {
+                binding.changeBtnPrice.setText(viewModel.PriceFormat(binding.changeBtnPrice.text.toString()))
+            }
+            handled
+        }
+
+        binding.changeBtnPrice.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                if (binding.changeBtnPrice.text.contains(",")) {
+                    binding.changeBtnPrice.setText(viewModel.CommaReplaceSpace(binding.changeBtnPrice.text.toString()))
+                    binding.changeBtnPrice.setSelection(binding.changeBtnPrice.text.length)
+                }
+            }
+            else { binding.changeBtnPrice.setText(viewModel.PriceFormat(binding.changeBtnPrice.text.toString())) }
+        }
+
     }
 
     override fun initObserver() {
@@ -150,33 +189,7 @@ class ChangeDialog(
     }
 
     private fun getSpinner() {
-        viewModel.getServerCardData()
-        binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), arrayListOf())
-        binding.changeCardspinner?.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val selectedCardData = cardDataList[position]
-                    cardId = position
-                    cardName = selectedCardData.name
-                }
-                override fun onNothingSelected(p0: AdapterView<*>?) {}
-            }
-            binding.changeBtnPrice.setOnEditorActionListener { v, actionId, event ->
-                var handled = false
-                if (actionId == EditorInfo.IME_ACTION_NEXT && binding.changeBtnPrice.text.isNotEmpty()) {
-                    binding.changeBtnPrice.setText(viewModel.PriceFormat(binding.changeBtnPrice.text.toString()))
-                }
-                handled
-            }
-            binding.changeBtnPrice.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    if (binding.changeBtnPrice.text.contains(",")) {
-                        binding.changeBtnPrice.setText(viewModel.CommaReplaceSpace(binding.changeBtnPrice.text.toString()))
-                        binding.changeBtnPrice.setSelection(binding.changeBtnPrice.text.length)
-                    }
-                }
-                else { binding.changeBtnPrice.setText(viewModel.PriceFormat(binding.changeBtnPrice.text.toString())) }
-            }
 
-        }
+
+    }
 }

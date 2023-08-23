@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="99dp"
-            android:background="@color/gray_line"
+            android:background="@color/stork_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

@@ -23,7 +23,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/pretendardextrabold"
             android:text="@string/homeAddDialog_title"
-            android:textColor="@color/fontColor_black"
+            android:textColor="@color/main_font_black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

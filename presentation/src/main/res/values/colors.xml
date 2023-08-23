@@ -12,30 +12,33 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#F44336</color>
-    <color name="watingColor">#4D000000</color>
-    <color name="transparent">#00000000</color>
-
-
-    <color name="shadow">#A8000000</color>
-    <color name="gray">#545454</color>
-    <color name="cardList_gray">#EFEFEF</color>
-    <color name="gray_line">#808080</color>
-    <color name="light_gray_1">#ADADAD</color>
-    <color name="light_gray_2">#E7E7E7</color>
     <color name="emphasis_yellow">#FFD484</color>
-    <color name="white_yellow">#FFFBF4</color>
 
-    <color name="home_yellow">#FFEFD2</color>
-    <color name="basic_white">#F5F5F5</color>
-    <color name="bottom_Sheet_Orange">#FF5722</color>
-    <color name="myTransparent">#00FF5722</color>
+    <!--    <color name="watingColor">#4D000000</color>-->
+<!--    <color name="transparent">#00000000</color>-->
 
 
-    <!-- 변경된 색상표 [모든 앱 UI 변경 후 위에 색상표 없애주기]-->
+<!--    <color name="shadow">#A8000000</color>-->
+<!--    <color name="gray">#545454</color>-->
+<!--    <color name="cardList_gray">#EFEFEF</color>-->
+<!--    <color name="gray_line">#808080</color>-->
+<!--    <color name="light_gray_1">#ADADAD</color>-->
+<!--    <color name="light_gray_2">#E7E7E7</color>-->
+<!--    <color name="white_yellow">#FFFBF4</color>-->
+
+<!--    <color name="home_yellow">#FFEFD2</color>-->
+<!--    <color name="basic_white">#F5F5F5</color>-->
+<!--    <color name="bottom_Sheet_Orange">#FF5722</color>-->
+<!--    <color name="myTransparent">#00FF5722</color>-->
+
+
+    <!-- background color -->
     <color name="main_background_white">#FDFDFD</color>
     <color name="sub_background1_orange">#FFAA2C</color>
     <color name="sub_background2_light_orange">#FFEFD2</color>
     <color name="sub_background3_gray">#E2E2E2</color>
+
+    <!-- font color -->
     <color name="main_font_black">#000000</color>
     <color name="main_font_transparent_black">#A9000000</color>
     <color name="sub_font1_gray">#333333</color>
@@ -43,12 +46,19 @@
     <color name="sub_font3_orange1">#FFAA2C</color>
     <color name="sub_font4_orange2">#FFA318</color>
     <color name="sub_font5_white">#FFFFFF</color>
+
+    <!-- button color -->
     <color name="main_button_orange">#FFAA2C</color>
     <color name="sub_button1_light_orange">#FFC979</color>
     <color name="sub_button2_white">#EFEFEF</color>
     <color name="sub_button3_white_gray">#E0E0E0</color>
     <color name="sub_button3_transparent_white_gray">#9CB6B6B6</color>
+
+    <!-- stork color -->
     <color name="storke1">#BEBEBE</color>
+    <color name="stork_gray">#808080</color>
+
+    <!-- shadow -->
     <color name="shadow1_black">#A8000000</color>
     <color name="shadow2_orange">#FF9900</color>
     <color name="shadow2_orange2">#FF5722</color>

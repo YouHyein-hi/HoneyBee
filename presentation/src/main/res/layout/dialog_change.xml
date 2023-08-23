@@ -24,7 +24,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/pretendardextrabold"
             android:text="@string/dialog_change_title"
-            android:textColor="@color/fontColor_black"
+            android:textColor="@color/main_font_black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -182,7 +182,7 @@
             android:stateListAnimator="@null"
             android:text="@string/complete"
             android:textColor="@color/sub_font4_orange2"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
@@ -197,8 +197,8 @@
             android:fontFamily="@font/pretendardsemibold"
             android:stateListAnimator="@null"
             android:text="@string/cancel"
-            android:textColor="@color/fontColor_black"
-            android:textSize="14sp"
+            android:textColor="@color/main_font_black"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />

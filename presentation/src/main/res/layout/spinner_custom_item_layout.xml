@@ -12,14 +12,14 @@
         android:background="@color/main_background_white"
         android:fontFamily="@font/pretendardsemibold"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="@color/main_font_black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <View
-        android:background="@color/gray_line"
+        android:background="@color/stork_gray"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         app:layout_constraintEnd_toEndOf="parent"

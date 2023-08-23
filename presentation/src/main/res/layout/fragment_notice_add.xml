@@ -76,11 +76,11 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginBottom="15dp"
-                android:background="@color/gray_line" />
+                android:background="@color/stork_gray" />
 
             <EditText
                 android:id="@+id/contentEditTxt"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:fontFamily="@font/pretendardmedium"

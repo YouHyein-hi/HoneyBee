@@ -207,7 +207,7 @@
             android:layout_marginTop="50dp"
             android:fontFamily="@font/pretendardsemibold"
             android:text="@string/record_show_fail_txt"
-            android:textColor="@color/basic_white"
+            android:textColor="@color/main_font_black"
             android:textSize="25sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"

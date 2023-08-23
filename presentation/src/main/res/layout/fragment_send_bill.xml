@@ -23,7 +23,7 @@
             android:layout_marginTop="25dp"
             android:fontFamily="@font/pretendardbold"
             android:text="@string/bottomSheet_sendbill_title"
-            android:textColor="@color/fontColor_black"
+            android:textColor="@color/main_font_black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginBottom="15dp"
-        android:background="@drawable/roundsquare_yellow">
+        android:background="@drawable/roundsquare_yellow"
+        >
 
         <ImageView
             android:id="@+id/card_icon"
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:fontFamily="@font/pretendardsemibold"
-            android:textColor="@color/fontColor_black"
+            android:textColor="@color/main_font_black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/card_icon"
@@ -44,7 +45,7 @@
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/pretendardsemibold"
             android:text="@{@string/home_card_item_amount(amount)}"
-            android:textColor="@color/fontColor_black"
+            android:textColor="@color/main_font_black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

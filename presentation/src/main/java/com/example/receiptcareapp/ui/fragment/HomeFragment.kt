@@ -22,6 +22,7 @@ import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.ui.adapter.PermissionHandler
 import com.example.receiptcareapp.ui.botteomSheet.CardBottomSheet
 import com.example.receiptcareapp.ui.dialog.AddDialog
+import com.example.receiptcareapp.ui.dialog.ExitDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import com.example.receiptcareapp.ui.dialog.PermissiondCheck_Dialog
@@ -132,15 +133,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                AlertDialog.Builder(requireActivity(), R.style.AppCompatAlertDialog)
-                    .setTitle("종료")
-                    .setMessage("꿀을 그만 빠시겠어요?")
-                    .setPositiveButton("그만 빤다"){dialog, id->
-                        requireActivity().finish()
-                    }
-                    .setNegativeButton("더 빤다"){dialog, id->
-
-                    }.show()
+                exitDialog()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -154,6 +147,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun permissiondcheckDialog(){
         val permissiondcheckDialog = PermissiondCheck_Dialog()
         permissiondcheckDialog.show(parentFragmentManager, "permissiondcheckDialog")
+    }
+
+    private fun exitDialog(){
+        val exitDialog = ExitDialog()
+        exitDialog.show(parentFragmentManager, "exitDialog")
     }
 
 

@@ -74,7 +74,8 @@ class ChangeDialog(
 
             val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
 
-            var priceZero = binding.changeBtnPrice.text.toString().count { it == '0' }
+            var price = binding.changeBtnPrice.text.toString()
+            var priceZero = price.count { it == '0' }
             when {
                 cardName == "" -> { showShortToast("카드를 입력하세요.") }
                 binding.changeBtnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }

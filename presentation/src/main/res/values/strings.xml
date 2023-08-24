@@ -81,6 +81,7 @@
     <string name="dialog_cardAdd_name_err">카드 이름을 꼭 적어주세요!</string>
     <string name="dialog_cardAdd_price">카드 금액을 입력해주세요.</string>
     <string name="dialog_cardAdd_price_err">카드 금액을 꼭 적어주세요!</string>
+    <string name="dialog_cardAdd_price_zero">금액에 0원은 입력이 안됩니다.</string>
     <string name="dialog_cardAdd_billCheckDate">청구 날짜를 입력해주세요.</string>
     <string name="dialog_cardAdd_billCheckDate_err1">청구 날짜를 꼭 적어주세요!</string>
     <string name="dialog_cardAdd_billCheckDate_err2">청구 날짜는 31일까지 가능합니다.</string>

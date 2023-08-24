@@ -24,7 +24,7 @@ import com.example.domain.usecase.bill.UpdateDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.DeleteDataRoomUseCase
 import com.example.domain.usecase.room.UpdateRoomData
-import com.example.domain.util.changeDate
+import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.dto.LocalBillData
 import com.example.receiptcareapp.util.ResponseState
@@ -202,7 +202,7 @@ class RecordShowViewModel @Inject constructor(
     fun dateReplace(date : String): List<String> {
         var gap = date
         if(date.contains("T"))
-            gap = changeDate(gap)
+            gap = StringUtil.changeDate(gap)
         return gap.split(".","  ")
     }
 

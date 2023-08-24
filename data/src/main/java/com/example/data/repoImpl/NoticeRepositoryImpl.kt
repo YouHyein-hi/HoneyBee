@@ -5,7 +5,7 @@ import com.example.domain.model.receive.notice.ServerNoticeData
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.DomainAddNoticeData
 import com.example.domain.repo.NoticeRepository
-import com.example.domain.util.changeDate
+import com.example.domain.util.StringUtil
 import toServerNoticeData
 import toServerResponseData
 import javax.inject.Inject
@@ -19,7 +19,7 @@ class NoticeRepositoryImpl @Inject constructor(
 ): NoticeRepository {
     override suspend fun getNoticeListRepository(): ServerNoticeData {
         val result = noticeDataSource.getNoticeListDataSource().toServerNoticeData()
-        val newList = result.body?.map { it.copy(date = changeDate(it.date)) }
+        val newList = result.body?.map { it.copy(date = StringUtil.changeDate(it.date)) }
         return ServerNoticeData(result.status, result.message, newList)
     }
 

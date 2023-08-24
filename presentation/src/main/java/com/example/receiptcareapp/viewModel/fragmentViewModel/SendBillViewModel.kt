@@ -159,7 +159,7 @@ class SendBillViewModel @Inject constructor(
             LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second
         )
     }
-
+    //TODO 예외처리 필요함
     fun amountCheck(price: String, cardAmount: String):Boolean{
         return price.replace(",","").toInt() <= cardAmount.replace(",","").toInt()
     }

@@ -10,8 +10,7 @@ import com.example.domain.model.receive.bill.ServerStoreData
 import com.example.domain.model.receive.card.DomainUpadateData
 import com.example.domain.model.send.DomainSendData
 import com.example.domain.repo.GeneralRepository
-import com.example.domain.util.changeAmount
-import com.example.domain.util.changeDate
+import com.example.domain.util.StringUtil
 import toServerBillData
 import toServerStoreData
 import toUidServerResponseData
@@ -30,7 +29,7 @@ class GeneralRepositoryImpl @Inject constructor(
 
     override suspend fun getDataListRepository(): ServerBillData {
         val result = generalDataSource.getBillListDataSource().toServerBillData()
-        val newList = result.body?.map { it.copy(date = changeDate(it.date), storeAmount = changeAmount(it.storeAmount)) }
+        val newList = result.body?.map { it.copy(date = StringUtil.changeDate(it.date), storeAmount = StringUtil.changeAmount(it.storeAmount)) }
         return ServerBillData(result.status, result.message, newList)
     }
 

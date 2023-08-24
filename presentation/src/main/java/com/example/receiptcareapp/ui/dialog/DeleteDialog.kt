@@ -26,9 +26,7 @@ class DeleteDialog(
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
             viewModelData = activityViewModel.selectedData.value!!
-            Log.e("TAG", "initData: ${viewModelData}", )
         } else {
-            Log.e("TAG", "initData: 데이터가 없습니다", )
             showShortToast("데이터가 없습니다!")
             dismiss()
         }
@@ -43,7 +41,6 @@ class DeleteDialog(
                 dismiss()
             }
             changeBtnPositive.setOnClickListener{
-                Log.e("TAG", "initListener: changeBtnPositive 클릭", )
                 if(viewModelData.type == ShowType.SERVER){
                     viewModel.deleteServerBillData(viewModelData.uid.toLong())
                     dismiss()

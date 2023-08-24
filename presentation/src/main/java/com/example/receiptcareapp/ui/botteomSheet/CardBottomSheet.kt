@@ -39,6 +39,7 @@ class CardBottomSheet(
 
     override fun initData() {
         //서버 데이터 불러오기
+        adapter.dataList.clear()
         viewModel.getServerCardData()
     }
 

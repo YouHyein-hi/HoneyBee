@@ -96,35 +96,14 @@ class CardAddDialog(
             }
 
             dialogCardBtnPositive.setOnClickListener{
-                if(dialogcardEditCardname.text.toString() == ""){
-                    Log.e("TAG", "initListener: 카드 이름을 입력해주세요.", )
-                    dismiss()
-                    showLongToast(getString(R.string.dialog_cardAdd_name))
-                }
-                else if(dialogcardEditCardname.text.toString() == ""){
-                    Log.e("TAG", "initListener: 초기 금액을 입력해주세요")
-                    dismiss()
-                    showLongToast(getString(R.string.dialog_cardAdd_price))
-                }
-                else if(dialogcardEditBillCardCheck.text.toString() == ""){
-                    Log.e("TAG", "initListener: 청구 날짜를 입력해주세요.", )
-                    dismiss()
-                    showLongToast(getString(R.string.dialog_cardAdd_billCheckDate))
-                }
-                else if (dialogcardEditBillCardCheck.text.toString().toInt() > 31){
-
-                    Log.e("TAG", "initListener: 청구 날짜를 입력해주세요.", )
-                    dismiss()
-                    showLongToast(getString(R.string.dialog_cardAdd_billCheckDate_err2))
-                }
-                else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
+                if(dialogcardEditCardname.text.toString() == ""){ showLongToast(getString(R.string.dialog_cardAdd_name)) }
+                else if(dialogcardEditCardname.text.toString() == ""){ showLongToast(getString(R.string.dialog_cardAdd_price)) }
+                else if(dialogcardEditBillCardCheck.text.toString() == ""){ showLongToast(getString(R.string.dialog_cardAdd_billCheckDate)) }
+                else if (dialogcardEditBillCardCheck.text.toString().toInt() > 31){ showLongToast(getString(R.string.dialog_cardAdd_billCheckDate_err2)) }
+                else{
                     var price = dialogcardEditCardprice.text.toString()
-                    var cardName = dialogcardEditCardname.text.toString()
                     if (price.contains(","))
                         price = price.replace(",", "")
-                    if (cardName.contains("카드"))
-                        cardName = cardName.replace("카드", "")
-
                     homeViewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt(), dialogcardEditBillCardCheck.text.toString()))
                     dismiss()
                 }
@@ -139,7 +118,6 @@ class CardAddDialog(
 
     override fun initObserver() {
         viewModel.response.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver?????: $it", )
             when(it){
                 ResponseState.UPDATE_SUCCESS -> {
                     homeViewModel.getServerCardData()

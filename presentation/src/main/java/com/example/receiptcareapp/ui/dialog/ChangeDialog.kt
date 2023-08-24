@@ -37,10 +37,8 @@ class ChangeDialog(
         if (activityViewModel.selectedData.value != null) {
             viewModelData = activityViewModel.selectedData.value!!
             newDate = viewModel.dateReplace(viewModelData.date)
-            Log.e("TAG", "initData myData : $viewModelData")
         } else {
             showShortToast("데이터가 없습니다!")
-            Log.e("TAG", "initData: 데이터가 없다")
             dismiss()
         }
 
@@ -73,31 +71,15 @@ class ChangeDialog(
                 month = binding.changeDatepicker.month + 1,
                 day = binding.changeDatepicker.dayOfMonth
             )
-            Log.e("TAG", "onCreateDialog: ${dateData.year}, ${dateData.month}, ${dateData.day}")
 
             val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
 
-            Log.e("TAG", "onCreateView: ${viewModelData.uid}")
-            Log.e(
-                "TAG",
-                "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${cardName}, ${binding.changeBtnStore.text}, ${viewModelData.file}",
-            )
-
             when {
-                cardName == "" -> {
-                    showShortToast("카드를 입력하세요.")
-                }
-                binding.changeBtnStore.text!!.isEmpty() -> {
-                    showShortToast("가게 이름을 입력하세요.")
-                }
-                binding.changeBtnPrice.text!!.isEmpty() -> {
-                    showShortToast("금액을 입력하세요.")
-                }
-                myLocalDateTime.toString() == "" -> {
-                    showShortToast("날짜를 입력하세요.")
-                }
+                cardName == "" -> { showShortToast("카드를 입력하세요.") }
+                binding.changeBtnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
+                binding.changeBtnPrice.text!!.isEmpty() -> { showShortToast("금액을 입력하세요.") }
+                myLocalDateTime.toString() == "" -> { showShortToast("날짜를 입력하세요.") }
                 else -> {
-                    Log.e("TAG", "initListener myData: $viewModelData")
                     if (viewModelData.type == ShowType.SERVER) {
                         viewModel.updateServerBillData(
                             sendData = UpdateData(
@@ -116,7 +98,6 @@ class ChangeDialog(
                                 amount = binding.changeBtnPrice.text.toString(),
                                 cardName = cardName,
                                 storeName = binding.changeBtnStore.text.toString(),
-//                                picture = activityViewModel.bitmapToUri(requireActivity(),activityViewModel.picture.value)
                                 picture = viewModelData.file!!
                             )
                         )
@@ -127,7 +108,7 @@ class ChangeDialog(
         }
         binding.changeBtnNegative.setOnClickListener { dismiss() }
 
-        binding.changeCardspinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.changeCardspinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedCardData = cardDataList[position]
                 cardId = position
@@ -145,7 +126,6 @@ class ChangeDialog(
         }*/
 
         binding.changeBtnPrice.setOnEditorActionListener { v, actionId, event ->
-            Log.e("TAG", "btnPrice.setOnEditorActionListener", )
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE && binding.changeBtnPrice.text.isNotEmpty()) {
                 binding.changeBtnPrice.setText(viewModel.PriceFormat(binding.changeBtnPrice.text.toString()))

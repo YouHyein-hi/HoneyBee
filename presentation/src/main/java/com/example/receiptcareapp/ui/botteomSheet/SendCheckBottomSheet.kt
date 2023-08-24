@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import com.example.domain.model.BottomSheetData
 import com.example.domain.model.send.AppSendData
-import com.example.domain.util.changeDate
+import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.BottomsheetSendBinding
@@ -32,7 +32,7 @@ class SendCheckBottomSheet(
     override fun initData() {}
 
     override fun initUI() {
-        binding.data = BottomSheetData(data.cardName, data.amount,data.cardAmount, data.storeName, changeDate(data.date),data.picture)
+        binding.data = BottomSheetData(data.cardName, data.amount,data.cardAmount, data.storeName, StringUtil.changeDate(data.date),data.picture)
     }
 
     override fun initListener() {

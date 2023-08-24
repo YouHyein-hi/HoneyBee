@@ -31,7 +31,7 @@
         >
 
         <include
-            bind:title="@{@string/notice_add_title}"
+            bind:title="@{@string/notice_add_text}"
             android:id="@+id/base_component"
             layout="@layout/base_background_component"
             app:layout_constraintEnd_toEndOf="parent"

@@ -74,6 +74,7 @@ class RecordServerFragment(
         viewModel.fetchState.observe(this) {
             when(it.second){
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> {emptyTextControl(true, "서버 연결 실패..")}
+                FetchState.PARSE_ERROR -> {emptyTextControl(true, "서버 오류..")}
             }
             showShortToast(FetchStateHandler(it))
         }

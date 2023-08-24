@@ -32,7 +32,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
 
     override fun initData() {
         nextActivity()
-
         var getLogin = viewModel.getLoginData()
         if(getLogin.id != null){
             nextActivity()

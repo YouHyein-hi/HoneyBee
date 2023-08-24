@@ -57,7 +57,7 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
 
         //뒤로가기 버튼
         binding.baseComponent.backBtn.setOnClickListener{
-            findNavController().navigate(R.id.action_recyclerFragment_to_homeFragment)
+            findNavController().popBackStack()
         }
     }
 

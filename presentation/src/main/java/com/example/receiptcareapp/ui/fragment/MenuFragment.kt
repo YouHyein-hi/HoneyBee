@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -18,6 +19,7 @@ import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentMenuBinding
 import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.ui.adapter.PushReceiver
+import com.example.receiptcareapp.ui.dialog.PushTimeDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
@@ -76,22 +78,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             }
 
             pushTimeButton.setOnClickListener{
-                val cal = Calendar.getInstance()
-                val data = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-                    viewModel.putTime(hour, minute)
-
-                    if (pushSwitch.isChecked) {
-                        setAlarm() // Switch가 켜져있다면 알람 설정
-                    }
-                }
-
-                val timeDialog = TimePickerDialog(requireContext(), data,
-                    cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
-                timeDialog.show()
-                timeDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-                    .setTextColor(ContextCompat.getColor(requireContext(), R.color.sub_font4_orange2))
-                timeDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
-                    .setTextColor(Color.BLACK)
+                PushTimeDialog()
             }
 
 
@@ -119,20 +106,13 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
         }
     }
 
-/*    private fun setAlarm() {
-        val targetTime = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
-            set(Calendar.MINUTE, viewModel.getTime().minute!!)
-        }
-
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            targetTime.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
-    }*/
+    private fun PushTimeDialog(){
+        PushTimeDialog(viewModel) {
+            if (binding.pushSwitch.isChecked) {
+                setAlarm() // Switch가 켜져있다면 알람 설정
+            }
+        }.show(parentFragmentManager, "pushTimeDialog")
+    }
 
     private fun setAlarm() {
 
@@ -167,9 +147,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
 
     private fun cancelAlarm() {
         alarmManager.cancel(pendingIntent)
-    }
-
-    private fun updatePushTimeText() {
     }
 
 }

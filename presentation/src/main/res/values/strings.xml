@@ -100,6 +100,7 @@
     <string name="menu_app_version_num">1.0.0</string>
     <string name="menu_notice_text">공지사항</string>
     <string name="menu_license_text">라이센스</string>
+    <string name="dialog_menu_title">푸시 알림 시간 설정</string>
 
 
     <!-- 기록페이지 -->

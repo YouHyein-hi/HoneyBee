@@ -96,30 +96,34 @@ class CardAddDialog(
             }
 
             dialogCardBtnPositive.setOnClickListener{
+                var price = dialogcardEditCardprice.text.toString()
+                var priceZero = price.count { it == '0' }
+                var cardName = dialogcardEditCardname.text.toString()
                 if(dialogcardEditCardname.text.toString() == ""){
                     Log.e("TAG", "initListener: 카드 이름을 입력해주세요.", )
                     dismiss()
-                    showLongToast(getString(R.string.dialog_cardAdd_name))
+                    showShortToast(getString(R.string.dialog_cardAdd_name))
                 }
-                else if(dialogcardEditCardname.text.toString() == ""){
+                else if(dialogcardEditCardprice.text.toString() == ""){
                     Log.e("TAG", "initListener: 초기 금액을 입력해주세요")
                     dismiss()
-                    showLongToast(getString(R.string.dialog_cardAdd_price))
+                    showShortToast(getString(R.string.dialog_cardAdd_price))
+                }
+                else if(priceZero == price.length){
+                    Log.e("TAG", "initListener: 금액에 0원은 입력이 안됩니다.", )
+                    showShortToast(getString(R.string.dialog_cardAdd_price_zero))
                 }
                 else if(dialogcardEditBillCardCheck.text.toString() == ""){
                     Log.e("TAG", "initListener: 청구 날짜를 입력해주세요.", )
                     dismiss()
-                    showLongToast(getString(R.string.dialog_cardAdd_billCheckDate))
+                    showShortToast(getString(R.string.dialog_cardAdd_billCheckDate))
                 }
                 else if (dialogcardEditBillCardCheck.text.toString().toInt() > 31){
-
                     Log.e("TAG", "initListener: 청구 날짜를 입력해주세요.", )
                     dismiss()
-                    showLongToast(getString(R.string.dialog_cardAdd_billCheckDate_err2))
+                    showShortToast(getString(R.string.dialog_cardAdd_billCheckDate_err2))
                 }
                 else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
-                    var price = dialogcardEditCardprice.text.toString()
-                    var cardName = dialogcardEditCardname.text.toString()
                     if (price.contains(","))
                         price = price.replace(",", "")
                     if (cardName.contains("카드"))

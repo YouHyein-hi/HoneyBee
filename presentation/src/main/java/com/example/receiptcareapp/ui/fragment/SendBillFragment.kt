@@ -166,6 +166,8 @@ class SendBillFragment :
             /** 완료 Button **/
             completeBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
+                var price = editTxtPrice.text.toString()
+                var priceZero = price.count { it == '0' }
                 when {
                     cardName == "" -> {
                         showShortToast("카드를 입력하세요.")
@@ -175,6 +177,9 @@ class SendBillFragment :
                     }
                     editTxtPrice.text.isEmpty() -> {
                         showShortToast("금액을 입력하세요.")
+                    }
+                    priceZero == price.length -> {
+                        showShortToast("금액에 0원은 입력이 안됩니다.")
                     }
                     btnDate.text.isEmpty() -> {
                         showShortToast("날짜를 입력하세요.")

@@ -83,6 +83,8 @@ class ChangeDialog(
                 "onCreateDialog: ${myLocalDateTime}, ${binding.changeBtnPrice.text}, ${cardName}, ${binding.changeBtnStore.text}, ${viewModelData.file}",
             )
 
+            var price = binding.changeBtnPrice.text.toString()
+            var priceZero = price.count { it == '0' }
             when {
                 cardName == "" -> {
                     showShortToast("카드를 입력하세요.")
@@ -92,6 +94,9 @@ class ChangeDialog(
                 }
                 binding.changeBtnPrice.text!!.isEmpty() -> {
                     showShortToast("금액을 입력하세요.")
+                }
+                priceZero == price.length -> {
+                    showShortToast("금액에 0원은 입력이 안됩니다.")
                 }
                 myLocalDateTime.toString() == "" -> {
                     showShortToast("날짜를 입력하세요.")

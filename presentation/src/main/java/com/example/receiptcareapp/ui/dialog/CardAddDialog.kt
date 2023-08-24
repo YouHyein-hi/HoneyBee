@@ -96,12 +96,25 @@ class CardAddDialog(
             }
 
             dialogCardBtnPositive.setOnClickListener{
-                if(dialogcardEditCardname.text.toString() == ""){ showLongToast(getString(R.string.dialog_cardAdd_name)) }
-                else if(dialogcardEditCardname.text.toString() == ""){ showLongToast(getString(R.string.dialog_cardAdd_price)) }
-                else if(dialogcardEditBillCardCheck.text.toString() == ""){ showLongToast(getString(R.string.dialog_cardAdd_billCheckDate)) }
-                else if (dialogcardEditBillCardCheck.text.toString().toInt() > 31){ showLongToast(getString(R.string.dialog_cardAdd_billCheckDate_err2)) }
-                else{
-                    var price = dialogcardEditCardprice.text.toString()
+                var price = dialogcardEditCardprice.text.toString()
+                var priceZero = price.count { it == '0' }
+                var cardName = dialogcardEditCardname.text.toString()
+                if(dialogcardEditCardname.text.toString() == ""){
+                    showShortToast(getString(R.string.dialog_cardAdd_name))
+                }
+                else if(dialogcardEditCardprice.text.toString() == ""){
+                    showShortToast(getString(R.string.dialog_cardAdd_price))
+                }
+                else if(priceZero == price.length){
+                    showShortToast(getString(R.string.dialog_cardAdd_price_zero))
+                }
+                else if(dialogcardEditBillCardCheck.text.toString() == ""){
+                    showShortToast(getString(R.string.dialog_cardAdd_billCheckDate))
+                }
+                else if (dialogcardEditBillCardCheck.text.toString().toInt() > 31){
+                    showShortToast(getString(R.string.dialog_cardAdd_billCheckDate_err2))
+                }
+                else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
                     if (price.contains(","))
                         price = price.replace(",", "")
                     homeViewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt(), dialogcardEditBillCardCheck.text.toString()))

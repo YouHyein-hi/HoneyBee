@@ -52,7 +52,6 @@ class SendBillFragment :
     private var selectedDate: LocalDate? = null
     private lateinit var dateData: DateData
     private lateinit var callback: OnBackPressedCallback
-    private var cardArray = arrayListOf<String>()
     private var storeArray = arrayListOf<String>()
 
 
@@ -167,10 +166,13 @@ class SendBillFragment :
             /** 완료 Button **/
             completeBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
+                var price = editTxtPrice.text.toString()
+                var priceZero = price.count { it == '0' }
                 when {
                     cardName == "" -> { showShortToast("카드를 입력하세요.") }
                     editTxtStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
                     editTxtPrice.text.isEmpty() -> { showShortToast("금액을 입력하세요.") }
+                    priceZero == price.length -> { showShortToast("금액에 0원은 입력이 안됩니다.")}
                     btnDate.text.isEmpty() -> { showShortToast("날짜를 입력하세요.") }
                     selectedDate!!.isAfter(todayDate) -> { showShortToast("오늘보다 미래 날짜는 불가능합니다.") }
                     activityViewModel.image.value == null -> {
@@ -182,11 +184,7 @@ class SendBillFragment :
                             showShortToast("보유금액보다 많은 비용입니다.")
                             return@setOnClickListener
                         }
-                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(
-                            dateData.year,
-                            dateData.month,
-                            dateData.month
-                        )
+                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
                         SendCheckBottomSheet(
                             viewModel,
                             BottomSheetData(

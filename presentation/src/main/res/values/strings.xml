@@ -49,12 +49,17 @@
     <string name="home_list_title">영수증 목록</string>
     <string name="home_add_title">영수증 추가</string>
     <string name="home_notice_title">소식</string>
-    <!-- 메인(홈) 영수증 추가 방법 Dialog -->
+    <!-- Dialog 메인(홈) 영수증 추가 방법 -->
     <string name="homeAddDialog_title">영수증 추가 방법</string>
     <string name="homeAddDialog_camera">카메라</string>
     <string name="homeAddDialog_gallery">갤러리</string>
     <!--    홈 카드 컴포넌트 -->
     <string name="home_card_item_amount">%s 원</string>
+    <!-- Dialog Exit 앱 종료 -->
+    <string name="dialog_exit_title">앱 종료</string>
+    <string name="dialog_exit_text">앱을 정말 종료하시겠어요?</string>
+    <string name="dialog_exit_positive">종료</string>
+    <string name="dialog_exit_negative">이어하기</string>
 
 
     <string name="camera_text">카메라 로딩중···</string>
@@ -66,7 +71,7 @@
     <string name="sendbill_date">날짜을 입력해주세요.</string>
     <!-- BottomSheet sendbill 전송 재확인 페이지 -->
     <string name="bottomSheet_sendbill_title">정말 전송하시겠어요?</string>
-    <string name="bottomSheet_sendbill_cardPriceText">전송 전 남은 카드 잔액</string>
+    <string name="bottomSheet_sendbill_cardPriceText">금액</string>
     <string name="bottomSheet_sendbill_storeNameText">가게 이름</string>
     <string name="bottomSheet_sendbill_dateText">영수증 날짜</string>
 
@@ -82,6 +87,7 @@
     <string name="dialog_cardAdd_name_err">카드 이름을 꼭 적어주세요!</string>
     <string name="dialog_cardAdd_price">카드 금액을 입력해주세요.</string>
     <string name="dialog_cardAdd_price_err">카드 금액을 꼭 적어주세요!</string>
+    <string name="dialog_cardAdd_price_zero">금액에 0원은 입력이 안됩니다.</string>
     <string name="dialog_cardAdd_billCheckDate">청구 날짜를 입력해주세요.</string>
     <string name="dialog_cardAdd_billCheckDate_err1">청구 날짜를 꼭 적어주세요!</string>
     <string name="dialog_cardAdd_billCheckDate_err2">청구 날짜는 31일까지 가능합니다.</string>
@@ -95,6 +101,7 @@
     <string name="menu_app_version_num">1.0.0</string>
     <string name="menu_notice_text">공지사항</string>
     <string name="menu_license_text">라이센스</string>
+    <string name="dialog_menu_title">푸시 알림 시간 설정</string>
 
 
     <!-- 기록페이지 -->

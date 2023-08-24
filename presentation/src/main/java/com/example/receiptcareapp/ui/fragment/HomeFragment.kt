@@ -35,8 +35,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var callback: OnBackPressedCallback
     private val homeCardBottomSheet: CardBottomSheet by lazy { CardBottomSheet(viewModel) }
     private val adapter: HomeCardAdapter = HomeCardAdapter()
-    private val addDialog : AddDialog = AddDialog()
-    private val permissiondcheckDialog = PermissiondCheck_Dialog()
     private val ALL_PERMISSIONS = arrayOf(
         android.Manifest.permission.CAMERA,
         android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -60,10 +58,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             val allPermissionsGranted = permissions.all { it.value }
             if (allPermissionsGranted) {
                 // 권한이 허용되었을 때, 권한이 필요한 작업 수행
-                addDialog.show(parentFragmentManager, "addDialog")
+                addDialog()
             } else {
                 showShortToast("필수 권한을 허용해주세요!")
-                handler.postDelayed({ permissiondcheckDialog.show(parentFragmentManager,"permissiondcheckDialog") }, 800)
+                handler.postDelayed({ permissiondcheckDialog() }, 800)
 
             }
         }
@@ -80,7 +78,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     permissionLauncher.launch(ALL_PERMISSIONS)
                 }
                 else {
-                    addDialog.show(parentFragmentManager, "addDialog")
+                    addDialog()
                 }
             }
             cardListComponent.setOnClickListener{
@@ -147,6 +145,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
+
+    private fun addDialog(){
+        val addDialog = AddDialog()
+        addDialog.show(parentFragmentManager, "addDialog")
+    }
+
+    private fun permissiondcheckDialog(){
+        val permissiondcheckDialog = PermissiondCheck_Dialog()
+        permissiondcheckDialog.show(parentFragmentManager, "permissiondcheckDialog")
+    }
+
 
     private fun checkAllPermissionsGranted(permissions: Array<String>): Boolean {
         for (permission in permissions) {

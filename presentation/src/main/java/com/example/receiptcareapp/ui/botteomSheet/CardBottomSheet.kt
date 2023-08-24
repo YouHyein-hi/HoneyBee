@@ -54,8 +54,7 @@ class CardBottomSheet(
         //서버 카드 추가 다이얼로그
         binding.cardCount = "0"
         binding.addBtn.setOnClickListener{
-            val cardAddDialog = CardAddDialog(viewModel)
-            cardAddDialog.show(parentFragmentManager, "CardAddDialog")
+            cardAddDialog()
         }
     }
 
@@ -90,13 +89,18 @@ class CardBottomSheet(
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        homeViewModel.getServerCardData()
+    }
+
     private fun changeEmptyTxt(state:Boolean){
         binding.emptyTxt.isVisible = state
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        homeViewModel.getServerCardData()
+    private fun cardAddDialog(){
+        val cardAddDialog = CardAddDialog(viewModel)
+        cardAddDialog.show(parentFragmentManager, "CardAddDialog")
     }
 
 

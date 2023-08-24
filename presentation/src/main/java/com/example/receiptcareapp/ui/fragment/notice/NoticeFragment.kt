@@ -41,7 +41,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
             true
         }
         binding.baseComponent.backBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_noticeFragment_to_homeFragment)
+            findNavController().popBackStack()
         }
         adapter.onNoticeClic = {
             activityViewModel.selectedNoticeData = it

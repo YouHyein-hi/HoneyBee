@@ -61,7 +61,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cardRecyclerview"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="400dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="20dp"
@@ -103,7 +103,7 @@
             android:text="@string/bottomSheet_card_empty"
             android:textSize="30dp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/cardRecyclerview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

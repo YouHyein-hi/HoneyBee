@@ -25,6 +25,7 @@ class NoticeAdapter : RecyclerView.Adapter<NoticeAdapter.MyHolder>(){
             binding.noticeItemTitle.text = item.title
             binding.noticeItemDate.text = item.date
             binding.noticeLayout.setOnClickListener { onNoticeClic(item) }
+            binding.noticeShowBtn.setOnClickListener { onNoticeClic(item) }
         }
     }
 

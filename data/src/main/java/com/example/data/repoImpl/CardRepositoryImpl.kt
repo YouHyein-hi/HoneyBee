@@ -6,7 +6,7 @@ import com.example.domain.model.receive.card.ServerCardSpinnerData
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.repo.CardRepository
-import com.example.domain.util.changeAmount
+import com.example.domain.util.StringUtil
 import toServerCardData
 import toServerCardSpinnerData
 import toServerResponseData
@@ -21,13 +21,13 @@ class CardRepositoryImpl @Inject constructor(
 ): CardRepository {
     override suspend fun getCardListRepository(): ServerCardData {
         val response = cardDataSource.getCardDataSource().toServerCardData()
-        val newList = response.body?.map { it.copy(amount = changeAmount(it.amount)) }
+        val newList = response.body?.map { it.copy(amount = StringUtil.changeAmount(it.amount)) }
         return ServerCardData(response.status, response.message, newList)
     }
 
     override suspend fun getCardSpinnerRepository(): ServerCardSpinnerData {
         val response = cardDataSource.getCardDataSource().toServerCardSpinnerData()
-        val newList = response.body?.map { it.copy(amount = changeAmount(it.amount)) }
+        val newList = response.body?.map { it.copy(amount = StringUtil.changeAmount(it.amount)) }
         return ServerCardSpinnerData(response.status, response.message, newList)
     }
 

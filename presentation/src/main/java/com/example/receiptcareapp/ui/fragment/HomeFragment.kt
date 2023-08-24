@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -15,6 +16,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.base.BaseFragment
@@ -45,9 +47,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val handler = Handler(Looper.getMainLooper())
 
 
-    override fun initData() {
-
-    }
+    override fun initData() {}
 
     override fun initUI() {
         //카드목록, 공지사항 불러오기
@@ -63,10 +63,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             } else {
                 showShortToast("필수 권한을 허용해주세요!")
                 handler.postDelayed({ permissiondcheckDialog() }, 800)
-
             }
         }
-
+        initHomeCardRecycler()
     }
 
     override fun initListener() {
@@ -75,19 +74,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             menuBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_menuFragment) }
             noticeBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_noticeFragment) }
             addBtn.setOnClickListener{
-                if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) {
-                    permissionLauncher.launch(ALL_PERMISSIONS)
-                }
-                else {
-                    addDialog()
-                }
+                if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) { permissionLauncher.launch(ALL_PERMISSIONS) }
+                else { addDialog() }
             }
-            cardListComponent.setOnClickListener{
-                homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet")
-            }
-            homeCardRecyclerview.setOnClickListener{ homeCardBottomSheet.show(parentFragmentManager,"homeCardBottomSheet") }
-            homeCardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-            homeCardRecyclerview.adapter = adapter
+            cardListComponent.setOnClickListener { CardBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet") }
         }
     }
 
@@ -114,9 +104,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         viewModel.fetchState.observe(this) {
             when(it.second){
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> { emptyTextControl(true, "서버 연결 실패..") }
+                FetchState.PARSE_ERROR -> {emptyTextControl(true, "서버 연결 실패..")}
             }
             showShortToast(FetchStateHandler(it))
+            adapter.dataList.clear()
         }
+    }
+
+    private fun initHomeCardRecycler(){
+        binding.homeCardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.homeCardRecyclerview.adapter = adapter
+        adapter.dataList.clear()
     }
 
     private fun emptyTextControl(state: Boolean, massage: String = "카드를 추가해주세요!"){

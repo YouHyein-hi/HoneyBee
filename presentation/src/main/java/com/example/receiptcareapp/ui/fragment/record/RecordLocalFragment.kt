@@ -1,12 +1,10 @@
 package com.example.receiptcareapp.ui.fragment.record
 
-import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.local.toRecyclerShowData
-import com.example.domain.util.changeDate
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.base.BaseFragment
@@ -74,6 +72,7 @@ class RecordLocalFragment(
         viewModel.fetchState.observe(this) {
             when(it.second){
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> {emptyTextControl(true, "서버 연결 실패..")}
+                FetchState.PARSE_ERROR -> {emptyTextControl(true, "서버 연결 실패..")}
             }
             showShortToast(FetchStateHandler(it))
         }

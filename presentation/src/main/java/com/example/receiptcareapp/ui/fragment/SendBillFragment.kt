@@ -169,29 +169,15 @@ class SendBillFragment :
                 var price = editTxtPrice.text.toString()
                 var priceZero = price.count { it == '0' }
                 when {
-                    cardName == "" -> {
-                        showShortToast("카드를 입력하세요.")
-                    }
-                    editTxtStore.text!!.isEmpty() -> {
-                        showShortToast("가게 이름을 입력하세요.")
-                    }
-                    editTxtPrice.text.isEmpty() -> {
-                        showShortToast("금액을 입력하세요.")
-                    }
-                    priceZero == price.length -> {
-                        showShortToast("금액에 0원은 입력이 안됩니다.")
-                    }
-                    btnDate.text.isEmpty() -> {
-                        showShortToast("날짜를 입력하세요.")
-                    }
-                    selectedDate!!.isAfter(todayDate) -> {
-                        showShortToast("오늘보다 미래 날짜는 불가능합니다.")
-                        Log.e("TAG", "SendBillFragment: 오늘보다 미래 날짜는 불가능합니다.")
-                    }
+                    cardName == "" -> { showShortToast("카드를 입력하세요.") }
+                    editTxtStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
+                    editTxtPrice.text.isEmpty() -> { showShortToast("금액을 입력하세요.") }
+                    priceZero == price.length -> { showShortToast("금액에 0원은 입력이 안됩니다.")}
+                    btnDate.text.isEmpty() -> { showShortToast("날짜를 입력하세요.") }
+                    selectedDate!!.isAfter(todayDate) -> { showShortToast("오늘보다 미래 날짜는 불가능합니다.") }
                     activityViewModel.image.value == null -> {
                         showShortToast("사진이 비었습니다.\n초기화면으로 돌아갑니다.")
-                        NavHostFragment.findNavController(this@SendBillFragment)
-                            .navigate(R.id.action_showFragment_to_homeFragment)
+                        NavHostFragment.findNavController(this@SendBillFragment).navigate(R.id.action_sendBillFragment_to_homeFragment)
                     }
                     else -> {
                         if (!viewModel.amountCheck(editTxtPrice.text.toString(), cardAmount)) {
@@ -216,7 +202,7 @@ class SendBillFragment :
             }
 
             cancleBtn.setOnClickListener {
-                findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                findNavController().navigate(R.id.action_sendBillFragment_to_homeFragment)
             }
         }
 
@@ -270,7 +256,7 @@ class SendBillFragment :
             when (it?.status) {
                 "200" -> {
                     viewModel.insertRoomData(it.uid.toString())
-                    findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                    findNavController().navigate(R.id.action_sendBillFragment_to_homeFragment)
                     showShortToast("전송 성공")
                 }
                 else -> {
@@ -283,7 +269,7 @@ class SendBillFragment :
         viewModel.cardList.observe(viewLifecycleOwner) {
             if(it?.body?.isEmpty() == true){
                 showShortToast("카드 데이터를 추가해주세요!")
-                findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                findNavController().navigate(R.id.action_sendBillFragment_to_homeFragment)
             }
             it?.body?.forEach { cardDataList.add(it) }
             binding.spinnerCard.adapter =
@@ -302,6 +288,7 @@ class SendBillFragment :
         viewModel.fetchState.observe(this) {
             when (it.second) {
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> findNavController().popBackStack()
+                FetchState.PARSE_ERROR -> findNavController().popBackStack()
             }
             showShortToast(FetchStateHandler(it))
         }
@@ -312,7 +299,7 @@ class SendBillFragment :
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                findNavController().navigate(R.id.action_showFragment_to_homeFragment)
+                findNavController().navigate(R.id.action_sendBillFragment_to_homeFragment)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)

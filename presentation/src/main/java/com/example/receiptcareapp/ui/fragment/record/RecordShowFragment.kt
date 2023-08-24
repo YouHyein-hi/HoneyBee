@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.domain.util.changeDate
+import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.State.ShowType
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
@@ -112,7 +112,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         binding.imageView.clipToOutline = true
         binding.data = RecyclerData(
             viewModelData.type, viewModelData.uid, viewModelData.cardName, viewModelData.amount,
-            changeDate(viewModelData.date), viewModelData.storeName, viewModelData.file
+            StringUtil.changeDate(viewModelData.date), viewModelData.storeName, viewModelData.file
         )
     }
 

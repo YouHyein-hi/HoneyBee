@@ -33,13 +33,14 @@ class RecordServerFragment(
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     override fun initData() {
-        recordServerAdapter.dataList.clear()
+
     }
 
     override fun initUI() {
         initServerRecyclerView()
 //        activityViewModel.changeNullPicture()
         viewModel.getServerAllBillData()
+        recordServerAdapter.dataList.clear()
     }
 
     override fun initListener() {

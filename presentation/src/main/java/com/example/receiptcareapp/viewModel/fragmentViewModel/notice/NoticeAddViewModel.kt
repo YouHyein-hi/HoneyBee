@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NoticeAddViewModel @Inject constructor(
     private val addNoticeUseCase: AddNoticeUseCase
-): BaseViewModel() {
+): BaseViewModel("NoticeAddViewModel") {
 
     val loading : MutableLiveData<Boolean> get() = isLoading
 

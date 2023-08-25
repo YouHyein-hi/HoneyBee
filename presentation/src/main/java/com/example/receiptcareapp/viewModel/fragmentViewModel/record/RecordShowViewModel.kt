@@ -57,7 +57,7 @@ class RecordShowViewModel @Inject constructor(
     private val insertDataUseCase: InsertDataUseCase,
     private val deleteDataRoomUseCase: DeleteDataRoomUseCase,
     private val updateRoomData: UpdateRoomData
-    ) : BaseViewModel() {
+    ) : BaseViewModel("RecordShowViewModel") {
 
     val loading: MutableLiveData<Boolean> get() = isLoading
 

@@ -24,7 +24,7 @@ import javax.inject.Inject
 class RecordViewModel @Inject constructor(
     private val getRoomDataListUseCase: GetDataListRoomUseCase,
     private val getDataListUseCase: GetDataListUseCase,
-): BaseViewModel() {
+): BaseViewModel("RecordViewModel") {
 
     val loading : MutableLiveData<Boolean> get() = isLoading
 

@@ -14,9 +14,9 @@ import java.net.UnknownHostException
  * 2023-02-15
  * pureum
  */
-abstract class BaseViewModel : ViewModel(){
+abstract class BaseViewModel(val name: String) : ViewModel(){
     init {
-        Log.e("TAG", "만들어짐!!: ", )
+        Log.e("TAG", "$name 생성", )
     }
     //로딩 관리
     protected val isLoading = MutableLiveData(false)
@@ -24,6 +24,9 @@ abstract class BaseViewModel : ViewModel(){
 
     private var _fetchState = MutableLiveData<Pair<Throwable, FetchState>>()
     val fetchState : LiveData<Pair<Throwable, FetchState>> get() = _fetchState
+    fun initFetchState(){
+        _fetchState = MutableLiveData<Pair<Throwable, FetchState>>()
+    }
 
     protected val waitTime = 4000L
 
@@ -52,4 +55,9 @@ abstract class BaseViewModel : ViewModel(){
     // 레트로핏 자체적으로 IO에서 실행시키는 기능때문에.
     protected val modelScope = viewModelScope + job + exceptionHandler
     protected val ioScope = CoroutineScope(Dispatchers.IO) + job + exceptionHandler
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.e("TAG", "$name 삭제", )
+    }
 }

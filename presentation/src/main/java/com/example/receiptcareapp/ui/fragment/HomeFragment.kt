@@ -5,18 +5,15 @@ import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.base.BaseFragment
@@ -33,10 +30,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate, "HomeFragment") {
-
     private val viewModel : HomeViewModel by viewModels()
     private lateinit var callback: OnBackPressedCallback
-    private val homeCardBottomSheet: CardBottomSheet by lazy { CardBottomSheet(viewModel) }
     private val adapter: HomeCardAdapter = HomeCardAdapter()
     private val ALL_PERMISSIONS = arrayOf(
         android.Manifest.permission.CAMERA,
@@ -53,6 +48,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //카드목록, 공지사항 불러오기
         viewModel.getServerCardData()
         viewModel.getNoticeList()
+        initHomeCardRecycler()
+        viewModel.initFetchState()
 
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             // 권한이 허용되었는지 확인
@@ -65,7 +62,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 handler.postDelayed({ permissiondcheckDialog() }, 800)
             }
         }
-        initHomeCardRecycler()
     }
 
     override fun initListener() {

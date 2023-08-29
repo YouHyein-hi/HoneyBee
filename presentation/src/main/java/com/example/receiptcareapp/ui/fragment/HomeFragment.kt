@@ -66,14 +66,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun initListener() {
         with(binding){
-            historyBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment) }
-            menuBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_menuFragment) }
-            noticeBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_noticeFragment) }
-            addBtn.setOnClickListener{
+            homeHistoryBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_recyclerFragment) }
+            homeMenuBtn.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_menuFragment) }
+            homeNoticeComponent.setOnClickListener{ findNavController().navigate(R.id.action_homeFragment_to_noticeFragment) }
+            homeAddBtn.setOnClickListener{
                 if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) { permissionLauncher.launch(ALL_PERMISSIONS) }
                 else { addDialog() }
             }
-            cardListComponent.setOnClickListener { CardBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet") }
+            homeCardListComponent.setOnClickListener { CardBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet") }
         }
     }
 
@@ -114,8 +114,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun emptyTextControl(state: Boolean, massage: String = "카드를 추가해주세요!"){
-        binding.emptyText.isVisible = state
-        binding.emptyText.text = massage
+        binding.homeEmptyTxt.isVisible = state
+        binding.homeEmptyTxt.text = massage
     }
 
     override fun onDetach() {

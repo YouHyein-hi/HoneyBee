@@ -11,11 +11,11 @@ class ExitDialog : BaseDialog<DialogExitBinding>(DialogExitBinding::inflate) {
     }
 
     override fun initListener() {
-        binding.exitBtnNegative.setOnClickListener{
+        binding.exitCancelBtn.setOnClickListener{
             // 이어하기 클릭
             dismiss()
         }
-        binding.exitBtnPositive.setOnClickListener{
+        binding.exitOkBtn.setOnClickListener{
             //앱 종료
             requireActivity().finish()
         }

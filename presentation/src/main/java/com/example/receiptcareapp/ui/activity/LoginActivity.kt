@@ -53,10 +53,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     }
 
     override fun initListener() {
-        binding.loginButton.setOnClickListener {
-            loginData.id = binding.loginEmail.text.toString()
-            loginData.pw = binding.loginPassword.text.toString()
-            if(loginData.id == "dclab@gmail.com" && loginData.pw == "dclab419$!(") nextActivity()
+        binding.loginLoginBtn.setOnClickListener {
+            loginData.id = binding.loginEmailEdit.text.toString()
+            loginData.pw = binding.loginPasswordEdit.text.toString()
+//            if(loginData.id == "dclab@gmail.com" && loginData.pw == "dclab419$!(") nextActivity()
+            nextActivity()
             downKeyBoard()
 
             with(loginData){
@@ -65,8 +66,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
                 else if(pw.isNullOrEmpty())
                     showShortToast("비밀번호를 입력해주세요.")
                 else viewModel.requestLogin(
-                    binding.loginEmail.text.toString().replace(" ",""),
-                    binding.loginPassword.text.toString().replace(" ","")
+                    binding.loginEmailEdit.text.toString().replace(" ",""),
+                    binding.loginPasswordEdit.text.toString().replace(" ","")
                 )
             }
         }
@@ -120,7 +121,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
-    //권한 Dialog
+    //권한 Diattg
     private fun permissionDialog() {
         val permissionDialog = Permissiond_Dialog()
         permissionDialog.setOnDismissListener(object : Permissiond_Dialog.OnDismissListener {

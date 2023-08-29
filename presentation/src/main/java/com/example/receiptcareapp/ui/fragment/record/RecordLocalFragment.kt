@@ -79,19 +79,19 @@ class RecordLocalFragment(
     }
 
     private fun emptyTextControl(state: Boolean, massage: String = "데이터가 비었어요!"){
-        binding.emptyText.isVisible = state
-        binding.emptyText.text = massage
+        binding.recordListEmptyTxt.isVisible = state
+        binding.recordListEmptyTxt.text = massage
     }
 
     private fun initLocalRecyclerView() {
-        binding.mainRecycler.layoutManager = LinearLayoutManager(requireContext())
-        binding.mainRecycler.adapter = recordLocalAdapter
+        binding.recordListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recordListRecyclerView.adapter = recordLocalAdapter
         recordLocalAdapter.dataList.clear()
     }
 
     private fun setTextAndVisible(text: String, state: Boolean) {
-        binding.emptyText.text = text
-        binding.emptyText.isVisible = state
+        binding.recordListEmptyTxt.text = text
+        binding.recordListEmptyTxt.isVisible = state
     }
 
 }

@@ -37,10 +37,10 @@ class DeleteDialog(
 
     override fun initListener() {
         with(binding){
-            changeBtnNegative.setOnClickListener{
+            deleteCancelBtn.setOnClickListener{
                 dismiss()
             }
-            changeBtnPositive.setOnClickListener{
+            deleteOkBtn.setOnClickListener{
                 if(viewModelData.type == ShowType.SERVER){
                     viewModel.deleteServerBillData(viewModelData.uid.toLong())
                     dismiss()

@@ -36,9 +36,9 @@ class SendCheckBottomSheet(
     }
 
     override fun initListener() {
-        binding.cancleBtn.setOnClickListener { dismiss() }
+        binding.sendCancleBtn.setOnClickListener { dismiss() }
 
-        binding.sendBtn.setOnClickListener {
+        binding.sendOkBtn.setOnClickListener {
             viewModel.insertBillData(
                 AppSendData(
                     billSubmitTime = data.date,

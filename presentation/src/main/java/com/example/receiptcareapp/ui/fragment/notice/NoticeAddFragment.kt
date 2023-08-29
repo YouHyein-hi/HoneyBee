@@ -25,12 +25,12 @@ class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
     override fun initUI() {}
 
     override fun initListener() {
-        binding.addBtn.setOnClickListener {
+        binding.noticeAddAddBtn.setOnClickListener {
             viewModel.insertNotice(
                 DomainAddNoticeData(
-                    title = binding.titleEditTxt.text.toString(),
+                    title = binding.noticeAddTitleEdit.text.toString(),
                     date = LocalDateTime.now(),
-                    content = binding.contentEditTxt.text.toString()
+                    content = binding.noticeAddContentEdit.text.toString()
                 )
             )
         }

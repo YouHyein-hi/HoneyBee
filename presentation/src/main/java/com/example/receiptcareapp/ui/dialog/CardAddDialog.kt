@@ -36,93 +36,93 @@ class CardAddDialog(
     override fun initListener() {
         with(binding){
 
-            dialogcardEditCardprice.setOnEditorActionListener { v, actionId, event ->
+            cardAddPriceEdit.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
-                if (actionId == EditorInfo.IME_ACTION_NEXT && dialogcardEditCardprice.text.isNotEmpty()) {
-                    dialogcardEditCardprice.setText(viewModel.PriceFormat(dialogcardEditCardprice.text.toString()))
+                if (actionId == EditorInfo.IME_ACTION_NEXT && cardAddPriceEdit.text.isNotEmpty()) {
+                    cardAddPriceEdit.setText(viewModel.PriceFormat(cardAddPriceEdit.text.toString()))
                 }
                 handled
             }
 
-            val hintCardNmae = dialogcardEditCardname.hint
+            val hintCardNmae = cardAddNameEdit.hint
             val emphasis_yellow = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.emphasis_yellow))
-            dialogcardEditCardname.setOnFocusChangeListener { view, hasFocus ->
-                if (!hasFocus && dialogcardEditCardname.text.isEmpty()) {
-                    dialogcardEditCardname.hint = getString(R.string.dialog_cardAdd_name_err)
-                    dialogcardEditCardname.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                } else if(hasFocus && !dialogcardEditCardname.text.isEmpty())  {
-                    dialogcardEditCardname.hint = hintCardNmae // 초기 hint로 되돌리기
-                    dialogcardEditCardname.backgroundTintList = emphasis_yellow
+            cardAddNameEdit.setOnFocusChangeListener { view, hasFocus ->
+                if (!hasFocus && cardAddNameEdit.text.isEmpty()) {
+                    cardAddNameEdit.hint = getString(R.string.dialog_cardAdd_name_err)
+                    cardAddNameEdit.backgroundTintList = ColorStateList.valueOf(Color.RED)
+                } else if(hasFocus && !cardAddNameEdit.text.isEmpty())  {
+                    cardAddNameEdit.hint = hintCardNmae // 초기 hint로 되돌리기
+                    cardAddNameEdit.backgroundTintList = emphasis_yellow
                 }
-                else if(!hasFocus && !dialogcardEditCardname.text.isEmpty()){
-                    dialogcardEditCardname.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+                else if(!hasFocus && !cardAddNameEdit.text.isEmpty()){
+                    cardAddNameEdit.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
                 }
             }
-            val hintCardPrice = dialogcardEditCardprice.hint
-            dialogcardEditCardprice.setOnFocusChangeListener { view, hasFocus ->
+            val hintCardPrice = cardAddPriceEdit.hint
+            cardAddPriceEdit.setOnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
-                    if (dialogcardEditCardprice.text.contains(",")) {
-                        dialogcardEditCardprice.setText(viewModel.CommaReplaceSpace(dialogcardEditCardprice.text.toString()))
-                        dialogcardEditCardprice.setSelection(dialogcardEditCardprice.text.length)
+                    if (cardAddPriceEdit.text.contains(",")) {
+                        cardAddPriceEdit.setText(viewModel.CommaReplaceSpace(cardAddPriceEdit.text.toString()))
+                        cardAddPriceEdit.setSelection(cardAddPriceEdit.text.length)
                     }
                 }
-                else { dialogcardEditCardprice.setText(viewModel.PriceFormat(dialogcardEditCardprice.text.toString())) }
+                else { cardAddPriceEdit.setText(viewModel.PriceFormat(cardAddPriceEdit.text.toString())) }
 
-                if (!hasFocus && dialogcardEditCardprice.text.isEmpty()) {
+                if (!hasFocus && cardAddPriceEdit.text.isEmpty()) {
                     // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
-                    dialogcardEditCardprice.hint = getString(R.string.dialog_cardAdd_price_err)
-                    dialogcardEditCardprice.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                } else if(hasFocus && !dialogcardEditCardprice.text.isEmpty()) {
-                    dialogcardEditCardprice.hint = hintCardPrice // 초기 hint로 되돌리기
-                    dialogcardEditCardprice.backgroundTintList = emphasis_yellow
+                    cardAddPriceEdit.hint = getString(R.string.dialog_cardAdd_price_err)
+                    cardAddPriceEdit.backgroundTintList = ColorStateList.valueOf(Color.RED)
+                } else if(hasFocus && !cardAddPriceEdit.text.isEmpty()) {
+                    cardAddPriceEdit.hint = hintCardPrice // 초기 hint로 되돌리기
+                    cardAddPriceEdit.backgroundTintList = emphasis_yellow
                 }
-                else if(!hasFocus && !dialogcardEditCardprice.text.isEmpty()){
-                    dialogcardEditCardprice.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+                else if(!hasFocus && !cardAddPriceEdit.text.isEmpty()){
+                    cardAddPriceEdit.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
                 }
             }
-            val hintBillCardCheck = dialogcardEditBillCardCheck.hint
-            dialogcardEditBillCardCheck.setOnFocusChangeListener { view, hasFocus ->
-                if (!hasFocus && dialogcardEditBillCardCheck.text.isEmpty()) {
+            val hintBillCardCheck = cardAddBillCheckEdit.hint
+            cardAddBillCheckEdit.setOnFocusChangeListener { view, hasFocus ->
+                if (!hasFocus && cardAddBillCheckEdit.text.isEmpty()) {
                     // 포커스를 가지고 있지 않은 경우 AND Empty인 경우
-                    dialogcardEditBillCardCheck.hint = getString(R.string.dialog_cardAdd_billCheckDate_err1)
-                    dialogcardEditBillCardCheck.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                } else if(hasFocus && !dialogcardEditBillCardCheck.text.isEmpty()) {
-                    dialogcardEditBillCardCheck.hint = hintBillCardCheck // 초기 hint로 되돌리기
-                    dialogcardEditBillCardCheck.backgroundTintList = emphasis_yellow
+                    cardAddBillCheckEdit.hint = getString(R.string.dialog_cardAdd_billCheckDate_err1)
+                    cardAddBillCheckEdit.backgroundTintList = ColorStateList.valueOf(Color.RED)
+                } else if(hasFocus && !cardAddBillCheckEdit.text.isEmpty()) {
+                    cardAddBillCheckEdit.hint = hintBillCardCheck // 초기 hint로 되돌리기
+                    cardAddBillCheckEdit.backgroundTintList = emphasis_yellow
                 }
-                else if(!hasFocus && !dialogcardEditBillCardCheck.text.isEmpty()){
-                    dialogcardEditBillCardCheck.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
+                else if(!hasFocus && !cardAddBillCheckEdit.text.isEmpty()){
+                    cardAddBillCheckEdit.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
                 }
             }
 
-            dialogCardBtnPositive.setOnClickListener{
-                var price = dialogcardEditCardprice.text.toString()
+            cardAddOkBtn.setOnClickListener{
+                var price = cardAddPriceEdit.text.toString()
                 var priceZero = price.count { it == '0' }
-                var cardName = dialogcardEditCardname.text.toString()
-                if(dialogcardEditCardname.text.toString() == ""){
+                var cardName = cardAddNameEdit.text.toString()
+                if(cardAddNameEdit.text.toString() == ""){
                     showShortToast(getString(R.string.dialog_cardAdd_name))
                 }
-                else if(dialogcardEditCardprice.text.toString() == ""){
+                else if(cardAddPriceEdit.text.toString() == ""){
                     showShortToast(getString(R.string.dialog_cardAdd_price))
                 }
                 else if(priceZero == price.length){
                     showShortToast(getString(R.string.dialog_cardAdd_price_zero))
                 }
-                else if(dialogcardEditBillCardCheck.text.toString() == ""){
+                else if(cardAddBillCheckEdit.text.toString() == ""){
                     showShortToast(getString(R.string.dialog_cardAdd_billCheckDate))
                 }
-                else if (dialogcardEditBillCardCheck.text.toString().toInt() > 31){
+                else if (cardAddBillCheckEdit.text.toString().toInt() > 31){
                     showShortToast(getString(R.string.dialog_cardAdd_billCheckDate_err2))
                 }
                 else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
                     if (price.contains(","))
                         price = price.replace(",", "")
-                    homeViewModel.insertServerCardData(AppSendCardData(dialogcardEditCardname.text.toString(), price.toInt(), dialogcardEditBillCardCheck.text.toString()))
+                    homeViewModel.insertServerCardData(AppSendCardData(cardAddNameEdit.text.toString(), price.toInt(), cardAddBillCheckEdit.text.toString()))
                     dismiss()
                 }
             }
 
-            dialogCardBtnNegative.setOnClickListener{
+            cardAddCancelBtn.setOnClickListener{
                 Log.e("TAG", "onResume: 카드 추가 취소", )
                 dismiss()
             }

@@ -46,7 +46,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mainRecycler"
+        android:id="@+id/recordList_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,7 +56,7 @@
         tools:listitem="@layout/item_bill_list_server" />
 
     <TextView
-        android:id="@+id/empty_text"
+        android:id="@+id/recordList_empty_txt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

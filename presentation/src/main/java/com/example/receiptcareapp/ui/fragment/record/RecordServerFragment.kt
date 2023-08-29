@@ -82,13 +82,13 @@ class RecordServerFragment(
     }
 
     private fun emptyTextControl(state: Boolean, massage: String = "데이터가 비었어요!"){
-        binding.emptyText.isVisible = state
-        binding.emptyText.text = massage
+        binding.recordListEmptyTxt.isVisible = state
+        binding.recordListEmptyTxt.text = massage
     }
 
     private fun initServerRecyclerView() {
-        binding.mainRecycler.layoutManager = LinearLayoutManager(requireContext())
-        binding.mainRecycler.adapter = recordServerAdapter
+        binding.recordListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recordListRecyclerView.adapter = recordServerAdapter
         recordServerAdapter.dataList.clear()
     }
 }

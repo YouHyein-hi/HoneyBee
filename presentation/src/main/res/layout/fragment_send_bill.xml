@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:id="@+id/spinner_card"
+            android:id="@+id/sendBill_card_spinner"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginStart="30dp"
@@ -46,7 +46,7 @@
             app:layout_constraintTop_toBottomOf="@+id/explain2" />
 
         <AutoCompleteTextView
-            android:id="@+id/editTxt_store"
+            android:id="@+id/sendBill_store_edit"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="30dp"
@@ -64,10 +64,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_card" />
+            app:layout_constraintTop_toBottomOf="@+id/sendBill_card_spinner" />
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/editTxt_price"
+            android:id="@+id/sendBill_price_edit"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="30dp"
@@ -83,10 +83,10 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTxt_store" />
+            app:layout_constraintTop_toBottomOf="@+id/sendBill_store_edit" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_date"
+            android:id="@+id/sendBill_date_btn"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="30dp"
@@ -100,7 +100,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTxt_price" />
+            app:layout_constraintTop_toBottomOf="@+id/sendBill_price_edit" />
 
         <LinearLayout
             android:id="@+id/bottom_layout"
@@ -116,10 +116,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_date">
+            app:layout_constraintTop_toBottomOf="@+id/sendBill_date_btn">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/cancle_btn"
+                android:id="@+id/sendBill_cancle_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="2dp"
@@ -130,7 +130,7 @@
                 android:textColor="@color/main_font_black" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/complete_btn"
+                android:id="@+id/sendBill_ok_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"

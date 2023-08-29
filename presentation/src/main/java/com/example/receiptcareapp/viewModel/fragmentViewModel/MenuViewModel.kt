@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MenuViewModel @Inject constructor(
     private val preferenceManager: PreferenceManager
-) : BaseViewModel() {
+) : BaseViewModel("MenuViewModel") {
 
     private val _pushTime = MutableLiveData<TimeData>()
     val pushTime: LiveData<TimeData>

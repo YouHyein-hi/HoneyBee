@@ -24,7 +24,7 @@ import javax.inject.Inject
 class CardViewModel @Inject constructor(
     private val insertCardUseCase: InsertCardUseCase,
     private val getCardListUseCase: GetCardListUseCase
-) : BaseViewModel() {
+) : BaseViewModel("CardViewModel") {
 
     val loading: MutableLiveData<Boolean> get() = isLoading
 

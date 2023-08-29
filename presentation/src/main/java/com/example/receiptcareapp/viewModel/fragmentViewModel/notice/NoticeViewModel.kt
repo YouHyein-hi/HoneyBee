@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NoticeViewModel @Inject constructor(
     private val getNoticeListUseCase: GetNoticeListUseCase
-) : BaseViewModel(){
+) : BaseViewModel("NoticeViewModel"){
 
     val loading : MutableLiveData<Boolean> get() = isLoading
 

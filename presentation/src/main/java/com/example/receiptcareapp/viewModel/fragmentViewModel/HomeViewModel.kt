@@ -18,7 +18,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getCardListUseCase: GetCardListUseCase,
     private val getNoticeListUseCase: GetNoticeListUseCase,
-) : BaseViewModel() {
+) : BaseViewModel("HomeViewModel") {
 
     init {
         Log.e("TAG", "HomeCardBottomSheetViewModel")

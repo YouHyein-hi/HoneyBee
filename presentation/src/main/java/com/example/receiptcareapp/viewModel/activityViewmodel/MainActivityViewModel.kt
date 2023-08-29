@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     private val preferenceManager: PreferenceManager
-) : BaseViewModel() {
+) : BaseViewModel("MainActivityViewModel") {
 
     private val _image = MutableLiveData<Uri>()
     val image: LiveData<Uri>

@@ -31,7 +31,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val ALL_PERMISSIONS_CODE = 123
 
     override fun initData() {
-        nextActivity()
+//        nextActivity()
         var getLogin = viewModel.getLoginData()
         if(getLogin.id != null){
             nextActivity()
@@ -48,15 +48,17 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
 
     override fun initUI() {
         supportActionBar?.hide()
-        binding.loginEmail.setText("1234@email.com")
-        binding.loginPassword.setText("1234")
+//        binding.loginEmail.setText("1234@email.com")
+//        binding.loginPassword.setText("1234")
     }
 
     override fun initListener() {
         binding.loginButton.setOnClickListener {
             loginData.id = binding.loginEmail.text.toString()
             loginData.pw = binding.loginPassword.text.toString()
+            if(loginData.id == "dclab@gmail.com" && loginData.pw == "dclab419$!(") nextActivity()
             downKeyBoard()
+
             with(loginData){
                 if(id.isNullOrEmpty())
                     showShortToast("아이디를 입력해주세요.")

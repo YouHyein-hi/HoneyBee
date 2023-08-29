@@ -48,7 +48,7 @@ class SendBillViewModel @Inject constructor(
     private val insertDataRoomUseCase: InsertDataRoomUseCase,
     private val getStoreListUseCase: GetStoreListUseCase,
     private val getCardSpinnerUseCase: GetCardSpinnerUseCase
-) : BaseViewModel() {
+) : BaseViewModel("SendBillViewModel") {
 
     val loading: LiveData<Boolean> get() = isLoading
 

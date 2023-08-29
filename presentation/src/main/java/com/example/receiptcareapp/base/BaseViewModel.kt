@@ -14,16 +14,16 @@ import java.net.UnknownHostException
  * 2023-02-15
  * pureum
  */
-abstract class BaseViewModel : ViewModel(){
+abstract class BaseViewModel(val name: String) : ViewModel(){
     init {
-        Log.e("TAG", "만들어짐!!: ", )
+        Log.e("TAG", "$name 생성", )
     }
     //로딩 관리
     protected val isLoading = MutableLiveData(false)
-    //룸 결과 관리
 
     private var _fetchState = MutableLiveData<Pair<Throwable, FetchState>>()
     val fetchState : LiveData<Pair<Throwable, FetchState>> get() = _fetchState
+    fun initFetchState(){ _fetchState = MutableLiveData<Pair<Throwable, FetchState>>() }
 
     protected val waitTime = 4000L
 
@@ -34,7 +34,10 @@ abstract class BaseViewModel : ViewModel(){
         coroutineContext.job.cancel() // 여기에 coroutineContext를 붙여야 정상 취소되는데 왜그럴까?
         throwable.printStackTrace()
 
-        Log.e("TAG", "base err : $throwable", )
+        Log.e("TAG", "base err : ${throwable.message}")
+        Log.e("TAG", "base err : ${throwable.cause}")
+        Log.e("TAG", "base err : ${throwable.localizedMessage}")
+        Log.e("TAG", "base err : ${throwable.stackTrace}")
         when(throwable){
             is SocketException -> _fetchState.value = Pair(throwable, FetchState.BAD_INTERNET)
             is HttpException -> _fetchState.value = Pair(throwable, FetchState.PARSE_ERROR)
@@ -48,8 +51,13 @@ abstract class BaseViewModel : ViewModel(){
     }
 
     //디스패쳐 메인에서 돌아감
-    //TODO IO 에서 돌아가는 Retrofit도 해당 스코프로도 잘 돌아가는데 왜그럴까?
+    //TODO IO 에서 돌아가는 Retrofit도 해당 스코프로도 잘 돌아가는데 왜그러냐면,
     // 레트로핏 자체적으로 IO에서 실행시키는 기능때문에.
     protected val modelScope = viewModelScope + job + exceptionHandler
     protected val ioScope = CoroutineScope(Dispatchers.IO) + job + exceptionHandler
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.e("TAG", "$name 삭제", )
+    }
 }

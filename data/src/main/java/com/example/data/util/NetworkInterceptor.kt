@@ -39,6 +39,11 @@ class NetworkInterceptor @Inject constructor(
         return response
     }
 
+    private fun requestMaker(token: String?, request: Request): Request =
+        request
+            .newBuilder()
+            .header("Authorization", "Bearer $token")
+            .build()
 
     //TODO 토큰이 만료됐을 경우 리프레쉬 토큰을 실어서 서버에 요청한 후, 새 엑세스 토큰 값을 반환받아야 함
     //TODO 이 부분은 서버 구현이 되어야 구현 가능
@@ -48,10 +53,4 @@ class NetworkInterceptor @Inject constructor(
             .header("Authorization", preferenceManager.getRefreshToken() ?: "")
             .build().toString()
     }
-
-    private fun requestMaker(token: String?, request: Request): Request =
-        request
-            .newBuilder()
-            .header("Authorization", "Bearer $token")
-            .build()
 }

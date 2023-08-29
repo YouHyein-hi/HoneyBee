@@ -1,5 +1,8 @@
 package com.example.data.repoImpl
 
+import com.example.data.mapper.ResponseMapper.toServerCardData
+import com.example.data.mapper.ResponseMapper.toServerCardSpinnerData
+import com.example.data.mapper.ResponseMapper.toServerResponseData
 import com.example.data.remote.dataSource.CardDataSource
 import com.example.domain.model.receive.card.ServerCardData
 import com.example.domain.model.receive.card.ServerCardSpinnerData
@@ -7,9 +10,6 @@ import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.DomainSendCardData
 import com.example.domain.repo.CardRepository
 import com.example.domain.util.StringUtil
-import toServerCardData
-import toServerCardSpinnerData
-import toServerResponseData
 import javax.inject.Inject
 
 /**

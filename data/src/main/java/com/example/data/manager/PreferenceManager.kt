@@ -44,6 +44,8 @@ class PreferenceManager @Inject constructor(
         sharedPreference.edit().remove("sharedPreference_pw").apply()
     }
 
+
+
     //Auth Token Control
     fun putAccessToken(accessToken : String){
         sharedPreference.edit().putString("access_token", accessToken).apply()
@@ -51,6 +53,21 @@ class PreferenceManager @Inject constructor(
 
     fun putRefreshToken(refreshToken : String){
         sharedPreference.edit().putString("refresh_token", refreshToken).apply()
+    }
+
+    fun putUserName(name: String){
+        sharedPreference.edit().putString("name", name).apply()
+    }
+
+    fun putUserRight(right: String){
+        sharedPreference.edit().putString("right", right).apply()
+    }
+
+    fun putAuthData(accessToken: String, refreshToken: String, name: String, right: String){
+        sharedPreference.edit().putString("access_token", accessToken).apply()
+        sharedPreference.edit().putString("refresh_token", refreshToken).apply()
+        sharedPreference.edit().putString("name", name).apply()
+        sharedPreference.edit().putString("right", right).apply()
     }
 
     fun getAccessToken(): String?{
@@ -61,6 +78,14 @@ class PreferenceManager @Inject constructor(
         return sharedPreference.getString("refresh_token", null)
     }
 
+    fun getUserName(): String?{
+        return sharedPreference.getString("name", null)
+    }
+
+    fun getUserRight(): String?{
+        return sharedPreference.getString("right", null)
+    }
+
     fun clearAccessToken(){
         sharedPreference.edit().remove("access_token").apply()
     }
@@ -68,6 +93,22 @@ class PreferenceManager @Inject constructor(
     fun clearRefreshToken(){
         sharedPreference.edit().remove("refresh_token").apply()
     }
+
+    fun clearUserName(){
+        sharedPreference.edit().remove("name").apply()
+    }
+
+    fun clearUserRight(){
+        sharedPreference.edit().remove("right").apply()
+    }
+
+    fun clearAuthAll(){
+        sharedPreference.edit().remove("access_token").apply()
+        sharedPreference.edit().remove("refresh_token").apply()
+        sharedPreference.edit().remove("name").apply()
+        sharedPreference.edit().remove("right").apply()
+    }
+
 
 
 

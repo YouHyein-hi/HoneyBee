@@ -1,6 +1,7 @@
 package com.example.data.remote.dataSourceImpl
 
 import ServerResponse
+import com.example.data.di.RetrofitModule
 import com.example.data.remote.dataSource.CardDataSource
 import com.example.data.remote.model.ServerCardResponse
 import retrofit2.Retrofit
@@ -11,17 +12,15 @@ import javax.inject.Inject
  * pureum
  */
 class CardDataSourceImpl @Inject constructor(
-    private val retrofit: Retrofit
+    @RetrofitModule.Api private val retrofit: Retrofit
 ) : CardDataSource {
     override suspend fun sendCardDataSource(
         cardName: String,
         amount: Int,
         billCheckDate: String
     ): ServerResponse<String> {
-        val gap = retrofit.create(CardDataSource::class.java)
+        return retrofit.create(CardDataSource::class.java)
             .sendCardDataSource(cardName = cardName, amount = amount, billCheckDate = billCheckDate)
-
-        return gap
     }
 
     override suspend fun getCardDataSource(): ServerResponse<List<ServerCardResponse>> {

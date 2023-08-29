@@ -1,6 +1,7 @@
 package com.example.data.remote.dataSource
 
 import ServerResponse
+import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -15,5 +16,5 @@ interface LoginDataSource {
     suspend fun requestLogin(
         @Field("email") email : String,
         @Field("password") password : String,
-    ): ServerResponse<String>
+    ): Response<ServerResponse<String>>?
 }

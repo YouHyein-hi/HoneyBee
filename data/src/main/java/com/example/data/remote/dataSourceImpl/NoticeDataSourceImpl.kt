@@ -1,6 +1,7 @@
 package com.example.data.remote.dataSourceImpl
 
 import ServerResponse
+import com.example.data.di.RetrofitModule
 import com.example.data.remote.dataSource.NoticeDataSource
 import com.example.data.remote.model.ServerNoticeResponse
 import retrofit2.Retrofit
@@ -12,7 +13,7 @@ import javax.inject.Inject
  * pureum
  */
 class NoticeDataSourceImpl @Inject constructor(
-    private val retrofit: Retrofit
+    @RetrofitModule.Api private val retrofit: Retrofit
 ) : NoticeDataSource {
     override suspend fun getNoticeListDataSource(): ServerResponse<List<ServerNoticeResponse>> {
         return retrofit.create(NoticeDataSource::class.java).getNoticeListDataSource()

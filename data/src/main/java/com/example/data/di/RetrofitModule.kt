@@ -13,6 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 /**
@@ -25,6 +26,13 @@ object RetrofitModule {
 
     var gson = GsonBuilder().setLenient().create()
 
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class Login
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class Api
 
     @Singleton
     @Provides
@@ -33,6 +41,7 @@ object RetrofitModule {
 
     @Singleton
     @Provides
+    @Api
     fun provideOkhttp(networkInterceptor: NetworkInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(networkInterceptor)
@@ -41,10 +50,27 @@ object RetrofitModule {
 
     @Singleton
     @Provides
+    @Api
     fun provideSendRetrofit(interceptorOkHttpClient: OkHttpClient):Retrofit{
         return Retrofit.Builder()
             .baseUrl("http://210.119.104.158:8080/")
             .client(interceptorOkHttpClient)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
+
+
+
+
+
+    @Singleton
+    @Provides
+    @Login
+    fun provideLoginRetrofit():Retrofit{
+        return Retrofit.Builder()
+            .baseUrl("http://210.119.104.158:8080/")
+            .client(okHttpClient)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

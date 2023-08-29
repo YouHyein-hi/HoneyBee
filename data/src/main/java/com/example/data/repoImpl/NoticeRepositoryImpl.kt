@@ -1,13 +1,13 @@
 package com.example.data.repoImpl
 
+import com.example.data.mapper.ResponseMapper.toServerNoticeData
+import com.example.data.mapper.ResponseMapper.toServerResponseData
 import com.example.data.remote.dataSource.NoticeDataSource
 import com.example.domain.model.receive.notice.ServerNoticeData
 import com.example.domain.model.receive.ServerResponseData
 import com.example.domain.model.send.DomainAddNoticeData
 import com.example.domain.repo.NoticeRepository
 import com.example.domain.util.StringUtil
-import toServerNoticeData
-import toServerResponseData
 import javax.inject.Inject
 
 /**

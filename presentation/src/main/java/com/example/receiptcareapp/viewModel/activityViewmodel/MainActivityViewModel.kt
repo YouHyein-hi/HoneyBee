@@ -34,6 +34,6 @@ class MainActivityViewModel @Inject constructor(
     lateinit var selectedNoticeData : NoticeData
 
     fun clearAll(){
-        preferenceManager.clearAll()
+        preferenceManager.clearLoginPassword()
     }
 }

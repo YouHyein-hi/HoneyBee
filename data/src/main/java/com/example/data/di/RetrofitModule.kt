@@ -1,5 +1,6 @@
 package com.example.data.di
 
+import com.example.data.util.NetworkInterceptor
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -11,6 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
@@ -21,6 +23,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
+    @Inject
+    lateinit var interceptor: NetworkInterceptor
+
     var gson = GsonBuilder().setLenient().create()
 
     @Singleton
@@ -30,11 +35,16 @@ object RetrofitModule {
             .baseUrl("http://210.119.104.158:8080/")
 //            .baseUrl("http://192.168.1.13:8080/")
 //            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(okHttpClient)
             .build()
     }
+
+    private val interceptClient: OkHttpClient =
+        OkHttpClient.Builder()
+        .addNetworkInterceptor(interceptor)
+        .build()
 
     private val okHttpClient = OkHttpClient.Builder().
     addInterceptor(HttpLoggingInterceptor().apply {

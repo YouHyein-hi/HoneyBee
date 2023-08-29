@@ -86,7 +86,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             menuPushSwitch.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.putPush(isChecked)
                 if (isChecked) {
-                    setAlarm()
+                    checkMaxDayOfMonth()
                     showShortToast("푸시 알림 ON")
                 } else {
                     cancelAlarm()
@@ -109,14 +109,29 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     private fun PushTimeDialog(){
         PushTimeDialog(viewModel) {
             if (binding.menuPushSwitch.isChecked) {
-                setAlarm() // Switch가 켜져있다면 알람 설정
+                checkMaxDayOfMonth() // Switch가 켜져있다면 알람 설정
             }
         }.show(parentFragmentManager, "pushTimeDialog")
     }
 
-    private fun setAlarm() {
+    private fun checkMaxDayOfMonth() {
+        val currentDate = Calendar.getInstance()
+        val dayOfMonth = currentDate.get(Calendar.DAY_OF_MONTH)
+        val maxDayOfMonth = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH)
 
-        val targetTime = Calendar.getInstance().apply {
+        val daysBeforeMaxDay = listOf(1, 2, 3)
+
+        if (dayOfMonth == maxDayOfMonth || daysBeforeMaxDay.contains(maxDayOfMonth - dayOfMonth)) {
+            Log.e("TAG", "MenuFragment : Alarm set on day $dayOfMonth")
+            setAlarm()
+        } else {
+            Log.d("TAG", "MenuFragment : Alarm not set on day $dayOfMonth")
+            setAlarm()
+        }
+
+
+
+/*        val targetTime = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
             set(Calendar.MINUTE, viewModel.getTime().minute!!)
@@ -141,6 +156,19 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             AlarmManager.RTC_WAKEUP,
             targetTime.timeInMillis,
             AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )*/
+    }
+
+    private fun setAlarm(){
+        val targetTime = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
+            set(Calendar.MINUTE, viewModel.getTime().minute!!)
+        }
+        alarmManager.setExact(
+            AlarmManager.RTC_WAKEUP,
+            targetTime.timeInMillis,
             pendingIntent
         )
     }

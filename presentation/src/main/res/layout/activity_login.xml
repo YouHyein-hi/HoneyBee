@@ -83,7 +83,7 @@
                 android:textSize="15dp" />
 
             <EditText
-                android:id="@+id/login_email"
+                android:id="@+id/login_email_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -112,7 +112,7 @@
                 android:textSize="15dp" />
 
             <EditText
-                android:id="@+id/login_password"
+                android:id="@+id/login_password_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -124,7 +124,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_button"
+        android:id="@+id/login_login_btn"
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_marginTop="15dp"

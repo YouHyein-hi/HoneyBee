@@ -49,7 +49,7 @@
         <!--            android:text="@{@string/bottomSheet_sub_title(cardCount)}"-->
 
         <ImageButton
-            android:id="@+id/addBtn"
+            android:id="@+id/card_add_btn"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginTop="30dp"
@@ -59,7 +59,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cardRecyclerview"
+            android:id="@+id/card_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_marginLeft="20dp"
@@ -96,14 +96,14 @@
 <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
-            android:id="@+id/emptyTxt"
+            android:id="@+id/card_empty_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendardbold"
             android:text="@string/bottomSheet_card_empty"
             android:textSize="30dp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/cardRecyclerview"
+            app:layout_constraintBottom_toBottomOf="@+id/card_recyclerview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

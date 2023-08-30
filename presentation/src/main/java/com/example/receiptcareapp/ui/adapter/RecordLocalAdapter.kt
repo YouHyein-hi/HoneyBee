@@ -23,10 +23,10 @@ class RecordLocalAdapter: RecyclerView.Adapter<RecordLocalAdapter.MyAdapter>(){
 
     inner class MyAdapter(private val binding: ItemBillListLocalBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:RecyclerShowData){
-            binding.storeName.text = list.storeName
-            binding.cardName.text = "${list.cardName}카드"
-            binding.amount.text = list.amount
-            binding.dateTxt.text = StringUtil.changeDate(list.date)
+            binding.recordItemStoreTxt.text = list.storeName
+            binding.recordItemCardTxt.text = "${list.cardName}카드"
+            binding.recordItemAmountTxt.text = list.amount
+            binding.recordItemDateTxt.text = StringUtil.changeDate(list.date)
             binding.listLayout.setOnClickListener{ onLocalSaveClic(list) }
         }
     }

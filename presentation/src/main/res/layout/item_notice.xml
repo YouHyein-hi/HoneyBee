@@ -6,7 +6,7 @@
     android:layout_height="100dp">
 
     <LinearLayout
-        android:id="@+id/noticeLayout"
+        android:id="@+id/noticeItem_component"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -27,7 +27,7 @@
             android:paddingLeft="25dp">
 
             <TextView
-                android:id="@+id/noticeItem_title"
+                android:id="@+id/noticeItem_title_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardsemibold"
@@ -35,7 +35,7 @@
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/noticeItem_date"
+                android:id="@+id/noticeItem_date_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardmedium"
@@ -44,7 +44,7 @@
 
 
         <ImageButton
-            android:id="@+id/noticeShow_btn"
+            android:id="@+id/noticeItem_show_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_weight="1"
@@ -61,7 +61,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noticeLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/noticeItem_component" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

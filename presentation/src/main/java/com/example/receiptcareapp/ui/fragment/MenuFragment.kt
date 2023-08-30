@@ -52,7 +52,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     }
 
     override fun initUI() {
-        binding.pushTime.text = viewModel.timePickerText(
+        binding.menuPushTimeTxt.text = viewModel.timePickerText(
             viewModel.getTime().hour!!,
             viewModel.getTime().minute!!
         )
@@ -63,30 +63,30 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
         with(binding){
             menuBackBtn.setOnClickListener { findNavController().popBackStack() }
 
-            noticeBtn.setOnClickListener { findNavController().navigate(R.id.action_menuFragment_to_noticeFragment) }
+            menuNoticeBtn.setOnClickListener { findNavController().navigate(R.id.action_menuFragment_to_noticeFragment) }
 
-            licenseBtn.setOnClickListener {
+            menuLicenseBtn.setOnClickListener {
                 startActivity(Intent(requireActivity(), OssLicensesMenuActivity::class.java))
                 OssLicensesMenuActivity.setActivityTitle("오픈소스 라이선스")
             }
 
-            logoutBtn.setOnClickListener {
+            menuLogoutBtn.setOnClickListener {
                 activityViewModel.clearAll()
                 activity?.finish()
                 Toast.makeText(requireContext(), "로그아웃 성공.", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
 
-            pushTimeButton.setOnClickListener{
+            menuPushTimeBtn.setOnClickListener{
                 PushTimeDialog()
             }
 
 
-            pushSwitch.isChecked = viewModel.getPush()!!
-            pushSwitch.setOnCheckedChangeListener { _, isChecked ->
+            menuPushSwitch.isChecked = viewModel.getPush()!!
+            menuPushSwitch.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.putPush(isChecked)
                 if (isChecked) {
-                    setAlarm()
+                    checkMaxDayOfMonth()
                     showShortToast("푸시 알림 ON")
                 } else {
                     cancelAlarm()
@@ -98,7 +98,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
 
     override fun initObserver() {
         viewModel.pushTime.observe(viewLifecycleOwner) { pushTime ->
-            binding.pushTime.text = viewModel.timePickerText(pushTime.hour!!, pushTime.minute!!)
+            binding.menuPushTimeTxt.text = viewModel.timePickerText(pushTime.hour!!, pushTime.minute!!)
         }
 
         viewModel.fetchState.observe(this) {
@@ -108,15 +108,30 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
 
     private fun PushTimeDialog(){
         PushTimeDialog(viewModel) {
-            if (binding.pushSwitch.isChecked) {
-                setAlarm() // Switch가 켜져있다면 알람 설정
+            if (binding.menuPushSwitch.isChecked) {
+                checkMaxDayOfMonth() // Switch가 켜져있다면 알람 설정
             }
         }.show(parentFragmentManager, "pushTimeDialog")
     }
 
-    private fun setAlarm() {
+    private fun checkMaxDayOfMonth() {
+        val currentDate = Calendar.getInstance()
+        val dayOfMonth = currentDate.get(Calendar.DAY_OF_MONTH)
+        val maxDayOfMonth = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH)
 
-        val targetTime = Calendar.getInstance().apply {
+        val daysBeforeMaxDay = listOf(1, 2, 3)
+
+        if (dayOfMonth == maxDayOfMonth || daysBeforeMaxDay.contains(maxDayOfMonth - dayOfMonth)) {
+            Log.e("TAG", "MenuFragment : Alarm set on day $dayOfMonth")
+            setAlarm()
+        } else {
+            Log.d("TAG", "MenuFragment : Alarm not set on day $dayOfMonth")
+            setAlarm()
+        }
+
+
+
+/*        val targetTime = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
             set(Calendar.MINUTE, viewModel.getTime().minute!!)
@@ -141,6 +156,19 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             AlarmManager.RTC_WAKEUP,
             targetTime.timeInMillis,
             AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )*/
+    }
+
+    private fun setAlarm(){
+        val targetTime = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
+            set(Calendar.MINUTE, viewModel.getTime().minute!!)
+        }
+        alarmManager.setExact(
+            AlarmManager.RTC_WAKEUP,
+            targetTime.timeInMillis,
             pendingIntent
         )
     }

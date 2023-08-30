@@ -77,7 +77,7 @@ class SendBillFragment :
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                 .into(pictureView)
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-            btnDate.text = "${viewModel.dateNow().format(formatterDate)}"
+            sendBillDateBtn.text = "${viewModel.dateNow().format(formatterDate)}"
         }
 
     }
@@ -85,7 +85,7 @@ class SendBillFragment :
     override fun initListener() {
         with(binding) {
             /** Date Button -> DatePickerDialog 생성 **/
-            btnDate.setOnClickListener {
+            sendBillDateBtn.setOnClickListener {
                 val cal = Calendar.getInstance()
                 val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
                     dateData = DateData(
@@ -93,7 +93,7 @@ class SendBillFragment :
                         month = month + 1,
                         day = day
                     )
-                    btnDate.text =
+                    sendBillDateBtn.text =
                         "${year}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
                     selectedDate = LocalDate.of(year, month + 1, day)
                 }
@@ -110,15 +110,15 @@ class SendBillFragment :
 
 
             /** 금액 EidtText , 추가 **/
-            editTxtPrice.setOnEditorActionListener { v, actionId, event ->
+            sendBillPriceEdit.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
-                if (actionId == EditorInfo.IME_ACTION_DONE && editTxtPrice.text.isNotEmpty()) {
-                    editTxtPrice.setText(viewModel.PriceFormat(editTxtPrice.text.toString()))
+                if (actionId == EditorInfo.IME_ACTION_DONE && sendBillPriceEdit.text.isNotEmpty()) {
+                    sendBillPriceEdit.setText(viewModel.PriceFormat(sendBillPriceEdit.text.toString()))
                 }
                 handled
             }
 
-            editTxtStore.addTextChangedListener(object : TextWatcher {
+            sendBillStoreEdit.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence?,
                     start: Int,
@@ -135,7 +135,7 @@ class SendBillFragment :
                 }
             })
 
-            editTxtPrice.addTextChangedListener(object : TextWatcher {
+            sendBillPriceEdit.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence?,
                     start: Int,
@@ -152,35 +152,35 @@ class SendBillFragment :
                 }
             })
 
-            editTxtPrice.setOnFocusChangeListener { view, hasFocus ->
+            sendBillPriceEdit.setOnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
-                    if (editTxtPrice.text.contains(",")) {
-                        editTxtPrice.setText(viewModel.CommaReplaceSpace(editTxtPrice.text.toString()))
-                        editTxtPrice.setSelection(editTxtPrice.text.length)
+                    if (sendBillPriceEdit.text.contains(",")) {
+                        sendBillPriceEdit.setText(viewModel.CommaReplaceSpace(sendBillPriceEdit.text.toString()))
+                        sendBillPriceEdit.setSelection(sendBillPriceEdit.text.length)
                     }
                 } else {
-                    editTxtPrice.setText(viewModel.PriceFormat(editTxtPrice.text.toString()))
+                    sendBillPriceEdit.setText(viewModel.PriceFormat(sendBillPriceEdit.text.toString()))
                 }
             }
 
             /** 완료 Button **/
-            completeBtn.setOnClickListener {
+            sendBillOkBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
-                var price = editTxtPrice.text.toString()
+                var price = sendBillPriceEdit.text.toString()
                 var priceZero = price.count { it == '0' }
                 when {
                     cardName == "" -> { showShortToast("카드를 입력하세요.") }
-                    editTxtStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
-                    editTxtPrice.text.isEmpty() -> { showShortToast("금액을 입력하세요.") }
+                    sendBillStoreEdit.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
+                    sendBillPriceEdit.text.isEmpty() -> { showShortToast("금액을 입력하세요.") }
                     priceZero == price.length -> { showShortToast("금액에 0원은 입력이 안됩니다.")}
-                    btnDate.text.isEmpty() -> { showShortToast("날짜를 입력하세요.") }
+                    sendBillDateBtn.text.isEmpty() -> { showShortToast("날짜를 입력하세요.") }
                     selectedDate!!.isAfter(todayDate) -> { showShortToast("오늘보다 미래 날짜는 불가능합니다.") }
                     activityViewModel.image.value == null -> {
                         showShortToast("사진이 비었습니다.\n초기화면으로 돌아갑니다.")
                         NavHostFragment.findNavController(this@SendBillFragment).navigate(R.id.action_sendBillFragment_to_homeFragment)
                     }
                     else -> {
-                        if (!viewModel.amountCheck(editTxtPrice.text.toString(), cardAmount)) {
+                        if (!viewModel.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
                             showShortToast("보유금액보다 많은 비용입니다.")
                             return@setOnClickListener
                         }
@@ -189,9 +189,9 @@ class SendBillFragment :
                             viewModel,
                             BottomSheetData(
                                 cardName = cardName,
-                                amount = editTxtPrice.text.toString(),
+                                amount = sendBillPriceEdit.text.toString(),
                                 cardAmount = cardAmount,
-                                storeName = binding.editTxtStore.text.toString(),
+                                storeName = binding.sendBillStoreEdit.text.toString(),
                                 date = myLocalDateTime.toString(),
                                 picture = activityViewModel.image.value!!
                             )
@@ -201,12 +201,12 @@ class SendBillFragment :
                 }
             }
 
-            cancleBtn.setOnClickListener {
+            sendBillCancleBtn.setOnClickListener {
                 findNavController().navigate(R.id.action_sendBillFragment_to_homeFragment)
             }
         }
 
-        binding.spinnerCard.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.sendBillCardSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 adapterView: AdapterView<*>?,
                 view: View?,
@@ -272,7 +272,7 @@ class SendBillFragment :
                 findNavController().navigate(R.id.action_sendBillFragment_to_homeFragment)
             }
             it?.body?.forEach { cardDataList.add(it) }
-            binding.spinnerCard.adapter =
+            binding.sendBillCardSpinner.adapter =
                 SpinnerAdapter(requireContext(), ArrayList<CardSpinnerData>(cardDataList))
         }
 
@@ -280,7 +280,7 @@ class SendBillFragment :
             if (!response?.body.isNullOrEmpty()) {
                 storeArray.clear()
                 response?.body?.map { storeArray.add(it) }
-                binding.editTxtStore.setAdapter(StoreSpinner(requireContext(), storeArray))
+                binding.sendBillStoreEdit.setAdapter(StoreSpinner(requireContext(), storeArray))
             }
         }
 

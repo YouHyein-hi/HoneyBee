@@ -54,7 +54,7 @@ class CardBottomSheet(
     override fun initListener() {
         //서버 카드 추가 다이얼로그
         binding.cardCount = "0"
-        binding.addBtn.setOnClickListener{
+        binding.cardAddBtn.setOnClickListener{
             cardAddDialog()
         }
     }
@@ -96,7 +96,7 @@ class CardBottomSheet(
     }
 
     private fun changeEmptyTxt(state:Boolean){
-        binding.emptyTxt.isVisible = state
+        binding.cardEmptyTxt.isVisible = state
     }
 
     private fun cardAddDialog(){

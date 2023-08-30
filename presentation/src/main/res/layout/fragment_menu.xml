@@ -70,7 +70,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Switch
-            android:id="@+id/push_switch"
+            android:id="@+id/menu_push_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="33dp"
@@ -79,7 +79,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/push_time"
+            android:id="@+id/menu_pushTime_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -97,11 +97,11 @@
             android:layout_marginStart="3dp"
             android:fontFamily="@font/pretendardmedium"
             android:text="@string/menu_push_time_text"
-            app:layout_constraintStart_toEndOf="@+id/push_time"
-            app:layout_constraintTop_toTopOf="@+id/push_time" />
+            app:layout_constraintStart_toEndOf="@+id/menu_pushTime_txt"
+            app:layout_constraintTop_toTopOf="@+id/menu_pushTime_txt" />
 
         <TextView
-            android:id="@+id/push_timeButton"
+            android:id="@+id/menu_pushTime_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
@@ -137,7 +137,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
         <TextView
-            android:id="@+id/menu_apptext"
+            android:id="@+id/menu_app_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -149,7 +149,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/menu_appnum"
+            android:id="@+id/menu_appnum_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
@@ -162,7 +162,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/notice_btn"
+        android:id="@+id/menu_notice_btn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="30dp"
@@ -174,7 +174,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
 
         <TextView
-            android:id="@+id/menu_notice"
+            android:id="@+id/menu_notice_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -198,7 +198,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/license_btn"
+        android:id="@+id/menu_license_btn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="30dp"
@@ -207,7 +207,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notice_btn">
+        app:layout_constraintTop_toBottomOf="@+id/menu_notice_btn">
 
         <TextView
             android:id="@+id/textView25"
@@ -234,7 +234,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/logout_btn"
+        android:id="@+id/menu_logout_btn"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"

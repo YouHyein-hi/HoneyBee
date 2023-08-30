@@ -24,10 +24,10 @@ class RecordServerAdapter:RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
     inner class MyAdapter(private val binding: ItemBillListServerBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list: BillData){
             with(binding){
-                storeName.text = list.storeName
-                cardName.text = "${list.cardName}카드"
-                amount.text = list.storeAmount
-                dateTxt.text = list.date
+                recordItemStoreTxt.text = list.storeName
+                recordItemCardTxt.text = "${list.cardName}카드"
+                recordItemAmountTxt.text = list.storeAmount
+                recordItemDateTxt.text = list.date
                 listLayout.setOnClickListener{ onServerSaveClick(list) }
                 if(list.billCheck) {
                     billCheckLayout.visibility = View.VISIBLE

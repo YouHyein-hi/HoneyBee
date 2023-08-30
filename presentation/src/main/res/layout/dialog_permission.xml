@@ -187,7 +187,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/permission_button"
+        android:id="@+id/permission_ok_btn"
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_marginStart="30dp"

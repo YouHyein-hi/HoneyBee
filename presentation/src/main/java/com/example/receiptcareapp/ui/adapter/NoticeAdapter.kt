@@ -22,10 +22,10 @@ class NoticeAdapter : RecyclerView.Adapter<NoticeAdapter.MyHolder>(){
 
     inner class MyHolder(private val binding : ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NoticeData) {
-            binding.noticeItemTitle.text = item.title
-            binding.noticeItemDate.text = item.date
-            binding.noticeLayout.setOnClickListener { onNoticeClic(item) }
-            binding.noticeShowBtn.setOnClickListener { onNoticeClic(item) }
+            binding.noticeItemTitleTxt.text = item.title
+            binding.noticeItemDateTxt.text = item.date
+            binding.noticeItemComponent.setOnClickListener { onNoticeClic(item) }
+            binding.noticeItemShowBtn.setOnClickListener { onNoticeClic(item) }
         }
     }
 

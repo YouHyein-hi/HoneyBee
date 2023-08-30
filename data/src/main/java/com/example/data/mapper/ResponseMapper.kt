@@ -2,13 +2,13 @@ package com.example.data.mapper
 
 import ServerResponse
 import com.example.data.remote.model.*
-import com.example.domain.model.receive.ServerResponseData
-import com.example.domain.model.receive.ServerUidData
-import com.example.domain.model.receive.bill.ServerBillData
-import com.example.domain.model.receive.bill.ServerStoreData
-import com.example.domain.model.receive.card.ServerCardData
-import com.example.domain.model.receive.card.ServerCardSpinnerData
-import com.example.domain.model.receive.notice.ServerNoticeData
+import com.example.domain.model.remote.receive.basic.ServerResponseData
+import com.example.domain.model.remote.receive.basic.ServerUidData
+import com.example.domain.model.remote.receive.bill.ServerBillData
+import com.example.domain.model.remote.receive.bill.ServerStoreData
+import com.example.domain.model.remote.receive.card.ServerCardData
+import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
+import com.example.domain.model.remote.receive.notice.ServerNoticeData
 
 /**
  * 2023-08-30

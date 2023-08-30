@@ -18,7 +18,7 @@ class LoginDataSourceImpl @Inject constructor(
     private val headerManager: HeaderManager
 ): LoginDataSource {
     override suspend fun requestLogin(email: String, password: String): Response<ServerResponse<String>>? {
-        val response = retrofit.create(LoginDataSource::class.java).requestLogin(
+        retrofit.create(LoginDataSource::class.java).requestLogin(
             email = email,
             password = password
         )?.let {

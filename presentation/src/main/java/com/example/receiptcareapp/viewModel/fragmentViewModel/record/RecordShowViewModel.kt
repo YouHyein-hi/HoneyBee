@@ -1,43 +1,30 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel.record
 
 import android.content.Context
-import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.media.ExifInterface
-import android.net.Uri
-import android.provider.MediaStore
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.domain.model.UpdateData
-import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.card.DomainUpadateData
-import com.example.domain.model.receive.card.ServerCardSpinnerData
-import com.example.domain.model.receive.ServerUidData
-import com.example.domain.model.send.DomainSendData
+import com.example.domain.model.local.RoomData
+import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
+import com.example.domain.model.remote.receive.basic.ServerUidData
+import com.example.domain.model.remote.send.bill.SendBillData
+import com.example.domain.model.remote.send.bill.SendBillUpdateData
 import com.example.domain.usecase.bill.DeleteDataUseCase
 import com.example.domain.usecase.bill.GetPictureDataUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.bill.UpdateDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
-import com.example.domain.usecase.room.DeleteDataRoomUseCase
-import com.example.domain.usecase.room.UpdateRoomData
+import com.example.domain.usecase.room.DeleteRoomDataUseCase
+import com.example.domain.usecase.room.UpdateRoomDataUseCase
 import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.base.BaseViewModel
-import com.example.receiptcareapp.dto.LocalBillData
+import com.example.domain.model.ui.bill.LocalBillData
 import com.example.receiptcareapp.util.ResponseState
 import com.example.receiptcareapp.util.UriToBitmap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.net.SocketTimeoutException
 import java.text.DecimalFormat
 import java.time.LocalDateTime
@@ -55,14 +42,14 @@ class RecordShowViewModel @Inject constructor(
     private val updateDataUseCase: UpdateDataUseCase,
     private val getCardSpinnerUseCase: GetCardSpinnerUseCase,
     private val insertDataUseCase: InsertDataUseCase,
-    private val deleteDataRoomUseCase: DeleteDataRoomUseCase,
-    private val updateRoomData: UpdateRoomData
+    private val deleteRoomDataUseCase: DeleteRoomDataUseCase,
+    private val updateRoomDataUseCase: UpdateRoomDataUseCase
     ) : BaseViewModel("RecordShowViewModel") {
 
     val loading: MutableLiveData<Boolean> get() = isLoading
 
-    private var _response = MutableLiveData<Pair<ResponseState,ServerUidData?>>()
-    val response : LiveData<Pair<ResponseState,ServerUidData?>> get() = _response
+    private var _response = MutableLiveData<Pair<ResponseState, ServerUidData?>>()
+    val response : LiveData<Pair<ResponseState, ServerUidData?>> get() = _response
 
     // 서버 카드 전달받은 값 관리
     private var _cardList = MutableLiveData<ServerCardSpinnerData?>()
@@ -74,13 +61,13 @@ class RecordShowViewModel @Inject constructor(
         return _picture
     }
 
-    private lateinit var savedServerData: UpdateData
+    private lateinit var savedServerData: SendBillUpdateData
     private lateinit var savedLocalData: LocalBillData
 
 
     // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
     //서버 데이터 업데이트
-    fun updateServerBillData(sendData: UpdateData, uid: String) {
+    fun updateServerBillData(sendData: SendBillUpdateData) {
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
@@ -88,12 +75,13 @@ class RecordShowViewModel @Inject constructor(
                     Pair(
                         ResponseState.UPDATE_SUCCESS,
                         updateDataUseCase(
-                            DomainUpadateData(
-                                id = uid.toLong(),
+                            SendBillUpdateData(
+                                id = sendData.id,
                                 cardName = sendData.cardName,
                                 storeName = sendData.storeName,
-                                billSubmitTime = LocalDateTime.parse(sendData.billSubmitTime),
-                                amount = sendData.amount.replace(",", "").toInt()
+//                                billSubmitTime = LocalDateTime.parse(sendData.billSubmitTime),
+                                billSubmitTime = sendData.billSubmitTime,
+                                amount = sendData.amount
                             )
                         )
                     )
@@ -111,7 +99,7 @@ class RecordShowViewModel @Inject constructor(
                 _response.postValue(Pair(
                         ResponseState.LOCAL_UPDATE_SUCCESS,
                         insertDataUseCase(
-                            DomainSendData(
+                            SendBillData(
                                 cardName = MultipartBody.Part.createFormData(
                                     "cardName",
                                     sendData.cardName
@@ -151,7 +139,7 @@ class RecordShowViewModel @Inject constructor(
     fun deleteRoomBillData(date: String? = savedLocalData.billSubmitTime) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
-            deleteDataRoomUseCase(date!!)
+            deleteRoomDataUseCase(date!!)
             isLoading.postValue(false)
         }
 
@@ -159,11 +147,11 @@ class RecordShowViewModel @Inject constructor(
 
     fun upDataRoomData(){
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch{
-            updateRoomData(
-                DomainRoomData(
+            updateRoomDataUseCase(
+                RoomData(
                     uid = savedLocalData.uid,
                     cardName = savedLocalData.cardName,
-                    amount = savedLocalData.amount,
+                    storeAmount = savedLocalData.amount,
                     billSubmitTime = savedLocalData.billSubmitTime,
                     storeName = savedLocalData.storeName,
                     file = savedLocalData.picture.toString()

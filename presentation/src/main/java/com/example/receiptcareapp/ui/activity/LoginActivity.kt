@@ -11,7 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityLoginBinding
-import com.example.receiptcareapp.dto.LoginData
+import com.example.domain.model.ui.login.LoginData
 import com.example.receiptcareapp.util.PermissionHandler
 import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
 import com.example.receiptcareapp.util.FetchStateHandler

@@ -1,7 +1,7 @@
 package com.example.data.remote.model
 
-import com.example.domain.model.receive.card.CardData
-import com.example.domain.model.receive.card.CardSpinnerData
+import com.example.domain.model.remote.receive.card.CardData
+import com.example.domain.model.remote.receive.card.CardSpinnerData
 
 /**
  * 2023-08-20

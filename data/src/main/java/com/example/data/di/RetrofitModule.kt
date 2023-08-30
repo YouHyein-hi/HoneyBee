@@ -55,7 +55,7 @@ object RetrofitModule {
         return Retrofit.Builder()
             .baseUrl("http://210.119.104.158:8080/")
             .client(interceptorOkHttpClient)
-            .addConverterFactory(ScalarsConverterFactory.create())
+//            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }

@@ -5,5 +5,5 @@ package com.example.receiptcareapp.util
  * pureum
  */
 enum class ResponseState {
-    SUCCESS, FALSE, DELETE_SUCCESS, UPDATE_SUCCESS, LOCAL_UPDATE_SUCCESS
+    DELETE_SUCCESS, UPDATE_SUCCESS, LOCAL_UPDATE_SUCCESS
 }

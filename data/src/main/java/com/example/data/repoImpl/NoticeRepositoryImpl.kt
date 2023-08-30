@@ -3,9 +3,9 @@ package com.example.data.repoImpl
 import com.example.data.mapper.ResponseMapper.toServerNoticeData
 import com.example.data.mapper.ResponseMapper.toServerResponseData
 import com.example.data.remote.dataSource.NoticeDataSource
-import com.example.domain.model.receive.notice.ServerNoticeData
-import com.example.domain.model.receive.ServerResponseData
-import com.example.domain.model.send.DomainAddNoticeData
+import com.example.domain.model.remote.receive.notice.ServerNoticeData
+import com.example.domain.model.remote.receive.basic.ServerResponseData
+import com.example.domain.model.remote.send.notice.SendNoticeAddData
 import com.example.domain.repo.NoticeRepository
 import com.example.domain.util.StringUtil
 import javax.inject.Inject
@@ -23,11 +23,11 @@ class NoticeRepositoryImpl @Inject constructor(
         return ServerNoticeData(result.status, result.message, newList)
     }
 
-    override suspend fun addNoticeRepository(addNoticeData: DomainAddNoticeData): ServerResponseData {
+    override suspend fun addNoticeRepository(sendNoticeAddData: SendNoticeAddData): ServerResponseData {
         return noticeDataSource.addNoticeDataSource(
-            title = addNoticeData.title,
-            date = addNoticeData.date,
-            content = addNoticeData.content
+            title = sendNoticeAddData.title,
+            date = sendNoticeAddData.date,
+            content = sendNoticeAddData.content
         ).toServerResponseData()
     }
 }

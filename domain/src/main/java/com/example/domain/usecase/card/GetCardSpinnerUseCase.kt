@@ -1,6 +1,6 @@
 package com.example.domain.usecase.card
 
-import com.example.domain.model.receive.card.ServerCardSpinnerData
+import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.repo.CardRepository
 
 /**

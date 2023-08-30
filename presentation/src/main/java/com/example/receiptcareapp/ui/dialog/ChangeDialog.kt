@@ -1,18 +1,17 @@
 package com.example.receiptcareapp.ui.dialog
 
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.activityViewModels
-import com.example.domain.model.UpdateData
-import com.example.domain.model.receive.card.CardSpinnerData
-import com.example.domain.model.receive.DateData
-import com.example.receiptcareapp.State.ShowType
+import com.example.domain.model.remote.receive.card.CardSpinnerData
+import com.example.domain.model.remote.send.bill.SendBillUpdateData
+import com.example.domain.model.ui.dateTime.DateData
+import com.example.domain.model.ui.type.ShowType
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
-import com.example.receiptcareapp.dto.LocalBillData
-import com.example.receiptcareapp.dto.RecyclerData
+import com.example.domain.model.ui.bill.LocalBillData
+import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
@@ -87,13 +86,13 @@ class ChangeDialog(
                 else -> {
                     if (viewModelData.type == ShowType.SERVER) {
                         viewModel.updateServerBillData(
-                            sendData = UpdateData(
-                                billSubmitTime = myLocalDateTime.toString(),
-                                amount = binding.changePriceEdit.text.toString(),
+                            SendBillUpdateData(
+                                id = viewModelData.uid.toLong(),
+                                billSubmitTime = myLocalDateTime!!,
+                                amount = binding.changePriceEdit.text.toString().replace(",", "").toInt(),
                                 cardName = cardName,
                                 storeName = binding.changeStoreEdit.text.toString()
-                            ),
-                            uid = viewModelData.uid,
+                            )
                         )
                     } else {
                         viewModel.updateLocalBillData(

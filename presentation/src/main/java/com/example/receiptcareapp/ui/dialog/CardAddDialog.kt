@@ -5,18 +5,15 @@ import android.graphics.Color
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.example.domain.model.send.AppSendCardData
+import com.example.domain.model.remote.send.card.SendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardAddBinding
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.ResponseState
-import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel
-import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -117,7 +114,7 @@ class CardAddDialog(
                 else{
                     if (price.contains(","))
                         price = price.replace(",", "")
-                    homeViewModel.insertServerCardData(AppSendCardData(cardAddNameEdit.text.toString(), price.toInt(), cardAddBillCheckEdit.text.toString()))
+                    homeViewModel.insertServerCardData(SendCardData(cardAddNameEdit.text.toString(), price.toInt(), cardAddBillCheckEdit.text.toString()))
                     dismiss()
                 }
             }

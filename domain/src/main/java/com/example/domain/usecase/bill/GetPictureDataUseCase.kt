@@ -1,6 +1,6 @@
 package com.example.domain.usecase.bill
 
-import com.example.domain.model.receive.bill.ServerPictureData
+import com.example.domain.model.remote.receive.bill.ServerPictureData
 import com.example.domain.repo.GeneralRepository
 
 /**
@@ -11,6 +11,6 @@ class GetPictureDataUseCase(
     private val generalRepository: GeneralRepository
 ) {
     suspend operator fun invoke(uid:String) : ServerPictureData {
-        return generalRepository.getPictureDataUseCaseRepository(uid)
+        return generalRepository.getPictureDataRepository(uid)
     }
 }

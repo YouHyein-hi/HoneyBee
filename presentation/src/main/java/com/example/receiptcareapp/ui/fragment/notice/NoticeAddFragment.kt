@@ -1,15 +1,12 @@
 package com.example.receiptcareapp.ui.fragment.notice
 
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.domain.model.send.DomainAddNoticeData
-import com.example.receiptcareapp.R
+import com.example.domain.model.remote.send.notice.SendNoticeAddData
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentNoticeAddBinding
 import com.example.receiptcareapp.util.FetchStateHandler
-import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.notice.NoticeAddViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
@@ -27,7 +24,7 @@ class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
     override fun initListener() {
         binding.noticeAddAddBtn.setOnClickListener {
             viewModel.insertNotice(
-                DomainAddNoticeData(
+                SendNoticeAddData(
                     //TODO 역방향 databinding인데 데이터클래스로 받아올수있을것같음.
                     title = binding.noticeAddTitleEdit.text.toString(),
                     date = LocalDateTime.now(),

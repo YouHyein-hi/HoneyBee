@@ -1,6 +1,6 @@
 package com.example.data.remote.model
 
-import com.example.domain.model.receive.bill.BillData
+import com.example.domain.model.remote.receive.bill.BillData
 
 /**
  * 2023-08-20

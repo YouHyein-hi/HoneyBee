@@ -1,6 +1,6 @@
 package com.example.data.remote.model
 
-import com.example.domain.model.receive.notice.NoticeData
+import com.example.domain.model.remote.receive.notice.NoticeData
 
 /**
  * 2023-08-20

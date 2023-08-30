@@ -2,8 +2,8 @@ package com.example.receiptcareapp.ui.botteomSheet
 
 import android.app.Dialog
 import android.os.Bundle
-import com.example.domain.model.BottomSheetData
-import com.example.domain.model.send.AppSendData
+import com.example.domain.model.ui.bill.CheckBillData
+import com.example.domain.model.ui.bill.UiBillData
 import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseBottomSheet
@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SendCheckBottomSheet(
     private val viewModel: SendBillViewModel,
-    private val data: BottomSheetData
+    private val data: CheckBillData
 ) : BaseBottomSheet<BottomsheetSendBinding>(
     BottomsheetSendBinding::inflate,
     "BottomSheetSendBinding"
@@ -32,7 +32,7 @@ class SendCheckBottomSheet(
     override fun initData() {}
 
     override fun initUI() {
-        binding.data = BottomSheetData(data.cardName, data.amount,data.cardAmount, data.storeName, StringUtil.changeDate(data.date),data.picture)
+        binding.data = CheckBillData(data.cardName, data.amount,data.cardAmount, data.storeName, StringUtil.changeDate(data.date),data.picture)
     }
 
     override fun initListener() {
@@ -40,9 +40,9 @@ class SendCheckBottomSheet(
 
         binding.sendOkBtn.setOnClickListener {
             viewModel.insertBillData(
-                AppSendData(
+                UiBillData(
                     billSubmitTime = data.date,
-                    amount = data.amount,
+                    storeAmount = data.amount,
                     cardName = data.cardName,
                     picture = data.picture,
                     storeName = data.storeName

@@ -21,12 +21,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object LocalDataModule {
 
-//    @Singleton
-//    @Provides
-//    fun provideGson(): Gson {
-//        return Gson()
-//    }
-
     @Singleton
     @Provides
     fun provideLocalDatabase(@ApplicationContext appContext: Context): LocalDatabase{

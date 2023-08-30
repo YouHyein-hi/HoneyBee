@@ -1,6 +1,8 @@
 package com.example.data.manager
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.provider.SyncStateContract
 import androidx.core.content.edit
 import javax.inject.Inject
 
@@ -12,8 +14,15 @@ import javax.inject.Inject
 class PreferenceManager @Inject constructor(
     context: Context
 ) {
-    private val sharedPreference = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
 
+    private val sharedPreference: SharedPreferences
+
+    init {
+        sharedPreference = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
+    }
+
+    //Login Data Control
+    //TODO 하나하나 넣는것보다 데이터클래스를 넣는 방법으로 해야함
     fun putLogin(id: String){
         sharedPreference.edit().putString("sharedPreference_id", id).apply()
     }
@@ -30,12 +39,40 @@ class PreferenceManager @Inject constructor(
         return sharedPreference.getString("sharedPreference_pw",null)
     }
 
-    fun clearAll(){
+    fun clearLoginPassword(){
         sharedPreference.edit().remove("sharedPreference_id").apply()
         sharedPreference.edit().remove("sharedPreference_pw").apply()
-//        sharedPreference.edit().clear().commit()
     }
 
+    //Auth Token Control
+    fun putAccessToken(accessToken : String){
+        sharedPreference.edit().putString("access_token", accessToken).apply()
+    }
+
+    fun putRefreshToken(refreshToken : String){
+        sharedPreference.edit().putString("refresh_token", refreshToken).apply()
+    }
+
+    fun getAccessToken(): String?{
+        return sharedPreference.getString("access_token", null)
+    }
+
+    fun getRefreshToken(): String?{
+        return sharedPreference.getString("refresh_token", null)
+    }
+
+    fun clearAccessToken(){
+        sharedPreference.edit().remove("access_token").apply()
+    }
+
+    fun clearRefreshToken(){
+        sharedPreference.edit().remove("refresh_token").apply()
+    }
+
+
+
+    //Date Control
+    //TODO 하나하나 넣는것보다 데이터클래스를 넣는 방법으로 해야함
     fun putPush(onoff : Boolean){
         sharedPreference.edit().putBoolean("sharedPreference_push", onoff).apply()
     }

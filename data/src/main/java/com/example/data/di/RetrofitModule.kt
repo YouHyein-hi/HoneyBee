@@ -1,5 +1,7 @@
 package com.example.data.di
 
+import com.example.data.manager.PreferenceManager
+import com.example.data.util.NetworkInterceptor
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -23,30 +25,45 @@ object RetrofitModule {
 
     var gson = GsonBuilder().setLenient().create()
 
+
     @Singleton
     @Provides
-    fun provideSendRetrofit():Retrofit{
-        return Retrofit.Builder()
-            .baseUrl("http://210.119.104.158:8080/")
-//            .baseUrl("http://192.168.1.13:8080/")
-//            .addConverterFactory(GsonConverterFactory.create())
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(okHttpClient)
+    fun provideInterceptor(preferenceManager: PreferenceManager): NetworkInterceptor =
+        NetworkInterceptor(preferenceManager)
+
+    @Singleton
+    @Provides
+    fun provideOkhttp(networkInterceptor: NetworkInterceptor): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(networkInterceptor)
             .build()
     }
 
-    private val okHttpClient = OkHttpClient.Builder().
-    addInterceptor(HttpLoggingInterceptor().apply {
+    @Singleton
+    @Provides
+    fun provideSendRetrofit(interceptorOkHttpClient: OkHttpClient):Retrofit{
+        return Retrofit.Builder()
+            .baseUrl("http://210.119.104.158:8080/")
+            .client(interceptorOkHttpClient)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
+
+    //네트워크 통신 과정을 보기 위한 클라이언트
+    private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
-    }).addInterceptor {
+    })
+        .addInterceptor {
         val request = it.request()
             .newBuilder()
             .build()
         val response = it.proceed(request)
         response
-    }.connectTimeout(20, TimeUnit.SECONDS).
-    readTimeout(20,TimeUnit.SECONDS).
-    writeTimeout(20,TimeUnit.SECONDS).
-    build()
+    }
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(20,TimeUnit.SECONDS)
+        .writeTimeout(20,TimeUnit.SECONDS)
+        .build()
 }

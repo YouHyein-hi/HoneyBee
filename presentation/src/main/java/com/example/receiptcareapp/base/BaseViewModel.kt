@@ -47,7 +47,7 @@ abstract class BaseViewModel(val name: String) : ViewModel(){
             is IllegalStateException -> _fetchState.value = Pair(throwable, FetchState.IllegalStateException)
             else -> _fetchState.value = Pair(throwable, FetchState.FAIL)
         }
-        Log.e("TAG", "base err : ${fetchState.value}", )
+        Log.e("TAG", "base err fetchState.value : ${fetchState.value}", )
     }
 
     //디스패쳐 메인에서 돌아감

@@ -47,15 +47,18 @@ class ChangeDialog(
 
     override fun initUI() {
         getSpinner()
-        binding.changeBtnStore.setText(viewModelData.storeName)
-        binding.changeBtnPrice.setText(viewModelData.amount)
+        //TODO Databinding
+        binding.changeStoreEdit.setText(viewModelData.storeName)
+        binding.changePriceEdit.setText(viewModelData.amount)
+
         try {
+            //TODO init UI로 빼는게 맞을듯 싶음
             dateData = DateData(
                 year = newDate[0].toInt(),
                 month = newDate[1].toInt(),
                 day = newDate[2].toInt()
             )
-            binding.changeDatepicker.init(dateData.year, dateData.month - 1, dateData.day, null)
+            binding.changeDateDatePicker.init(dateData.year, dateData.month - 1, dateData.day, null)
         } catch (e: NullPointerException) {
             dismiss()
             showShortToast("날짜 불러오기를 실패했습니다.")
@@ -65,21 +68,20 @@ class ChangeDialog(
 
     override fun initListener() {
 
-        binding.changeBtnPositive.setOnClickListener {
+        binding.changeOkBtn.setOnClickListener {
             dateData = DateData(
-                year = binding.changeDatepicker.year,
-                month = binding.changeDatepicker.month + 1,
-                day = binding.changeDatepicker.dayOfMonth
+                year = binding.changeDateDatePicker.year,
+                month = binding.changeDateDatePicker.month + 1,
+                day = binding.changeDateDatePicker.dayOfMonth
             )
 
             val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
-
-            var price = binding.changeBtnPrice.text.toString()
-            var priceZero = price.count { it == '0' }
+            val price = binding.changePriceEdit.text.toString()
+            val priceZero = price.count { it == '0' }
             when {
                 cardName == "" -> { showShortToast("카드를 입력하세요.") }
-                binding.changeBtnStore.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
-                binding.changeBtnPrice.text!!.isEmpty() -> { showShortToast("금액을 입력하세요.") }
+                binding.changeStoreEdit.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
+                binding.changePriceEdit.text!!.isEmpty() -> { showShortToast("금액을 입력하세요.") }
                 priceZero == price.length -> { showShortToast("금액에 0원은 입력이 안됩니다.") }
                 myLocalDateTime.toString() == "" -> { showShortToast("날짜를 입력하세요.") }
                 else -> {
@@ -87,9 +89,9 @@ class ChangeDialog(
                         viewModel.updateServerBillData(
                             sendData = UpdateData(
                                 billSubmitTime = myLocalDateTime.toString(),
-                                amount = binding.changeBtnPrice.text.toString(),
+                                amount = binding.changePriceEdit.text.toString(),
                                 cardName = cardName,
-                                storeName = binding.changeBtnStore.text.toString()
+                                storeName = binding.changeStoreEdit.text.toString()
                             ),
                             uid = viewModelData.uid,
                         )
@@ -98,9 +100,9 @@ class ChangeDialog(
                             sendData = LocalBillData(
                                 uid= viewModelData.uid,
                                 billSubmitTime = myLocalDateTime.toString(),
-                                amount = binding.changeBtnPrice.text.toString(),
+                                amount = binding.changePriceEdit.text.toString(),
                                 cardName = cardName,
-                                storeName = binding.changeBtnStore.text.toString(),
+                                storeName = binding.changeStoreEdit.text.toString(),
                                 picture = viewModelData.file!!
                             )
                         )
@@ -109,9 +111,9 @@ class ChangeDialog(
                 }
             }
         }
-        binding.changeBtnNegative.setOnClickListener { dismiss() }
+        binding.changeCancelBtn.setOnClickListener { dismiss() }
 
-        binding.changeCardspinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.changeCardSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedCardData = cardDataList[position]
                 cardId = position
@@ -128,22 +130,23 @@ class ChangeDialog(
             handled
         }*/
 
-        binding.changeBtnPrice.setOnEditorActionListener { v, actionId, event ->
+        binding.changePriceEdit.setOnEditorActionListener { v, actionId, event ->
             var handled = false
-            if (actionId == EditorInfo.IME_ACTION_DONE && binding.changeBtnPrice.text.isNotEmpty()) {
-                binding.changeBtnPrice.setText(viewModel.PriceFormat(binding.changeBtnPrice.text.toString()))
+            if (actionId == EditorInfo.IME_ACTION_DONE && binding.changePriceEdit.text.isNotEmpty()) {
+                binding.changePriceEdit.setText(viewModel.PriceFormat(binding.changePriceEdit.text.toString()))
             }
             handled
         }
 
-        binding.changeBtnPrice.setOnFocusChangeListener { view, hasFocus ->
+            //TODO binding adapter로 뺄수있을것같음
+            binding.changePriceEdit.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                if (binding.changeBtnPrice.text.contains(",")) {
-                    binding.changeBtnPrice.setText(viewModel.CommaReplaceSpace(binding.changeBtnPrice.text.toString()))
-                    binding.changeBtnPrice.setSelection(binding.changeBtnPrice.text.length)
+                if (binding.changePriceEdit.text.contains(",")) {
+                    binding.changePriceEdit.setText(viewModel.CommaReplaceSpace(binding.changePriceEdit.text.toString()))
+                    binding.changePriceEdit.setSelection(binding.changePriceEdit.text.length)
                 }
             }
-            else { binding.changeBtnPrice.setText(viewModel.PriceFormat(binding.changeBtnPrice.text.toString())) }
+            else { binding.changePriceEdit.setText(viewModel.PriceFormat(binding.changePriceEdit.text.toString())) }
         }
 
     }
@@ -154,7 +157,7 @@ class ChangeDialog(
             if(it?.body?.isEmpty()==true) dismiss()
             it?.body?.forEach { cardDataList.add(it) }
             val cardArrayList = ArrayList(cardDataList)
-            binding.changeCardspinner.adapter = SpinnerAdapter(requireContext(), cardArrayList)
+            binding.changeCardSpinner.adapter = SpinnerAdapter(requireContext(), cardArrayList)
         }
 
         // Err관리

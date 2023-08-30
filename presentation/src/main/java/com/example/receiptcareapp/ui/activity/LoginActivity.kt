@@ -12,7 +12,7 @@ import androidx.activity.viewModels
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityLoginBinding
 import com.example.receiptcareapp.dto.LoginData
-import com.example.receiptcareapp.ui.adapter.PermissionHandler
+import com.example.receiptcareapp.util.PermissionHandler
 import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewModel
@@ -53,26 +53,28 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     }
 
     override fun initListener() {
-        binding.loginButton.setOnClickListener {
-            loginData.id = binding.loginEmail.text.toString()
-            loginData.pw = binding.loginPassword.text.toString()
-            if(loginData.id == "dclab@gmail.com" && loginData.pw == "dclab419$!(") nextActivity()
+        binding.loginLoginBtn.setOnClickListener {
+            loginData.id = binding.loginEmailEdit.text.toString()
+            loginData.pw = binding.loginPasswordEdit.text.toString()
+//            if(loginData.id == "dclab@gmail.com" && loginData.pw == "dclab419$!(") nextActivity()
+            nextActivity()
             downKeyBoard()
-
             with(loginData){
                 if(id.isNullOrEmpty())
                     showShortToast("아이디를 입력해주세요.")
                 else if(pw.isNullOrEmpty())
                     showShortToast("비밀번호를 입력해주세요.")
+                //TODO 이부분은 ID로 바꿔도 되지않나?
                 else viewModel.requestLogin(
-                    binding.loginEmail.text.toString().replace(" ",""),
-                    binding.loginPassword.text.toString().replace(" ","")
+                    binding.loginEmailEdit.text.toString().replace(" ",""),
+                    binding.loginPasswordEdit.text.toString().replace(" ","")
                 )
             }
         }
     }
 
     override fun initObserver() {
+        //TODO databinding으로 옵져버하게 ,, 어떻게 뺄지 고민
         viewModel.loading.observe(this){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
@@ -120,7 +122,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
-    //권한 Dialog
+    //권한 Diattg
     private fun permissionDialog() {
         val permissionDialog = Permissiond_Dialog()
         permissionDialog.setOnDismissListener(object : Permissiond_Dialog.OnDismissListener {

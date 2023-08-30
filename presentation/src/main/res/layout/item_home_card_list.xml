@@ -9,14 +9,14 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/home_cardlist"
+        android:id="@+id/cardHome_list"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/roundsquare_yellow">
 
         <ImageView
-            android:id="@+id/card_icon"
+            android:id="@+id/cardHome_icon_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/home_cardName"
+            android:id="@+id/cardHome_name_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -34,7 +34,7 @@
             android:textColor="@color/main_font_black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/card_icon"
+            app:layout_constraintStart_toEndOf="@+id/cardHome_icon_img"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

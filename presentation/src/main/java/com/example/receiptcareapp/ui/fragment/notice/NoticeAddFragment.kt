@@ -25,12 +25,13 @@ class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
     override fun initUI() {}
 
     override fun initListener() {
-        binding.addBtn.setOnClickListener {
+        binding.noticeAddAddBtn.setOnClickListener {
             viewModel.insertNotice(
                 DomainAddNoticeData(
-                    title = binding.titleEditTxt.text.toString(),
+                    //TODO 역방향 databinding인데 데이터클래스로 받아올수있을것같음.
+                    title = binding.noticeAddTitleEdit.text.toString(),
                     date = LocalDateTime.now(),
-                    content = binding.contentEditTxt.text.toString()
+                    content = binding.noticeAddContentEdit.text.toString()
                 )
             )
         }
@@ -41,6 +42,7 @@ class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
     }
 
     override fun initObserver() {
+        //TODO databinding
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE

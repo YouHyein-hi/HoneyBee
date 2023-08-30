@@ -24,11 +24,15 @@ class RecordServerAdapter:RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
     inner class MyAdapter(private val binding: ItemBillListServerBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list: BillData){
             with(binding){
-                storeName.text = list.storeName
-                cardName.text = "${list.cardName}카드"
-                amount.text = list.storeAmount
-                dateTxt.text = list.date
+                //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
+                recordItemStoreTxt.text = list.storeName
+                recordItemCardTxt.text = "${list.cardName}카드"
+                recordItemAmountTxt.text = list.storeAmount
+                recordItemDateTxt.text = list.date
                 listLayout.setOnClickListener{ onServerSaveClick(list) }
+
+                //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
+                //TODO visiblity 는 databinding 으로 뺼수있을것같은데 bringToFont는 못뺄듯
                 if(list.billCheck) {
                     billCheckLayout.visibility = View.VISIBLE
                     billCheckLayout.bringToFront()

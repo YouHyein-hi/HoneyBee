@@ -27,11 +27,11 @@ class PermissiondCheck_Dialog : BaseDialog<DialogPermissionCheckBinding>(DialogP
 
     override fun initListener() {
         with(binding){
-            checkBtnNegative.setOnClickListener{
+            permissionCheckCancelBtn.setOnClickListener{
                 dismiss()
             }
 
-            checkBtnPositive.setOnClickListener{
+            permissionCheckOkBtn.setOnClickListener{
                 Log.e("TAG", "initListener: checkBtnPositive 클릭", )
                 val packageName = requireContext().packageName
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)

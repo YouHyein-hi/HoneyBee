@@ -29,7 +29,7 @@
                 bind:title="@{@string/notice_title}" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/notice_recycler"
+                android:id="@+id/noticeList_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/item_notice" />
@@ -48,7 +48,7 @@
             bind:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/empty_text"
+            android:id="@+id/notice_empty_txt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"

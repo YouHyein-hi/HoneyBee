@@ -28,7 +28,7 @@ class Permissiond_Dialog : BaseDialog<DialogPermissionBinding>(DialogPermissionB
 
     override fun initListener() {
         dialog?.setCancelable(false)
-        binding.permissionButton.setOnClickListener {
+        binding.permissionOkBtn.setOnClickListener {
             onDismissListener?.onDialogDismissed()
             dismiss()
         }

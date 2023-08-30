@@ -39,7 +39,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TimePicker
-        android:id="@+id/timePicker"
+        android:id="@+id/pushtime_time_timePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -56,10 +56,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timePicker">
+        app:layout_constraintTop_toBottomOf="@+id/pushtime_time_timePicker">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/pushTime_btnPositive"
+            android:id="@+id/pushtime_ok_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
@@ -74,7 +74,7 @@
             tools:ignore="MissingConstraints" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/pushTime_btnNegative"
+            android:id="@+id/pushtime_cancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"

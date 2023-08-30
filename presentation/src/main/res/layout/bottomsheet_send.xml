@@ -139,7 +139,7 @@
                 android:weightSum="3">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/cancle_btn"
+                    android:id="@+id/send_cancle_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="2dp"
@@ -150,7 +150,7 @@
                     android:textColor="@color/main_font_black" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/send_btn"
+                    android:id="@+id/send_ok_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="15dp"

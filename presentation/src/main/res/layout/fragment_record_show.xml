@@ -20,7 +20,7 @@
         tools:context=".ui.fragment.record.RecordShowFragment">
 
         <ImageView
-            android:id="@+id/back_btn"
+            android:id="@+id/record_back_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
@@ -30,17 +30,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/change_btn"
+            android:id="@+id/record_change_btn"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="15dp"
             android:src="@drawable/icon_change"
-            app:layout_constraintBottom_toBottomOf="@+id/remove_btn"
-            app:layout_constraintEnd_toStartOf="@+id/remove_btn"
-            app:layout_constraintTop_toTopOf="@+id/remove_btn" />
+            app:layout_constraintBottom_toBottomOf="@+id/recore_remove_btn"
+            app:layout_constraintEnd_toStartOf="@+id/recore_remove_btn"
+            app:layout_constraintTop_toTopOf="@+id/recore_remove_btn" />
 
         <ImageView
-            android:id="@+id/remove_btn"
+            android:id="@+id/recore_remove_btn"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginTop="15dp"
@@ -50,7 +50,7 @@
             app:srcCompat="@drawable/icon_trash" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/recore_imageView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="20dp"
@@ -75,7 +75,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:id="@+id/card_txt"
+                android:id="@+id/record_card_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
@@ -88,7 +88,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/date_txt"
+                android:id="@+id/record_date_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
@@ -98,7 +98,7 @@
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_txt" />
+                app:layout_constraintTop_toBottomOf="@+id/record_card_txt" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -113,7 +113,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_txt">
+                app:layout_constraintTop_toBottomOf="@+id/record_date_txt">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -131,7 +131,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/card_amount"
+                        android:id="@+id/record_card_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -159,7 +159,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/amount_txt"
+                        android:id="@+id/record_amount_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -201,7 +201,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/empty_text"
+            android:id="@+id/record_empty_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"

@@ -16,8 +16,9 @@ class PushTimeDialog(
 
     override fun initUI() {
         try {
-            binding.timePicker.hour = viewModel.getTime().hour!!
-            binding.timePicker.minute = viewModel.getTime().minute!!
+            //TODO databinding을 써야하고, 뷰모델 한번만 불러서 xml에 넣어주기
+            binding.pushtimeTimeTimePicker.hour = viewModel.getTime().hour!!
+            binding.pushtimeTimeTimePicker.minute = viewModel.getTime().minute!!
         } catch (e: NullPointerException) {
             dismiss()
             showShortToast("날짜 불러오기를 실패했습니다.")
@@ -25,12 +26,12 @@ class PushTimeDialog(
     }
 
     override fun initListener() {
-        binding.pushTimeBtnPositive.setOnClickListener{
-            viewModel.putTime(binding.timePicker.hour, binding.timePicker.minute)
+        binding.pushtimeOkBtn.setOnClickListener{
+            viewModel.putTime(binding.pushtimeTimeTimePicker.hour, binding.pushtimeTimeTimePicker.minute)
             positiveButtonClickCallback.invoke() // Invoke the callback
             dismiss()
         }
-        binding.pushTimeBtnNegative.setOnClickListener{
+        binding.pushtimeCancelBtn.setOnClickListener{
             dismiss()
         }
     }

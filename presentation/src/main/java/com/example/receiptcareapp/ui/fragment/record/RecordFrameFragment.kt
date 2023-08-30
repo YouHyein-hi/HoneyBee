@@ -63,6 +63,7 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
 
     override fun initObserver() {
         //프로그래스 바 컨트롤
+        //TODO data binding
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE

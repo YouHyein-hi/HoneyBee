@@ -53,7 +53,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/menu_btn"
+            android:id="@+id/home_menu_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
@@ -88,7 +88,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cardList_component"
+                android:id="@+id/home_cardList_component"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
@@ -185,7 +185,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/empty_text"
+                    android:id="@+id/home_empty_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/home_cardlist_empty"
@@ -215,7 +215,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/noticeLayout"
+                android:id="@+id/constraintLayout20"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -251,7 +251,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                 <ImageView
-                    android:id="@+id/history_btn"
+                    android:id="@+id/home_history_btn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -270,7 +270,7 @@
                 android:orientation="vertical" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/home_add_gallery"
+                android:id="@+id/constraintLayout21"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -306,7 +306,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
                 <ImageView
-                    android:id="@+id/add_btn"
+                    android:id="@+id/home_add_btn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -331,7 +331,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/notice_btn"
+                android:id="@+id/home_notice_component"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"

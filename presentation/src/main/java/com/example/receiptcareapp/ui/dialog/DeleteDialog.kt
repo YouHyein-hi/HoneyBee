@@ -37,10 +37,10 @@ class DeleteDialog(
 
     override fun initListener() {
         with(binding){
-            changeBtnNegative.setOnClickListener{
+            deleteCancelBtn.setOnClickListener{
                 dismiss()
             }
-            changeBtnPositive.setOnClickListener{
+            deleteOkBtn.setOnClickListener{
                 if(viewModelData.type == ShowType.SERVER){
                     viewModel.deleteServerBillData(viewModelData.uid.toLong())
                     dismiss()
@@ -58,6 +58,7 @@ class DeleteDialog(
         viewModel.fetchState.observe(this) {
             when (it.second) {
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> dismiss()
+                else -> {}
             }
             showShortToast(FetchStateHandler(it))
         }

@@ -12,7 +12,7 @@ import com.example.receiptcareapp.databinding.SpinnerCustomItemLayoutBinding
  * 2023-08-21
  * pureum
  */
-class StoreSpinner(context: Context, items: ArrayList<String>) : ArrayAdapter<String>(context, R.layout.spinner_custom_item_layout, items) {
+class StoreSpinnerAdapter(context: Context, items: ArrayList<String>) : ArrayAdapter<String>(context, R.layout.spinner_custom_item_layout, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         //TODO 여기를 바꾸면 Spinner UI 수정 성공할 수 있지 않을까?

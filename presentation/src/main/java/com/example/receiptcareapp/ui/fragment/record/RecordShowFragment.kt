@@ -49,11 +49,11 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 
     override fun initListener() {
         //수정 후 재전송 버튼
-        binding.changeBtn.setOnClickListener{ changeDialog() }
+        binding.recordChangeBtn.setOnClickListener{ changeDialog() }
         //삭제 버튼
-        binding.removeBtn.setOnClickListener{ deleteDialog() }
+        binding.recoreRemoveBtn.setOnClickListener{ deleteDialog() }
         //뒤로가기 버튼
-        binding.backBtn.setOnClickListener{ findNavController().popBackStack() }
+        binding.recordBackBtn.setOnClickListener{ findNavController().popBackStack() }
     }
 
     override fun initObserver() {
@@ -82,16 +82,18 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         }
 
         //서버 연결 상태 옵져버
+        //TODO 데이터바인딩
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
+        //TODO 데이터 바인딩
         viewModel.picture.observe(viewLifecycleOwner){
-            Glide.with(binding.imageView)
+            Glide.with(binding.recoreImageView)
                 .load(it)
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
-                .into(binding.imageView)
+                .into(binding.recoreImageView)
             checkImageData()
         }
 
@@ -104,12 +106,12 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     private fun initView() {
         Log.e("TAG", "initView: $viewModelData",)
         if (viewModelData.type == ShowType.LOCAL)
-            binding.imageView.setImageURI(viewModelData.file)
+            binding.recoreImageView.setImageURI(viewModelData.file)
         else
             viewModel.getServerPictureData(viewModelData.uid)
 
-        checkImageData()
-        binding.imageView.clipToOutline = true
+//        checkImageData()
+        binding.recoreImageView.clipToOutline = true
         binding.data = RecyclerData(
             viewModelData.type, viewModelData.uid, viewModelData.cardName, viewModelData.amount,
             StringUtil.changeDate(viewModelData.date), viewModelData.storeName, viewModelData.file
@@ -117,10 +119,10 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     private fun checkImageData(){
-        if(binding.imageView.drawable == null)
-            binding.emptyText.isVisible = true
+        if(binding.recoreImageView.drawable == null)
+            binding.recordEmptyTxt.isVisible = true
         if(viewModel.picture.value==null)
-            binding.emptyText.isVisible =true
+            binding.recordEmptyTxt.isVisible = true
     }
 
     //수정

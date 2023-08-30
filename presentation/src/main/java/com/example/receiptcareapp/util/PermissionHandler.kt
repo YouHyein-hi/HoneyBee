@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.ui.adapter
+package com.example.receiptcareapp.util
 
 import android.content.Context
 import android.content.pm.PackageManager

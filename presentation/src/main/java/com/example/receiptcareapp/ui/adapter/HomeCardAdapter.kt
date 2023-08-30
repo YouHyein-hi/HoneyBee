@@ -19,13 +19,14 @@ class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
 
     inner class MyHolder(private val binding : ItemHomeCardListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CardData, position:Int) {
-            binding.homeCardName.text = item.name
+            //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
+            binding.cardHomeNameTxt.text = item.name
             binding.amount = item.amount
             when(position) {
-                1 -> binding.cardIcon.setImageResource(R.drawable.icon_card_1)
-                2 -> binding.cardIcon.setImageResource(R.drawable.icon_card_2)
-                3 -> binding.cardIcon.setImageResource(R.drawable.icon_card_3)
-                else -> binding.cardIcon.setImageResource(R.drawable.icon_card_4)
+                1 -> binding.cardHomeIconImg.setImageResource(R.drawable.icon_card_1)
+                2 -> binding.cardHomeIconImg.setImageResource(R.drawable.icon_card_2)
+                3 -> binding.cardHomeIconImg.setImageResource(R.drawable.icon_card_3)
+                else -> binding.cardHomeIconImg.setImageResource(R.drawable.icon_card_4)
             }
         }
     }

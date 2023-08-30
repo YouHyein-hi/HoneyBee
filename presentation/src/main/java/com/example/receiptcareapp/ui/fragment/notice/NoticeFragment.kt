@@ -31,8 +31,8 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
 
     override fun initUI() {
         viewModel.getNoticeList()
-        binding.noticeRecycler.layoutManager = LinearLayoutManager(requireContext())
-        binding.noticeRecycler.adapter = adapter
+        binding.noticeListRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.noticeListRecyclerview.adapter = adapter
     }
 
     override fun initListener() {
@@ -54,6 +54,8 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
             adapter.dataList.clear()
             adapter.dataList = it?.body!!.toMutableList()
         }
+
+        //TODO 프로그레스바 databinding
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding. layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
@@ -66,9 +68,10 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
         }
     }
 
+
     private fun checkDataList(){
-        if(adapter.dataList.isEmpty()) binding.emptyText.visibility = View.VISIBLE
-        else  binding.emptyText.visibility = View.INVISIBLE
+        if(adapter.dataList.isEmpty()) binding.noticeEmptyTxt.visibility = View.VISIBLE
+        else  binding.noticeEmptyTxt.visibility = View.INVISIBLE
     }
 
 

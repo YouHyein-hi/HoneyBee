@@ -17,6 +17,7 @@ import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.util.PushReceiver
 import com.example.receiptcareapp.ui.dialog.PushTimeDialog
 import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.util.Utils
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -48,11 +49,13 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     }
 
     override fun initUI() {
-        binding.menuPushTimeTxt.text = viewModel.timePickerText(
-            //TODO 하나만
-            viewModel.getTime().hour!!,
-            viewModel.getTime().minute!!
-        )
+        val time = viewModel.getTime()
+        binding.menuPushTimeTxt.text = time?.let {
+            Utils.timePickerText(
+                it.hour ?: 0,
+                it.minute ?: 0
+            )
+        }
     }
 
     @SuppressLint("MissingPermission", "ResourceAsColor")
@@ -94,9 +97,13 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     }
 
     override fun initObserver() {
-        //TOdo 데이터바인딩
         viewModel.pushTime.observe(viewLifecycleOwner) { pushTime ->
-            binding.menuPushTimeTxt.text = viewModel.timePickerText(pushTime.hour!!, pushTime.minute!!)
+            binding.menuPushTimeTxt.text = pushTime?.let {
+                Utils.timePickerText(
+                    it.hour ?: 0,
+                    it.minute ?: 0
+                )
+            }
         }
 
         viewModel.fetchState.observe(this) {
@@ -126,44 +133,15 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             Log.d("TAG", "MenuFragment : Alarm not set on day $dayOfMonth")
 //            setAlarm()
         }
-
-
-
-/*        val targetTime = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
-            set(Calendar.MINUTE, viewModel.getTime().minute!!)
-            set(Calendar.SECOND, 0) // 초를 0으로 설정하여 정확한 시간에 알림 울리도록 함
-        }
-
-        // 현재 시간보다 이전이면 다음날로 설정
-        if (targetTime.before(Calendar.getInstance())) {
-            targetTime.add(Calendar.DAY_OF_YEAR, 1)
-        }
-
-        // 첫 번째 알람 설정 (정확한 시간에 알림)
-        alarmManager.setExact(
-            AlarmManager.RTC_WAKEUP,
-            targetTime.timeInMillis,
-            pendingIntent
-        )
-
-        // 다음 날 같은 시간에 알람 설정 (매일 반복)
-        targetTime.add(Calendar.DAY_OF_YEAR, 1)
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            targetTime.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )*/
     }
 
     //TODO 이쪽은 알람 메니저 클래스 or Object 클래스를 만들고 알람기능은 그곳에서 담당하는걸로 뺴주자
     private fun setAlarm(){
+        val time = viewModel.getTime()
         val targetTime = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, viewModel.getTime().hour!!)
-            set(Calendar.MINUTE, viewModel.getTime().minute!!)
+            time.hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+            time.minute?.let { set(Calendar.MINUTE, it) }
         }
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,

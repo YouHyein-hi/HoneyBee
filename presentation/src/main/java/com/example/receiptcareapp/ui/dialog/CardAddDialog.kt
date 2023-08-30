@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.domain.model.send.AppSendCardData
 import com.example.receiptcareapp.R
@@ -13,10 +12,9 @@ import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardAddBinding
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.ResponseState
-import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
+import com.example.receiptcareapp.util.Utils
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel
-import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +36,7 @@ class CardAddDialog(
             cardAddPriceEdit.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_NEXT && cardAddPriceEdit.text.isNotEmpty()) {
-                    cardAddPriceEdit.setText(viewModel.PriceFormat(cardAddPriceEdit.text.toString()))
+                    cardAddPriceEdit.setText(Utils.PriceFormat(cardAddPriceEdit.text.toString()))
                 }
                 handled
             }
@@ -62,11 +60,11 @@ class CardAddDialog(
             cardAddPriceEdit.setOnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
                     if (cardAddPriceEdit.text.contains(",")) {
-                        cardAddPriceEdit.setText(viewModel.CommaReplaceSpace(cardAddPriceEdit.text.toString()))
+                        cardAddPriceEdit.setText(Utils.CommaReplaceSpace(cardAddPriceEdit.text.toString()))
                         cardAddPriceEdit.setSelection(cardAddPriceEdit.text.length)
                     }
                 }
-                else { cardAddPriceEdit.setText(viewModel.PriceFormat(cardAddPriceEdit.text.toString())) }
+                else { cardAddPriceEdit.setText(Utils.PriceFormat(cardAddPriceEdit.text.toString())) }
 
                 if (!hasFocus && cardAddPriceEdit.text.isEmpty()) {
                     // 포커스를 가지고 있지 않은 경우 AND Empty인 경우

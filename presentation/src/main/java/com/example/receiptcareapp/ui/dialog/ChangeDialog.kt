@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.ui.dialog
 
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -16,6 +15,7 @@ import com.example.receiptcareapp.dto.RecyclerData
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.util.Utils
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +36,7 @@ class ChangeDialog(
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
             viewModelData = activityViewModel.selectedData.value!!
-            newDate = viewModel.dateReplace(viewModelData.date)
+            newDate = Utils.dateReplace(viewModelData.date)
         } else {
             showShortToast("데이터가 없습니다!")
             dismiss()
@@ -75,7 +75,7 @@ class ChangeDialog(
                 day = binding.changeDateDatePicker.dayOfMonth
             )
 
-            val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
+            val myLocalDateTime = Utils.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
             val price = binding.changePriceEdit.text.toString()
             val priceZero = price.count { it == '0' }
             when {
@@ -122,18 +122,10 @@ class ChangeDialog(
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-/*        binding.changeBtnPrice.setOnEditorActionListener { v, actionId, event ->
-            var handled = false
-            if (actionId == EditorInfo.IME_ACTION_NEXT && binding.changeBtnPrice.text.isNotEmpty()) {
-                binding.changeBtnPrice.setText(viewModel.PriceFormat(binding.changeBtnPrice.text.toString()))
-            }
-            handled
-        }*/
-
         binding.changePriceEdit.setOnEditorActionListener { v, actionId, event ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE && binding.changePriceEdit.text.isNotEmpty()) {
-                binding.changePriceEdit.setText(viewModel.PriceFormat(binding.changePriceEdit.text.toString()))
+                binding.changePriceEdit.setText(Utils.PriceFormat(binding.changePriceEdit.text.toString()))
             }
             handled
         }
@@ -142,11 +134,11 @@ class ChangeDialog(
             binding.changePriceEdit.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 if (binding.changePriceEdit.text.contains(",")) {
-                    binding.changePriceEdit.setText(viewModel.CommaReplaceSpace(binding.changePriceEdit.text.toString()))
+                    binding.changePriceEdit.setText(Utils.CommaReplaceSpace(binding.changePriceEdit.text.toString()))
                     binding.changePriceEdit.setSelection(binding.changePriceEdit.text.length)
                 }
             }
-            else { binding.changePriceEdit.setText(viewModel.PriceFormat(binding.changePriceEdit.text.toString())) }
+            else { binding.changePriceEdit.setText(Utils.PriceFormat(binding.changePriceEdit.text.toString())) }
         }
 
     }

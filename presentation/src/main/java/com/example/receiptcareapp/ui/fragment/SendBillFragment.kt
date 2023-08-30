@@ -121,11 +121,7 @@ class SendBillFragment :
 
             //TODO Binding어뎁터에서 토스트 쓸수있다면 넘기는걸로
             sendBillStoreEdit.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int,after: Int
                 ) {}
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -137,11 +133,7 @@ class SendBillFragment :
             })
 
             sendBillPriceEdit.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int
                 ) {
                 }
 

@@ -22,15 +22,4 @@ class CardAddViewModel @Inject constructor() : BaseViewModel("CardAddViewModel")
 
     private var _response = MutableLiveData<ResponseState>()
     val response: LiveData<ResponseState> get() = _response
-
-    fun CommaReplaceSpace(text: String): String {
-        return text.replace(",", "")
-    }
-
-    fun PriceFormat(price : String): String? {
-        if (price.isEmpty()) { return "" }
-        val numericValue = try { price.toInt()
-        } catch (e: NumberFormatException) { return price }
-        return DecimalFormat("#,###").format(numericValue)
-    }
 }

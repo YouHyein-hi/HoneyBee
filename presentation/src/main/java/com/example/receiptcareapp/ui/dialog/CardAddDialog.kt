@@ -25,7 +25,6 @@ class CardAddDialog(
 ) : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
     private val viewModel : CardAddViewModel by viewModels()
-    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     override fun initData() {
     }
@@ -44,6 +43,7 @@ class CardAddDialog(
                 handled
             }
 
+            //TODO databinding으로 뺄수있음 / binding adapter 를 사용하면.
             val hintCardNmae = cardAddNameEdit.hint
             val emphasis_yellow = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.emphasis_yellow))
             cardAddNameEdit.setOnFocusChangeListener { view, hasFocus ->
@@ -114,7 +114,7 @@ class CardAddDialog(
                 else if (cardAddBillCheckEdit.text.toString().toInt() > 31){
                     showShortToast(getString(R.string.dialog_cardAdd_billCheckDate_err2))
                 }
-                else{  // TODO 이제 billCardCheck 추가되면 여기에 추가시켜야됨!
+                else{
                     if (price.contains(","))
                         price = price.replace(",", "")
                     homeViewModel.insertServerCardData(AppSendCardData(cardAddNameEdit.text.toString(), price.toInt(), cardAddBillCheckEdit.text.toString()))

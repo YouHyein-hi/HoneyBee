@@ -16,6 +16,7 @@ class SpinnerAdapter(context: Context, items: ArrayList<CardSpinnerData>) : Arra
         val binding = SpinnerCustomLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.spinnerItem.height = 35 // 높이를 35dp로 설정합니다.
 
+        //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결, 텍스트 뷰를 두개만들던가 하나에 넣던가
         val item = getItem(position)
         binding.spinnerItem.text = "${item?.name} : ${item?.amount}" // 이름과 금액을 보여줌
         return binding.root
@@ -26,6 +27,7 @@ class SpinnerAdapter(context: Context, items: ArrayList<CardSpinnerData>) : Arra
         binding.spinnerItem.height = 35 // 높이를 35dp로 설정합니다.
 
         val item = getItem(position)
+        //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
         binding.spinnerItem.text = "${item?.name} : ${item?.amount}" // 이름과 금액을 보여줌
         return binding.root
     }

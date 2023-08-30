@@ -28,7 +28,7 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentSendBillBinding
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
-import com.example.receiptcareapp.ui.adapter.StoreSpinner
+import com.example.receiptcareapp.ui.adapter.StoreSpinnerAdapter
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
@@ -93,6 +93,7 @@ class SendBillFragment :
                         month = month + 1,
                         day = day
                     )
+                    //TODO databinding
                     sendBillDateBtn.text =
                         "${year}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
                     selectedDate = LocalDate.of(year, month + 1, day)
@@ -118,14 +119,14 @@ class SendBillFragment :
                 handled
             }
 
+            //TODO Binding어뎁터에서 토스트 쓸수있다면 넘기는걸로
             sendBillStoreEdit.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence?,
                     start: Int,
                     count: Int,
                     after: Int
-                ) {
-                }
+                ) {}
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable?) {
@@ -152,6 +153,7 @@ class SendBillFragment :
                 }
             })
 
+            //TODO 데이터바인딩으로 빼기
             sendBillPriceEdit.setOnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
                     if (sendBillPriceEdit.text.contains(",")) {
@@ -223,6 +225,7 @@ class SendBillFragment :
         }
 
         //            키보드 오르락 내리락 감지
+        //TODO 데이터바인딩으로 빼기
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             try {
                 val layoutParams = binding.bottomLayout.layoutParams as ViewGroup.MarginLayoutParams
@@ -248,6 +251,7 @@ class SendBillFragment :
     }
 
     override fun initObserver() {
+        //TODO 데이터바인딩
         viewModel.loading.observe(viewLifecycleOwner) {
             binding.layoutLoadingProgress.root.isVisible = it
         }
@@ -265,7 +269,7 @@ class SendBillFragment :
             }
         }
 
-        //TODO 비었을경우에 대처, 카드리스트가 비었을때 홈으로 등등
+
         viewModel.cardList.observe(viewLifecycleOwner) {
             if(it?.body?.isEmpty() == true){
                 showShortToast("카드 데이터를 추가해주세요!")
@@ -280,11 +284,11 @@ class SendBillFragment :
             if (!response?.body.isNullOrEmpty()) {
                 storeArray.clear()
                 response?.body?.map { storeArray.add(it) }
-                binding.sendBillStoreEdit.setAdapter(StoreSpinner(requireContext(), storeArray))
+                binding.sendBillStoreEdit.setAdapter(StoreSpinnerAdapter(requireContext(), storeArray))
             }
         }
 
-        // Err관리
+        // TODO 통신 실패시도 꺼지게 해야함 에러 예외처리 추가
         viewModel.fetchState.observe(this) {
             when (it.second) {
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> findNavController().popBackStack()

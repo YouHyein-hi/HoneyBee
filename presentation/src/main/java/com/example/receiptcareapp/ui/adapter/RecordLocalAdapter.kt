@@ -23,6 +23,7 @@ class RecordLocalAdapter: RecyclerView.Adapter<RecordLocalAdapter.MyAdapter>(){
 
     inner class MyAdapter(private val binding: ItemBillListLocalBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list:RecyclerShowData){
+            //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
             binding.recordItemStoreTxt.text = list.storeName
             binding.recordItemCardTxt.text = "${list.cardName}카드"
             binding.recordItemAmountTxt.text = list.amount

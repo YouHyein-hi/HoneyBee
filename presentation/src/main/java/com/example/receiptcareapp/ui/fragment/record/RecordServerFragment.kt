@@ -65,6 +65,7 @@ class RecordServerFragment(
 
     override fun initObserver() {
         //서버에서 받아온 데이터 옵져버
+        //TODO 데이터바인딩
         viewModel.billList.observe(viewLifecycleOwner) {
             recordServerAdapter.dataList.clear()
             recordServerAdapter.dataList = it?.body?.toMutableList()!!

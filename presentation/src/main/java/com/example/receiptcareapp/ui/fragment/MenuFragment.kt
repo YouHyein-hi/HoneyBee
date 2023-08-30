@@ -3,14 +3,10 @@ package com.example.receiptcareapp.ui.fragment
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.app.TimePickerDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -18,7 +14,7 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentMenuBinding
 import com.example.receiptcareapp.ui.activity.LoginActivity
-import com.example.receiptcareapp.ui.adapter.PushReceiver
+import com.example.receiptcareapp.util.PushReceiver
 import com.example.receiptcareapp.ui.dialog.PushTimeDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
@@ -53,6 +49,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
 
     override fun initUI() {
         binding.menuPushTimeTxt.text = viewModel.timePickerText(
+            //TODO 하나만
             viewModel.getTime().hour!!,
             viewModel.getTime().minute!!
         )
@@ -97,6 +94,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     }
 
     override fun initObserver() {
+        //TOdo 데이터바인딩
         viewModel.pushTime.observe(viewLifecycleOwner) { pushTime ->
             binding.menuPushTimeTxt.text = viewModel.timePickerText(pushTime.hour!!, pushTime.minute!!)
         }
@@ -119,14 +117,14 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
         val dayOfMonth = currentDate.get(Calendar.DAY_OF_MONTH)
         val maxDayOfMonth = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH)
 
-        val daysBeforeMaxDay = listOf(1, 2, 3)
+        val daysBeforeMaxDay = listOf(0,1, 2, 3)
 
-        if (dayOfMonth == maxDayOfMonth || daysBeforeMaxDay.contains(maxDayOfMonth - dayOfMonth)) {
+        if (daysBeforeMaxDay.contains(maxDayOfMonth - dayOfMonth)) {
             Log.e("TAG", "MenuFragment : Alarm set on day $dayOfMonth")
             setAlarm()
         } else {
             Log.d("TAG", "MenuFragment : Alarm not set on day $dayOfMonth")
-            setAlarm()
+//            setAlarm()
         }
 
 
@@ -160,6 +158,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
         )*/
     }
 
+    //TODO 이쪽은 알람 메니저 클래스 or Object 클래스를 만들고 알람기능은 그곳에서 담당하는걸로 뺴주자
     private fun setAlarm(){
         val targetTime = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
@@ -172,7 +171,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             pendingIntent
         )
     }
-
     private fun cancelAlarm() {
         alarmManager.cancel(pendingIntent)
     }

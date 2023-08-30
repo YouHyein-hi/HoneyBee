@@ -62,6 +62,7 @@ class RecordLocalFragment(
 
     override fun initObserver() {
         //룸에서 받아온 데이터 옵져버
+        //TODO 데이터바인딩 -> 데이터바인딩 옵저버할때 데이터가 비었는지 안비었는지 확인해주고 바꿔주기? (희망사항)
         viewModel.roomData.observe(viewLifecycleOwner) {
             recordLocalAdapter.dataList.clear()
             recordLocalAdapter.dataList = it.map { it.toRecyclerShowData() }.toMutableList()

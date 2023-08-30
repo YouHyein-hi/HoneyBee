@@ -18,7 +18,7 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
-import com.example.receiptcareapp.ui.adapter.PermissionHandler
+import com.example.receiptcareapp.util.PermissionHandler
 import com.example.receiptcareapp.ui.botteomSheet.CardBottomSheet
 import com.example.receiptcareapp.ui.dialog.AddDialog
 import com.example.receiptcareapp.ui.dialog.ExitDialog
@@ -79,10 +79,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun initObserver() {
         //프로그래스 바 컨트롤
+        //TODO databinding
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
+
 
         viewModel.cardList.observe(viewLifecycleOwner) { dataList ->
             if (dataList?.body!!.isEmpty()) { emptyTextControl(true) }
@@ -92,6 +94,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
+        //TODO 데이터 바인딩
         viewModel.notice.observe(viewLifecycleOwner){
             binding.homeNoticeTxt.text = it
         }

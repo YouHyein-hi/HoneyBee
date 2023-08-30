@@ -47,9 +47,12 @@ class ChangeDialog(
 
     override fun initUI() {
         getSpinner()
+        //TODO Databinding
         binding.changeStoreEdit.setText(viewModelData.storeName)
         binding.changePriceEdit.setText(viewModelData.amount)
+
         try {
+            //TODO init UI로 빼는게 맞을듯 싶음
             dateData = DateData(
                 year = newDate[0].toInt(),
                 month = newDate[1].toInt(),
@@ -73,9 +76,8 @@ class ChangeDialog(
             )
 
             val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
-
-            var price = binding.changePriceEdit.text.toString()
-            var priceZero = price.count { it == '0' }
+            val price = binding.changePriceEdit.text.toString()
+            val priceZero = price.count { it == '0' }
             when {
                 cardName == "" -> { showShortToast("카드를 입력하세요.") }
                 binding.changeStoreEdit.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
@@ -136,7 +138,8 @@ class ChangeDialog(
             handled
         }
 
-        binding.changePriceEdit.setOnFocusChangeListener { view, hasFocus ->
+            //TODO binding adapter로 뺄수있을것같음
+            binding.changePriceEdit.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 if (binding.changePriceEdit.text.contains(",")) {
                     binding.changePriceEdit.setText(viewModel.CommaReplaceSpace(binding.changePriceEdit.text.toString()))

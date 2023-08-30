@@ -22,6 +22,7 @@ class NoticeAdapter : RecyclerView.Adapter<NoticeAdapter.MyHolder>(){
 
     inner class MyHolder(private val binding : ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NoticeData) {
+            //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
             binding.noticeItemTitleTxt.text = item.title
             binding.noticeItemDateTxt.text = item.date
             binding.noticeItemComponent.setOnClickListener { onNoticeClic(item) }

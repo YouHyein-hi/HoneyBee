@@ -16,6 +16,7 @@ class PushTimeDialog(
 
     override fun initUI() {
         try {
+            //TODO databinding을 써야하고, 뷰모델 한번만 불러서 xml에 넣어주기
             binding.pushtimeTimeTimePicker.hour = viewModel.getTime().hour!!
             binding.pushtimeTimeTimePicker.minute = viewModel.getTime().minute!!
         } catch (e: NullPointerException) {

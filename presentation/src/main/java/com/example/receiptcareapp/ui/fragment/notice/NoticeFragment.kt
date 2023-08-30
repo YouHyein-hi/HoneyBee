@@ -54,6 +54,8 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
             adapter.dataList.clear()
             adapter.dataList = it?.body!!.toMutableList()
         }
+
+        //TODO 프로그레스바 databinding
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding. layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
@@ -65,6 +67,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
             showShortToast(FetchStateHandler(it))
         }
     }
+
 
     private fun checkDataList(){
         if(adapter.dataList.isEmpty()) binding.noticeEmptyTxt.visibility = View.VISIBLE

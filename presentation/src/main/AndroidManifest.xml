@@ -79,7 +79,7 @@
             android:theme="@style/OpenSourceMenuTheme" />
 
         <receiver
-            android:name=".ui.adapter.PushReceiver"
+            android:name=".util.PushReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

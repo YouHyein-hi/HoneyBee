@@ -58,6 +58,7 @@ class DeleteDialog(
         viewModel.fetchState.observe(this) {
             when (it.second) {
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> dismiss()
+                else -> {}
             }
             showShortToast(FetchStateHandler(it))
         }

@@ -43,6 +43,17 @@ class ChangeDialog(
         }
 
         viewModel.getServerCardData()
+
+        try {
+            dateData = DateData(
+                year = newDate[0].toInt(),
+                month = newDate[1].toInt(),
+                day = newDate[2].toInt()
+            )
+        } catch (e: NullPointerException) {
+            dismiss()
+            showShortToast("날짜 불러오기를 실패했습니다.")
+        }
     }
 
     override fun initUI() {
@@ -50,19 +61,8 @@ class ChangeDialog(
         //TODO Databinding
         binding.changeStoreEdit.setText(viewModelData.storeName)
         binding.changePriceEdit.setText(viewModelData.amount)
+        binding.changeDateDatePicker.init(dateData.year, dateData.month - 1, dateData.day, null)
 
-        try {
-            //TODO init UI로 빼는게 맞을듯 싶음
-            dateData = DateData(
-                year = newDate[0].toInt(),
-                month = newDate[1].toInt(),
-                day = newDate[2].toInt()
-            )
-            binding.changeDateDatePicker.init(dateData.year, dateData.month - 1, dateData.day, null)
-        } catch (e: NullPointerException) {
-            dismiss()
-            showShortToast("날짜 불러오기를 실패했습니다.")
-        }
 
     }
 

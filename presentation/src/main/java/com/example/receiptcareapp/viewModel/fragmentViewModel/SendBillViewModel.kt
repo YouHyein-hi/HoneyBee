@@ -135,45 +135,4 @@ class SendBillViewModel @Inject constructor(
         }
     }
 
-    fun dateNow(): LocalDate {
-        return LocalDate.now()
-    }
-
-    fun datePickerMonth(month: Int): String {
-        var myMonth: String
-        if (month < 10) myMonth = "0${month + 1}"
-        else myMonth = "${month + 1}"
-        return myMonth
-    }
-
-    fun datePickerDay(day: Int): String {
-        var myDay: String
-        if (day < 10) myDay = "0${day}"
-        else myDay = "${day}"
-        return myDay
-    }
-
-    fun myLocalDateTimeFuntion(myYear: Int, myMonth: Int, myDay: Int): LocalDateTime? {
-        return LocalDateTime.of(
-            myYear, myMonth, myDay,
-            LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second
-        )
-    }
-    //TODO 예외처리 필요함
-    fun amountCheck(price: String, cardAmount: String):Boolean{
-        return price.replace(",","").toInt() <= cardAmount.replace(",","").toInt()
-    }
-
-    fun CommaReplaceSpace(text : String): String {
-        return text.replace(",", "")
-    }
-
-    fun PriceFormat(price : String): String? {
-        if (price.isEmpty()) { return "" }
-        val numericValue = try { price.toInt()
-        } catch (e: NumberFormatException) { return price }
-        return DecimalFormat("#,###").format(numericValue)
-    }
-
-
 }

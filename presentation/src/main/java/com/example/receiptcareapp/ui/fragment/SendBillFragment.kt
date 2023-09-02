@@ -32,6 +32,7 @@ import com.example.receiptcareapp.ui.adapter.StoreSpinnerAdapter
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.util.Utils
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,8 +57,8 @@ class SendBillFragment :
 
 
     override fun initData() {
-        todayDate = viewModel.dateNow()
-        selectedDate = viewModel.dateNow()
+        todayDate = Utils.dateNow()
+        selectedDate = Utils.dateNow()
         viewModel.getServerStoreData()
         //TODO 이 부분 한번만 둘러오기
         dateData = DateData(
@@ -77,7 +78,7 @@ class SendBillFragment :
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                 .into(pictureView)
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-            sendBillDateBtn.text = "${viewModel.dateNow().format(formatterDate)}"
+            sendBillDateBtn.text = "${Utils.dateNow().format(formatterDate)}"
         }
 
     }
@@ -95,7 +96,7 @@ class SendBillFragment :
                     )
                     //TODO databinding
                     sendBillDateBtn.text =
-                        "${year}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
+                        "${year}/${Utils.datePickerMonth(month)}/${Utils.datePickerDay(day)}"
                     selectedDate = LocalDate.of(year, month + 1, day)
                 }
                 val dataDialog = DatePickerDialog(
@@ -114,7 +115,7 @@ class SendBillFragment :
             sendBillPriceEdit.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_DONE && sendBillPriceEdit.text.isNotEmpty()) {
-                    sendBillPriceEdit.setText(viewModel.PriceFormat(sendBillPriceEdit.text.toString()))
+                    sendBillPriceEdit.setText(Utils.PriceFormat(sendBillPriceEdit.text.toString()))
                 }
                 handled
             }
@@ -149,11 +150,11 @@ class SendBillFragment :
             sendBillPriceEdit.setOnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
                     if (sendBillPriceEdit.text.contains(",")) {
-                        sendBillPriceEdit.setText(viewModel.CommaReplaceSpace(sendBillPriceEdit.text.toString()))
+                        sendBillPriceEdit.setText(Utils.CommaReplaceSpace(sendBillPriceEdit.text.toString()))
                         sendBillPriceEdit.setSelection(sendBillPriceEdit.text.length)
                     }
                 } else {
-                    sendBillPriceEdit.setText(viewModel.PriceFormat(sendBillPriceEdit.text.toString()))
+                    sendBillPriceEdit.setText(Utils.PriceFormat(sendBillPriceEdit.text.toString()))
                 }
             }
 
@@ -174,11 +175,11 @@ class SendBillFragment :
                         NavHostFragment.findNavController(this@SendBillFragment).navigate(R.id.action_sendBillFragment_to_homeFragment)
                     }
                     else -> {
-                        if (!viewModel.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
+                        if (!Utils.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
                             showShortToast("보유금액보다 많은 비용입니다.")
                             return@setOnClickListener
                         }
-                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
+                        val myLocalDateTime = Utils.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
                         SendCheckBottomSheet(
                             viewModel,
                             BottomSheetData(

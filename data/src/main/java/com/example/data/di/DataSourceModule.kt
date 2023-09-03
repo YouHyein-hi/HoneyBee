@@ -2,6 +2,7 @@ package com.example.data.di
 
 import com.example.data.remote.dataSource.*
 import com.example.data.remote.dataSourceImpl.*
+import com.example.data.util.HeaderManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,19 +21,23 @@ object DataSourceModule {
 
     @Singleton
     @Provides
-    fun provideCardDataSource(retrofit: Retrofit):CardDataSource = CardDataSourceImpl(retrofit)
+    @RetrofitModule.Api
+    fun provideCardDataSource(@RetrofitModule.Api retrofit: Retrofit):CardDataSource = CardDataSourceImpl(retrofit)
 
     @Singleton
     @Provides
-    fun provideGeneralDataSource(retrofit: Retrofit):GeneralDataSource = GeneralDataSourceImpl(retrofit)
+    @RetrofitModule.Api
+    fun provideGeneralDataSource(@RetrofitModule.Api retrofit: Retrofit):GeneralDataSource = GeneralDataSourceImpl(retrofit)
 
     @Singleton
     @Provides
-    fun provideLoginSource(retrofit: Retrofit):LoginDataSource = LoginDataSourceImpl(retrofit)
+    @RetrofitModule.Login
+    fun provideLoginDataSource(@RetrofitModule.Login retrofit: Retrofit, headerManager: HeaderManager):LoginDataSource = LoginDataSourceImpl(retrofit,headerManager)
 
     @Singleton
     @Provides
-    fun provideNoticeSource(retrofit: Retrofit):NoticeDataSource = NoticeDataSourceImpl(retrofit)
+    @RetrofitModule.Api
+    fun provideNoticeDataSource(@RetrofitModule.Api retrofit: Retrofit):NoticeDataSource = NoticeDataSourceImpl(retrofit)
 
 
 }

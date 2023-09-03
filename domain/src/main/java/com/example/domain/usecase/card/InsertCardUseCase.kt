@@ -12,6 +12,6 @@ class InsertCardUseCase(
     private val cardRepository: CardRepository
 ) {
     suspend operator fun invoke(sendCardData: SendCardData) : ServerResponseData {
-        return cardRepository.insertCardUseCase(sendCardData)
+        return cardRepository.insertCardRepository(sendCardData)
     }
 }

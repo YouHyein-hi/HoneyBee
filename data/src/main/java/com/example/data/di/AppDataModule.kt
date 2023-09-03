@@ -2,6 +2,7 @@ package com.example.data.di
 
 import android.content.Context
 import com.example.data.manager.PreferenceManager
+import com.example.data.util.HeaderManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,5 +21,11 @@ object AppDataModule {
     @Provides
     fun providePreferenceManager(@ApplicationContext context: Context): PreferenceManager {
         return PreferenceManager(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideHeaderManager(preferenceManager: PreferenceManager): HeaderManager {
+        return HeaderManager(preferenceManager)
     }
 }

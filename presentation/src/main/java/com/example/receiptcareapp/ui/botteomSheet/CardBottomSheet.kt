@@ -43,28 +43,17 @@ class CardBottomSheet(
     }
 
     override fun initUI() {
-        //TODO 청구완료된 카드 개수 표시하는 것인데, 빼는 기능이니 삭제바람
-        binding.cardCount = "0"
-        Log.e("TAG", "initUI homecardBottomSheet: ${binding.cardCount}")
-        //initUI 부분
         binding.cardRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.cardRecyclerview.adapter = adapter
     }
 
     override fun initListener() {
-        //서버 카드 추가 다이얼로그
-        //TODO 청구완료된 카드 개수 표시하는 것인데, 빼는 기능이니 삭제바람
-        binding.cardCount = "0"
         binding.cardAddBtn.setOnClickListener{
             cardAddDialog()
         }
     }
 
     override fun initObserver() {
-        //TODO 청구완료된 카드 개수 표시하는 것인데, 빼는 기능이니 삭제바람
-        binding.cardCount = "0"
-
-        //프로그래스 바 컨트롤
         //TODO databinding으로 옵져버하게 ,, 어떻게 뺄지 고민
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE

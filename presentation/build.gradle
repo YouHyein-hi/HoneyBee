@@ -51,6 +51,7 @@ dependencies {
 
     //CA
     implementation project(path:':data')
+    //Presentation은 데이터만 알아야하는데??
     implementation project(path:':domain')
 
     //코루틴

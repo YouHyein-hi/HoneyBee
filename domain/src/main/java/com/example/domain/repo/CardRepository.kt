@@ -11,7 +11,7 @@ import com.example.domain.model.remote.send.card.SendCardData
  */
 interface CardRepository {
     suspend fun getCardListRepository(): ServerCardData
-    suspend fun insertCardUseCase(sendCardData: SendCardData): ServerResponseData
+    suspend fun insertCardRepository(sendCardData: SendCardData): ServerResponseData
 //    suspend fun updateCardUseCase(domainUpdateCardData: DomainUpdateCardData):DomainServerResponse
     suspend fun getCardSpinnerRepository(): ServerCardSpinnerData
 }

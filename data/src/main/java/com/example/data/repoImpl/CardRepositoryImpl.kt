@@ -31,7 +31,7 @@ class CardRepositoryImpl @Inject constructor(
         return ServerCardSpinnerData(response.status, response.message, newList)
     }
 
-    override suspend fun insertCardUseCase(sendCardData: SendCardData): ServerResponseData {
+    override suspend fun insertCardRepository(sendCardData: SendCardData): ServerResponseData {
         return cardDataSource.sendCardDataSource(
             cardName = sendCardData.cardName,
             amount = sendCardData.cardAmount,

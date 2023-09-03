@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.domain.model.local.DomainRoomData
+import com.example.domain.model.local.RoomData
 
 /**
  * 2023-02-15
@@ -28,11 +28,11 @@ data class MyEntity(
 
 )
 
-fun MyEntity.toDomainEntity(): DomainRoomData = DomainRoomData(
+fun MyEntity.toDomainEntity(): RoomData = RoomData(
     uid = uid,
     billSubmitTime = billSubmitTime,
     cardName = cardName,
-    amount = amount,
+    storeAmount = amount,
     storeName = pictureName,
     file = picture
 )

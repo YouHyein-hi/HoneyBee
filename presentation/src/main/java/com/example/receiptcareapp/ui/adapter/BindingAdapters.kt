@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.ui.adapter
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import com.example.receiptcareapp.R
 
 object BindingAdapters {
 
@@ -56,33 +58,22 @@ object BindingAdapters {
 
     }
 
-
-    // 마음대로 안돌아감
-/*    @JvmStatic
-    @BindingAdapter(value = ["errorHint", "highlightColor"])
-    fun setErrorHintAndHighlight
-                (editText: EditText, errorHint: String?, highlightColor: Int?) {
+    @JvmStatic
+    @BindingAdapter(value = ["originalHint","errorHint", "highlightColor"])
+    fun setErrorHintAndHighlight(editText: EditText, originalHint : String?, errorHint: String?, highlightColor: Int) {
         Log.e("TAG", "setErrorHintAndHighlight: 진입", )
         editText.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
-                Log.e("TAG", "setErrorHintAndHighlight: !hasFocus 진입", )
-                if (TextUtils.isEmpty(editText.text)) {
-                    Log.e("TAG", "setErrorHintAndHighlight: isEmpty if 진입", )
-                    editText.hint = errorHint
-                    editText.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                } else {
-                    Log.e("TAG", "setErrorHintAndHighlight: isEmpty else 진입", )
-                    editText.backgroundTintList = highlightColor?.let { ColorStateList.valueOf(it) }
-                }
+            if (!hasFocus && editText.text.isEmpty()) {
+                editText.hint = errorHint
+                editText.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            } else if(hasFocus && !editText.text.isEmpty())  {
+                editText.hint = originalHint // 초기 hint로 되돌리기
+                editText.backgroundTintList = ColorStateList.valueOf(highlightColor)
+            }
+            else if(!hasFocus && !editText.text.isEmpty()){
+                editText.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
             }
         }
     }
 
-    @BindingAdapter("onTextChanged")
-    @JvmStatic
-    fun setOnTextChangedListener(editText: EditText, onTextChanged: (() -> Unit)?) {
-        editText.doAfterTextChanged {
-            onTextChanged?.invoke()
-        }
-    }*/
 }

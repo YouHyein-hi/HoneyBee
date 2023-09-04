@@ -5,8 +5,8 @@ package com.example.domain.model.receive.notice
  * pureum
  */
 data class NoticeData(
-    val id: String,
-    val title: String,
-    val date: String,
-    val content: String,
+    var id: String,
+    var title: String,
+    var date: String,
+    var content: String,
 )

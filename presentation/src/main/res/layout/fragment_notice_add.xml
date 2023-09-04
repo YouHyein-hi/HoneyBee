@@ -9,16 +9,18 @@
 
     <data>
         <variable
-            name="content_title"
-            type="String" />
-
+            name="data"
+            type="com.example.domain.model.receive.notice.NoticeData" />
         <variable
-            name="date"
+            name="title"
             type="String" />
-
         <variable
             name="content"
             type="String" />
+        <import type="android.view.View"/>
+        <variable
+            name="loading"
+            type="java.lang.Boolean"/>
     </data>
 
 
@@ -67,6 +69,7 @@
                 android:fontFamily="@font/pretendardsemibold"
                 android:gravity="center"
                 android:hint="@string/notice_add_title"
+                android:text="@{title}"
                 android:textSize="24dp" />
 
             <View
@@ -86,16 +89,21 @@
                 android:fontFamily="@font/pretendardmedium"
                 android:gravity="center"
                 android:hint="@string/notice_add_content"
+                android:text="@{content}"
                 android:textSize="18sp" />
         </LinearLayout>
 
+<!--            android:visibility="@{loading ? View.INVISIBLE : View.VISIBLE, default=invisible }"
+-->
         <include
             android:visibility="invisible"
             android:id="@+id/layoutLoadingProgress"
             layout="@layout/progressbar_loading"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

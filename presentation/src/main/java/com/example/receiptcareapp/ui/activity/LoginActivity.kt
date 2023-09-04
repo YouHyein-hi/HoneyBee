@@ -151,8 +151,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         }
     }
 
-    // TODO 이 부분을 ViewModel 로 빼고 ViewModel 에서는 Enum Class로 값 관리하기
-    // TODO 여기선 observer 만하는게 어떨지
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         Log.e("TAG", "onRequestPermissionsResult: 에 접근",)
         super.onRequestPermissionsResult(requestCode, permissions, grantResults) // 두 개의 배열 파라미터를 모두 전달합니다.

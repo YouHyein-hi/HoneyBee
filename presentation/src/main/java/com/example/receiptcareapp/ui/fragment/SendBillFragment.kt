@@ -32,6 +32,7 @@ import com.example.receiptcareapp.ui.adapter.StoreSpinnerAdapter
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.util.Utils
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,10 +57,9 @@ class SendBillFragment :
 
 
     override fun initData() {
-        todayDate = viewModel.dateNow()
-        selectedDate = viewModel.dateNow()
+        todayDate = Utils.dateNow()
+        selectedDate = Utils.dateNow()
         viewModel.getServerStoreData()
-        //TODO 이 부분 한번만 둘러오기
         dateData = DateData(
             year = todayDate!!.year,
             month = todayDate!!.monthValue,
@@ -77,7 +77,7 @@ class SendBillFragment :
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                 .into(pictureView)
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-            sendBillDateBtn.text = "${viewModel.dateNow().format(formatterDate)}"
+            date = Utils.dateNow().format(formatterDate)
         }
 
     }
@@ -93,9 +93,7 @@ class SendBillFragment :
                         month = month + 1,
                         day = day
                     )
-                    //TODO databinding
-                    sendBillDateBtn.text =
-                        "${year}/${viewModel.datePickerMonth(month)}/${viewModel.datePickerDay(day)}"
+                    date = "${year}/${Utils.datePickerMonth(month)}/${Utils.datePickerDay(day)}"
                     selectedDate = LocalDate.of(year, month + 1, day)
                 }
                 val dataDialog = DatePickerDialog(
@@ -109,61 +107,21 @@ class SendBillFragment :
                     .setTextColor(Color.BLACK)
             }
 
-
-            /** 금액 EidtText , 추가 **/
-            sendBillPriceEdit.setOnEditorActionListener { v, actionId, event ->
-                var handled = false
-                if (actionId == EditorInfo.IME_ACTION_DONE && sendBillPriceEdit.text.isNotEmpty()) {
-                    sendBillPriceEdit.setText(viewModel.PriceFormat(sendBillPriceEdit.text.toString()))
-                }
-                handled
-            }
-
             //TODO Binding어뎁터에서 토스트 쓸수있다면 넘기는걸로
             sendBillStoreEdit.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {}
-
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int,after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable?) {
-                    if (s!!.length > 15) {
-                        showShortToast("15자 이내로 입력해주세요.")
-                    }
+                    if (s!!.length > 15) { showShortToast("15자 이내로 입력해주세요.") }
                 }
             })
-
             sendBillPriceEdit.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable?) {
-                    if (s!!.length > 10) {
-                        showShortToast("10자 이내로 입력해주세요.")
-                    }
+                    if (s!!.length > 10) { showShortToast("10자 이내로 입력해주세요.") }
                 }
             })
-
-            //TODO 데이터바인딩으로 빼기
-            sendBillPriceEdit.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    if (sendBillPriceEdit.text.contains(",")) {
-                        sendBillPriceEdit.setText(viewModel.CommaReplaceSpace(sendBillPriceEdit.text.toString()))
-                        sendBillPriceEdit.setSelection(sendBillPriceEdit.text.length)
-                    }
-                } else {
-                    sendBillPriceEdit.setText(viewModel.PriceFormat(sendBillPriceEdit.text.toString()))
-                }
-            }
 
             /** 완료 Button **/
             sendBillOkBtn.setOnClickListener {
@@ -182,11 +140,11 @@ class SendBillFragment :
                         NavHostFragment.findNavController(this@SendBillFragment).navigate(R.id.action_sendBillFragment_to_homeFragment)
                     }
                     else -> {
-                        if (!viewModel.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
+                        if (!Utils.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
                             showShortToast("보유금액보다 많은 비용입니다.")
                             return@setOnClickListener
                         }
-                        val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
+                        val myLocalDateTime = Utils.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
                         SendCheckBottomSheet(
                             viewModel,
                             BottomSheetData(
@@ -224,7 +182,7 @@ class SendBillFragment :
             }
         }
 
-        //            키보드 오르락 내리락 감지
+        // 키보드 오르락 내리락 감지
         //TODO 데이터바인딩으로 빼기
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             try {

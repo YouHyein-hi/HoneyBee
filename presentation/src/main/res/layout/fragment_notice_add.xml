@@ -10,7 +10,7 @@
     <data>
         <variable
             name="data"
-            type="com.example.domain.model.receive.notice.NoticeData" />
+            type="com.example.domain.model.remote.receive.notice.NoticeData" />
         <variable
             name="title"
             type="String" />

@@ -12,7 +12,7 @@ import retrofit2.http.POST
  */
 interface LoginDataSource {
     @FormUrlEncoded
-    @POST("bill/login")
+    @POST("auth/app/login")
     suspend fun requestLogin(
         @Field("email") email : String,
         @Field("password") password : String,

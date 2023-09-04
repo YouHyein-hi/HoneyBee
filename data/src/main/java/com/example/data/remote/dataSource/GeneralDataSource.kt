@@ -2,6 +2,7 @@ package com.example.data.remote.dataSource
 
 import ServerResponse
 import com.example.data.remote.model.ServerBillResponse
+import dagger.Provides
 import okhttp3.MultipartBody
 import retrofit2.http.*
 import java.time.LocalDateTime

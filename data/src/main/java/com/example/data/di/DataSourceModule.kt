@@ -2,6 +2,7 @@ package com.example.data.di
 
 import com.example.data.remote.dataSource.*
 import com.example.data.remote.dataSourceImpl.*
+import com.example.data.util.HeaderManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,22 +18,19 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataSourceModule {
+    @Singleton
+    @Provides
+    fun provideCardDataSource(@RetrofitModule.Api retrofit: Retrofit):CardDataSource = CardDataSourceImpl(retrofit)
 
     @Singleton
     @Provides
-    fun provideCardDataSource(retrofit: Retrofit):CardDataSource = CardDataSourceImpl(retrofit)
+    fun provideGeneralDataSource(@RetrofitModule.Api retrofit: Retrofit):GeneralDataSource = GeneralDataSourceImpl(retrofit)
 
     @Singleton
     @Provides
-    fun provideGeneralDataSource(retrofit: Retrofit):GeneralDataSource = GeneralDataSourceImpl(retrofit)
+    fun provideLoginDataSource(@RetrofitModule.Login retrofit: Retrofit, headerManager: HeaderManager):LoginDataSource = LoginDataSourceImpl(retrofit,headerManager)
 
     @Singleton
     @Provides
-    fun provideLoginSource(retrofit: Retrofit):LoginDataSource = LoginDataSourceImpl(retrofit)
-
-    @Singleton
-    @Provides
-    fun provideNoticeSource(retrofit: Retrofit):NoticeDataSource = NoticeDataSourceImpl(retrofit)
-
-
+    fun provideNoticeDataSource(@RetrofitModule.Api retrofit: Retrofit):NoticeDataSource = NoticeDataSourceImpl(retrofit)
 }

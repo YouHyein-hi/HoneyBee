@@ -1,7 +1,8 @@
 package com.example.domain.usecase.bill
 
-import com.example.domain.model.receive.card.DomainUpadateData
-import com.example.domain.model.receive.ServerUidData
+import com.example.domain.model.remote.receive.basic.ServerUidData
+import com.example.domain.model.remote.send.bill.SendBillData
+import com.example.domain.model.remote.send.bill.SendBillUpdateData
 import com.example.domain.repo.GeneralRepository
 
 /**
@@ -11,7 +12,7 @@ import com.example.domain.repo.GeneralRepository
 class UpdateDataUseCase(
     private val generalRepository: GeneralRepository
 ) {
-    suspend operator fun invoke(domainResendData: DomainUpadateData): ServerUidData {
-        return generalRepository.updateDataUseCaseRepository(domainResendData)
+    suspend operator fun invoke(sendBillUpdateData: SendBillUpdateData): ServerUidData {
+        return generalRepository.updateDataRepository(sendBillUpdateData)
     }
 }

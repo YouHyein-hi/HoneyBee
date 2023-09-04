@@ -1,13 +1,10 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.data.manager.PreferenceManager
 import com.example.receiptcareapp.base.BaseViewModel
-import com.example.receiptcareapp.dto.LoginData
-import com.example.receiptcareapp.dto.TimeData
+import com.example.domain.model.ui.dateTime.TimeData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

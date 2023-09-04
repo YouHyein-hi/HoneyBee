@@ -19,11 +19,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.domain.model.BottomSheetData
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.domain.model.receive.card.CardSpinnerData
-import com.example.domain.model.receive.DateData
+import com.example.domain.model.remote.receive.card.CardSpinnerData
+import com.example.domain.model.ui.bill.CheckBillData
+import com.example.domain.model.ui.dateTime.DateData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentSendBillBinding
@@ -147,7 +147,7 @@ class SendBillFragment :
                         val myLocalDateTime = Utils.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
                         SendCheckBottomSheet(
                             viewModel,
-                            BottomSheetData(
+                            CheckBillData(
                                 cardName = cardName,
                                 amount = sendBillPriceEdit.text.toString(),
                                 cardAmount = cardAmount,

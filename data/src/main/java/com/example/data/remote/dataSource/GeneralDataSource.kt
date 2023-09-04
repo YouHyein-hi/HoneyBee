@@ -1,16 +1,23 @@
 package com.example.data.remote.dataSource
 
 import ServerResponse
+import com.example.data.di.DataSourceModule
+import com.example.data.remote.dataSourceImpl.CardDataSourceImpl
+import com.example.data.remote.dataSourceImpl.GeneralDataSourceImpl
 import com.example.data.remote.model.ServerBillResponse
+import dagger.Component
+import dagger.Provides
 import okhttp3.MultipartBody
 import retrofit2.http.*
 import java.time.LocalDateTime
+import javax.inject.Singleton
 
 /**
  * 2023-07-23
  * pureum
  */
 interface GeneralDataSource {
+
     @Multipart
     @POST("bill/add")
     suspend fun sendDataSource(

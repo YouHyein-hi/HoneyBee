@@ -3,7 +3,7 @@ package com.example.receiptcareapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.receive.card.CardData
+import com.example.domain.model.remote.receive.card.CardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.ItemHomeCardListBinding
 
@@ -19,9 +19,7 @@ class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
 
     inner class MyHolder(private val binding : ItemHomeCardListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CardData, position:Int) {
-            //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
-            binding.cardHomeNameTxt.text = item.name
-            binding.amount = item.amount
+            binding.cardData = item
             when(position) {
                 1 -> binding.cardHomeIconImg.setImageResource(R.drawable.icon_card_1)
                 2 -> binding.cardHomeIconImg.setImageResource(R.drawable.icon_card_2)

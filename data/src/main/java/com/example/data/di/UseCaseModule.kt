@@ -8,10 +8,10 @@ import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.login.LoginUseCase
 import com.example.domain.usecase.notice.AddNoticeUseCase
 import com.example.domain.usecase.notice.GetNoticeListUseCase
-import com.example.domain.usecase.room.DeleteDataRoomUseCase
-import com.example.domain.usecase.room.GetDataListRoomUseCase
-import com.example.domain.usecase.room.InsertDataRoomUseCase
-import com.example.domain.usecase.room.UpdateRoomData
+import com.example.domain.usecase.room.DeleteRoomDataUseCase
+import com.example.domain.usecase.room.GetRoomDataListUseCase
+import com.example.domain.usecase.room.InsertRoomDataUseCase
+import com.example.domain.usecase.room.UpdateRoomDataUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,11 +25,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
-//    @Provides
-//    @Singleton
-//    fun provideUseCaseReceiveData(repo : RetrofitRepo) : RetrofitUseCase{
-//        return RetrofitUseCase(repo)
-//    }
 
     @Provides
     @Singleton
@@ -116,26 +111,26 @@ object UseCaseModule {
     //ROOM
     @Provides
     @Singleton
-    fun provideDeleteRoomDataUseCase(repo : RoomRepository) : DeleteDataRoomUseCase{
-        return DeleteDataRoomUseCase(repo)
+    fun provideDeleteRoomDataUseCase(repo : RoomRepository) : DeleteRoomDataUseCase{
+        return DeleteRoomDataUseCase(repo)
     }
 
     @Provides
     @Singleton
-    fun provideGetRoomDataListUseCase(repo : RoomRepository) : GetDataListRoomUseCase{
-        return GetDataListRoomUseCase(repo)
+    fun provideGetRoomDataListUseCase(repo : RoomRepository) : GetRoomDataListUseCase{
+        return GetRoomDataListUseCase(repo)
     }
 
     @Provides
     @Singleton
-    fun provideInsertDataRoomUseCase(repo : RoomRepository) : InsertDataRoomUseCase{
-        return InsertDataRoomUseCase(repo)
+    fun provideInsertDataRoomUseCase(repo : RoomRepository) : InsertRoomDataUseCase{
+        return InsertRoomDataUseCase(repo)
     }
 
     @Provides
     @Singleton
-    fun provideUpdateRoomUseCAse(repo : RoomRepository) : UpdateRoomData{
-        return UpdateRoomData(repo)
+    fun provideUpdateRoomUseCAse(repo : RoomRepository) : UpdateRoomDataUseCase{
+        return UpdateRoomDataUseCase(repo)
     }
 
 

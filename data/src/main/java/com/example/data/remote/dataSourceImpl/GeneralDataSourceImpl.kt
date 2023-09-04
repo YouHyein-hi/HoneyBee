@@ -1,6 +1,7 @@
 package com.example.data.remote.dataSourceImpl
 
 import ServerResponse
+import com.example.data.di.RetrofitModule
 import com.example.data.remote.dataSource.GeneralDataSource
 import com.example.data.remote.model.ServerBillResponse
 import okhttp3.MultipartBody
@@ -13,7 +14,7 @@ import javax.inject.Inject
  * pureum
  */
 class GeneralDataSourceImpl @Inject constructor(
-    private val retrofit: Retrofit
+    @RetrofitModule.Api private val retrofit: Retrofit
 ): GeneralDataSource {
     override suspend fun sendDataSource(
         cardName: MultipartBody.Part,

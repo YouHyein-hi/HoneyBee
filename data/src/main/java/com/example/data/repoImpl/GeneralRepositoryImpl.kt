@@ -2,18 +2,18 @@ package com.example.data.repoImpl
 
 import android.graphics.BitmapFactory
 import android.util.Base64
+import com.example.data.mapper.ResponseMapper.toServerBillData
+import com.example.data.mapper.ResponseMapper.toServerStoreData
+import com.example.data.mapper.ResponseMapper.toUidServerResponseData
 import com.example.data.remote.dataSource.GeneralDataSource
-import com.example.domain.model.receive.*
-import com.example.domain.model.receive.bill.ServerBillData
-import com.example.domain.model.receive.bill.ServerPictureData
-import com.example.domain.model.receive.bill.ServerStoreData
-import com.example.domain.model.receive.card.DomainUpadateData
-import com.example.domain.model.send.DomainSendData
+import com.example.domain.model.remote.receive.basic.ServerUidData
+import com.example.domain.model.remote.receive.bill.ServerBillData
+import com.example.domain.model.remote.receive.bill.ServerPictureData
+import com.example.domain.model.remote.receive.bill.ServerStoreData
+import com.example.domain.model.remote.send.bill.SendBillData
+import com.example.domain.model.remote.send.bill.SendBillUpdateData
 import com.example.domain.repo.GeneralRepository
 import com.example.domain.util.StringUtil
-import toServerBillData
-import toServerStoreData
-import toUidServerResponseData
 import javax.inject.Inject
 
 /**
@@ -37,30 +37,30 @@ class GeneralRepositoryImpl @Inject constructor(
         return generalDataSource.getStoreListDataSource().toServerStoreData()
     }
 
-    override suspend fun getPictureDataUseCaseRepository(uid: String): ServerPictureData {
+    override suspend fun getPictureDataRepository(uid: String): ServerPictureData {
         val response = generalDataSource.getPictureDataSource(uid)
         val byteData = response.body
         val decode = Base64.decode(byteData, Base64.DEFAULT)
         return ServerPictureData(status = response.status, message = response.message, picture = BitmapFactory.decodeByteArray(decode, 0, decode.size))
     }
 
-    override suspend fun insertDataRepository(domainSendData: DomainSendData): ServerUidData {
+    override suspend fun insertDataRepository(sendBillData: SendBillData): ServerUidData {
         return generalDataSource.sendDataSource(
-            cardName = domainSendData.cardName,
-            amount = domainSendData.amount,
-            storeName = domainSendData.storeName,
-            billSubmitTime = domainSendData.date,
-            file = domainSendData.picture
+            cardName = sendBillData.cardName,
+            amount = sendBillData.amount,
+            storeName = sendBillData.storeName,
+            billSubmitTime = sendBillData.date,
+            file = sendBillData.picture
         ).toUidServerResponseData()
     }
 
-    override suspend fun updateDataUseCaseRepository(domainResendData: DomainUpadateData): ServerUidData {
+    override suspend fun updateDataRepository(sendBillUpdateData: SendBillUpdateData): ServerUidData {
         return generalDataSource.updateDataSource(
-            id = domainResendData.id,
-            cardName = domainResendData.cardName,
-            amount = domainResendData.amount,
-            storeName = domainResendData.storeName,
-            billSubmitTime = domainResendData.billSubmitTime,
+            id = sendBillUpdateData.id,
+            cardName = sendBillUpdateData.cardName,
+            storeName = sendBillUpdateData.storeName,
+            billSubmitTime = sendBillUpdateData.billSubmitTime,
+            amount = sendBillUpdateData.amount,
         ).toUidServerResponseData()
     }
 }

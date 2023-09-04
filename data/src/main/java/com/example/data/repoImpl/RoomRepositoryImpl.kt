@@ -3,7 +3,7 @@ package com.example.data.repoImpl
 import com.example.data.local.dao.MyDao
 import com.example.data.local.entity.MyEntity
 import com.example.data.local.entity.toDomainEntity
-import com.example.domain.model.local.DomainRoomData
+import com.example.domain.model.local.RoomData
 import com.example.domain.repo.RoomRepository
 import javax.inject.Inject
 
@@ -15,11 +15,11 @@ class RoomRepositoryImpl @Inject constructor(
     private val roomDao: MyDao
     ) : RoomRepository {
 
-    override suspend fun insertData(list: DomainRoomData) {
+    override suspend fun insertData(list: RoomData) {
         val myList = MyEntity(
             billSubmitTime = list.billSubmitTime,
             cardName = list.cardName,
-            amount = list.amount,
+            amount = list.storeAmount,
             pictureName = list.storeName,
             picture = list.file,
             uid = list.uid
@@ -27,7 +27,7 @@ class RoomRepositoryImpl @Inject constructor(
         roomDao.insertData(myList)
     }
 
-    override suspend fun getAllData(): MutableList<DomainRoomData> {
+    override suspend fun getAllData(): MutableList<RoomData> {
         return roomDao.getAllData().map { it.toDomainEntity() }.toMutableList()
     }
 
@@ -35,13 +35,13 @@ class RoomRepositoryImpl @Inject constructor(
         return roomDao.deleteData(date = date)
     }
 
-    override suspend fun updateData(list: DomainRoomData):Int {
+    override suspend fun updateData(list: RoomData):Int {
         return roomDao.updateData(
             MyEntity(
                 uid = list.uid,
                 billSubmitTime = list.billSubmitTime,
                 cardName = list.cardName,
-                amount = list.amount,
+                amount = list.storeAmount,
                 pictureName = list.storeName,
                 picture = list.file
             )

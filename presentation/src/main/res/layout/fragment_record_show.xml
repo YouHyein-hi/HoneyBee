@@ -5,7 +5,7 @@
     <data>
         <variable
             name="data"
-            type="com.example.receiptcareapp.dto.RecyclerData" />
+            type="com.example.domain.model.ui.recycler.RecyclerData" />
 <!--        <variable-->
 <!--            name="activityViewModel"-->
 <!--            type="com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel" />-->

@@ -1,12 +1,11 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel.record
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.bill.ServerBillData
+import com.example.domain.model.local.RoomData
+import com.example.domain.model.remote.receive.bill.ServerBillData
 import com.example.domain.usecase.bill.GetDataListUseCase
-import com.example.domain.usecase.room.GetDataListRoomUseCase
+import com.example.domain.usecase.room.GetRoomDataListUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +21,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class RecordViewModel @Inject constructor(
-    private val getRoomDataListUseCase: GetDataListRoomUseCase,
+    private val getRoomDataListUseCase: GetRoomDataListUseCase,
     private val getDataListUseCase: GetDataListUseCase,
 ): BaseViewModel("RecordViewModel") {
 
@@ -33,8 +32,8 @@ class RecordViewModel @Inject constructor(
     val billList: LiveData<ServerBillData?> get() = _billList
 
     //룸에서 받은 데이터 담는 박스
-    private var _roomData = MutableLiveData<MutableList<DomainRoomData>>()
-    val roomData: LiveData<MutableList<DomainRoomData>> get() = _roomData
+    private var _roomData = MutableLiveData<MutableList<RoomData>>()
+    val roomData: LiveData<MutableList<RoomData>> get() = _roomData
 
     fun getLocalAllData() {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {

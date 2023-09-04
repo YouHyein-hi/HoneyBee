@@ -2,17 +2,21 @@ package com.example.data.di
 
 import com.example.data.manager.PreferenceManager
 import com.example.data.util.NetworkInterceptor
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import dagger.Component
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 /**
@@ -23,8 +27,33 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
-    var gson = GsonBuilder().setLenient().create()
+    private val loggingInterceptor = HttpLoggingInterceptor().apply {
+        level =
+//            if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+            HttpLoggingInterceptor.Level.NONE
+    }
 
+
+    private var gson: Gson = GsonBuilder().setLenient().create()
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class Login
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class Api
+
+    @Singleton
+    @Provides
+    @Login
+    fun provideLoginRetrofit():Retrofit{
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl("http://210.119.104.158:8080/")
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
 
     @Singleton
     @Provides
@@ -33,7 +62,7 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideOkhttp(networkInterceptor: NetworkInterceptor): OkHttpClient {
+    fun provideOkhttpApi(networkInterceptor: NetworkInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(networkInterceptor)
             .build()
@@ -41,14 +70,15 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideSendRetrofit(interceptorOkHttpClient: OkHttpClient):Retrofit{
+    @Api
+    fun provideSendRetrofit(okHttpClient: OkHttpClient):Retrofit{
         return Retrofit.Builder()
             .baseUrl("http://210.119.104.158:8080/")
-            .client(interceptorOkHttpClient)
-            .addConverterFactory(ScalarsConverterFactory.create())
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
+
 
     //네트워크 통신 과정을 보기 위한 클라이언트
     private val okHttpClient = OkHttpClient.Builder()

@@ -47,6 +47,10 @@ class NetworkInterceptor @Inject constructor(
 
     //TODO 토큰이 만료됐을 경우 리프레쉬 토큰을 실어서 서버에 요청한 후, 새 엑세스 토큰 값을 반환받아야 함
     //TODO 이 부분은 서버 구현이 되어야 구현 가능
+    //재발급땐 리프레쉬 토큰만 => 헤더에 태워서 보내기
+    //리턴받을땐 -> 엑세스 토큰, 리프레쉬 토큰 헤더에 담아서 반환
+    //리프레쉬 토큰 일주일 정도 유효 -> 리프레쉬 만료되도 401 err -> 로그아웃
+    //엑세스 토큰 30분 유효
     private fun requestNewAccessToken(request: Request): String? {
         // 레트로핏으로 토큰 얻어오는것과, sharedpreference에 넣어주는 작업등을 해야함
         return request.newBuilder()

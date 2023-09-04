@@ -4,7 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.receive.card.CardData
+import com.example.domain.model.remote.receive.card.CardData
 import com.example.receiptcareapp.databinding.ItemCardBinding
 
 /**
@@ -22,12 +22,7 @@ class CardAdapter : RecyclerView.Adapter<CardAdapter.MyHolder>(){
         }
     inner class MyHolder(private val binding : ItemCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CardData) {
-            Log.e("TAG", "bind: inin", )
-            Log.e("TAG", "bind: cardName=${item.name}, amount=${item.amount}", )
-            //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
-            binding.cardName = item.name
-            binding.amount = item.amount
-            binding.billCheckDate = "${item.billCheckDate}일"
+            binding.cardData = item
         }
     }
 

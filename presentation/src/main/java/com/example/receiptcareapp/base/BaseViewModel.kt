@@ -51,7 +51,7 @@ abstract class BaseViewModel(val name: String) : ViewModel(){
     }
 
     //디스패쳐 메인에서 돌아감
-    //TODO IO 에서 돌아가는 Retrofit도 해당 스코프로도 잘 돌아가는데 왜그러냐면,
+    //IO 에서 돌아가는 Retrofit도 해당 스코프로도 잘 돌아가는데 왜그러냐면,
     // 레트로핏 자체적으로 IO에서 실행시키는 기능때문에.
     protected val modelScope = viewModelScope + job + exceptionHandler
     protected val ioScope = CoroutineScope(Dispatchers.IO) + job + exceptionHandler

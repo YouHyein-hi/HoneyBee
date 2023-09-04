@@ -1,26 +1,18 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel
 
 import android.content.Context
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.media.ExifInterface
-import android.net.Uri
-import android.provider.MediaStore
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.domain.model.local.DomainRoomData
-import com.example.domain.model.receive.card.ServerCardSpinnerData
-import com.example.domain.model.receive.bill.ServerStoreData
-import com.example.domain.model.receive.ServerUidData
-import com.example.domain.model.send.AppSendData
-import com.example.domain.model.send.DomainSendData
+import com.example.domain.model.local.RoomData
+import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
+import com.example.domain.model.remote.receive.bill.ServerStoreData
+import com.example.domain.model.remote.receive.basic.ServerUidData
+import com.example.domain.model.remote.send.bill.SendBillData
+import com.example.domain.model.ui.bill.UiBillData
 import com.example.domain.usecase.bill.GetStoreListUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
-import com.example.domain.usecase.room.InsertDataRoomUseCase
+import com.example.domain.usecase.room.InsertRoomDataUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.util.UriToBitmap
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,12 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.net.SocketTimeoutException
 import java.text.DecimalFormat
 import java.time.LocalDate
@@ -45,7 +32,7 @@ import javax.inject.Inject
 class SendBillViewModel @Inject constructor(
     @ApplicationContext private val application: Context,
     private val insertDataUseCase: InsertDataUseCase,
-    private val insertDataRoomUseCase: InsertDataRoomUseCase,
+    private val insertRoomDataUseCase: InsertRoomDataUseCase,
     private val getStoreListUseCase: GetStoreListUseCase,
     private val getCardSpinnerUseCase: GetCardSpinnerUseCase
 ) : BaseViewModel("SendBillViewModel") {
@@ -55,7 +42,7 @@ class SendBillViewModel @Inject constructor(
     private var _response = MutableLiveData<ServerUidData?>()
     val response : LiveData<ServerUidData?> get() = _response
 
-    private lateinit var savedData : AppSendData
+    private lateinit var savedData : UiBillData
 
     //서버 응답 일관화 이전에 사용할 박스
 
@@ -87,45 +74,45 @@ class SendBillViewModel @Inject constructor(
         }
     }
     //insertData 분리해야함
-    fun insertBillData(sendData: AppSendData) {
+    fun insertBillData(data: UiBillData) {
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
                 _response.postValue(
                     insertDataUseCase(
-                        DomainSendData(
+                        SendBillData(
                             cardName = MultipartBody.Part.createFormData(
                                 "cardName",
-                                sendData.cardName
+                                data.cardName
                             ),
                             storeName = MultipartBody.Part.createFormData(
                                 "storeName",
-                                sendData.storeName
+                                data.storeName
                             ),
                             date = MultipartBody.Part.createFormData(
                                 "billSubmitTime",
-                                sendData.billSubmitTime
+                                data.billSubmitTime
                             ),
                             amount = MultipartBody.Part.createFormData(
                                 "amount",
-                                sendData.amount.replace(",", "")
+                                data.storeAmount.replace(",", "")
                             ),
-                            picture = UriToBitmap(application).compressEncodePicture(sendData.picture)
+                            picture = UriToBitmap(application).compressEncodePicture(data.picture)
                         )
                     )
                 )
             } ?: throw SocketTimeoutException()
-            savedData = sendData
+            savedData = data
             isLoading.postValue(false)
         }
     }
 
     fun insertRoomData(response:String) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            insertDataRoomUseCase(
-                DomainRoomData(
+            insertRoomDataUseCase(
+                RoomData(
                     cardName = savedData.cardName,
-                    amount = savedData.amount,
+                    storeAmount = savedData.storeAmount,
                     storeName = savedData.storeName,
                     billSubmitTime = savedData.billSubmitTime,
                     file = savedData.picture.toString(),

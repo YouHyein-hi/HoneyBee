@@ -11,7 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityLoginBinding
-import com.example.receiptcareapp.dto.LoginData
+import com.example.domain.model.ui.login.LoginData
 import com.example.receiptcareapp.util.PermissionHandler
 import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
 import com.example.receiptcareapp.util.FetchStateHandler
@@ -31,11 +31,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val ALL_PERMISSIONS_CODE = 123
 
     override fun initData() {
-//        nextActivity()
-        var getLogin = viewModel.getLoginData()
-        if(getLogin.id != null){
-            nextActivity()
-        }
+//        var getLogin = viewModel.getLoginData()
+//        if(getLogin.id != null){
+//            nextActivity()
+//        }
 
         if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) {
             permissionDialog()
@@ -48,8 +47,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
 
     override fun initUI() {
         supportActionBar?.hide()
-//        binding.loginEmail.setText("1234@email.com")
-//        binding.loginPassword.setText("1234")
+        binding.loginEmailEdit.setText("1234@email.com")
+        binding.loginPasswordEdit.setText("qwer1234")
     }
 
     override fun initListener() {
@@ -57,7 +56,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             loginData.id = binding.loginEmailEdit.text.toString()
             loginData.pw = binding.loginPasswordEdit.text.toString()
 //            if(loginData.id == "dclab@gmail.com" && loginData.pw == "dclab419$!(") nextActivity()
-            nextActivity()
+//            nextActivity()
             downKeyBoard()
             with(loginData){
                 if(id.isNullOrEmpty())
@@ -66,8 +65,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
                     showShortToast("비밀번호를 입력해주세요.")
                 //TODO 이부분은 ID로 바꿔도 되지않나?
                 else viewModel.requestLogin(
-                    binding.loginEmailEdit.text.toString().replace(" ",""),
-                    binding.loginPasswordEdit.text.toString().replace(" ","")
+                    loginData.id.toString().replace(" ",""),
+                    loginData.pw.toString().replace(" ","")
                 )
             }
         }

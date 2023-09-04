@@ -5,11 +5,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.domain.model.remote.receive.bill.toServerRecyclerData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ShowType
+import com.example.domain.model.ui.type.ShowType
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordServerBinding
-import com.example.receiptcareapp.dto.RecyclerData
+import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.receiptcareapp.ui.adapter.RecordServerAdapter
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
@@ -50,7 +51,7 @@ class RecordServerFragment(
             activityViewModel.changeSelectedData(
                 RecyclerData(
                     type = ShowType.SERVER,
-                    uid = it.uid,
+                    uid = it.uid!!,
                     cardName = it.cardName,
                     amount = it.storeAmount,
                     date = it.date,
@@ -68,7 +69,7 @@ class RecordServerFragment(
         //TODO 데이터바인딩
         viewModel.billList.observe(viewLifecycleOwner) {
             recordServerAdapter.dataList.clear()
-            recordServerAdapter.dataList = it?.body?.toMutableList()!!
+            recordServerAdapter.dataList = it?.body?.map { it-> it.toServerRecyclerData() }!!.toMutableList()
             emptyTextControl(recordServerAdapter.dataList.isEmpty(),"데이터가 비었어요!", )
         }
 

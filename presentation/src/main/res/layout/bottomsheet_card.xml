@@ -3,12 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-    <data>
-        <variable
-            name="cardCount"
-            type="String"
-            />
-    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,22 +26,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/subTitleTxt"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:fontFamily="@font/pretendardbold"-->
-<!--            android:text="@{@string/bottomSheet_card_text(cardCount)}"-->
-<!--            android:textColor="@color/fontColor_black"-->
-<!--            android:textSize="14sp"-->
-<!--            android:transitionName="title"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/titleTxt" />-->
-
-        <!--            android:text="@{@string/bottomSheet_sub_title(cardCount)}"-->
-
         <ImageButton
             android:id="@+id/card_add_btn"
             android:layout_width="35dp"
@@ -70,30 +48,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleTxt"
             tools:listitem="@layout/item_card" />
-
-<!--        <View-->
-<!--            android:id="@+id/connectingView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:background="@color/watingColor"-->
-<!--            android:visibility="invisible"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintVertical_bias="1.0" />-->
-
-<!--        <ProgressBar-->
-<!--            android:id="@+id/serverProgressBar"-->
-<!--            style="?android:attr/progressBarStyle"-->
-<!--            android:layout_width="100dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:visibility="invisible"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/cardRecyclerview"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/card_empty_txt"

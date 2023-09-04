@@ -1,15 +1,16 @@
 package com.example.data.repoImpl
 
+import com.example.data.di.RetrofitModule
+import com.example.data.mapper.ResponseMapper.toServerCardData
+import com.example.data.mapper.ResponseMapper.toServerCardSpinnerData
+import com.example.data.mapper.ResponseMapper.toServerResponseData
 import com.example.data.remote.dataSource.CardDataSource
-import com.example.domain.model.receive.card.ServerCardData
-import com.example.domain.model.receive.card.ServerCardSpinnerData
-import com.example.domain.model.receive.ServerResponseData
-import com.example.domain.model.send.DomainSendCardData
+import com.example.domain.model.remote.receive.card.ServerCardData
+import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
+import com.example.domain.model.remote.receive.basic.ServerResponseData
+import com.example.domain.model.remote.send.card.SendCardData
 import com.example.domain.repo.CardRepository
 import com.example.domain.util.StringUtil
-import toServerCardData
-import toServerCardSpinnerData
-import toServerResponseData
 import javax.inject.Inject
 
 /**
@@ -31,11 +32,11 @@ class CardRepositoryImpl @Inject constructor(
         return ServerCardSpinnerData(response.status, response.message, newList)
     }
 
-    override suspend fun insertCardUseCase(domainSendCardData: DomainSendCardData): ServerResponseData {
+    override suspend fun insertCardRepository(sendCardData: SendCardData): ServerResponseData {
         return cardDataSource.sendCardDataSource(
-            cardName = domainSendCardData.cardName,
-            amount = domainSendCardData.cardAmount,
-            billCheckDate = domainSendCardData.billCheckDate
+            cardName = sendCardData.cardName,
+            amount = sendCardData.cardAmount,
+            billCheckDate = sendCardData.billCheckDate
         ).toServerResponseData()
     }
 

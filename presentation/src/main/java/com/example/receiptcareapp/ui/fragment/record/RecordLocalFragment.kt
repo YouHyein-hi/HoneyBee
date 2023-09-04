@@ -6,10 +6,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.local.toRecyclerShowData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.State.ShowType
+import com.example.domain.model.ui.type.ShowType
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordLocalBinding
-import com.example.receiptcareapp.dto.RecyclerData
+import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.receiptcareapp.ui.adapter.RecordLocalAdapter
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
@@ -43,7 +43,7 @@ class RecordLocalFragment(
 
     override fun initListener() {
         //로컬 목록에서 리스트를 누를경우
-        recordLocalAdapter.onLocalSaveClic = {
+        recordLocalAdapter.onLocalSaveClick = {
             //Activity ViewModel 값 저장
             activityViewModel.changeSelectedData(
                 RecyclerData(
@@ -65,7 +65,7 @@ class RecordLocalFragment(
         //TODO 데이터바인딩 -> 데이터바인딩 옵저버할때 데이터가 비었는지 안비었는지 확인해주고 바꿔주기? (희망사항)
         viewModel.roomData.observe(viewLifecycleOwner) {
             recordLocalAdapter.dataList.clear()
-            recordLocalAdapter.dataList = it.map { it.toRecyclerShowData() }.toMutableList()
+            recordLocalAdapter.dataList = it.map { it -> it.toRecyclerShowData() }.toMutableList()
             setTextAndVisible("데이터가 비었어요!", recordLocalAdapter.dataList.isEmpty())
         }
 

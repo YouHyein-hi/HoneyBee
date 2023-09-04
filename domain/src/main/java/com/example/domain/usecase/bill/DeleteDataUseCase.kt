@@ -1,7 +1,6 @@
 package com.example.domain.usecase.bill
 
-import com.example.domain.model.receive.ServerResponseData
-import com.example.domain.model.receive.ServerUidData
+import com.example.domain.model.remote.receive.basic.ServerUidData
 import com.example.domain.repo.GeneralRepository
 
 /**

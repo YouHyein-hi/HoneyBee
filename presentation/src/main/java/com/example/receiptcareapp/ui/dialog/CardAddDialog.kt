@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import com.example.domain.model.send.AppSendCardData
+import com.example.domain.model.remote.send.card.SendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardAddBinding
@@ -54,7 +54,7 @@ class CardAddDialog(
                 else{
                     if (price.contains(","))
                         price = price.replace(",", "")
-                    homeViewModel.insertServerCardData(AppSendCardData(cardAddNameEdit.text.toString(), price.toInt(), cardAddBillCheckEdit.text.toString()))
+                    homeViewModel.insertServerCardData(SendCardData(cardAddNameEdit.text.toString(), price.toInt(), cardAddBillCheckEdit.text.toString()))
                     dismiss()
                 }
             }

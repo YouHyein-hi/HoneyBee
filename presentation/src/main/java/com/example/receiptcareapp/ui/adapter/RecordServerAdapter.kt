@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.receive.bill.BillData
+import com.example.domain.model.ui.recycler.ServerRecyclerData
 import com.example.receiptcareapp.databinding.ItemBillListServerBinding
 
 /**
@@ -13,31 +13,20 @@ import com.example.receiptcareapp.databinding.ItemBillListServerBinding
  */
 class RecordServerAdapter:RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
 
-    lateinit var onServerSaveClick : (BillData)->Unit
+    lateinit var onServerSaveClick : (ServerRecyclerData)->Unit
     private lateinit var serverBinding:ItemBillListServerBinding
-    var dataList = mutableListOf<BillData>()
+    var dataList = mutableListOf<ServerRecyclerData>()
         set(value){
             field = value.reversed().toMutableList()
             notifyDataSetChanged()
         }
 
     inner class MyAdapter(private val binding: ItemBillListServerBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(list: BillData){
+        fun bind(list: ServerRecyclerData){
             with(binding){
-                //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
-                recordItemStoreTxt.text = list.storeName
-                recordItemCardTxt.text = "${list.cardName}카드"
-                recordItemAmountTxt.text = list.storeAmount
-                recordItemDateTxt.text = list.date
+                serverRecyclerData = list
                 listLayout.setOnClickListener{ onServerSaveClick(list) }
-
-                //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
-                //TODO visiblity 는 databinding 으로 뺼수있을것같은데 bringToFont는 못뺄듯
-                if(list.billCheck) {
-                    billCheckLayout.visibility = View.VISIBLE
-                    billCheckLayout.bringToFront()
-                }
-                else billCheckLayout.visibility = View.INVISIBLE
+                if(list.billCheck) { billCheckLayout.bringToFront() }
             }
         }
     }

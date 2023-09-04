@@ -1,10 +1,9 @@
 package com.example.receiptcareapp.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.receive.notice.NoticeData
+import com.example.domain.model.remote.receive.notice.NoticeData
 import com.example.receiptcareapp.databinding.ItemNoticeBinding
 
 /**
@@ -23,10 +22,7 @@ class NoticeAdapter : RecyclerView.Adapter<NoticeAdapter.MyHolder>(){
 
     inner class MyHolder(private val binding : ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NoticeData) {
-            Log.e("TAG", "${item.id} bind: ${item.title}, ${item.date}, ${item.content}", )
-            //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
-            binding.noticeItemTitleTxt.text = item.title
-            binding.noticeItemDateTxt.text = item.date
+            binding.noticeData = item
             binding.noticeItemComponent.setOnClickListener { onNoticeClic(item) }
             binding.noticeItemShowBtn.setOnClickListener { onNoticeClic(item) }
         }

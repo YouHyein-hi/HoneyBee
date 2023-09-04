@@ -14,9 +14,9 @@ import retrofit2.http.POST
 interface LoginDataSource {
 
     @FormUrlEncoded
-    @POST("auth/app/login")
+    @POST("auth/login")
     suspend fun requestLogin(
-        @Field("email") email : String,
+        @Field("userEmail") email : String,
         @Field("password") password : String,
     ): Response<ServerResponse<String>>?
 }

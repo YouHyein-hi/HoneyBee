@@ -26,8 +26,7 @@ class LoginDataSourceImpl @Inject constructor(
             if (it.isSuccessful) {
                 val headers = it.headers()
                 val body = it.body()
-                Log.e("TAG", "headers: $headers  body: $body", )
-                if(headerManager(headers["token"]))
+                if(headerManager(headers["Authorization"]!!.toString().replace("Bearer ",""), headers["Set-Cookie"]!!))
                     return Response.success(body)
             }
             throw Exception("연결 실패 - Response false")

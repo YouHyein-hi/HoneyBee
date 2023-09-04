@@ -12,8 +12,8 @@ import javax.inject.Singleton
  * pureum
  */
 
-@Singleton
 interface CardDataSource {
+
 
     @FormUrlEncoded
     @POST("billCard/add")

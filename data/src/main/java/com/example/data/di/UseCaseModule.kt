@@ -25,11 +25,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
-//    @Provides
-//    @Singleton
-//    fun provideUseCaseReceiveData(repo : RetrofitRepo) : RetrofitUseCase{
-//        return RetrofitUseCase(repo)
-//    }
 
     @Provides
     @Singleton

@@ -9,6 +9,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -26,7 +27,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
-    var gson: Gson = GsonBuilder().setLenient().create()
+    private val loggingInterceptor = HttpLoggingInterceptor().apply {
+        level =
+//            if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+            HttpLoggingInterceptor.Level.NONE
+    }
+
+
+    private var gson: Gson = GsonBuilder().setLenient().create()
 
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
@@ -35,7 +43,6 @@ object RetrofitModule {
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
     annotation class Api
-
 
     @Singleton
     @Provides
@@ -55,7 +62,6 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    @Api
     fun provideOkhttpApi(networkInterceptor: NetworkInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(networkInterceptor)
@@ -65,7 +71,7 @@ object RetrofitModule {
     @Singleton
     @Provides
     @Api
-    fun provideSendRetrofit(@Api okHttpClient: OkHttpClient):Retrofit{
+    fun provideSendRetrofit(okHttpClient: OkHttpClient):Retrofit{
         return Retrofit.Builder()
             .baseUrl("http://210.119.104.158:8080/")
             .client(okHttpClient)

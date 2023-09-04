@@ -3,6 +3,7 @@ package com.example.data.remote.dataSourceImpl
 import ServerResponse
 import com.example.data.di.RetrofitModule
 import com.example.data.remote.dataSource.CardDataSource
+import com.example.data.remote.dataSource.LoginDataSource
 import com.example.data.remote.model.ServerCardResponse
 import retrofit2.Retrofit
 import javax.inject.Inject
@@ -13,14 +14,13 @@ import javax.inject.Inject
  */
 class CardDataSourceImpl @Inject constructor(
     @RetrofitModule.Api private val retrofit: Retrofit
-) : CardDataSource {
+): CardDataSource {
     override suspend fun sendCardDataSource(
         cardName: String,
         amount: Int,
         billCheckDate: String
     ): ServerResponse<String> {
-        return retrofit.create(CardDataSource::class.java)
-            .sendCardDataSource(cardName = cardName, amount = amount, billCheckDate = billCheckDate)
+        return retrofit.create(CardDataSource::class.java).sendCardDataSource(cardName = cardName, amount = amount, billCheckDate = billCheckDate)
     }
 
     override suspend fun getCardDataSource(): ServerResponse<List<ServerCardResponse>> {

@@ -16,6 +16,7 @@ import javax.inject.Singleton
  */
 @Singleton
 interface NoticeDataSource {
+
     @Streaming
     @GET("billNotice/list")
     suspend fun getNoticeListDataSource(): ServerResponse<List<ServerNoticeResponse>>

@@ -48,8 +48,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
 
     override fun initUI() {
         supportActionBar?.hide()
-//        binding.loginEmail.setText("1234@email.com")
-//        binding.loginPassword.setText("1234")
+        binding.loginEmailEdit .setText("1234@email.com")
+        binding.loginPasswordEdit.setText("1234")
     }
 
     override fun initListener() {
@@ -57,7 +57,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             loginData.id = binding.loginEmailEdit.text.toString()
             loginData.pw = binding.loginPasswordEdit.text.toString()
 //            if(loginData.id == "dclab@gmail.com" && loginData.pw == "dclab419$!(") nextActivity()
-            nextActivity()
+//            nextActivity()
             downKeyBoard()
             with(loginData){
                 if(id.isNullOrEmpty())

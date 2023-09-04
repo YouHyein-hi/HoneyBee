@@ -14,7 +14,7 @@ import javax.inject.Inject
  */
 class NoticeDataSourceImpl @Inject constructor(
     @RetrofitModule.Api private val retrofit: Retrofit
-) : NoticeDataSource {
+): NoticeDataSource {
     override suspend fun getNoticeListDataSource(): ServerResponse<List<ServerNoticeResponse>> {
         return retrofit.create(NoticeDataSource::class.java).getNoticeListDataSource()
     }

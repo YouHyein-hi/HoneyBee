@@ -16,8 +16,8 @@ import javax.inject.Singleton
  * 2023-07-23
  * pureum
  */
-@Singleton
 interface GeneralDataSource {
+
     @Multipart
     @POST("bill/add")
     suspend fun sendDataSource(

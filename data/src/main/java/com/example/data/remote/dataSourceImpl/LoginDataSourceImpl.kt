@@ -1,6 +1,7 @@
 package com.example.data.remote.dataSourceImpl
 
 import ServerResponse
+import android.util.Log
 import com.example.data.di.RetrofitModule
 import com.example.data.remote.dataSource.LoginDataSource
 import com.example.data.util.HeaderManager
@@ -25,6 +26,7 @@ class LoginDataSourceImpl @Inject constructor(
             if (it.isSuccessful) {
                 val headers = it.headers()
                 val body = it.body()
+                Log.e("TAG", "headers: $headers  body: $body", )
                 if(headerManager(headers["token"]))
                     return Response.success(body)
             }

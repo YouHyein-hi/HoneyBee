@@ -1,8 +1,10 @@
 package com.example.receiptcareapp.ui.dialog
 
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.UpdateData
 import com.example.domain.model.receive.card.CardSpinnerData
@@ -18,6 +20,7 @@ import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.Utils
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 
@@ -54,16 +57,14 @@ class ChangeDialog(
             dismiss()
             showShortToast("날짜 불러오기를 실패했습니다.")
         }
+
+        viewModel.textValue = viewModelData.amount
     }
 
     override fun initUI() {
-        getSpinner()
-        //TODO Databinding
-        binding.changeStoreEdit.setText(viewModelData.storeName)
-        binding.changePriceEdit.setText(viewModelData.amount)
+        binding.data = viewModelData
+        binding.changePriceEdit.setText(viewModel.textValue)
         binding.changeDateDatePicker.init(dateData.year, dateData.month - 1, dateData.day, null)
-
-
     }
 
     override fun initListener() {
@@ -122,25 +123,6 @@ class ChangeDialog(
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-        binding.changePriceEdit.setOnEditorActionListener { v, actionId, event ->
-            var handled = false
-            if (actionId == EditorInfo.IME_ACTION_DONE && binding.changePriceEdit.text.isNotEmpty()) {
-                binding.changePriceEdit.setText(Utils.PriceFormat(binding.changePriceEdit.text.toString()))
-            }
-            handled
-        }
-
-            //TODO binding adapter로 뺄수있을것같음
-            binding.changePriceEdit.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                if (binding.changePriceEdit.text.contains(",")) {
-                    binding.changePriceEdit.setText(Utils.CommaReplaceSpace(binding.changePriceEdit.text.toString()))
-                    binding.changePriceEdit.setSelection(binding.changePriceEdit.text.length)
-                }
-            }
-            else { binding.changePriceEdit.setText(Utils.PriceFormat(binding.changePriceEdit.text.toString())) }
-        }
-
     }
 
     override fun initObserver() {
@@ -161,8 +143,4 @@ class ChangeDialog(
         }
     }
 
-    private fun getSpinner() {
-
-
-    }
 }

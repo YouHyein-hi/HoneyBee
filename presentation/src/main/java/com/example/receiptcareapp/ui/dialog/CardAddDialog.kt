@@ -33,14 +33,6 @@ class CardAddDialog(
     override fun initListener() {
         with(binding){
 
-            cardAddPriceEdit.setOnEditorActionListener { v, actionId, event ->
-                var handled = false
-                if (actionId == EditorInfo.IME_ACTION_NEXT && cardAddPriceEdit.text.isNotEmpty()) {
-                    cardAddPriceEdit.setText(Utils.PriceFormat(cardAddPriceEdit.text.toString()))
-                }
-                handled
-            }
-
             //TODO databinding으로 뺄수있음 / binding adapter 를 사용하면.
             val hintCardNmae = cardAddNameEdit.hint
             val emphasis_yellow = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.emphasis_yellow))
@@ -58,13 +50,6 @@ class CardAddDialog(
             }
             val hintCardPrice = cardAddPriceEdit.hint
             cardAddPriceEdit.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    if (cardAddPriceEdit.text.contains(",")) {
-                        cardAddPriceEdit.setText(Utils.CommaReplaceSpace(cardAddPriceEdit.text.toString()))
-                        cardAddPriceEdit.setSelection(cardAddPriceEdit.text.length)
-                    }
-                }
-                else { cardAddPriceEdit.setText(Utils.PriceFormat(cardAddPriceEdit.text.toString())) }
 
                 if (!hasFocus && cardAddPriceEdit.text.isEmpty()) {
                     // 포커스를 가지고 있지 않은 경우 AND Empty인 경우

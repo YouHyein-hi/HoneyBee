@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="price"
+            type="String" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_background"
@@ -84,9 +93,11 @@
             android:hint="@string/dialog_cardAdd_price"
             android:inputType="number"
             android:maxLength="10"
+            textValue="@={price}"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardAdd_name_edit" />
+            app:layout_constraintTop_toBottomOf="@+id/cardAdd_billCheck_edit" />
 
         <EditText
             android:id="@+id/cardAdd_billCheck_edit"
@@ -102,7 +113,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardAdd_price_edit" />
+            app:layout_constraintTop_toBottomOf="@+id/cardAdd_name_edit" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -149,3 +160,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

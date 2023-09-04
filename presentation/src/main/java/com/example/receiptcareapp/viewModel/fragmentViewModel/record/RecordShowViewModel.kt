@@ -74,6 +74,8 @@ class RecordShowViewModel @Inject constructor(
         return _picture
     }
 
+    var textValue: String? = null
+
     private lateinit var savedServerData: UpdateData
     private lateinit var savedLocalData: LocalBillData
 

@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.ui.dialog
 
+import android.util.Log
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogPushtimeBinding
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
@@ -11,14 +12,13 @@ class PushTimeDialog(
     private val positiveButtonClickCallback: () -> Unit
     ) : BaseDialog<DialogPushtimeBinding>(DialogPushtimeBinding::inflate) {
     override fun initData() {
-
     }
 
     override fun initUI() {
-        try {
-            //TODO databinding을 써야하고, 뷰모델 한번만 불러서 xml에 넣어주기
-            binding.pushtimeTimeTimePicker.hour = viewModel.getTime().hour!!
-            binding.pushtimeTimeTimePicker.minute = viewModel.getTime().minute!!
+       try {
+            val time = viewModel.getTime()
+            binding.hour = time.hour ?: 0 // 만약 null이라면 0으로 설정
+            binding.minute = time.minute ?: 0 // 만약 null이라면 0으로 설정
         } catch (e: NullPointerException) {
             dismiss()
             showShortToast("날짜 불러오기를 실패했습니다.")
@@ -40,9 +40,4 @@ class PushTimeDialog(
 
     }
 
-
-    /*
-                    val timeDialog = TimePickerDialog(requireContext(), data,
-                    cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
-     */
 }

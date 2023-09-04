@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.ui.fragment.notice
 
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -28,12 +29,12 @@ class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
         binding.noticeAddAddBtn.setOnClickListener {
             viewModel.insertNotice(
                 DomainAddNoticeData(
-                    //TODO 역방향 databinding인데 데이터클래스로 받아올수있을것같음.
                     title = binding.noticeAddTitleEdit.text.toString(),
                     date = LocalDateTime.now(),
                     content = binding.noticeAddContentEdit.text.toString()
                 )
             )
+            Log.e("TAG", "initListener: ${binding.title}, ${binding.content}", )
         }
 
         binding.baseComponent.backBtn.setOnClickListener {

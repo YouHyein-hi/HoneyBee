@@ -7,7 +7,7 @@
     <data>
         <variable
             name="data"
-            type="com.example.receiptcareapp.dto.RecyclerData" />
+            type="com.example.domain.model.ui.recycler.RecyclerData" />
         <variable
             name="viewModel"
             type="com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel" />

@@ -41,6 +41,10 @@ android {
 
 dependencies {
 
+    //CA
+    implementation project(path:':data')
+    implementation project(path:':domain')
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.8.0'
@@ -49,10 +53,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    //CA
-    implementation project(path:':data')
-    //Presentation은 데이터만 알아야하는데??
-    implementation project(path:':domain')
+
 
     //코루틴
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")

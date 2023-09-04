@@ -1,9 +1,7 @@
 package com.example.receiptcareapp.util
 
 import android.app.Application
-import com.example.data.manager.PreferenceManager
 import dagger.hilt.android.HiltAndroidApp
-import dagger.hilt.android.qualifiers.ApplicationContext
 
 /**
  * 2023-01-31

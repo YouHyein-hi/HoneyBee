@@ -1,5 +1,6 @@
 package com.example.data.repoImpl
 
+import com.example.data.di.RetrofitModule
 import com.example.data.mapper.ResponseMapper.toServerCardData
 import com.example.data.mapper.ResponseMapper.toServerCardSpinnerData
 import com.example.data.mapper.ResponseMapper.toServerResponseData

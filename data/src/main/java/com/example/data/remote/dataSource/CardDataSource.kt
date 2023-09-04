@@ -1,13 +1,18 @@
 package com.example.data.remote.dataSource
 
 import ServerResponse
+import com.example.data.di.DataSourceModule
 import com.example.data.remote.model.ServerCardResponse
+import dagger.Component
 import retrofit2.http.*
+import javax.inject.Singleton
 
 /**
  * 2023-07-23
  * pureum
  */
+
+@Singleton
 interface CardDataSource {
 
     @FormUrlEncoded

@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="date"
+            type="String" />
+        <variable
+            name="price"
+            type="String" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.SendBillFragment"
@@ -79,8 +91,9 @@
             android:gravity="center"
             android:hint="@string/sendbill_price"
             android:inputType="number"
-            android:maxLength="8"
+            android:maxLength="10"
             android:textSize="16sp"
+            textValue="@={price}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sendBill_store_edit" />
@@ -90,12 +103,13 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/btn_edittext"
             android:fontFamily="@font/pretendardsemibold"
             android:hint="@string/bottomSheet_sendbill_dateText"
             android:imeOptions="actionDone"
+            android:text="@{date}"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -159,16 +173,18 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <include
-        android:visibility="invisible"
-        android:elevation="10dp"
         android:id="@+id/layout_loading_progress"
         layout="@layout/progressbar_loading"
-        android:layout_height="0dp"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:elevation="10dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <!--    <View-->
     <!--        android:id="@+id/waitingView"-->
@@ -196,3 +212,4 @@
     <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

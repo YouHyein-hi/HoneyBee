@@ -18,7 +18,7 @@ class SpinnerAdapter(context: Context, items: ArrayList<CardSpinnerData>) : Arra
 
         //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결, 텍스트 뷰를 두개만들던가 하나에 넣던가
         val item = getItem(position)
-        binding.spinnerItem.text = "${item?.name} : ${item?.amount}" // 이름과 금액을 보여줌
+        binding.data = item
         return binding.root
     }
 
@@ -28,7 +28,7 @@ class SpinnerAdapter(context: Context, items: ArrayList<CardSpinnerData>) : Arra
 
         val item = getItem(position)
         //TODO 데이터 클래스로 묶어서 XML로 데이터 바인딩 연결
-        binding.spinnerItem.text = "${item?.name} : ${item?.amount}" // 이름과 금액을 보여줌
+        binding.data = item
         return binding.root
     }
 }

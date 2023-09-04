@@ -3,6 +3,7 @@ package com.example.receiptcareapp.ui.dialog
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.remote.receive.card.CardSpinnerData
 import com.example.domain.model.remote.send.bill.SendBillUpdateData
@@ -15,8 +16,10 @@ import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.util.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.util.Utils
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 
@@ -35,34 +38,32 @@ class ChangeDialog(
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
             viewModelData = activityViewModel.selectedData.value!!
-            newDate = viewModel.dateReplace(viewModelData.date)
+            newDate = Utils.dateReplace(viewModelData.date)
         } else {
             showShortToast("데이터가 없습니다!")
             dismiss()
         }
 
         viewModel.getServerCardData()
-    }
-
-    override fun initUI() {
-        getSpinner()
-        //TODO Databinding
-        binding.changeStoreEdit.setText(viewModelData.storeName)
-        binding.changePriceEdit.setText(viewModelData.amount)
 
         try {
-            //TODO init UI로 빼는게 맞을듯 싶음
             dateData = DateData(
                 year = newDate[0].toInt(),
                 month = newDate[1].toInt(),
                 day = newDate[2].toInt()
             )
-            binding.changeDateDatePicker.init(dateData.year, dateData.month - 1, dateData.day, null)
         } catch (e: NullPointerException) {
             dismiss()
             showShortToast("날짜 불러오기를 실패했습니다.")
         }
 
+        viewModel.textValue = viewModelData.amount
+    }
+
+    override fun initUI() {
+        binding.data = viewModelData
+        binding.changePriceEdit.setText(viewModel.textValue)
+        binding.changeDateDatePicker.init(dateData.year, dateData.month - 1, dateData.day, null)
     }
 
     override fun initListener() {
@@ -74,7 +75,7 @@ class ChangeDialog(
                 day = binding.changeDateDatePicker.dayOfMonth
             )
 
-            val myLocalDateTime = viewModel.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
+            val myLocalDateTime = Utils.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
             val price = binding.changePriceEdit.text.toString()
             val priceZero = price.count { it == '0' }
             when {
@@ -121,33 +122,6 @@ class ChangeDialog(
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-/*        binding.changeBtnPrice.setOnEditorActionListener { v, actionId, event ->
-            var handled = false
-            if (actionId == EditorInfo.IME_ACTION_NEXT && binding.changeBtnPrice.text.isNotEmpty()) {
-                binding.changeBtnPrice.setText(viewModel.PriceFormat(binding.changeBtnPrice.text.toString()))
-            }
-            handled
-        }*/
-
-        binding.changePriceEdit.setOnEditorActionListener { v, actionId, event ->
-            var handled = false
-            if (actionId == EditorInfo.IME_ACTION_DONE && binding.changePriceEdit.text.isNotEmpty()) {
-                binding.changePriceEdit.setText(viewModel.PriceFormat(binding.changePriceEdit.text.toString()))
-            }
-            handled
-        }
-
-            //TODO binding adapter로 뺄수있을것같음
-            binding.changePriceEdit.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                if (binding.changePriceEdit.text.contains(",")) {
-                    binding.changePriceEdit.setText(viewModel.CommaReplaceSpace(binding.changePriceEdit.text.toString()))
-                    binding.changePriceEdit.setSelection(binding.changePriceEdit.text.length)
-                }
-            }
-            else { binding.changePriceEdit.setText(viewModel.PriceFormat(binding.changePriceEdit.text.toString())) }
-        }
-
     }
 
     override fun initObserver() {
@@ -168,8 +142,4 @@ class ChangeDialog(
         }
     }
 
-    private fun getSpinner() {
-
-
-    }
 }

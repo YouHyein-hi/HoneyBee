@@ -61,6 +61,8 @@ class RecordShowViewModel @Inject constructor(
         return _picture
     }
 
+    var textValue: String? = null
+
     private lateinit var savedServerData: SendBillUpdateData
     private lateinit var savedLocalData: LocalBillData
 
@@ -178,31 +180,5 @@ class RecordShowViewModel @Inject constructor(
                 loading.postValue(false)
             }?:throw SocketTimeoutException()
         }
-    }
-
-    fun myLocalDateTimeFuntion(myYear : Int, myMonth : Int, myDay : Int): LocalDateTime? {
-        return LocalDateTime.of(
-            myYear, myMonth, myDay,
-            LocalDateTime.now().hour, LocalDateTime.now().minute, LocalDateTime.now().second
-        )
-    }
-
-    fun dateReplace(date : String): List<String> {
-        var gap = date
-        if(date.contains("T"))
-            gap = StringUtil.changeDate(gap)
-        return gap.split(".","  ")
-    }
-
-    fun CommaReplaceSpace(text : String): String {
-        return text.replace(",", "")
-    }
-
-    fun PriceFormat(price : String): String? {
-        if (price.contains(",")) {
-            val newPrice = price.replace(",", "")
-            return DecimalFormat("#,###").format(newPrice.toInt())
-        }
-        else { return DecimalFormat("#,###").format(price.toInt()) }
     }
 }

@@ -33,11 +33,4 @@ class MenuViewModel @Inject constructor(
     }
 
     fun getTime() : TimeData = TimeData(preferenceManager.getHour(), preferenceManager.getMinute())
-
-    fun timePickerText(hour: Int, minute: Int): String {
-        val myHour = if (hour < 10) "0$hour" else "$hour"
-        val myMinute = if (minute < 10) "0$minute" else "$minute"
-        return "$myHour : $myMinute"
-    }
-
 }

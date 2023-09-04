@@ -54,6 +54,8 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         binding.recoreRemoveBtn.setOnClickListener{ deleteDialog() }
         //뒤로가기 버튼
         binding.recordBackBtn.setOnClickListener{ findNavController().popBackStack() }
+
+//        binding.recordDownloadBtn.setOnClickListener{ downloadImage(viewModelData.file.toString()) }
     }
 
     override fun initObserver() {
@@ -136,6 +138,27 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
        val deleteDialog = DeleteDialog(viewModel)
         deleteDialog.show(parentFragmentManager, "deleteDialog")
     }
+
+
+//    private fun downloadImage(url : String) {
+//        val fileName =
+//                "/${getString(R.string.app_name)}/${SimpleDateFormat("yyyyMMddHHmmss").format(Date())}.jpg" // 이미지 파일 명
+//
+//            val req = DownloadManager.Request(Uri.parse(url))
+//
+//            req.setTitle(fileName) // 제목
+//                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) // 알림 설정
+//                .setMimeType("image/*")
+//                .setDestinationInExternalPublicDir(
+//                    Environment.DIRECTORY_PICTURES,
+//                    fileName
+//                ) // 다운로드 완료 시 보여지는 이름
+//
+//        val manager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+//
+//        manager.enqueue(req)
+//    }
+
 
     override fun onDestroy() {
         super.onDestroy()

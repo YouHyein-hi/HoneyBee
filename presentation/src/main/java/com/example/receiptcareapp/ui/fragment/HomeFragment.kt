@@ -94,9 +94,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
-        //TODO 데이터 바인딩
+
         viewModel.notice.observe(viewLifecycleOwner){
-            binding.homeNoticeTxt.text = it
+            binding.notice = it
         }
 
         // Err관리

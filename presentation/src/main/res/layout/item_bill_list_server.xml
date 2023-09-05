@@ -22,7 +22,7 @@
             android:elevation="5dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="@{serverRecyclerData.billCheck ? View.VISIBLE : View.GONE}"
+            android:visibility="@{serverRecyclerData.billCheck ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

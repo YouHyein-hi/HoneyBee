@@ -3,6 +3,8 @@ package com.example.receiptcareapp.ui.fragment.record
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -51,7 +53,6 @@ class RecordServerFragment(
     override fun initListener() {
         //서버 목록에서 리스트를 누를 경우
         recordServerAdapter.onServerSaveClick = {
-            Log.e("TAG", "initListener: server")
             activityViewModel.changeSelectedData(
                 RecyclerData(
                     type = ShowType.SERVER,
@@ -94,6 +95,10 @@ class RecordServerFragment(
             }
             showShortToast(FetchStateHandler(it))
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun emptyTextControl(state: Boolean, massage: String = "데이터가 비었어요!"){

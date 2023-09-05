@@ -29,7 +29,6 @@
             android:background="@drawable/box_yellow"
             android:gravity="center"
             android:orientation="horizontal"
-            android:weightSum="10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title">
@@ -38,16 +37,19 @@
                 android:id="@+id/recordLocal_search_Txt"
                 android:textColorHighlight="@color/black"
                 android:textSize="15sp"
-                android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
                 android:hint="@string/record_server_hint"
-                editTextClickUnderBarColor = "@{`asdf`}"
-                android:layout_weight="1"
+                editTextClickUnderBarColor = "@{``}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/transparent"
                 android:textCursorDrawable="@color/white"
                 />
+
+            <ImageButton
+                android:background="@color/transparent"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

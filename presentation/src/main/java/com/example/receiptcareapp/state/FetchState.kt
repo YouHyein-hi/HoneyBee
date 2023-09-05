@@ -1,4 +1,4 @@
-package com.example.receiptcareapp.util
+package com.example.receiptcareapp.state
 
 /**
  * 2023-01-31

@@ -3,7 +3,7 @@ package com.example.receiptcareapp.base
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.receiptcareapp.util.FetchState
+import com.example.receiptcareapp.state.FetchState
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.net.SocketException

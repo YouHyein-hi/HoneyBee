@@ -2,13 +2,12 @@ package com.example.receiptcareapp.bindingAdapter
 
 import android.content.res.ColorStateList
 import androidx.databinding.BindingAdapter
-import com.example.receiptcareapp.util.Utils
 import android.graphics.Color
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import com.example.domain.util.StringUtil
 
 object BindingAdapters {
 
@@ -28,7 +27,7 @@ object BindingAdapters {
     fun setTextValueListener(editText: EditText, listener: InverseBindingListener?) {
         editText.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE && editText.text != null && editText.text.isNotEmpty()) {
-                editText.setText(Utils.PriceFormat(editText.text.toString()))
+                editText.setText(StringUtil.PriceFormat(editText.text.toString()))
                 return@setOnEditorActionListener true
             }
             false
@@ -37,10 +36,10 @@ object BindingAdapters {
         editText.setOnFocusChangeListener { view, hasFocus ->
             if(hasFocus){
                 if (editText.text != null && editText.text.contains(",")) {
-                    editText.setText(Utils.CommaReplaceSpace(editText.text.toString()))
+                    editText.setText(StringUtil.CommaReplaceSpace(editText.text.toString()))
                     editText.setSelection(editText.text.length)
                 } else {
-                    editText.setText(editText.text?.let { Utils.PriceFormat(it.toString()) })
+                    editText.setText(editText.text?.let { StringUtil.PriceFormat(it.toString()) })
                 }
             }
         }

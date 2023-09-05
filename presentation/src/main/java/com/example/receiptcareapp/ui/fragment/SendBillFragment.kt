@@ -10,7 +10,6 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
@@ -24,15 +23,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.domain.model.remote.receive.card.CardSpinnerData
 import com.example.domain.model.ui.bill.CheckBillData
 import com.example.domain.model.ui.dateTime.DateData
+import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentSendBillBinding
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.ui.adapter.StoreSpinnerAdapter
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
-import com.example.receiptcareapp.util.FetchState
+import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
-import com.example.receiptcareapp.util.Utils
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,8 +56,8 @@ class SendBillFragment :
 
 
     override fun initData() {
-        todayDate = Utils.dateNow()
-        selectedDate = Utils.dateNow()
+        todayDate = StringUtil.dateNow()
+        selectedDate = StringUtil.dateNow()
         viewModel.getServerStoreData()
         dateData = DateData(
             year = todayDate!!.year,
@@ -77,7 +76,7 @@ class SendBillFragment :
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                 .into(pictureView)
             val formatterDate = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-            date = Utils.dateNow().format(formatterDate)
+            date = StringUtil.dateNow().format(formatterDate)
         }
 
     }
@@ -93,7 +92,7 @@ class SendBillFragment :
                         month = month + 1,
                         day = day
                     )
-                    date = "${year}/${Utils.datePickerMonth(month)}/${Utils.datePickerDay(day)}"
+                    date = "${year}/${StringUtil.datePickerMonth(month)}/${StringUtil.datePickerDay(day)}"
                     selectedDate = LocalDate.of(year, month + 1, day)
                 }
                 val dataDialog = DatePickerDialog(
@@ -140,11 +139,11 @@ class SendBillFragment :
                         NavHostFragment.findNavController(this@SendBillFragment).navigate(R.id.action_sendBillFragment_to_homeFragment)
                     }
                     else -> {
-                        if (!Utils.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
+                        if (!StringUtil.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
                             showShortToast("보유금액보다 많은 비용입니다.")
                             return@setOnClickListener
                         }
-                        val myLocalDateTime = Utils.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
+                        val myLocalDateTime = StringUtil.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
                         SendCheckBottomSheet(
                             viewModel,
                             CheckBillData(

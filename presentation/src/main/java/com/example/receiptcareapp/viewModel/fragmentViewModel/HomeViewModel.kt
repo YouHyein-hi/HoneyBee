@@ -7,7 +7,7 @@ import com.example.domain.model.remote.receive.card.ServerCardData
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.notice.GetNoticeListUseCase
 import com.example.receiptcareapp.base.BaseViewModel
-import com.example.receiptcareapp.util.ResponseState
+import com.example.receiptcareapp.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull

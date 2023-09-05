@@ -26,11 +26,21 @@ class LoginDataSourceImpl @Inject constructor(
             if (it.isSuccessful) {
                 val headers = it.headers()
                 val body = it.body()
-                if(headerManager(headers["Authorization"]!!.toString().replace("Bearer ",""), headers["Set-Cookie"]!!))
-                    return Response.success(body)
+                return if(headerManager(headers))
+                    Response.success(body)
+                else
+                    Response.error(401, it.errorBody())
             }
             throw Exception("연결 실패 - Response false")
         }
         throw Exception("연결 실패 - Null Err")
+    }
+
+    override fun requestNewAccessToken(
+        accessToken: String,
+        refreshToken: String
+    ): Response<ServerResponse<String>>? {
+        return retrofit.create(LoginDataSource::class.java)
+            .requestNewAccessToken(accessToken = accessToken, refreshToken = refreshToken)
     }
 }

@@ -4,7 +4,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +15,7 @@ import com.example.receiptcareapp.databinding.FragmentRecordServerBinding
 import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.domain.model.ui.recycler.ServerRecyclerData
 import com.example.receiptcareapp.ui.adapter.RecordServerAdapter
-import com.example.receiptcareapp.util.FetchState
+import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel

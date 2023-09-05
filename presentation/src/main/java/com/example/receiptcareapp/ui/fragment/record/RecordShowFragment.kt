@@ -20,7 +20,7 @@ import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.receiptcareapp.ui.dialog.DeleteDialog
 import com.example.receiptcareapp.util.FetchStateHandler
-import com.example.receiptcareapp.util.ResponseState
+import com.example.receiptcareapp.state.ResponseState
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

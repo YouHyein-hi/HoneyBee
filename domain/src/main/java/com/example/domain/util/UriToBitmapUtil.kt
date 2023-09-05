@@ -1,6 +1,5 @@
-package com.example.receiptcareapp.util
+package com.example.domain.util
 
-import android.app.Application
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -18,18 +17,18 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 /**
- * 2023-08-23
+ * 2023-09-05
  * pureum
  */
-class UriToBitmap(val application: Context) {
-    fun compressEncodePicture(uri: Uri): MultipartBody.Part{
+object UriToBitmapUtil {
+    operator fun invoke(application: Context, uri: Uri): MultipartBody.Part{
         val file = File(absolutelyPath(uri, application))
         val compressFile = compressImageFile(file)
         val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData("file", file.name, requestFile)
     }
 
-    fun compressImageFile(file: File): File {
+    private fun compressImageFile(file: File): File {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
 
@@ -56,7 +55,7 @@ class UriToBitmap(val application: Context) {
         return outputFile
     }
 
-    fun rotateImageIfRequired(bitmap: Bitmap, imagePath: String): Bitmap {
+    private fun rotateImageIfRequired(bitmap: Bitmap, imagePath: String): Bitmap {
         val exif = ExifInterface(imagePath)
         val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
 
@@ -68,7 +67,7 @@ class UriToBitmap(val application: Context) {
         }
     }
 
-    fun rotateBitmap(bitmap: Bitmap, degree: Float): Bitmap {
+    private fun rotateBitmap(bitmap: Bitmap, degree: Float): Bitmap {
         val matrix = Matrix()
         matrix.postRotate(degree)
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
@@ -76,17 +75,12 @@ class UriToBitmap(val application: Context) {
 
 
     //절대경로로 변환
-    fun absolutelyPath(path: Uri?, context: Context?): String {
-        Log.e("TAG", "absolutelyPath: $path", )
+    private fun absolutelyPath(path: Uri?, context: Context?): String {
         val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
         val c: Cursor? = context?.contentResolver?.query(path!!, proj, null, null, null)
         val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
         c?.moveToFirst()
         val result = c?.getString(index!!)
-        Log.e("TAG", "absolutelyPath proj: $proj", )
-        Log.e("TAG", "absolutelyPath c: $c", )
-        Log.e("TAG", "absolutelyPath index: $index", )
-        Log.e("TAG", "absolutelyPath result: $result", )
         return result!!
     }
 }

@@ -1,5 +1,7 @@
 package com.example.receiptcareapp.util
 
+import com.example.receiptcareapp.state.FetchState
+
 /**
  * 2023-08-19
  * pureum

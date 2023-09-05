@@ -44,7 +44,7 @@ class NetworkInterceptor @Inject constructor(
 
     private fun requestMaker(request: Request): Request =
         request.newBuilder()
-            .header("Authorization", preferenceManager.getRefreshToken()!!)
+            .header("Authorization", preferenceManager.getAccessToken()!!)
             .build()
 
     private fun requestNewAccessToken(): String? {

@@ -66,7 +66,7 @@ class HeaderManager @Inject constructor(
     }
     private fun saveToken(accessToken: String, refreshToken: String){
         preferenceManager.putAccessToken(accessToken)
-        preferenceManager.putAccessToken(refreshToken)
+        preferenceManager.putRefreshToken(refreshToken)
 
     }
 }

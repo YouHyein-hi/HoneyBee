@@ -1,17 +1,20 @@
 package com.example.receiptcareapp.ui.fragment.record
 
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.local.toRecyclerShowData
+import com.example.domain.model.ui.recycler.LocalRecyclerData
 import com.example.receiptcareapp.R
 import com.example.domain.model.ui.type.ShowType
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordLocalBinding
 import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.receiptcareapp.ui.adapter.RecordLocalAdapter
-import com.example.receiptcareapp.util.FetchState
+import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
@@ -30,6 +33,7 @@ class RecordLocalFragment(
 ) {
     private val recordLocalAdapter: RecordLocalAdapter = RecordLocalAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private var dataList = mutableListOf<LocalRecyclerData>()
 
     override fun initData() {
         recordLocalAdapter.dataList.clear()
@@ -58,6 +62,16 @@ class RecordLocalFragment(
             )
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
         }
+
+        binding.recordLocalSearchTxt.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                recordLocalAdapter.dataList = dataList.filter { it.storeName.contains(s.toString()) }.toMutableList()
+
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 
     override fun initObserver() {
@@ -66,6 +80,7 @@ class RecordLocalFragment(
         viewModel.roomData.observe(viewLifecycleOwner) {
             recordLocalAdapter.dataList.clear()
             recordLocalAdapter.dataList = it.map { it -> it.toRecyclerShowData() }.toMutableList()
+                .also { dataList = it }
             setTextAndVisible("데이터가 비었어요!", recordLocalAdapter.dataList.isEmpty())
         }
 

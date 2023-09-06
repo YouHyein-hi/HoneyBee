@@ -16,18 +16,15 @@ import com.example.domain.usecase.bill.UpdateDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.DeleteRoomDataUseCase
 import com.example.domain.usecase.room.UpdateRoomDataUseCase
-import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.domain.model.ui.bill.LocalBillData
-import com.example.receiptcareapp.util.ResponseState
-import com.example.receiptcareapp.util.UriToBitmap
+import com.example.domain.util.UriToBitmapUtil
+import com.example.receiptcareapp.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import okhttp3.MultipartBody
 import java.net.SocketTimeoutException
-import java.text.DecimalFormat
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 /**
@@ -118,7 +115,7 @@ class RecordShowViewModel @Inject constructor(
                                     "amount",
                                     sendData.amount.replace(",", "")
                                 ),
-                                picture = UriToBitmap(application).compressEncodePicture(sendData.picture)
+                                picture = UriToBitmapUtil(application, sendData.picture)
                             )
                         )
                     )

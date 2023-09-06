@@ -1,9 +1,7 @@
 package com.example.receiptcareapp.ui.dialog
 
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import com.example.domain.model.remote.receive.card.CardSpinnerData
 import com.example.domain.model.remote.send.bill.SendBillUpdateData
@@ -13,13 +11,12 @@ import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogChangeBinding
 import com.example.domain.model.ui.bill.LocalBillData
 import com.example.domain.model.ui.recycler.RecyclerData
+import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
-import com.example.receiptcareapp.util.FetchState
+import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
-import com.example.receiptcareapp.util.Utils
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 
@@ -38,7 +35,7 @@ class ChangeDialog(
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
             viewModelData = activityViewModel.selectedData.value!!
-            newDate = Utils.dateReplace(viewModelData.date)
+            newDate = StringUtil.dateReplace(viewModelData.date)
         } else {
             showShortToast("데이터가 없습니다!")
             dismiss()
@@ -75,7 +72,7 @@ class ChangeDialog(
                 day = binding.changeDateDatePicker.dayOfMonth
             )
 
-            val myLocalDateTime = Utils.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
+            val myLocalDateTime = StringUtil.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
             val price = binding.changePriceEdit.text.toString()
             val priceZero = price.count { it == '0' }
             when {

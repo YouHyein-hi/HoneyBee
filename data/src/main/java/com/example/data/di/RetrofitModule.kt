@@ -4,17 +4,14 @@ import com.example.data.manager.PreferenceManager
 import com.example.data.util.NetworkInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import dagger.Component
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
 import javax.inject.Singleton
@@ -49,11 +46,14 @@ object RetrofitModule {
     @Login
     fun provideLoginRetrofit():Retrofit{
         return Retrofit.Builder()
-            .client(okHttpClient)
             .baseUrl("http://210.119.104.158:8080/")
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
+
+
+
 
     @Singleton
     @Provides
@@ -71,9 +71,10 @@ object RetrofitModule {
     @Singleton
     @Provides
     @Api
-    fun provideSendRetrofit(okHttpClient: OkHttpClient):Retrofit{
+    fun provideApiRetrofit(interceptorClient: OkHttpClient):Retrofit{
         return Retrofit.Builder()
             .baseUrl("http://210.119.104.158:8080/")
+            .client(interceptorClient)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

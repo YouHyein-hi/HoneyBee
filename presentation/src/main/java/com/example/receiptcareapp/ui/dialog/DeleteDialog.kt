@@ -6,7 +6,7 @@ import com.example.domain.model.ui.type.ShowType
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogDeleteBinding
 import com.example.domain.model.ui.recycler.RecyclerData
-import com.example.receiptcareapp.util.FetchState
+import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel

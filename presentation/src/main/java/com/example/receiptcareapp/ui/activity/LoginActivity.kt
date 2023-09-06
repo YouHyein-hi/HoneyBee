@@ -31,6 +31,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val ALL_PERMISSIONS_CODE = 123
 
     override fun initData() {
+//        nextActivity()
 //        var getLogin = viewModel.getLoginData()
 //        if(getLogin.id != null){
 //            nextActivity()
@@ -63,7 +64,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
                     showShortToast("아이디를 입력해주세요.")
                 else if(pw.isNullOrEmpty())
                     showShortToast("비밀번호를 입력해주세요.")
-                //TODO 이부분은 ID로 바꿔도 되지않나?
                 else viewModel.requestLogin(
                     loginData.id.toString().replace(" ",""),
                     loginData.pw.toString().replace(" ","")

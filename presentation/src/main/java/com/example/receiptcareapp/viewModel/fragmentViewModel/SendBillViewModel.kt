@@ -13,8 +13,8 @@ import com.example.domain.usecase.bill.GetStoreListUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.InsertRoomDataUseCase
+import com.example.domain.util.UriToBitmapUtil
 import com.example.receiptcareapp.base.BaseViewModel
-import com.example.receiptcareapp.util.UriToBitmap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -23,9 +23,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.MultipartBody
 import java.net.SocketTimeoutException
-import java.text.DecimalFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -97,7 +94,7 @@ class SendBillViewModel @Inject constructor(
                                 "amount",
                                 data.storeAmount.replace(",", "")
                             ),
-                            picture = UriToBitmap(application).compressEncodePicture(data.picture)
+                            picture = UriToBitmapUtil(application, data.picture)
                         )
                     )
                 )

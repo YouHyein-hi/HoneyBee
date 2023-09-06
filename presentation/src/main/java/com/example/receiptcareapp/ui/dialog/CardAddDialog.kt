@@ -1,18 +1,13 @@
 package com.example.receiptcareapp.ui.dialog
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.util.Log
-import android.view.inputmethod.EditorInfo
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.example.domain.model.remote.send.card.SendCardData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogCardAddBinding
 import com.example.receiptcareapp.util.FetchStateHandler
-import com.example.receiptcareapp.util.ResponseState
-import com.example.receiptcareapp.util.Utils
+import com.example.receiptcareapp.state.ResponseState
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel
 import dagger.hilt.android.AndroidEntryPoint

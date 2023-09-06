@@ -1,11 +1,29 @@
-package com.example.receiptcareapp.util
+package com.example.domain.util
 
-import com.example.domain.util.StringUtil
+import android.util.Log
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-object Utils {
+/**
+ * 2023-08-20
+ * pureum
+ */
+object StringUtil {
+    fun changeDate(inputDate: String?): String {
+        Log.e("TAG", "changeDate: $inputDate",)
+        return if (inputDate?.contains("T") == true) {
+            val gap = inputDate.replace("-", ".").split("T")
+            val time = gap[1].split(":")
+            "${gap[0]}  ${time[0]}:${time[1]}"
+        } else {
+            inputDate.toString()
+        }
+    }
+
+    fun changeAmount(amount: String): String {
+        return DecimalFormat("#,###").format(amount.toInt())
+    }
 
     fun timePickerText(hour: Int, minute: Int): String {
         val myHour = if (hour < 10) "0$hour" else "$hour"
@@ -60,6 +78,4 @@ object Utils {
     fun amountCheck(price: String, cardAmount: String):Boolean{
         return price.replace(",","").toInt() <= cardAmount.replace(",","").toInt()
     }
-
-
 }

@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.viewModel.activityViewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.data.manager.PreferenceManager
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class LoginActivityViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val preferenceManager: PreferenceManager
-) : BaseViewModel("LoginActivityViewModel") {
+    ) : BaseViewModel("LoginActivityViewModel") {
 
     //서버 연결 유무 관리
     val loading: LiveData<Boolean> get() = isLoading
@@ -50,7 +51,11 @@ class LoginActivityViewModel @Inject constructor(
     fun putLoginData(data: LoginData) {
         preferenceManager.putLogin(data.id!!)
         preferenceManager.putPassword(data.pw!!)
+        Log.e("TAG", "getAccessToken: ${preferenceManager.getAccessToken()}", )
+        Log.e("TAG", "getRefreshToken: ${preferenceManager.getRefreshToken()}", )
     }
+
+
 
     fun getLoginData(): LoginData =
         LoginData(preferenceManager.getLogin(), preferenceManager.getPassword())

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentMenuBinding
@@ -17,7 +18,6 @@ import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.util.PushReceiver
 import com.example.receiptcareapp.ui.dialog.PushTimeDialog
 import com.example.receiptcareapp.util.FetchStateHandler
-import com.example.receiptcareapp.util.Utils
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -50,8 +50,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
 
     override fun initUI() {
         val time = viewModel.getTime()
-        binding.menuPushTimeTxt.text = time?.let {
-            Utils.timePickerText(
+        binding.menuPushTimeTxt.text = time.let {
+            StringUtil.timePickerText(
                 it.hour ?: 0,
                 it.minute ?: 0
             )
@@ -99,7 +99,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     override fun initObserver() {
         viewModel.pushTime.observe(viewLifecycleOwner) { pushTime ->
             binding.menuPushTimeTxt.text = pushTime?.let {
-                Utils.timePickerText(
+                StringUtil.timePickerText(
                     it.hour ?: 0,
                     it.minute ?: 0
                 )

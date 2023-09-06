@@ -25,7 +25,7 @@ import com.example.receiptcareapp.ui.dialog.ExitDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import com.example.receiptcareapp.ui.dialog.PermissiondCheck_Dialog
-import com.example.receiptcareapp.util.FetchState
+import com.example.receiptcareapp.state.FetchState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

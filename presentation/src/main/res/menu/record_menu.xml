@@ -7,7 +7,7 @@
         />
     <item
         android:title="최신순"
-        android:id="@+id/new"
+        android:id="@+id/das"
         android:enabled="true"
         />
     <item

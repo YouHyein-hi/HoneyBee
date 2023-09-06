@@ -6,6 +6,8 @@
         <entry key="..\:/Users/PC01/.gradle/caches/transforms-3/4957d36c433fbc9c95a701ecfe76215b/transformed/material-1.8.0/res/layout/design_bottom_sheet_dialog.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/auto_complete_list.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_dropdown_item_1line.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/PC01/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_dropdown_item.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/PC01/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable-v24/book.xml" value="0.25" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.252" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/app/src/main/res/drawable/avd_anim.xml" value="0.1005" />
@@ -99,6 +101,7 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/homebtn_gallery.xml" value="0.2675" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.284" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/ic_launcher_background.xml" value="0.2675" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/icon_drop_down.xml" value="0.284" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/image_circle.xml" value="0.2675" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/image_round.xml" value="0.275" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/img_camera.xml" value="0.2675" />
@@ -125,6 +128,7 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/setting_btn.xml" value="0.2675" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/show_picture_btn.xml" value="0.2675" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/spinner_custom.xml" value="0.2675" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/spinner_record_custom.xml" value="0.284" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/white_btn.xml" value="0.275" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/drawable/yellow_btn.xml" value="0.275" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/activity_login.xml" value="0.36614583333333334" />
@@ -180,8 +184,11 @@
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/push_control_box.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/send_bottomsheet.xml" value="0.3651041666666667" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/server_item.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/spinner_.xml" value="0.3651041666666667" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/spinner_custom_item_layout.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/spinner_custom_layout.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/spinner_custom_record_drop_down_layout.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/layout/spinner_custom_record_layout.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/menu/bottom_menu.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/menu/record_menu.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/PC01/Desktop/Android Practice/ReceiptCareApp/presentation/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.275" />

@@ -176,9 +176,7 @@ class SendBillFragment :
                 cardName = selectedCardData.name
                 cardAmount = selectedCardData.amount
             }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
         // 키보드 오르락 내리락 감지

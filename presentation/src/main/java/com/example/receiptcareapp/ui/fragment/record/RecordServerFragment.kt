@@ -5,6 +5,9 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -39,15 +42,21 @@ class RecordServerFragment(
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private var dataList = mutableListOf<ServerRecyclerData>()
 
-    override fun initData() {
-
-    }
+    override fun initData() {}
 
     override fun initUI() {
         initServerRecyclerView()
-//        activityViewModel.changeNullPicture()
         viewModel.getServerAllBillData()
         recordServerAdapter.dataList.clear()
+        binding.recordFilterSpinner.adapter
+
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.filter_array,
+            R.layout.spinner_custom_record_layout
+        ).also {
+            binding.recordFilterSpinner.adapter = it
+        }
     }
 
     override fun initListener() {
@@ -75,6 +84,36 @@ class RecordServerFragment(
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        binding.recordFilterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                when(position){
+                    //기본순
+                    0 -> recordServerAdapter.dataList = dataList.toMutableList()
+                    //최신순
+                    1 -> recordServerAdapter.dataList = dataList.sortedBy { it.date }.toMutableList()
+                    //오래된순
+                    2 -> recordServerAdapter.dataList = dataList.sortedBy { it.date }.reversed().toMutableList()
+                    //카드순
+                    3 -> recordServerAdapter.dataList = dataList.sortedBy { it.cardName }.toMutableList()
+                    //높은 금액순
+                    4 -> recordServerAdapter.dataList = dataList.sortedBy { it.storeAmount }.toMutableList()
+                    //낮은 금액순
+                    5 -> recordServerAdapter.dataList = dataList.sortedBy { it.storeAmount }.reversed().toMutableList()
+                    //등록 이름순
+//                    6 -> recordServerAdapter.dataList = dataList.sortedBy { it.storeAmount }.toMutableList()
+                }
+                Log.e("TAG", "onItemSelected position: $position", )
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+        }
     }
 
     override fun initObserver() {
@@ -95,10 +134,6 @@ class RecordServerFragment(
             }
             showShortToast(FetchStateHandler(it))
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun emptyTextControl(state: Boolean, massage: String = "데이터가 비었어요!"){

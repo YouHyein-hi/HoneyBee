@@ -50,6 +50,7 @@ class HeaderManager @Inject constructor(
         val secretKey = "a18cca61839fa36db64e461c23867d98ea1eeaec7524b9f334314c0d5f0ed96b9feba377d41c0c93d054d66aafcc55145648b026ad2bdd9f697f653111ea72f1"
         return try {
             val decodingKey = Decoders.BASE64.decode(secretKey)
+            Log.e("TAG", "decodingKey: $decodingKey", )
             val signingKey = Keys.hmacShaKeyFor(decodingKey)
             val claims: Claims = Jwts.parserBuilder()
                 .setSigningKey(signingKey)

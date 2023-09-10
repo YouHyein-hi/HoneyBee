@@ -119,8 +119,10 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 
     private fun initView() {
         Log.e("TAG", "initView: $viewModelData",)
-        if (viewModelData.type == ShowType.LOCAL)
+        if (viewModelData.type == ShowType.LOCAL){
             binding.recoreImageView.setImageURI(viewModelData.file)
+            binding.recordDownloadBtn.isVisible = false
+        }
         else
             viewModel.getServerPictureData(viewModelData.uid)
 

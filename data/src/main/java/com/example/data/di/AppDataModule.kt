@@ -18,11 +18,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppDataModule {
-    @Singleton
-    @Provides
-    fun providePreferenceManager(@ApplicationContext context: Context): PreferenceManager {
-        return PreferenceManager(context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE))
-    }
 
     @Singleton
     @Provides

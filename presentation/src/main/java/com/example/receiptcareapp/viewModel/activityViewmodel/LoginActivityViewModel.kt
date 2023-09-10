@@ -49,7 +49,7 @@ class LoginActivityViewModel @Inject constructor(
     }
 
     fun putLoginData(data: LoginData) {
-        preferenceManager.putLogin(data.id!!)
+        preferenceManager.putEmail(data.id!!)
         preferenceManager.putPassword(data.pw!!)
         Log.e("TAG", "getAccessToken: ${preferenceManager.getAccessToken()}", )
         Log.e("TAG", "getRefreshToken: ${preferenceManager.getRefreshToken()}", )
@@ -58,5 +58,5 @@ class LoginActivityViewModel @Inject constructor(
 
 
     fun getLoginData(): LoginData =
-        LoginData(preferenceManager.getLogin(), preferenceManager.getPassword())
+        LoginData(preferenceManager.getEmail(), preferenceManager.getPassword())
 }

@@ -142,8 +142,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/home_card_recyclerview"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/home_card_recyclerview_refresh"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginStart="20dp"
@@ -153,10 +153,14 @@
                     app:layout_constraintBottom_toTopOf="@+id/view6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view5"
-                    tools:listitem="@layout/item_home_card_list">
-
-                </androidx.recyclerview.widget.RecyclerView>
+                    app:layout_constraintTop_toBottomOf="@+id/view5">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/home_card_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:listitem="@layout/item_home_card_list">
+                    </androidx.recyclerview.widget.RecyclerView>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
                 <View
                     android:id="@+id/view6"

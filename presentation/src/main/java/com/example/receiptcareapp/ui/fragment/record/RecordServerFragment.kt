@@ -110,9 +110,12 @@ class RecordServerFragment(
                 }
                 Log.e("TAG", "onItemSelected position: $position", )
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
 
+        binding.recordListRecyclerViewRefresh.setOnRefreshListener {
+            binding.recordListRecyclerViewRefresh.isRefreshing = false
+            viewModel.getServerAllBillData()
         }
     }
 

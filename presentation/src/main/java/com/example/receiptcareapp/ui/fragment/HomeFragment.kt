@@ -74,6 +74,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 else { addDialog() }
             }
             homeCardListComponent.setOnClickListener { CardBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet") }
+            homeCardRecyclerviewRefresh.setOnRefreshListener {
+                homeCardRecyclerviewRefresh.isRefreshing = false
+                viewModel.getServerCardData()
+            }
         }
     }
 

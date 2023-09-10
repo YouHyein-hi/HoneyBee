@@ -1,6 +1,5 @@
 package com.example.domain.model.remote.send.bill
 
-import okhttp3.MultipartBody
 import java.time.LocalDateTime
 
 /**

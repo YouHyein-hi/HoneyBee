@@ -1,5 +1,6 @@
 package com.example.data.di
 
+import android.content.Context
 import com.example.data.local.LocalDatabase
 import com.example.data.remote.dataSource.*
 import com.example.data.remote.dataSourceImpl.NoticeDataSourceImpl
@@ -8,6 +9,7 @@ import com.example.domain.repo.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -27,8 +29,8 @@ object RepoModule {
 
     @Provides
     @Singleton
-    fun provideGeneralData(source : GeneralDataSource): GeneralRepository {
-        return GeneralRepositoryImpl(source)
+    fun provideGeneralData(source : GeneralDataSource, @ApplicationContext context: Context): GeneralRepository {
+        return GeneralRepositoryImpl(context, source)
     }
 
     @Provides

@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.RoomData
 import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.model.remote.receive.basic.ServerUidData
-import com.example.domain.model.remote.send.bill.SendBillData
 import com.example.domain.model.remote.send.bill.SendBillUpdateData
 import com.example.domain.usecase.bill.DeleteDataUseCase
 import com.example.domain.usecase.bill.GetPictureDataUseCase
@@ -18,12 +17,11 @@ import com.example.domain.usecase.room.DeleteRoomDataUseCase
 import com.example.domain.usecase.room.UpdateRoomDataUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.domain.model.ui.bill.LocalBillData
-import com.example.domain.util.UriToBitmapUtil
+import com.example.domain.model.ui.bill.UiBillData
 import com.example.receiptcareapp.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
-import okhttp3.MultipartBody
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
@@ -98,25 +96,32 @@ class RecordShowViewModel @Inject constructor(
                 _response.postValue(Pair(
                         ResponseState.LOCAL_UPDATE_SUCCESS,
                         insertDataUseCase(
-                            SendBillData(
-                                cardName = MultipartBody.Part.createFormData(
-                                    "cardName",
-                                    sendData.cardName
-                                ),
-                                storeName = MultipartBody.Part.createFormData(
-                                    "storeName",
-                                    sendData.storeName
-                                ),
-                                date = MultipartBody.Part.createFormData(
-                                    "billSubmitTime",
-                                    sendData.billSubmitTime
-                                ),
-                                amount = MultipartBody.Part.createFormData(
-                                    "amount",
-                                    sendData.amount.replace(",", "")
-                                ),
-                                picture = UriToBitmapUtil(application, sendData.picture)
+                            UiBillData(
+                                cardName = sendData.cardName,
+                                storeName = sendData.storeName,
+                                billSubmitTime = sendData.billSubmitTime,
+                                storeAmount = sendData.amount.replace(",", ""),
+                                picture = sendData.picture
                             )
+//                            SendBillData(
+//                                cardName = MultipartBody.Part.createFormData(
+//                                    "cardName",
+//                                    sendData.cardName
+//                                ),
+//                                storeName = MultipartBody.Part.createFormData(
+//                                    "storeName",
+//                                    sendData.storeName
+//                                ),
+//                                date = MultipartBody.Part.createFormData(
+//                                    "billSubmitTime",
+//                                    sendData.billSubmitTime
+//                                ),
+//                                amount = MultipartBody.Part.createFormData(
+//                                    "amount",
+//                                    sendData.amount.replace(",", "")
+//                                ),
+//                                picture = UriToBitmapUtil(application, sendData.picture)
+//                            )
                         )
                     )
                 )

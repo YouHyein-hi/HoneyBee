@@ -13,7 +13,6 @@ import com.example.domain.usecase.bill.GetStoreListUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.InsertRoomDataUseCase
-import com.example.domain.util.UriToBitmapUtil
 import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -70,32 +69,57 @@ class SendBillViewModel @Inject constructor(
             }?:throw SocketTimeoutException()
         }
     }
-    //insertData 분리해야함
+
     fun insertBillData(data: UiBillData) {
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
                 _response.postValue(
                     insertDataUseCase(
-                        SendBillData(
-                            cardName = MultipartBody.Part.createFormData(
-                                "cardName",
-                                data.cardName
-                            ),
-                            storeName = MultipartBody.Part.createFormData(
-                                "storeName",
-                                data.storeName
-                            ),
-                            date = MultipartBody.Part.createFormData(
-                                "billSubmitTime",
-                                data.billSubmitTime
-                            ),
-                            amount = MultipartBody.Part.createFormData(
-                                "amount",
-                                data.storeAmount.replace(",", "")
-                            ),
-                            picture = UriToBitmapUtil(application, data.picture)
+                        UiBillData(
+                            cardName = data.cardName,
+                            storeName = data.storeName,
+                            billSubmitTime = data.billSubmitTime,
+                            storeAmount = data.storeAmount.replace(",", ""),
+                            picture = data.picture
                         )
+//                            cardName = MultipartBody.Part.createFormData(
+//                                "cardName",
+//                                data.cardName
+//                            ),
+//                            storeName = MultipartBody.Part.createFormData(
+//                                "storeName",
+//                                data.storeName
+//                            ),
+//                            date = MultipartBody.Part.createFormData(
+//                                "billSubmitTime",
+//                                data.billSubmitTime
+//                            ),
+//                            amount = MultipartBody.Part.createFormData(
+//                                "amount",
+//                                data.storeAmount.replace(",", "")
+//                            ),
+//                            picture = UriToBitmapUtil(application, data.picture)
+//                        )
+//                        SendBillData(
+//                            cardName = MultipartBody.Part.createFormData(
+//                                "cardName",
+//                                data.cardName
+//                            ),
+//                            storeName = MultipartBody.Part.createFormData(
+//                                "storeName",
+//                                data.storeName
+//                            ),
+//                            date = MultipartBody.Part.createFormData(
+//                                "billSubmitTime",
+//                                data.billSubmitTime
+//                            ),
+//                            amount = MultipartBody.Part.createFormData(
+//                                "amount",
+//                                data.storeAmount.replace(",", "")
+//                            ),
+//                            picture = UriToBitmapUtil(application, data.picture)
+//                        )
                     )
                 )
             } ?: throw SocketTimeoutException()

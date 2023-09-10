@@ -1,4 +1,4 @@
-package com.example.domain.util
+package com.example.data.util
 
 import android.content.Context
 import android.database.Cursor
@@ -8,7 +8,6 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody

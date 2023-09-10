@@ -36,7 +36,7 @@ class RecordServerFragment(
     private val viewModel: RecordViewModel
 ) : BaseFragment<FragmentRecordServerBinding>(
     FragmentRecordServerBinding::inflate,
-    "RecyclerFragment"
+    "RecordServerFragment"
 ) {
     private val recordServerAdapter: RecordServerAdapter = RecordServerAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()

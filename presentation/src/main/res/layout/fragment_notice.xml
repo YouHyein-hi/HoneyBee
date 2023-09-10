@@ -6,8 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/main_background_white"
-        >
+        android:background="@color/main_background_white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,20 +27,25 @@
                 bind:layout_constraintTop_toTopOf="parent"
                 bind:title="@{@string/notice_title}" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/noticeList_recyclerview"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/noticeList_recyclerview_refresh"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/item_notice" />
+                android:layout_height="wrap_content">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/noticeList_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/item_notice" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
         </LinearLayout>
 
         <include
-            android:visibility="invisible"
             android:id="@+id/layoutLoadingProgress"
             layout="@layout/progressbar_loading"
+            android:visibility="invisible"
             bind:layout_constraintBottom_toBottomOf="parent"
             bind:layout_constraintEnd_toEndOf="parent"
             bind:layout_constraintStart_toStartOf="parent"
@@ -51,11 +55,11 @@
             android:id="@+id/notice_empty_txt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"
             android:gravity="center"
             android:text="@string/notice_empty_txt"
             android:textColor="@color/main_font_black"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:visibility="invisible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

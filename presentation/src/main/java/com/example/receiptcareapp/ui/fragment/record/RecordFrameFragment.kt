@@ -25,15 +25,16 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
     private val viewModel: RecordViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var callback : OnBackPressedCallback
+    private val recordLocalFragment: RecordLocalFragment by lazy { RecordLocalFragment(viewModel) }
+    private val recordServerFragment: RecordServerFragment by lazy { RecordServerFragment(viewModel) }
 
     override fun initData() {}
 
     override fun initUI() {
-        Log.e(TAG, "initUI", )
         if(activityViewModel.selectedData.value?.type == ShowType.LOCAL)
-            changeFragment(RecordLocalFragment(viewModel))
+            changeFragment(recordLocalFragment)
         else
-            changeFragment(RecordServerFragment(viewModel))
+            changeFragment(recordServerFragment)
         activityViewModel.removeSelectedData()
     }
 
@@ -43,11 +44,11 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
             parentFragmentManager.beginTransaction()
             when(it.itemId){
                 R.id.server -> {
-                    changeFragment(RecordServerFragment(viewModel))
+                    changeFragment(recordServerFragment)
                     true
                 }
                 R.id.local -> {
-                    changeFragment(RecordLocalFragment(viewModel))
+                    changeFragment(recordLocalFragment)
                     true
                 }
                 else -> {true}

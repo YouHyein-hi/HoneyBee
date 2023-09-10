@@ -47,16 +47,4 @@ class LoginActivityViewModel @Inject constructor(
             } ?: SocketTimeoutException()
         }
     }
-
-    fun putLoginData(data: LoginData) {
-        preferenceManager.putEmail(data.id!!)
-        preferenceManager.putPassword(data.pw!!)
-        Log.e("TAG", "getAccessToken: ${preferenceManager.getAccessToken()}", )
-        Log.e("TAG", "getRefreshToken: ${preferenceManager.getRefreshToken()}", )
-    }
-
-
-
-    fun getLoginData(): LoginData =
-        LoginData(preferenceManager.getEmail(), preferenceManager.getPassword())
 }

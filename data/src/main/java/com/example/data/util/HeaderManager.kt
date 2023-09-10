@@ -7,7 +7,6 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import okhttp3.Headers
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -62,11 +61,10 @@ class HeaderManager @Inject constructor(
 
     private fun clearToken(){
         preferenceManager.removeAccessToken()
-        preferenceManager.clearRefreshToken()
+        preferenceManager.removeRefreshToken()
     }
     private fun saveToken(accessToken: String, refreshToken: String){
         preferenceManager.putAccessToken(accessToken)
         preferenceManager.putRefreshToken(refreshToken)
-
     }
 }

@@ -27,6 +27,7 @@ class PreferenceManager @Inject constructor(
     fun getAutoLogin(): Boolean = sharedPreference.getBoolean("sharedPreference_auto_login", false)
     fun removeAutoLogin() = sharedPreference.edit().remove("sharedPreference_auto_login").apply()
 
+
     //Auth Token Control
     fun putAccessToken(accessToken : String) = sharedPreference.edit().putString("access_token", accessToken).apply()
     fun getAccessToken(): String? = sharedPreference.getString("access_token", null)
@@ -34,11 +35,18 @@ class PreferenceManager @Inject constructor(
 
     fun putRefreshToken(refreshToken : String) = sharedPreference.edit().putString("refresh_token", refreshToken).apply()
     fun getRefreshToken(): String? = sharedPreference.getString("refresh_token", null)
-    fun clearRefreshToken() = sharedPreference.edit().remove("refresh_token").apply()
+    fun removeRefreshToken() = sharedPreference.edit().remove("refresh_token").apply()
 
     fun putUserRight(right: String) = sharedPreference.edit().putString("right", right).apply()
     fun getUserRight(): String? = sharedPreference.getString("right", null)
-    fun clearUserRight() = sharedPreference.edit().remove("right").apply()
+    fun removeUserRight() = sharedPreference.edit().remove("right").apply()
+
+    fun removeAuth(){
+        sharedPreference.edit().remove("access_token").apply()
+        sharedPreference.edit().remove("refresh_token").apply()
+        sharedPreference.edit().remove("right").apply()
+    }
+
 
     //Date Control
     fun putPush(onoff : Boolean) = sharedPreference.edit().putBoolean("sharedPreference_push", onoff).apply()

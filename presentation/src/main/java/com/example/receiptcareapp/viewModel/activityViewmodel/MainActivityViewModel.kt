@@ -32,8 +32,4 @@ class MainActivityViewModel @Inject constructor(
     fun removeSelectedData(){ _selectedData.value = null }
 
     lateinit var selectedNoticeData : NoticeData
-
-    fun clearAll(){
-        preferenceManager.clearLoginPassword()
-    }
 }

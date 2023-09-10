@@ -33,4 +33,8 @@ class MenuViewModel @Inject constructor(
     }
 
     fun getTime() : TimeData = TimeData(preferenceManager.getHour(), preferenceManager.getMinute())
+
+    fun removeAuth(){
+        preferenceManager.removeAuth()
+    }
 }

@@ -24,13 +24,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level =
-//            if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
-            HttpLoggingInterceptor.Level.NONE
-    }
-
-
     private var gson: Gson = GsonBuilder().setLenient().create()
 
     @Qualifier

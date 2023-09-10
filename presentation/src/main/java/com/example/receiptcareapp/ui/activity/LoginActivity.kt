@@ -84,7 +84,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             Log.e("TAG", "initObserver: $response")
             when (response.status) {
                 "200" -> {
-                    viewModel.putLoginData(loginData)
                     nextActivity()
                 }
                 else -> {showShortToast("로그인 실패")}

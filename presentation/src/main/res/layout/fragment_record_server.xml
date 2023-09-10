@@ -37,6 +37,7 @@
             app:layout_constraintTop_toBottomOf="@+id/title">
 
             <EditText
+                android:maxEms="15"
                 android:id="@+id/recordServer_search_Txt"
                 android:textColorHighlight="@color/black"
                 android:textSize="15sp"

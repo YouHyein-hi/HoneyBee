@@ -22,51 +22,53 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/linearLayout4"
+            android:id="@+id/linearLayout6"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/box_yellow"
             android:gravity="center"
             android:orientation="horizontal"
+            android:weightSum="8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            android:weightSum="6">
+            app:layout_constraintTop_toBottomOf="@+id/title">
 
             <EditText
+                android:maxEms="15"
                 android:id="@+id/recordLocal_search_Txt"
                 android:textColorHighlight="@color/black"
                 android:textSize="15sp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
                 android:hint="@string/record_server_hint"
                 editTextClickUnderBarColor = "@{`asdf`}"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/transparent"
                 android:textCursorDrawable="@color/white"
                 />
             <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="4dp"
                 android:layout_width="1dp"
                 android:background="@color/sub_font2_gray"
                 android:layout_height="match_parent"/>
             <LinearLayout
+                android:layout_marginStart="10dp"
                 android:layout_weight="5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:gravity="center">
-                <ImageButton
-                    android:layout_margin="5dp"
-                    android:src="@drawable/icon_drop_down"
-                    android:background="@color/transparent"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:overlapAnchor="false"
+                    android:id="@+id/record_filter_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     />
             </LinearLayout>
-
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -76,7 +78,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
             tools:listitem="@layout/item_bill_list_local" />
 
         <TextView

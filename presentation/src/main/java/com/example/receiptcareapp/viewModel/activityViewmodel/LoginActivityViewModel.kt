@@ -22,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginActivityViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val preferenceManager: PreferenceManager
     ) : BaseViewModel("LoginActivityViewModel") {
 
     //서버 연결 유무 관리

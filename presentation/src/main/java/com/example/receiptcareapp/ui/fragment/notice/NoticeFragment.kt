@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.domain.model.remote.receive.notice.NoticeData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentMenuBinding
@@ -49,7 +51,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
         }
         adapter.onNoticeClic = {
             activityViewModel.selectedNoticeData = it
-            findNavController().navigate(R.id.action_noticeFragment_to_showNoticeFragment)
+            findNavController().navigate(R.id.action_noticeFragment_to_showNoticeFragment, )
         }
     }
 

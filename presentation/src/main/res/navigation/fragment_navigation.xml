@@ -133,6 +133,10 @@
         android:label="fragment_notice"
         tools:layout="@layout/fragment_notice">
 
+        <argument
+            android:name="noticeData"
+            app:argType="com.example.domain.model.remote.receive.notice" />
+
         <action
             android:id="@+id/action_noticeFragment_to_addNoticeFragment"
             app:destination="@id/addNoticeFragment"

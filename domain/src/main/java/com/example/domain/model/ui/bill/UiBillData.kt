@@ -9,7 +9,7 @@ import android.net.Uri
 data class UiBillData(
     val cardName: String,
     val storeAmount: String,
-    var billSubmitTime: String,
     val storeName: String,
+    var date: String,
     val picture: Uri,
 )

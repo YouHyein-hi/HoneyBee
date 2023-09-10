@@ -7,7 +7,6 @@ import com.example.domain.model.local.RoomData
 import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.model.remote.receive.bill.ServerStoreData
 import com.example.domain.model.remote.receive.basic.ServerUidData
-import com.example.domain.model.remote.send.bill.SendBillData
 import com.example.domain.model.ui.bill.UiBillData
 import com.example.domain.usecase.bill.GetStoreListUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
@@ -20,7 +19,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
-import okhttp3.MultipartBody
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
@@ -79,7 +77,7 @@ class SendBillViewModel @Inject constructor(
                         UiBillData(
                             cardName = data.cardName,
                             storeName = data.storeName,
-                            billSubmitTime = data.billSubmitTime,
+                            date = data.date,
                             storeAmount = data.storeAmount.replace(",", ""),
                             picture = data.picture
                         )
@@ -135,7 +133,7 @@ class SendBillViewModel @Inject constructor(
                     cardName = savedData.cardName,
                     storeAmount = savedData.storeAmount,
                     storeName = savedData.storeName,
-                    billSubmitTime = savedData.billSubmitTime,
+                    billSubmitTime = savedData.date,
                     file = savedData.picture.toString(),
                     uid = response
                 )

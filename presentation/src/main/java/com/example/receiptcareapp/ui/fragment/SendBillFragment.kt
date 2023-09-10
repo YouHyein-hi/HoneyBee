@@ -148,7 +148,7 @@ class SendBillFragment :
                             viewModel,
                             CheckBillData(
                                 cardName = cardName,
-                                amount = sendBillPriceEdit.text.toString(),
+                                storeAmount = sendBillPriceEdit.text.toString(),
                                 cardAmount = cardAmount,
                                 storeName = binding.sendBillStoreEdit.text.toString(),
                                 date = myLocalDateTime.toString(),

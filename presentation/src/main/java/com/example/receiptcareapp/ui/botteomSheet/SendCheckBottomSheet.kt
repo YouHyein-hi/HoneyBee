@@ -32,7 +32,7 @@ class SendCheckBottomSheet(
     override fun initData() {}
 
     override fun initUI() {
-        binding.data = CheckBillData(data.cardName, data.amount,data.cardAmount, data.storeName, StringUtil.changeDate(data.date),data.picture)
+        binding.data = CheckBillData(data.cardName, data.storeAmount,data.cardAmount, data.storeName, StringUtil.changeDate(data.date),data.picture)
     }
 
     override fun initListener() {
@@ -41,8 +41,8 @@ class SendCheckBottomSheet(
         binding.sendOkBtn.setOnClickListener {
             viewModel.insertBillData(
                 UiBillData(
-                    billSubmitTime = data.date,
-                    storeAmount = data.amount,
+                    date = data.date,
+                    storeAmount = data.storeAmount,
                     cardName = data.cardName,
                     picture = data.picture,
                     storeName = data.storeName

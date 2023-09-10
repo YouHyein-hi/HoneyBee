@@ -12,16 +12,9 @@ import javax.inject.Inject
  */
 
 class PreferenceManager @Inject constructor(
-    context: Context
+    private val sharedPreference: SharedPreferences
 ) {
 
-    private val sharedPreference: SharedPreferences
-
-    init {
-        sharedPreference = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
-    }
-
-    //Login Data Control
     //TODO 하나하나 넣는것보다 데이터클래스를 넣는 방법으로 해야함
     fun putLogin(id: String){
         sharedPreference.edit().putString("sharedPreference_id", id).apply()

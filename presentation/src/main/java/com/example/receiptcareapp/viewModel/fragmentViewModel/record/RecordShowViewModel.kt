@@ -77,8 +77,8 @@ class RecordShowViewModel @Inject constructor(
                                 cardName = sendData.cardName,
                                 storeName = sendData.storeName,
 //                                billSubmitTime = LocalDateTime.parse(sendData.billSubmitTime),
-                                billSubmitTime = sendData.billSubmitTime,
-                                amount = sendData.amount
+                                date = sendData.date,
+                                storeAmount = sendData.storeAmount
                             )
                         )
                     )
@@ -99,29 +99,10 @@ class RecordShowViewModel @Inject constructor(
                             UiBillData(
                                 cardName = sendData.cardName,
                                 storeName = sendData.storeName,
-                                billSubmitTime = sendData.billSubmitTime,
-                                storeAmount = sendData.amount.replace(",", ""),
+                                date = sendData.date,
+                                storeAmount = sendData.storeAmount.replace(",", ""),
                                 picture = sendData.picture
                             )
-//                            SendBillData(
-//                                cardName = MultipartBody.Part.createFormData(
-//                                    "cardName",
-//                                    sendData.cardName
-//                                ),
-//                                storeName = MultipartBody.Part.createFormData(
-//                                    "storeName",
-//                                    sendData.storeName
-//                                ),
-//                                date = MultipartBody.Part.createFormData(
-//                                    "billSubmitTime",
-//                                    sendData.billSubmitTime
-//                                ),
-//                                amount = MultipartBody.Part.createFormData(
-//                                    "amount",
-//                                    sendData.amount.replace(",", "")
-//                                ),
-//                                picture = UriToBitmapUtil(application, sendData.picture)
-//                            )
                         )
                     )
                 )
@@ -140,7 +121,7 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-    fun deleteRoomBillData(date: String? = savedLocalData.billSubmitTime) {
+    fun deleteRoomBillData(date: String? = savedLocalData.date) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
             deleteRoomDataUseCase(date!!)
@@ -155,8 +136,8 @@ class RecordShowViewModel @Inject constructor(
                 RoomData(
                     uid = savedLocalData.uid,
                     cardName = savedLocalData.cardName,
-                    storeAmount = savedLocalData.amount,
-                    billSubmitTime = savedLocalData.billSubmitTime,
+                    storeAmount = savedLocalData.storeAmount,
+                    billSubmitTime = savedLocalData.date,
                     storeName = savedLocalData.storeName,
                     file = savedLocalData.picture.toString()
                 )

@@ -4,7 +4,6 @@ import com.example.domain.model.remote.receive.basic.ServerUidData
 import com.example.domain.model.remote.receive.bill.ServerBillData
 import com.example.domain.model.remote.receive.bill.ServerPictureData
 import com.example.domain.model.remote.receive.bill.ServerStoreData
-import com.example.domain.model.remote.send.bill.SendBillData
 import com.example.domain.model.remote.send.bill.SendBillUpdateData
 import com.example.domain.model.ui.bill.UiBillData
 

@@ -86,8 +86,8 @@ class ChangeDialog(
                         viewModel.updateServerBillData(
                             SendBillUpdateData(
                                 id = viewModelData.uid.toLong(),
-                                billSubmitTime = myLocalDateTime!!,
-                                amount = binding.changePriceEdit.text.toString().replace(",", "").toInt(),
+                                date = myLocalDateTime!!,
+                                storeAmount = binding.changePriceEdit.text.toString().replace(",", "").toInt(),
                                 cardName = cardName,
                                 storeName = binding.changeStoreEdit.text.toString()
                             )
@@ -96,8 +96,8 @@ class ChangeDialog(
                         viewModel.updateLocalBillData(
                             sendData = LocalBillData(
                                 uid= viewModelData.uid,
-                                billSubmitTime = myLocalDateTime.toString(),
-                                amount = binding.changePriceEdit.text.toString(),
+                                date = myLocalDateTime.toString(),
+                                storeAmount = binding.changePriceEdit.text.toString(),
                                 cardName = cardName,
                                 storeName = binding.changeStoreEdit.text.toString(),
                                 picture = viewModelData.file!!

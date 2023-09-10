@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 data class SendBillUpdateData(
     val id: Long,
     val cardName: String,
+    val storeAmount: Int,
+    var date: LocalDateTime,
     val storeName: String,
-    var billSubmitTime: LocalDateTime,
-    val amount: Int,
 )

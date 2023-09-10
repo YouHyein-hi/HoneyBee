@@ -1,7 +1,6 @@
 package com.example.domain.usecase.bill
 
 import com.example.domain.model.remote.receive.basic.ServerUidData
-import com.example.domain.model.remote.send.bill.SendBillData
 import com.example.domain.model.ui.bill.UiBillData
 import com.example.domain.repo.GeneralRepository
 

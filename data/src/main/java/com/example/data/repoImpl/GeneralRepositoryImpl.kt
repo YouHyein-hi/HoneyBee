@@ -65,7 +65,7 @@ class GeneralRepositoryImpl @Inject constructor(
             ),
             billSubmitTime = MultipartBody.Part.createFormData(
                 "billSubmitTime",
-                data.billSubmitTime
+                data.date
             ),
             file = UriToBitmapUtil(context, data.picture)
         ).toUidServerResponseData()
@@ -76,8 +76,8 @@ class GeneralRepositoryImpl @Inject constructor(
             id = sendBillUpdateData.id,
             cardName = sendBillUpdateData.cardName,
             storeName = sendBillUpdateData.storeName,
-            billSubmitTime = sendBillUpdateData.billSubmitTime,
-            amount = sendBillUpdateData.amount,
+            billSubmitTime = sendBillUpdateData.date,
+            amount = sendBillUpdateData.storeAmount,
         ).toUidServerResponseData()
     }
 }

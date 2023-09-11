@@ -26,6 +26,7 @@ interface GeneralDataSource {
         @Part billSubmitTime: MultipartBody.Part,
         @Part amount: MultipartBody.Part,
         @Part file: MultipartBody.Part,
+        @Part billMemo: MultipartBody.Part
     ): ServerResponse<Int>
 
     @Streaming

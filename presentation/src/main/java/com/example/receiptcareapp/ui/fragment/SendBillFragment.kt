@@ -124,7 +124,7 @@ class SendBillFragment :
 
             /** 완료 Button **/
             sendBillOkBtn.setOnClickListener {
-                Log.e("TAG", "onViewCreated: iinin")
+                Log.e("TAG", "onViewCreated: in")
                 var price = sendBillPriceEdit.text.toString()
                 var priceZero = price.count { it == '0' }
                 when {

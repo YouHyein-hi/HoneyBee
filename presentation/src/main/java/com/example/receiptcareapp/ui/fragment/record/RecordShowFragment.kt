@@ -1,6 +1,10 @@
 package com.example.receiptcareapp.ui.fragment.record
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -18,11 +22,15 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.domain.model.ui.recycler.RecyclerData
+import com.example.domain.util.UriToBitmapUtil
+import com.example.receiptcareapp.R
 import com.example.receiptcareapp.ui.dialog.DeleteDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.state.ResponseState
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+import java.io.FileOutputStream
 
 
 @AndroidEntryPoint
@@ -55,7 +63,11 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         //뒤로가기 버튼
         binding.recordBackBtn.setOnClickListener{ findNavController().popBackStack() }
 
-//        binding.recordDownloadBtn.setOnClickListener{ downloadImage(viewModelData.file.toString()) }
+        binding.recordDownloadBtn.setOnClickListener{
+            //그림 저장
+            handleDownloadClick()
+        }
+
     }
 
     override fun initObserver() {
@@ -107,8 +119,10 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 
     private fun initView() {
         Log.e("TAG", "initView: $viewModelData",)
-        if (viewModelData.type == ShowType.LOCAL)
+        if (viewModelData.type == ShowType.LOCAL){
             binding.recoreImageView.setImageURI(viewModelData.file)
+            binding.recordDownloadBtn.isVisible = false
+        }
         else
             viewModel.getServerPictureData(viewModelData.uid)
 
@@ -139,26 +153,12 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         deleteDialog.show(parentFragmentManager, "deleteDialog")
     }
 
-
-//    private fun downloadImage(url : String) {
-//        val fileName =
-//                "/${getString(R.string.app_name)}/${SimpleDateFormat("yyyyMMddHHmmss").format(Date())}.jpg" // 이미지 파일 명
-//
-//            val req = DownloadManager.Request(Uri.parse(url))
-//
-//            req.setTitle(fileName) // 제목
-//                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) // 알림 설정
-//                .setMimeType("image/*")
-//                .setDestinationInExternalPublicDir(
-//                    Environment.DIRECTORY_PICTURES,
-//                    fileName
-//                ) // 다운로드 완료 시 보여지는 이름
-//
-//        val manager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-//
-//        manager.enqueue(req)
-//    }
-
+    // 이미지 저장
+    private fun handleDownloadClick() {
+        if(!UriToBitmapUtil.imageExternalSave(requireContext(), viewModel.picture.value, requireContext().getString(R.string.app_name))){
+            showShortToast("그림 저장을 실패하였습니다") }
+        else { showShortToast("그림이 갤러리에 저장되었습니다") }
+    }
 
     override fun onDestroy() {
         super.onDestroy()

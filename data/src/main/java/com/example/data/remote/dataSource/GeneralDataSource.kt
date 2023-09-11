@@ -26,6 +26,7 @@ interface GeneralDataSource {
         @Part billSubmitTime: MultipartBody.Part,
         @Part amount: MultipartBody.Part,
         @Part file: MultipartBody.Part,
+        @Part billMemo: MultipartBody.Part
     ): ServerResponse<Int>
 
     @Streaming
@@ -33,7 +34,7 @@ interface GeneralDataSource {
     suspend fun getBillListDataSource(): ServerResponse<List<ServerBillResponse>>
 
     @Streaming
-    @GET("bill/list/store")   // 전체 스토어 데이터 요청
+    @GET("bill/store/list")   // 전체 스토어 데이터 요청
     suspend fun getStoreListDataSource(): ServerResponse<List<String>>
 
     @Streaming

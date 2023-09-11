@@ -16,19 +16,22 @@ import javax.inject.Inject
 class GeneralDataSourceImpl @Inject constructor(
     @RetrofitModule.Api private val retrofit: Retrofit
 ): GeneralDataSource {
+
     override suspend fun sendDataSource(
         cardName: MultipartBody.Part,
+        storeName: MultipartBody.Part,
+        billSubmitTime: MultipartBody.Part,
         amount: MultipartBody.Part,
-        pictureName: MultipartBody.Part,
-        timestmap: MultipartBody.Part,
-        bill: MultipartBody.Part
+        file: MultipartBody.Part,
+        billMemo: MultipartBody.Part
     ): ServerResponse<Int> {
         return retrofit.create(GeneralDataSource::class.java).sendDataSource(
             cardName = cardName,
             amount = amount,
-            storeName = pictureName,
-            billSubmitTime = timestmap,
-            file = bill
+            storeName = storeName,
+            billSubmitTime = billSubmitTime,
+            file = file,
+            billMemo = billMemo
         )
     }
 

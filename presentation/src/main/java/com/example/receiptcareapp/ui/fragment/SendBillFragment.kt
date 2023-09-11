@@ -124,7 +124,7 @@ class SendBillFragment :
 
             /** 완료 Button **/
             sendBillOkBtn.setOnClickListener {
-                Log.e("TAG", "onViewCreated: iinin")
+                Log.e("TAG", "onViewCreated: in")
                 var price = sendBillPriceEdit.text.toString()
                 var priceZero = price.count { it == '0' }
                 when {
@@ -139,10 +139,10 @@ class SendBillFragment :
                         NavHostFragment.findNavController(this@SendBillFragment).navigate(R.id.action_sendBillFragment_to_homeFragment)
                     }
                     else -> {
-                        if (!StringUtil.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
-                            showShortToast("보유금액보다 많은 비용입니다.")
-                            return@setOnClickListener
-                        }
+//                        if (!StringUtil.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
+//                            showShortToast("보유금액보다 많은 비용입니다.")
+//                            return@setOnClickListener
+//                        }
                         val myLocalDateTime = StringUtil.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
                         SendCheckBottomSheet(
                             viewModel,

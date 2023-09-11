@@ -41,7 +41,7 @@ class NetworkInterceptor @Inject constructor(
                 val secondRequest = requestMaker(firstRequest)
                 return chain.proceed(secondRequest)
             }else{
-                throw Exception("토큰 재요청 오류")
+                throw Exception("토큰 재요청 오류 ")
             }
         }
         return response

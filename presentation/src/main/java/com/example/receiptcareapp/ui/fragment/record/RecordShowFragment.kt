@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.data.util.UriToBitmapUtil
 import com.example.domain.util.StringUtil
 import com.example.domain.model.ui.type.ShowType
 import com.example.receiptcareapp.ui.dialog.ChangeDialog
@@ -22,7 +23,6 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.domain.model.ui.recycler.RecyclerData
-import com.example.domain.util.UriToBitmapUtil
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.ui.dialog.DeleteDialog
 import com.example.receiptcareapp.util.FetchStateHandler

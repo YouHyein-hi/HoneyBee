@@ -143,7 +143,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/home_card_recyclerview_refresh"
+                    android:id="@+id/home_refresh"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginStart="20dp"
@@ -197,17 +197,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/home_empty_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_cardlist_empty"
-                    android:textSize="20dp"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/home_card_recyclerview"
-                    app:layout_constraintEnd_toEndOf="@+id/home_card_recyclerview"
-                    app:layout_constraintStart_toStartOf="@+id/home_card_recyclerview"
-                    app:layout_constraintTop_toBottomOf="@+id/view5" />
+<!--                <TextView-->
+<!--                    android:id="@+id/home_empty_txt"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/home_cardlist_empty"-->
+<!--                    android:textSize="20dp"-->
+<!--                    android:visibility="invisible"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@+id/home_card_recyclerview"-->
+<!--                    app:layout_constraintEnd_toEndOf="@+id/home_card_recyclerview"-->
+<!--                    app:layout_constraintStart_toStartOf="@+id/home_card_recyclerview"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/view5" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

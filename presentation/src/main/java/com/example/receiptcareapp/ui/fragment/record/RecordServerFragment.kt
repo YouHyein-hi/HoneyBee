@@ -111,8 +111,8 @@ class RecordServerFragment(
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        binding.recordListRecyclerViewRefresh.setOnRefreshListener {
-            binding.recordListRecyclerViewRefresh.isRefreshing = false
+        binding.recordRefresh.setOnRefreshListener {
+            binding.recordRefresh.isRefreshing = false
             viewModel.getServerAllBillData()
         }
     }

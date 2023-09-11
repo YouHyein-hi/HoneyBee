@@ -42,12 +42,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val handler = Handler(Looper.getMainLooper())
 
 
-    override fun initData() {
-        adapter.dataList.clear()
-    }
+    override fun initData() {}
 
     override fun initUI() {
         //카드목록, 공지사항 불러오기
+        adapter.dataList.clear()
         viewModel.getServerCardData()
         viewModel.getNoticeList()
         initHomeCardRecycler()
@@ -76,8 +75,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 else { addDialog() }
             }
             homeCardListComponent.setOnClickListener { CardBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet") }
-            homeCardRecyclerviewRefresh.setOnRefreshListener {
-                homeCardRecyclerviewRefresh.isRefreshing = false
+            homeRefresh.setOnRefreshListener {
+                homeRefresh.isRefreshing = false
                 viewModel.getServerCardData()
             }
         }
@@ -91,7 +90,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
-
         viewModel.cardList.observe(viewLifecycleOwner) { dataList ->
             if (dataList?.body!!.isEmpty()) { emptyTextControl(true) }
             else {
@@ -99,7 +97,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 emptyTextControl(false)
             }
         }
-
 
         viewModel.notice.observe(viewLifecycleOwner){
             binding.notice = it
@@ -123,8 +120,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun emptyTextControl(state: Boolean, massage: String = "카드를 추가해주세요!"){
-        binding.homeEmptyTxt.isVisible = state
-        binding.homeEmptyTxt.text = massage
+//        binding.homeEmptyTxt.isVisible = state
+//        binding.homeEmptyTxt.text = massage
     }
 
     override fun onDetach() {

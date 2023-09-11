@@ -39,5 +39,4 @@ class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
     }
 
     override fun getItemCount(): Int = dataList.size
-
 }

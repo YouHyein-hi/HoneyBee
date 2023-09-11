@@ -4,6 +4,7 @@ import ServerResponse
 import com.example.data.di.RetrofitModule
 import com.example.data.remote.dataSource.GeneralDataSource
 import com.example.data.remote.model.ServerBillResponse
+import com.example.data.remote.model.ServerDetailBillResponse
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
 import java.time.LocalDateTime
@@ -37,6 +38,10 @@ class GeneralDataSourceImpl @Inject constructor(
 
     override suspend fun getBillListDataSource(): ServerResponse<List<ServerBillResponse>> {
         return retrofit.create(GeneralDataSource::class.java).getBillListDataSource()
+    }
+
+    override suspend fun getDetailBillData(id: String): ServerResponse<ServerDetailBillResponse> {
+        return retrofit.create(GeneralDataSource::class.java).getDetailBillData(id)
     }
 
     override suspend fun getStoreListDataSource(): ServerResponse<List<String>> {

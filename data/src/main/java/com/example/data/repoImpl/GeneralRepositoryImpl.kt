@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Base64
 import com.example.data.mapper.ResponseMapper.toServerBillData
+import com.example.data.mapper.ResponseMapper.toServerDetailBillData
 import com.example.data.mapper.ResponseMapper.toServerStoreData
 import com.example.data.mapper.ResponseMapper.toUidServerResponseData
 import com.example.data.remote.dataSource.GeneralDataSource
@@ -16,6 +17,7 @@ import com.example.domain.model.ui.bill.UiBillData
 import com.example.domain.repo.GeneralRepository
 import com.example.domain.util.StringUtil
 import com.example.data.util.UriToBitmapUtil
+import com.example.domain.model.remote.receive.bill.ServerDetailBillData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -34,16 +36,22 @@ class GeneralRepositoryImpl @Inject constructor(
 
     override suspend fun getDataListRepository(): ServerBillData {
         val result = generalDataSource.getBillListDataSource().toServerBillData()
-        val newList = result.body?.map { it.copy(date = StringUtil.changeDate(it.date), storeAmount = StringUtil.changeAmount(it.storeAmount)) }
+        val newList = result.body?.map { it.copy(billSubmitTime = StringUtil.changeDate(it.billSubmitTime), storeAmount = StringUtil.changeAmount(it.storeAmount)) }
         return ServerBillData(result.status, result.message, newList)
+    }
+
+    override suspend fun getDetailDataRepository(id: String): ServerDetailBillData {
+        //        val newList = result.body?.map { it.copy(billSubmitTime = StringUtil.changeDate(it.billSubmitTime), billAmount = StringUtil.changeAmount(it.billAmount)) }
+//        val newList = result.body?.copy(billSubmitTime = StringUtil.changeDate(billSubmitTime), billAmount = StringUtil.changeAmount(it.billAmount))
+        return generalDataSource.getDetailBillData(id).toServerDetailBillData()
     }
 
     override suspend fun getStoreListRepository(): ServerStoreData {
         return generalDataSource.getStoreListDataSource().toServerStoreData()
     }
 
-    override suspend fun getPictureDataRepository(uid: String): ServerPictureData {
-        val response = generalDataSource.getPictureDataSource(uid)
+    override suspend fun getPictureDataRepository(id: String): ServerPictureData {
+        val response = generalDataSource.getPictureDataSource(id)
         val byteData = response.body
         val decode = Base64.decode(byteData, Base64.DEFAULT)
         return ServerPictureData(status = response.status, message = response.message, picture = BitmapFactory.decodeByteArray(decode, 0, decode.size))

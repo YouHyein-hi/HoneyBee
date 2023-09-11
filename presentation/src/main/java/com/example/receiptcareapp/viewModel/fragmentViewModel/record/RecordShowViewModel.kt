@@ -1,26 +1,22 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel.record
 
-import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.RoomData
 import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.model.remote.receive.basic.ServerUidData
 import com.example.domain.model.remote.send.bill.SendBillUpdateData
-import com.example.domain.usecase.bill.DeleteDataUseCase
-import com.example.domain.usecase.bill.GetPictureDataUseCase
-import com.example.domain.usecase.bill.InsertDataUseCase
-import com.example.domain.usecase.bill.UpdateDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.DeleteRoomDataUseCase
 import com.example.domain.usecase.room.UpdateRoomDataUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.domain.model.ui.bill.LocalBillData
 import com.example.domain.model.ui.bill.UiBillData
+import com.example.domain.usecase.bill.*
 import com.example.receiptcareapp.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import java.net.SocketTimeoutException
 import javax.inject.Inject
@@ -37,7 +33,8 @@ class RecordShowViewModel @Inject constructor(
     private val getCardSpinnerUseCase: GetCardSpinnerUseCase,
     private val insertDataUseCase: InsertDataUseCase,
     private val deleteRoomDataUseCase: DeleteRoomDataUseCase,
-    private val updateRoomDataUseCase: UpdateRoomDataUseCase
+    private val updateRoomDataUseCase: UpdateRoomDataUseCase,
+    private val getDetailDataUseCase: GetDetailDataUseCase
     ) : BaseViewModel("RecordShowViewModel") {
 
     val loading: MutableLiveData<Boolean> get() = isLoading
@@ -154,12 +151,21 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-    fun getServerPictureData(uid:String){
+    fun getServerPictureData(id:String){
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 loading.postValue(true)
-                _picture.postValue(getPictureDataUseCase(uid).picture)
+                _picture.postValue(getPictureDataUseCase(id).picture)
                 loading.postValue(false)
+            }?:throw SocketTimeoutException()
+        }
+    }
+
+    fun getDetailBillData(id: String){
+        modelScope.launch {
+            withTimeoutOrNull(waitTime) {
+                Log.e("TAG", "getDetailBillData: start", )
+                Log.e("TAG", "getDetailBillData: ${getDetailDataUseCase(id)}", )
             }?:throw SocketTimeoutException()
         }
     }

@@ -5,6 +5,7 @@ import com.example.data.di.DataSourceModule
 import com.example.data.remote.dataSourceImpl.CardDataSourceImpl
 import com.example.data.remote.dataSourceImpl.GeneralDataSourceImpl
 import com.example.data.remote.model.ServerBillResponse
+import com.example.data.remote.model.ServerDetailBillResponse
 import dagger.Component
 import dagger.Provides
 import okhttp3.MultipartBody
@@ -34,13 +35,19 @@ interface GeneralDataSource {
     suspend fun getBillListDataSource(): ServerResponse<List<ServerBillResponse>>
 
     @Streaming
+    @GET("bill/detail/{id}")
+    suspend fun getDetailBillData(
+        @Path("id") id: String,
+    ): ServerResponse<ServerDetailBillResponse>
+
+    @Streaming
     @GET("bill/store/list")   // 전체 스토어 데이터 요청
     suspend fun getStoreListDataSource(): ServerResponse<List<String>>
 
     @Streaming
     @GET("bill/image/{id}")
     suspend fun getPictureDataSource(
-        @Path("id") user: String
+        @Path("id") id: String
     ): ServerResponse<String>
 
     @DELETE("bill/delete/{uid}")

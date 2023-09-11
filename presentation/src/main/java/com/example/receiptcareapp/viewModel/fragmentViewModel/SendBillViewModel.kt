@@ -7,13 +7,11 @@ import com.example.domain.model.local.RoomData
 import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.model.remote.receive.bill.ServerStoreData
 import com.example.domain.model.remote.receive.basic.ServerUidData
-import com.example.domain.model.remote.send.bill.SendBillData
 import com.example.domain.model.ui.bill.UiBillData
 import com.example.domain.usecase.bill.GetStoreListUseCase
 import com.example.domain.usecase.bill.InsertDataUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.InsertRoomDataUseCase
-import com.example.domain.util.UriToBitmapUtil
 import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -21,7 +19,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
-import okhttp3.MultipartBody
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
@@ -70,32 +67,57 @@ class SendBillViewModel @Inject constructor(
             }?:throw SocketTimeoutException()
         }
     }
-    //insertData 분리해야함
+
     fun insertBillData(data: UiBillData) {
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
                 _response.postValue(
                     insertDataUseCase(
-                        SendBillData(
-                            cardName = MultipartBody.Part.createFormData(
-                                "cardName",
-                                data.cardName
-                            ),
-                            storeName = MultipartBody.Part.createFormData(
-                                "storeName",
-                                data.storeName
-                            ),
-                            date = MultipartBody.Part.createFormData(
-                                "billSubmitTime",
-                                data.billSubmitTime
-                            ),
-                            amount = MultipartBody.Part.createFormData(
-                                "amount",
-                                data.storeAmount.replace(",", "")
-                            ),
-                            picture = UriToBitmapUtil(application, data.picture)
+                        UiBillData(
+                            cardName = data.cardName,
+                            storeName = data.storeName,
+                            date = data.date,
+                            storeAmount = data.storeAmount.replace(",", ""),
+                            picture = data.picture
                         )
+//                            cardName = MultipartBody.Part.createFormData(
+//                                "cardName",
+//                                data.cardName
+//                            ),
+//                            storeName = MultipartBody.Part.createFormData(
+//                                "storeName",
+//                                data.storeName
+//                            ),
+//                            date = MultipartBody.Part.createFormData(
+//                                "billSubmitTime",
+//                                data.billSubmitTime
+//                            ),
+//                            amount = MultipartBody.Part.createFormData(
+//                                "amount",
+//                                data.storeAmount.replace(",", "")
+//                            ),
+//                            picture = UriToBitmapUtil(application, data.picture)
+//                        )
+//                        SendBillData(
+//                            cardName = MultipartBody.Part.createFormData(
+//                                "cardName",
+//                                data.cardName
+//                            ),
+//                            storeName = MultipartBody.Part.createFormData(
+//                                "storeName",
+//                                data.storeName
+//                            ),
+//                            date = MultipartBody.Part.createFormData(
+//                                "billSubmitTime",
+//                                data.billSubmitTime
+//                            ),
+//                            amount = MultipartBody.Part.createFormData(
+//                                "amount",
+//                                data.storeAmount.replace(",", "")
+//                            ),
+//                            picture = UriToBitmapUtil(application, data.picture)
+//                        )
                     )
                 )
             } ?: throw SocketTimeoutException()
@@ -111,7 +133,7 @@ class SendBillViewModel @Inject constructor(
                     cardName = savedData.cardName,
                     storeAmount = savedData.storeAmount,
                     storeName = savedData.storeName,
-                    billSubmitTime = savedData.billSubmitTime,
+                    billSubmitTime = savedData.date,
                     file = savedData.picture.toString(),
                     uid = response
                 )

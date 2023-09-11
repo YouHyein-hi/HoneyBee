@@ -1,6 +1,7 @@
 package com.example.data.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.example.data.manager.PreferenceManager
 import com.example.data.util.HeaderManager
 import dagger.Module
@@ -17,11 +18,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppDataModule {
-    @Singleton
-    @Provides
-    fun providePreferenceManager(@ApplicationContext context: Context): PreferenceManager {
-        return PreferenceManager(context)
-    }
 
     @Singleton
     @Provides

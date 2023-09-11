@@ -7,8 +7,6 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import okhttp3.Headers
-import org.json.JSONObject
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -36,7 +34,7 @@ class HeaderManager @Inject constructor(
 
             //토큰 저장
             clearToken()
-            saveToken(accessToken, refreshToken)
+            saveToken("Bearer $accessToken", refreshToken)
 
             //엑세스 토큰 까서 아이디 또는 이름 저장하기
 
@@ -62,12 +60,11 @@ class HeaderManager @Inject constructor(
     }
 
     private fun clearToken(){
-        preferenceManager.clearAccessToken()
-        preferenceManager.clearRefreshToken()
+        preferenceManager.removeAccessToken()
+        preferenceManager.removeRefreshToken()
     }
     private fun saveToken(accessToken: String, refreshToken: String){
         preferenceManager.putAccessToken(accessToken)
         preferenceManager.putRefreshToken(refreshToken)
-
     }
 }

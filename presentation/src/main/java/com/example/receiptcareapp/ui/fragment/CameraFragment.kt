@@ -16,8 +16,6 @@ import com.example.receiptcareapp.viewModel.fragmentViewModel.CameraViewModel
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 
 class CameraFragment : BaseFragment<FragmentCameraBinding>(FragmentCameraBinding::inflate, "CameraFragment") {
-    private val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
-    private val CAMERA_CODE = 98
     private var photoURI : Uri? = null
     private val activityViewModel : MainActivityViewModel by activityViewModels()
     private val viewModel : CameraViewModel by viewModels()

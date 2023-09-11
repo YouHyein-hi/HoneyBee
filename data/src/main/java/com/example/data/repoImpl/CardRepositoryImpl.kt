@@ -1,6 +1,5 @@
 package com.example.data.repoImpl
 
-import com.example.data.di.RetrofitModule
 import com.example.data.mapper.ResponseMapper.toServerCardData
 import com.example.data.mapper.ResponseMapper.toServerCardSpinnerData
 import com.example.data.mapper.ResponseMapper.toServerResponseData
@@ -22,7 +21,7 @@ class CardRepositoryImpl @Inject constructor(
 ): CardRepository {
     override suspend fun getCardListRepository(): ServerCardData {
         val response = cardDataSource.getCardDataSource().toServerCardData()
-        val newList = response.body?.map { it.copy(amount = StringUtil.changeAmount(it.amount)) }
+        val newList = response.body?.map { it.copy(cardAmount = StringUtil.changeAmount(it.cardAmount)) }
         return ServerCardData(response.status, response.message, newList)
     }
 

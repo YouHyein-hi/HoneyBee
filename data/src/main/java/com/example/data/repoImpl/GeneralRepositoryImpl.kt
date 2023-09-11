@@ -1,5 +1,6 @@
 package com.example.data.repoImpl
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Base64
 import com.example.data.mapper.ResponseMapper.toServerBillData
@@ -10,10 +11,13 @@ import com.example.domain.model.remote.receive.basic.ServerUidData
 import com.example.domain.model.remote.receive.bill.ServerBillData
 import com.example.domain.model.remote.receive.bill.ServerPictureData
 import com.example.domain.model.remote.receive.bill.ServerStoreData
-import com.example.domain.model.remote.send.bill.SendBillData
 import com.example.domain.model.remote.send.bill.SendBillUpdateData
+import com.example.domain.model.ui.bill.UiBillData
 import com.example.domain.repo.GeneralRepository
 import com.example.domain.util.StringUtil
+import com.example.data.util.UriToBitmapUtil
+import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 /**
@@ -21,6 +25,7 @@ import javax.inject.Inject
  * pureum
  */
 class GeneralRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val generalDataSource: GeneralDataSource
 ): GeneralRepository {
     override suspend fun deleteDataRepository(id: Long): ServerUidData {
@@ -44,13 +49,25 @@ class GeneralRepositoryImpl @Inject constructor(
         return ServerPictureData(status = response.status, message = response.message, picture = BitmapFactory.decodeByteArray(decode, 0, decode.size))
     }
 
-    override suspend fun insertDataRepository(sendBillData: SendBillData): ServerUidData {
+    override suspend fun insertDataRepository(data: UiBillData): ServerUidData {
         return generalDataSource.sendDataSource(
-            cardName = sendBillData.cardName,
-            amount = sendBillData.amount,
-            storeName = sendBillData.storeName,
-            billSubmitTime = sendBillData.date,
-            file = sendBillData.picture
+            cardName = MultipartBody.Part.createFormData(
+                "cardName",
+                data.cardName
+            ),
+            amount = MultipartBody.Part.createFormData(
+                "amount",
+                data.storeAmount.replace(",", "")
+            ),
+            storeName = MultipartBody.Part.createFormData(
+                "storeName",
+                data.storeName
+            ),
+            billSubmitTime = MultipartBody.Part.createFormData(
+                "billSubmitTime",
+                data.date
+            ),
+            file = UriToBitmapUtil(context, data.picture)
         ).toUidServerResponseData()
     }
 
@@ -59,8 +76,8 @@ class GeneralRepositoryImpl @Inject constructor(
             id = sendBillUpdateData.id,
             cardName = sendBillUpdateData.cardName,
             storeName = sendBillUpdateData.storeName,
-            billSubmitTime = sendBillUpdateData.billSubmitTime,
-            amount = sendBillUpdateData.amount,
+            billSubmitTime = sendBillUpdateData.date,
+            amount = sendBillUpdateData.storeAmount,
         ).toUidServerResponseData()
     }
 }

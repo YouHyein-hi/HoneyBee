@@ -71,7 +71,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             }
 
             menuLogoutBtn.setOnClickListener {
-                activityViewModel.clearAll()
+                viewModel.removeAuth()
                 activity?.finish()
                 Toast.makeText(requireContext(), "로그아웃 성공.", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(requireContext(), LoginActivity::class.java))

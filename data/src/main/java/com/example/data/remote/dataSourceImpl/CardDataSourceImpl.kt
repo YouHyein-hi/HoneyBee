@@ -1,6 +1,7 @@
 package com.example.data.remote.dataSourceImpl
 
 import ServerResponse
+import android.util.Log
 import com.example.data.di.RetrofitModule
 import com.example.data.remote.dataSource.CardDataSource
 import com.example.data.remote.dataSource.LoginDataSource
@@ -24,7 +25,12 @@ class CardDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getCardDataSource(): ServerResponse<List<ServerCardResponse>> {
-        return retrofit.create(CardDataSource::class.java).getCardDataSource()
+
+        return retrofit.create(CardDataSource::class.java).getCardDataSource().also {
+            Log.e(
+                "TAG",
+                "getCardDataSource: $it",
+            ) }
     }
 
     //아직 안쓰이는 기능

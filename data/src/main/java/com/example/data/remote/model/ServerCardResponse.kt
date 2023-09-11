@@ -8,11 +8,13 @@ import com.example.domain.model.remote.receive.card.CardSpinnerData
  * pureum
  */
 data class ServerCardResponse(
-    var uid:Long,
+    var billCardId:Long,
     var cardName:String,
-    var cardAmount:String,
-    var billCheckDate:String
+    var cardAmount:Int,
+    var cardExpireDate: String,
+    var billCheckDate:String?
 )
 
-fun ServerCardResponse.toCardData() = CardData(uid = uid, name = cardName, amount = cardAmount, billCheckDate = billCheckDate)
-fun ServerCardResponse.toCardSpinnerData() = CardSpinnerData(name = cardName, amount = cardAmount)
+fun ServerCardResponse.toCardData() =
+    CardData(uid = billCardId, cardName = cardName, cardAmount = cardAmount.toString(), cardExpireDate= cardExpireDate, billCheckDate = billCheckDate)
+fun ServerCardResponse.toCardSpinnerData() = CardSpinnerData(name = cardName, amount = cardAmount.toString())

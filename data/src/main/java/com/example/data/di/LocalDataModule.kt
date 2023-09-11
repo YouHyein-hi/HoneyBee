@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.data.local.LocalDatabase
 import com.example.data.local.migration_2_3
+import com.example.data.manager.PreferenceManager
 //import com.example.data.local.LocalDateTimeConverter
 //import com.example.data.local.MultipartBodyConverter
 import dagger.Module
@@ -20,6 +21,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object LocalDataModule {
+
+    @Singleton
+    @Provides
+    fun providePreferenceManager(@ApplicationContext context: Context): PreferenceManager {
+        return PreferenceManager(context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE))
+    }
 
     @Singleton
     @Provides

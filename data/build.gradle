@@ -64,4 +64,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-gson:0.11.2' // 또는 jjwt-jackson 사용 가능
+
+    //multipart.body
+    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3"
 }

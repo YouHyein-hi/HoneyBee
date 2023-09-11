@@ -3,54 +3,58 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="cardData"
-            type="com.example.domain.model.remote.receive.card.CardData"
-            />
+            type="com.example.domain.model.remote.receive.card.CardData" />
     </data>
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cardHome_list"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/roundsquare_yellow">
+        android:layout_height="55dp"
+        android:gravity="center">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cardHome_list"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/roundsquare_yellow">
 
-        <ImageView
-            android:id="@+id/cardHome_icon_img"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/icon_card_2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/cardHome_icon_img"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/icon_card_2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/cardHome_name_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:fontFamily="@font/pretendardsemibold"
-            android:textColor="@color/main_font_black"
-            android:textSize="16sp"
-            android:text="@{cardData.name, default = `카드 이름`}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardHome_icon_img"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/cardHome_name_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/pretendardsemibold"
+                android:text="@{cardData.cardName, default = `카드 이름`}"
+                android:textColor="@color/main_font_black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cardHome_icon_img"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:fontFamily="@font/pretendardsemibold"
-            android:text="@{@string/home_card_item_amount(cardData.amount), default = `현재 금액`}"
-            android:textColor="@color/main_font_black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/pretendardsemibold"
+                android:text="@{@string/home_card_item_amount(cardData.cardAmount), default = `현재 금액`}"
+                android:textColor="@color/main_font_black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

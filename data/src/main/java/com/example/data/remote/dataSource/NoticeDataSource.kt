@@ -14,7 +14,6 @@ import javax.inject.Singleton
  * 2023-07-23
  * pureum
  */
-@Singleton
 interface NoticeDataSource {
 
     @Streaming

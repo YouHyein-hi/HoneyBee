@@ -18,14 +18,19 @@ import javax.inject.Inject
 class NetworkInterceptor @Inject constructor(
     private val preferenceManager: PreferenceManager,
 ) : Interceptor {
+    init {
+        Log.e("TAG", "NetworkInterceptor 생성", )
+    }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-
         val request = chain.request()
         val firstRequest = requestMaker(request)
+        Log.e("TAG", "firstRequest: $firstRequest", )
 
         //보낸 요청의 반환값
         val response = chain.proceed(firstRequest)
+        Log.e("TAG", "intercept response: $response", )
+        Log.e("TAG", "intercept response: ${response.body}", )
 
         //토큰이 문제(만료 등)가 있다는 401 에러일 경우 여기서 자동으로 재요청을 하여 토큰을 갈아껴야 함
         if (response.code == 401) {
@@ -36,19 +41,20 @@ class NetworkInterceptor @Inject constructor(
                 val secondRequest = requestMaker(firstRequest)
                 return chain.proceed(secondRequest)
             }else{
-                throw Exception("토큰 재요청 오류")
+                throw Exception("토큰 재요청 오류 ")
             }
         }
         return response
     }
 
-    private fun requestMaker(request: Request): Request =
-        request.newBuilder()
+    private fun requestMaker(request: Request): Request {
+        Log.e("TAG", "requestMaker: requestMaker", )
+        return request.newBuilder()
             .header("Authorization", preferenceManager.getAccessToken()!!)
             .build()
+    }
 
     private fun requestNewAccessToken(): String? {
-
         val response = Retrofit.Builder()
             .baseUrl("http://210.119.104.158:8080/")
             .addConverterFactory(GsonConverterFactory.create())

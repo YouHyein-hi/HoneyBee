@@ -9,10 +9,12 @@ import com.example.domain.model.remote.receive.bill.BillData
 data class ServerBillResponse(
     val billId: String,
     val cardName: String,
-    val amount: String,
+    val billAmount: String,
     val billSubmitTime: String,
     val storeName: String,
-    var billCheck: Boolean
+    var billCheck: Boolean,
+    var writerName: String,
+    var writerEmail: String
 )
 
-fun ServerBillResponse.toBillData(): BillData = BillData(uid = billId, cardName = cardName, storeAmount = amount, date = billSubmitTime.toString(), storeName = storeName, billCheck= billCheck)
+fun ServerBillResponse.toBillData(): BillData = BillData(uid = billId, cardName = cardName, storeAmount = billAmount, date = billSubmitTime, storeName = storeName, billCheck= billCheck)

@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.RoomData
 import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.model.remote.receive.basic.ServerUidData
-import com.example.domain.model.remote.send.bill.SendBillData
 import com.example.domain.model.remote.send.bill.SendBillUpdateData
 import com.example.domain.usecase.bill.DeleteDataUseCase
 import com.example.domain.usecase.bill.GetPictureDataUseCase
@@ -18,12 +17,11 @@ import com.example.domain.usecase.room.DeleteRoomDataUseCase
 import com.example.domain.usecase.room.UpdateRoomDataUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.domain.model.ui.bill.LocalBillData
-import com.example.domain.util.UriToBitmapUtil
+import com.example.domain.model.ui.bill.UiBillData
 import com.example.receiptcareapp.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
-import okhttp3.MultipartBody
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
@@ -33,7 +31,6 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class RecordShowViewModel @Inject constructor(
-    @ApplicationContext private val application: Context,
     private val getPictureDataUseCase: GetPictureDataUseCase,
     private val deleteDataUseCase: DeleteDataUseCase,
     private val updateDataUseCase: UpdateDataUseCase,
@@ -79,8 +76,8 @@ class RecordShowViewModel @Inject constructor(
                                 cardName = sendData.cardName,
                                 storeName = sendData.storeName,
 //                                billSubmitTime = LocalDateTime.parse(sendData.billSubmitTime),
-                                billSubmitTime = sendData.billSubmitTime,
-                                amount = sendData.amount
+                                date = sendData.date,
+                                storeAmount = sendData.storeAmount
                             )
                         )
                     )
@@ -98,24 +95,12 @@ class RecordShowViewModel @Inject constructor(
                 _response.postValue(Pair(
                         ResponseState.LOCAL_UPDATE_SUCCESS,
                         insertDataUseCase(
-                            SendBillData(
-                                cardName = MultipartBody.Part.createFormData(
-                                    "cardName",
-                                    sendData.cardName
-                                ),
-                                storeName = MultipartBody.Part.createFormData(
-                                    "storeName",
-                                    sendData.storeName
-                                ),
-                                date = MultipartBody.Part.createFormData(
-                                    "billSubmitTime",
-                                    sendData.billSubmitTime
-                                ),
-                                amount = MultipartBody.Part.createFormData(
-                                    "amount",
-                                    sendData.amount.replace(",", "")
-                                ),
-                                picture = UriToBitmapUtil(application, sendData.picture)
+                            UiBillData(
+                                cardName = sendData.cardName,
+                                storeName = sendData.storeName,
+                                date = sendData.date,
+                                storeAmount = sendData.storeAmount.replace(",", ""),
+                                picture = sendData.picture
                             )
                         )
                     )
@@ -135,7 +120,7 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-    fun deleteRoomBillData(date: String? = savedLocalData.billSubmitTime) {
+    fun deleteRoomBillData(date: String? = savedLocalData.date) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
             deleteRoomDataUseCase(date!!)
@@ -150,8 +135,8 @@ class RecordShowViewModel @Inject constructor(
                 RoomData(
                     uid = savedLocalData.uid,
                     cardName = savedLocalData.cardName,
-                    storeAmount = savedLocalData.amount,
-                    billSubmitTime = savedLocalData.billSubmitTime,
+                    storeAmount = savedLocalData.storeAmount,
+                    billSubmitTime = savedLocalData.date,
                     storeName = savedLocalData.storeName,
                     file = savedLocalData.picture.toString()
                 )

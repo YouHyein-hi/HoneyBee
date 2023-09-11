@@ -16,9 +16,7 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(
-    private val preferenceManager: PreferenceManager
-) : BaseViewModel("MainActivityViewModel") {
+class MainActivityViewModel @Inject constructor() : BaseViewModel("MainActivityViewModel") {
 
     private val _image = MutableLiveData<Uri>()
     val image: LiveData<Uri>
@@ -32,8 +30,4 @@ class MainActivityViewModel @Inject constructor(
     fun removeSelectedData(){ _selectedData.value = null }
 
     lateinit var selectedNoticeData : NoticeData
-
-    fun clearAll(){
-        preferenceManager.clearLoginPassword()
-    }
 }

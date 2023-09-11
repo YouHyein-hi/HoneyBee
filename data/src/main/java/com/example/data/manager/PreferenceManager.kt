@@ -12,129 +12,56 @@ import javax.inject.Inject
  */
 
 class PreferenceManager @Inject constructor(
-    context: Context
+    private val sharedPreference: SharedPreferences
 ) {
 
-    private val sharedPreference: SharedPreferences
-
     init {
-        sharedPreference = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
-    }
 
-    //Login Data Control
-    //TODO 하나하나 넣는것보다 데이터클래스를 넣는 방법으로 해야함
-    fun putLogin(id: String){
-        sharedPreference.edit().putString("sharedPreference_id", id).apply()
     }
+    //login
+    fun putEmail(id: String) = sharedPreference.edit().putString("sharedPreference_id", id).apply()
+    fun getEmail(): String? = sharedPreference.getString("sharedPreference_id",null)
+    fun removeEmail() = sharedPreference.edit().remove("sharedPreference_id").apply()
 
-    fun putPassword(pw: String){
-        sharedPreference.edit().putString("sharedPreference_pw",pw).apply()
-    }
+    fun putAutoEmail(boolean: Boolean) = sharedPreference.edit().putBoolean("sharedPreference_auto_email", boolean).apply()
+    fun getAutoEmail(): Boolean = sharedPreference.getBoolean("sharedPreference_auto_email", false)
+    fun removeAutoEmail() = sharedPreference.edit().remove("sharedPreference_auto_email").apply()
 
-    fun getLogin(): String? {
-        return sharedPreference.getString("sharedPreference_id",null)
-    }
-
-    fun getPassword(): String? {
-        return sharedPreference.getString("sharedPreference_pw",null)
-    }
-
-    fun clearLoginPassword(){
-        sharedPreference.edit().remove("sharedPreference_id").apply()
-        sharedPreference.edit().remove("sharedPreference_pw").apply()
-    }
-
+    fun putAutoLogin(boolean: Boolean) = sharedPreference.edit().putBoolean("sharedPreference_auto_login", boolean).apply()
+    fun getAutoLogin(): Boolean = sharedPreference.getBoolean("sharedPreference_auto_login", false)
+    fun removeAutoLogin() = sharedPreference.edit().remove("sharedPreference_auto_login").apply()
 
 
     //Auth Token Control
-    fun putAccessToken(accessToken : String){
-        sharedPreference.edit().putString("access_token", accessToken).apply()
-    }
+    fun putAccessToken(accessToken : String) = sharedPreference.edit().putString("access_token", accessToken).apply()
+    fun getAccessToken(): String? = sharedPreference.getString("access_token", null)
+    fun removeAccessToken() = sharedPreference.edit().remove("access_token").apply()
 
-    fun putRefreshToken(refreshToken : String){
-        sharedPreference.edit().putString("refresh_token", refreshToken).apply()
-    }
+    fun putRefreshToken(refreshToken : String) = sharedPreference.edit().putString("refresh_token", refreshToken).apply()
+    fun getRefreshToken(): String? = sharedPreference.getString("refresh_token", null)
+    fun removeRefreshToken() = sharedPreference.edit().remove("refresh_token").apply()
 
-    fun putUserName(name: String){
-        sharedPreference.edit().putString("name", name).apply()
-    }
+    fun putUserRight(right: String) = sharedPreference.edit().putString("right", right).apply()
+    fun getUserRight(): String? = sharedPreference.getString("right", null)
+    fun removeUserRight() = sharedPreference.edit().remove("right").apply()
 
-    fun putUserRight(right: String){
-        sharedPreference.edit().putString("right", right).apply()
-    }
-
-    fun putAuthData(accessToken: String, refreshToken: String, name: String, right: String){
-        sharedPreference.edit().putString("access_token", accessToken).apply()
-        sharedPreference.edit().putString("refresh_token", refreshToken).apply()
-        sharedPreference.edit().putString("name", name).apply()
-        sharedPreference.edit().putString("right", right).apply()
-    }
-
-    fun getAccessToken(): String?{
-        return sharedPreference.getString("access_token", null)
-    }
-
-    fun getRefreshToken(): String?{
-        return sharedPreference.getString("refresh_token", null)
-    }
-
-    fun getUserName(): String?{
-        return sharedPreference.getString("name", null)
-    }
-
-    fun getUserRight(): String?{
-        return sharedPreference.getString("right", null)
-    }
-
-    fun clearAccessToken(){
-        sharedPreference.edit().remove("access_token").apply()
-    }
-
-    fun clearRefreshToken(){
-        sharedPreference.edit().remove("refresh_token").apply()
-    }
-
-    fun clearUserName(){
-        sharedPreference.edit().remove("name").apply()
-    }
-
-    fun clearUserRight(){
-        sharedPreference.edit().remove("right").apply()
-    }
-
-    fun clearAuthAll(){
+    fun removeAuth(){
         sharedPreference.edit().remove("access_token").apply()
         sharedPreference.edit().remove("refresh_token").apply()
-        sharedPreference.edit().remove("name").apply()
         sharedPreference.edit().remove("right").apply()
     }
-
-
 
 
     //Date Control
-    //TODO 하나하나 넣는것보다 데이터클래스를 넣는 방법으로 해야함
-    fun putPush(onoff : Boolean){
-        sharedPreference.edit().putBoolean("sharedPreference_push", onoff).apply()
-    }
+    fun putPush(onoff : Boolean) = sharedPreference.edit().putBoolean("sharedPreference_push", onoff).apply()
+    fun getPush() : Boolean = sharedPreference.getBoolean("sharedPreference_push", false)
+    fun removePush() = sharedPreference.edit().remove("sharedPreference_push").apply()
 
-    fun getPush() : Boolean?{
-        return sharedPreference.getBoolean("sharedPreference_push", false)
-    }
+    fun putHour(hour : Int) = sharedPreference.edit().putInt("sharedPreference_pushHour", hour).apply()
+    fun getHour() : Int = sharedPreference.getInt("sharedPreference_pushHour", 17)
+    fun removeHour() = sharedPreference.edit().remove("sharedPreference_pushHour").apply()
 
-    fun putHour(hour : Int){
-        sharedPreference.edit().putInt("sharedPreference_pushHour", hour).apply()
-    }
-
-    fun putMinute(minute : Int){
-        sharedPreference.edit().putInt("sharedPreference_pushMinute", minute).apply()
-    }
-
-    fun getHour() : Int?{
-        return sharedPreference.getInt("sharedPreference_pushHour", 17)
-    }
-
-    fun getMinute() : Int?{
-        return sharedPreference.getInt("sharedPreference_pushMinute", 0)
-    }
+    fun putMinute(minute : Int) = sharedPreference.edit().putInt("sharedPreference_pushMinute", minute).apply()
+    fun getMinute() : Int = sharedPreference.getInt("sharedPreference_pushMinute", 0)
+    fun removeMinute() = sharedPreference.edit().remove("sharedPreference_pushMinute").apply()
 }

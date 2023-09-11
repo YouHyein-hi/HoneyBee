@@ -16,7 +16,7 @@ interface CardDataSource {
 
 
     @FormUrlEncoded
-    @POST("billCard/add")
+    @POST("bill/card/add")
     suspend fun sendCardDataSource(
         @Field("cardName") cardName : String,
         @Field("cardAmount") amount : Int,
@@ -24,7 +24,7 @@ interface CardDataSource {
     ): ServerResponse<String>
 
     @Streaming
-    @GET("billCard/list")
+    @GET("bill/card/list")
     suspend fun getCardDataSource() : ServerResponse<List<ServerCardResponse>> //바디에 카드
 
 //    //아직 안쓰이는 기능

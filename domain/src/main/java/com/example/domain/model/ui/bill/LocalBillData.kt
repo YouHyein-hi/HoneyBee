@@ -9,8 +9,8 @@ import android.net.Uri
 data class LocalBillData(
     val uid: String,
     val cardName: String,
-    val amount: String,
-    var billSubmitTime: String,
+    val storeAmount: String,
     val storeName: String,
+    var date: String,
     val picture: Uri,
 )

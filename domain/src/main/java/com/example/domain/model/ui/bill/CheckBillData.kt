@@ -7,9 +7,9 @@ import android.net.Uri
  * pureum
  */
 data class CheckBillData(
-    val cardName: String,
-    val amount: String,
     val cardAmount: String,
+    val cardName: String,
+    val storeAmount: String,
     val storeName: String,
     val date: String,
     val picture: Uri,

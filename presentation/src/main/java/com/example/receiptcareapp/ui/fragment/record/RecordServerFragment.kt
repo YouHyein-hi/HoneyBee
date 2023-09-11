@@ -3,8 +3,6 @@ package com.example.receiptcareapp.ui.fragment.record
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -36,7 +34,7 @@ class RecordServerFragment(
     private val viewModel: RecordViewModel
 ) : BaseFragment<FragmentRecordServerBinding>(
     FragmentRecordServerBinding::inflate,
-    "RecyclerFragment"
+    "RecordServerFragment"
 ) {
     private val recordServerAdapter: RecordServerAdapter = RecordServerAdapter()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
@@ -110,9 +108,12 @@ class RecordServerFragment(
                 }
                 Log.e("TAG", "onItemSelected position: $position", )
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
 
+        binding.recordListRecyclerViewRefresh.setOnRefreshListener {
+            binding.recordListRecyclerViewRefresh.isRefreshing = false
+            viewModel.getServerAllBillData()
         }
     }
 

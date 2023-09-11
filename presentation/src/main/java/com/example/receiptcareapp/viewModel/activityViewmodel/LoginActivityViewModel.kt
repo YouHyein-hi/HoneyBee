@@ -22,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginActivityViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val preferenceManager: PreferenceManager
     ) : BaseViewModel("LoginActivityViewModel") {
 
     //서버 연결 유무 관리
@@ -47,16 +46,4 @@ class LoginActivityViewModel @Inject constructor(
             } ?: SocketTimeoutException()
         }
     }
-
-    fun putLoginData(data: LoginData) {
-        preferenceManager.putLogin(data.id!!)
-        preferenceManager.putPassword(data.pw!!)
-        Log.e("TAG", "getAccessToken: ${preferenceManager.getAccessToken()}", )
-        Log.e("TAG", "getRefreshToken: ${preferenceManager.getRefreshToken()}", )
-    }
-
-
-
-    fun getLoginData(): LoginData =
-        LoginData(preferenceManager.getLogin(), preferenceManager.getPassword())
 }

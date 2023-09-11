@@ -2,6 +2,10 @@ package com.example.receiptcareapp.ui.fragment.record
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -42,7 +46,14 @@ class RecordLocalFragment(
     override fun initUI() {
         initLocalRecyclerView()
         viewModel.getLocalAllData()
-//        activityViewModel.changeNullPicture()
+
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.filter_array,
+            R.layout.spinner_custom_record_layout
+        ).also {
+            binding.recordFilterSpinner.adapter = it
+        }
     }
 
     override fun initListener() {
@@ -72,6 +83,39 @@ class RecordLocalFragment(
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        binding.recordFilterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                when(position){
+                    //기본순
+                    0 -> recordLocalAdapter.dataList = dataList.toMutableList()
+                    //최신순
+                    1 -> recordLocalAdapter.dataList = dataList.sortedBy { it.date }.toMutableList()
+                    //오래된순
+                    2 -> recordLocalAdapter.dataList = dataList.sortedBy { it.date }.reversed().toMutableList()
+                    //카드순
+                    3 -> recordLocalAdapter.dataList = dataList.sortedBy { it.cardName }.toMutableList()
+                    //높은 금액순
+                    4 -> recordLocalAdapter.dataList = dataList.sortedBy { it.amount }.toMutableList()
+                    //낮은 금액순
+                    5 -> recordLocalAdapter.dataList = dataList.sortedBy { it.amount }.reversed().toMutableList()
+                    //등록 이름순
+//                    6 -> recordServerAdapter.dataList = dataList.sortedBy { it.storeAmount }.toMutableList()
+                }
+                Log.e("TAG", "onItemSelected position: $position", )
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        binding.recordListRecyclerViewRefresh.setOnRefreshListener {
+            binding.recordListRecyclerViewRefresh.isRefreshing = false
+            viewModel.getLocalAllData()
+        }
     }
 
     override fun initObserver() {

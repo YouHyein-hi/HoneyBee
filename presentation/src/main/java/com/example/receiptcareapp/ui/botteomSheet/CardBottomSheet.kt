@@ -82,11 +82,6 @@ class CardBottomSheet(
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        homeViewModel.getServerCardData()
-    }
-
     private fun changeEmptyTxt(state:Boolean){
         binding.cardEmptyTxt.isVisible = state
     }
@@ -95,6 +90,4 @@ class CardBottomSheet(
         val cardAddDialog = CardAddDialog(viewModel)
         cardAddDialog.show(parentFragmentManager, "CardAddDialog")
     }
-
-
 }

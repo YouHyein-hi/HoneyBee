@@ -32,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate, "HomeFragment") {
     private val viewModel : HomeViewModel by viewModels()
     private lateinit var callback: OnBackPressedCallback
-    private val adapter: HomeCardAdapter = HomeCardAdapter()
+    private val adapter: HomeCardAdapter by lazy{HomeCardAdapter()}
     private val ALL_PERMISSIONS = arrayOf(
         android.Manifest.permission.CAMERA,
         android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -46,7 +46,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun initUI() {
         //카드목록, 공지사항 불러오기
-        adapter.dataList.clear()
         viewModel.getServerCardData()
         viewModel.getNoticeList()
         initHomeCardRecycler()
@@ -77,6 +76,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             homeCardListComponent.setOnClickListener { CardBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet") }
             homeRefresh.setOnRefreshListener {
                 homeRefresh.isRefreshing = false
+                adapter.dataList.clear()
                 viewModel.getServerCardData()
             }
         }
@@ -109,7 +109,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 //                FetchState.PARSE_ERROR -> {emptyTextControl(true, "서버 연결 실패..")}
             }
             showShortToast(FetchStateHandler(it))
-            adapter.dataList.clear()
+//            adapter.dataList.clear()
         }
     }
 

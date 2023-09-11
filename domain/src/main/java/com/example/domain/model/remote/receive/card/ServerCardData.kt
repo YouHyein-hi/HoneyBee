@@ -12,8 +12,9 @@ data class ServerCardData(
 
 data class CardData(
     var uid:Long,
-    var name:String,
-    var amount:String,
-    var billCheckDate:String
+    var cardName:String,
+    var cardAmount:String,
+    var cardExpireDate: String?,
+    var billCheckDate:String?
 )
 

@@ -14,6 +14,10 @@ import javax.inject.Inject
 class PreferenceManager @Inject constructor(
     private val sharedPreference: SharedPreferences
 ) {
+
+    init {
+
+    }
     //login
     fun putEmail(id: String) = sharedPreference.edit().putString("sharedPreference_id", id).apply()
     fun getEmail(): String? = sharedPreference.getString("sharedPreference_id",null)

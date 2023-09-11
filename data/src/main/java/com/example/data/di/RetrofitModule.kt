@@ -1,5 +1,6 @@
 package com.example.data.di
 
+import android.util.Log
 import com.example.data.manager.PreferenceManager
 import com.example.data.util.NetworkInterceptor
 import com.google.gson.Gson
@@ -23,6 +24,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
+
+//    private val loggingInterceptor = HttpLoggingInterceptor().apply {
+//        level = HttpLoggingInterceptor.Level.BODY
+//    }
 
     private var gson: Gson = GsonBuilder().setLenient().create()
 
@@ -56,7 +61,9 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideOkhttpApi(networkInterceptor: NetworkInterceptor): OkHttpClient {
-        return OkHttpClient.Builder()
+        Log.e("TAG", "provideOkhttpApi: api retrofit 인터셉트 사용", )
+        return OkHttpClient().newBuilder()
+//            .addInterceptor(loggingInterceptor)
             .addInterceptor(networkInterceptor)
             .build()
     }
@@ -65,10 +72,11 @@ object RetrofitModule {
     @Provides
     @Api
     fun provideApiRetrofit(interceptorClient: OkHttpClient):Retrofit{
+        Log.e("TAG", "provideApiRetrofit: api retrofit 사용", )
         return Retrofit.Builder()
             .baseUrl("http://210.119.104.158:8080/")
             .client(interceptorClient)
-            .client(okHttpClient)
+//            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }

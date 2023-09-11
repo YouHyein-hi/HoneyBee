@@ -34,7 +34,7 @@ class HeaderManager @Inject constructor(
 
             //토큰 저장
             clearToken()
-            saveToken(accessToken, refreshToken)
+            saveToken("Bearer $accessToken", refreshToken)
 
             //엑세스 토큰 까서 아이디 또는 이름 저장하기
 

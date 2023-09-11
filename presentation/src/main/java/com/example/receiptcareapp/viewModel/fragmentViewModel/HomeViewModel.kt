@@ -60,5 +60,16 @@ class HomeViewModel @Inject constructor(
             }
             isLoading.postValue(false)
         }
+//        modelScope.launch {
+//            isLoading.postValue(true)
+//            withTimeoutOrNull(waitTime) {
+//                val gap = getNoticeListUseCase().body
+//                if (gap?.isEmpty() == true)
+//                    _notice.postValue("Honey Bee 영수증 관리 앱 사용을 환영합니다!")
+//                else
+//                    _notice.postValue(gap?.last()?.title)
+//            }
+//            isLoading.postValue(false)
+//        }
     }
 }

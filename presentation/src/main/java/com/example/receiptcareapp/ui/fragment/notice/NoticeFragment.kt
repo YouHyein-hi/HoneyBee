@@ -35,10 +35,6 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
         viewModel.getNoticeList()
         binding.noticeListRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.noticeListRecyclerview.adapter = adapter
-        binding.noticeListRecyclerviewRefresh.setOnRefreshListener {
-            binding.noticeListRecyclerviewRefresh.isRefreshing = false
-            viewModel.getNoticeList()
-        }
     }
 
     override fun initListener() {
@@ -52,6 +48,10 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
         adapter.onNoticeClic = {
             activityViewModel.selectedNoticeData = it
             findNavController().navigate(R.id.action_noticeFragment_to_showNoticeFragment, )
+        }
+        binding.noticeListRecyclerviewRefresh.setOnRefreshListener {
+            binding.noticeListRecyclerviewRefresh.isRefreshing = false
+            viewModel.getNoticeList()
         }
     }
 

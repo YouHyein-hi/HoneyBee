@@ -11,7 +11,6 @@ import java.time.LocalDateTime
  */
 object StringUtil {
     fun changeDate(inputDate: String?): String {
-        Log.e("TAG", "changeDate: $inputDate",)
         return if (inputDate?.contains("T") == true) {
             val gap = inputDate.replace("-", ".").split("T")
             val time = gap[1].split(":")
@@ -74,7 +73,6 @@ object StringUtil {
         return myDay
     }
 
-    //TODO 예외처리 필요함
     fun amountCheck(price: String, cardAmount: String):Boolean{
         return price.replace(",","").toInt() <= cardAmount.replace(",","").toInt()
     }

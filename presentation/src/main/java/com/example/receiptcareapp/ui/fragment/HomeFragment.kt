@@ -42,7 +42,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val handler = Handler(Looper.getMainLooper())
 
 
-    override fun initData() {}
+    override fun initData() {
+        adapter.dataList.clear()
+    }
 
     override fun initUI() {
         //카드목록, 공지사항 불러오기
@@ -106,8 +108,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // Err관리
         viewModel.fetchState.observe(this) {
             when(it.second){
-                FetchState.SOCKET_TIMEOUT_EXCEPTION -> { emptyTextControl(true, "서버 연결 실패..") }
-                FetchState.PARSE_ERROR -> {emptyTextControl(true, "서버 연결 실패..")}
+//                FetchState.SOCKET_TIMEOUT_EXCEPTION -> { emptyTextControl(true, "서버 연결 실패..") }
+//                FetchState.PARSE_ERROR -> {emptyTextControl(true, "서버 연결 실패..")}
             }
             showShortToast(FetchStateHandler(it))
             adapter.dataList.clear()

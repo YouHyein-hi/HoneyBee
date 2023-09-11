@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
                     android:fontFamily="@font/pretendardmedium"
-                    android:text="@{@string/recycler_amount(cardData.amount), default = `로딩중..`}"
+                    android:text="@{@string/recycler_amount(cardData.cardAmount), default = `로딩중..`}"
                     android:textColor="@color/sub_font1_gray"
                     android:textSize="12sp" />
 
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
                     android:fontFamily="@font/pretendardsemibold"
-                    android:text="@{cardData.name, default = `로딩중..`}"
+                    android:text="@{cardData.cardName, default = `로딩중..`}"
                     android:textColor="@color/main_font_black"
                     android:textSize="22sp" />
 

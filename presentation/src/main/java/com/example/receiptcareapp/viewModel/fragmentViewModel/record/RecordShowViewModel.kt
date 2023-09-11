@@ -31,7 +31,6 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class RecordShowViewModel @Inject constructor(
-    @ApplicationContext private val application: Context,
     private val getPictureDataUseCase: GetPictureDataUseCase,
     private val deleteDataUseCase: DeleteDataUseCase,
     private val updateDataUseCase: UpdateDataUseCase,

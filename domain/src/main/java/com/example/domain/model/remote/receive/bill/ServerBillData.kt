@@ -13,15 +13,16 @@ data class ServerBillData(
 )
 
 data class BillData(
-    val uid: String?,
+    val id: String?,
     val cardName: String,
     val storeAmount: String,
-    val date: String,
+    val billSubmitTime: String,
     val storeName: String,
     var billCheck: Boolean
 )
 
+
 fun BillData.toServerRecyclerData(): ServerRecyclerData = ServerRecyclerData(
-        uid, cardName, storeAmount, date, storeName, billCheck
+        id, cardName, storeAmount, billSubmitTime, storeName, billCheck
     )
 

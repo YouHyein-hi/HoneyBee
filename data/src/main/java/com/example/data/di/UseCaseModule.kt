@@ -71,6 +71,13 @@ object UseCaseModule {
 
     @Provides
     @Singleton
+    fun provideGetDetailDataUseCase(repo : GeneralRepository) : GetDetailDataUseCase{
+        return GetDetailDataUseCase(repo)
+    }
+
+
+    @Provides
+    @Singleton
     fun provideGetStoreListUseCase(repo : GeneralRepository) : GetStoreListUseCase{
         return GetStoreListUseCase(repo)
     }

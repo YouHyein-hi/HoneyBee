@@ -52,6 +52,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initUI() {
+        viewModel.getDetailBillData("5")
         initView()
     }
 

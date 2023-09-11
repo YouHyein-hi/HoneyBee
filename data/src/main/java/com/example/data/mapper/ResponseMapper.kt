@@ -5,6 +5,7 @@ import com.example.data.remote.model.*
 import com.example.domain.model.remote.receive.basic.ServerResponseData
 import com.example.domain.model.remote.receive.basic.ServerUidData
 import com.example.domain.model.remote.receive.bill.ServerBillData
+import com.example.domain.model.remote.receive.bill.ServerDetailBillData
 import com.example.domain.model.remote.receive.bill.ServerStoreData
 import com.example.domain.model.remote.receive.card.ServerCardData
 import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
@@ -23,6 +24,8 @@ object ResponseMapper {
     fun <T: List<ServerCardResponse>> ServerResponse<T>.toServerCardSpinnerData() = ServerCardSpinnerData(status, message, body?.map { it.toCardSpinnerData() })
 
     fun ServerResponse<List<ServerBillResponse>>.toServerBillData(): ServerBillData = ServerBillData(status, message, body?.map { it.toBillData() } )
+
+    fun ServerResponse<ServerDetailBillResponse>.toServerDetailBillData(): ServerDetailBillData = ServerDetailBillData(status, message, body?.toDetailBillData())
 
     fun ServerResponse<List<ServerNoticeResponse>>.toServerNoticeData() = ServerNoticeData(status, message, body?.map { it.toNoticeData() })
 

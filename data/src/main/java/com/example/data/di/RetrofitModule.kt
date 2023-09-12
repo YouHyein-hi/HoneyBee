@@ -1,6 +1,7 @@
 package com.example.data.di
 
 import android.util.Log
+import com.example.data.BuildConfig
 import com.example.data.manager.PreferenceManager
 import com.example.data.util.NetworkInterceptor
 import com.google.gson.Gson
@@ -14,6 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.crypto.Cipher.SECRET_KEY
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -44,7 +46,7 @@ object RetrofitModule {
     @Login
     fun provideLoginRetrofit():Retrofit{
         return Retrofit.Builder()
-            .baseUrl("http://210.119.104.158:8080/")
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

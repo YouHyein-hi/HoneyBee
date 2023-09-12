@@ -1,6 +1,7 @@
 package com.example.data.util
 
 import android.util.Log
+import com.example.data.BuildConfig
 import com.example.data.manager.PreferenceManager
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -45,9 +46,8 @@ class HeaderManager @Inject constructor(
     }
 
     private fun verifyToken(accessToken: String): Boolean {
-        val secretKey = "a18cca61839fa36db64e461c23867d98ea1eeaec7524b9f334314c0d5f0ed96b9feba377d41c0c93d054d66aafcc55145648b026ad2bdd9f697f653111ea72f1"
         return try {
-            val decodingKey = Decoders.BASE64.decode(secretKey)
+            val decodingKey = Decoders.BASE64.decode(BuildConfig.SECRET_KEY)
             Log.e("TAG", "decodingKey: $decodingKey", )
             val signingKey = Keys.hmacShaKeyFor(decodingKey)
             val claims: Claims = Jwts.parserBuilder()

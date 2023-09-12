@@ -17,6 +17,7 @@ import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
@@ -31,11 +32,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val ALL_PERMISSIONS_CODE = 123
 
     override fun initData() {
-//        nextActivity()
-//        var getLogin = viewModel.getLoginData()
-//        if(getLogin.id != null){
-//            nextActivity()
-//        }
+        if(viewModel.checkAutoLogin())
+            viewModel.checkAccessToken()
 
         if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) {
             permissionDialog()

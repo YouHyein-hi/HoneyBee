@@ -9,7 +9,10 @@ import com.example.domain.model.remote.send.login.SendLoginData
 import com.example.domain.usecase.login.LoginUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.domain.model.ui.login.LoginData
+import com.example.domain.usecase.card.GetCardListUseCase
+import com.example.domain.usecase.notice.GetNoticeListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import java.net.SocketTimeoutException
@@ -22,6 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginActivityViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
+    private val preferenceManager: PreferenceManager,
+    private val cardListUseCase: GetCardListUseCase
     ) : BaseViewModel("LoginActivityViewModel") {
 
     //서버 연결 유무 관리
@@ -36,6 +41,7 @@ class LoginActivityViewModel @Inject constructor(
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 isLoading.postValue(true)
+                delay(1000L)
                 _response.postValue(
                     loginUseCase.invoke(
                         SendLoginData(email, password)
@@ -46,4 +52,21 @@ class LoginActivityViewModel @Inject constructor(
             } ?: SocketTimeoutException()
         }
     }
+
+    fun checkAccessToken() {
+        if(preferenceManager.getAccessToken() != null){
+            modelScope.launch {
+                isLoading.postValue(true)
+                val gap = cardListUseCase.invoke()
+                delay(1000L)
+                _response.postValue(ServerResponseData(gap.status, gap.message, null))
+                isLoading.postValue(false)
+            }
+        }
+    }
+
+//    fun checkAutoLogin(): Boolean = preferenceManager.getAutoLogin()
+    fun checkAutoLogin(): Boolean = true
+
+    fun savedEmailData(email: String) = preferenceManager.putEmail(email)
 }

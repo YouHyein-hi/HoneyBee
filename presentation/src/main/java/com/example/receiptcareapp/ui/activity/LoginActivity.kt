@@ -48,7 +48,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
 
     override fun initUI() {
         supportActionBar?.hide()
-        binding.loginEmailEdit.setText("1234@email.com")
+        binding.loginEmailEdit.setText("12345@email.com")
         binding.loginPasswordEdit.setText("qwer1234")
     }
 

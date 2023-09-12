@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
@@ -292,6 +293,7 @@
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_card_add.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_change.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_delete.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_download.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_exit.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_permission.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/You/AndroidStudioProjects/HoneyBee/presentation/src/main/res/layout/dialog_permission_check.xml" value="0.24947916666666667" />

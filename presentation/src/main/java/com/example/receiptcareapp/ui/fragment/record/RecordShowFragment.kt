@@ -27,6 +27,7 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.ui.dialog.DeleteDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.state.ResponseState
+import com.example.receiptcareapp.ui.dialog.DownloadDialog
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -52,23 +53,18 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initUI() {
-        viewModel.getDetailBillData("5")
         initView()
     }
 
     override fun initListener() {
+        // 이미지 다운로드 버튼
+        binding.recordDownloadBtn.setOnClickListener{ downloadDialog() }
         //수정 후 재전송 버튼
         binding.recordChangeBtn.setOnClickListener{ changeDialog() }
         //삭제 버튼
         binding.recoreRemoveBtn.setOnClickListener{ deleteDialog() }
         //뒤로가기 버튼
         binding.recordBackBtn.setOnClickListener{ findNavController().popBackStack() }
-
-        binding.recordDownloadBtn.setOnClickListener{
-            //그림 저장
-            handleDownloadClick()
-        }
-
     }
 
     override fun initObserver() {
@@ -150,15 +146,14 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 
     //서버와 로컬 삭제
     private fun deleteDialog(){
-       val deleteDialog = DeleteDialog(viewModel)
+        val deleteDialog = DeleteDialog(viewModel)
         deleteDialog.show(parentFragmentManager, "deleteDialog")
     }
 
-    // 이미지 저장
-    private fun handleDownloadClick() {
-        if(!UriToBitmapUtil.imageExternalSave(requireContext(), viewModel.picture.value, requireContext().getString(R.string.app_name))){
-            showShortToast("그림 저장을 실패하였습니다") }
-        else { showShortToast("그림이 갤러리에 저장되었습니다") }
+    //이미지 다운로드
+    private fun downloadDialog(){
+        val downloadDialog = DownloadDialog(viewModel)
+        downloadDialog.show(parentFragmentManager, "downloadDialog")
     }
 
     override fun onDestroy() {

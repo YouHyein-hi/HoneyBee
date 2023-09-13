@@ -66,11 +66,20 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatSpinner
+                <Spinner
                     android:id="@+id/record_filter_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overlapAnchor="false" />
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:dropDownVerticalOffset="50dp"
+                    />
+                <!--<androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/record_filter_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overlapAnchor="false" />-->
             </LinearLayout>
         </LinearLayout>
 

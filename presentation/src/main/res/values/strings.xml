@@ -81,6 +81,8 @@
     <string name="bottomSheet_sendbill_dateText">영수증 날짜</string>
     <string name="bottomSheet_sendbill_memo">메모를 입력해주세요.</string>
 
+    <!-- BottomSheet 카드 상세 페이지 -->
+    <string name="bottomSheet_cardDetail_title">카드 상세 페이지</string>
 
     <!-- BottomSheet 카드 목록 페이지 -->
     <string name="bottomSheet_card_title">등록된 카드</string>

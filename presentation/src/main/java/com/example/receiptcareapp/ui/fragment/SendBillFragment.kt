@@ -2,6 +2,7 @@ package com.example.receiptcareapp.ui.fragment
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Rect
@@ -10,6 +11,8 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
@@ -124,7 +127,7 @@ class SendBillFragment :
 
             /** 완료 Button **/
             sendBillOkBtn.setOnClickListener {
-                Log.e("TAG", "onViewCreated: in")
+                Log.e("TAG", "onViewCreated: iinin")
                 var price = sendBillPriceEdit.text.toString()
                 var priceZero = price.count { it == '0' }
                 when {
@@ -139,10 +142,10 @@ class SendBillFragment :
                         NavHostFragment.findNavController(this@SendBillFragment).navigate(R.id.action_sendBillFragment_to_homeFragment)
                     }
                     else -> {
-//                        if (!StringUtil.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
-//                            showShortToast("보유금액보다 많은 비용입니다.")
-//                            return@setOnClickListener
-//                        }
+                        if (!StringUtil.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
+                            showShortToast("보유금액보다 많은 비용입니다.")
+                            return@setOnClickListener
+                        }
                         val myLocalDateTime = StringUtil.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
                         SendCheckBottomSheet(
                             viewModel,

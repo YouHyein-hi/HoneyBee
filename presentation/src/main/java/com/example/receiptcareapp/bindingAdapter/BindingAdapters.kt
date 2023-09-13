@@ -1,9 +1,12 @@
 package com.example.receiptcareapp.bindingAdapter
 
+import android.content.Context
 import android.content.res.ColorStateList
 import androidx.databinding.BindingAdapter
 import android.graphics.Color
+import android.util.Log
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
@@ -26,8 +29,18 @@ object BindingAdapters {
     @JvmStatic
     fun setTextValueListener(editText: EditText, listener: InverseBindingListener?) {
         editText.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE && editText.text != null && editText.text.isNotEmpty()) {
-                editText.setText(StringUtil.PriceFormat(editText.text.toString()))
+
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                // 키보드를 숨깁니다.
+                Log.e("TAG", "setTextValueListener: 완료 if 진입", )
+                val imm = editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(editText.windowToken, 0)
+
+                if(editText.text != null && editText.text.isNotEmpty()){
+                    editText.setText(StringUtil.PriceFormat(editText.text.toString()))
+                    return@setOnEditorActionListener true
+                }
+
                 return@setOnEditorActionListener true
             }
             false

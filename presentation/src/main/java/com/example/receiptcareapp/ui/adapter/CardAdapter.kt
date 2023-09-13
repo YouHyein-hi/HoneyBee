@@ -23,6 +23,7 @@ class CardAdapter : RecyclerView.Adapter<CardAdapter.MyHolder>(){
     inner class MyHolder(private val binding : ItemCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CardData) {
             binding.cardData = item
+            binding.cardLayout.setOnClickListener{  }
         }
     }
 

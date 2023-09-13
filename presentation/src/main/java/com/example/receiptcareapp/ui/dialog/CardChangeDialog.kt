@@ -15,7 +15,7 @@ import com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CardAddDialog(
+class CardChangeDialog(
     private val homeViewModel: CardViewModel
 ) : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
@@ -25,37 +25,11 @@ class CardAddDialog(
     }
 
     override fun initUI() {
-        val date = StringUtil.dateNow()
-        binding.cardAddDateDatePicker.init(date.year, date.monthValue-1, date.dayOfMonth, null)
     }
 
     override fun initListener() {
         with(binding){
-            cardAddOkBtn.setOnClickListener{
-                var price = cardAddPriceEdit.text.toString()
-                var priceZero = price.count { it == '0' }
-                var cardName = cardAddNameEdit.text.toString()
-                if(cardAddNameEdit.text.toString() == ""){
-                    showShortToast(getString(R.string.dialog_cardAdd_name))
-                }
-                else if(cardAddPriceEdit.text.toString() == ""){
-                    showShortToast(getString(R.string.dialog_cardAdd_price))
-                }
-                else if(priceZero == price.length){
-                    showShortToast(getString(R.string.dialog_cardAdd_price_zero))
-                }
-                else{
-                    if (price.contains(","))
-                        price = price.replace(",", "")
-                    homeViewModel.insertServerCardData(SendCardData(cardAddNameEdit.text.toString(), price.toInt(), cardAddDateDatePicker.toString()))
-                    dismiss()
-                }
-            }
 
-            cardAddCancelBtn.setOnClickListener{
-                Log.e("TAG", "onResume: 카드 추가 취소", )
-                dismiss()
-            }
         }
     }
 

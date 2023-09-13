@@ -31,7 +31,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/pretendardextrabold"
-            android:text="@string/dialog_cardAdd_title"
+            android:text="@string/dialog_cardChange_title"
             android:textColor="@color/main_font_black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/pretendardbold"
-            android:text="@string/dialog_cardAdd_text"
+            android:text="@string/dialog_cardChange_text"
             android:textColor="@color/main_font_black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/view4"
@@ -117,13 +117,13 @@
             android:text="@string/dialog_cardAdd_billCheckDate"
             android:textColor="@color/sub_font1_gray"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/cardAdd_price_edit"
+            app:layout_constraintStart_toStartOf="@+id/cardAdd_date_datePicker"
             app:layout_constraintTop_toBottomOf="@+id/cardAdd_price_edit" />
 
         <DatePicker
             android:id="@+id/cardAdd_date_datePicker"
             android:layout_width="0dp"
-            android:layout_height="180dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"

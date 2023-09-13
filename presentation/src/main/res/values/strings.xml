@@ -143,8 +143,14 @@
     <!-- 상세 기록 페이지 -->
     <string name="record_show_fail_txt">이미지 로딩 실패..!</string>
     <string name="recrod_show_bill_check_txt">청구 날짜</string>
+    <string name="record_show_store_name_txt">가게 이름</string>\\
     <string name="record_show_amount_txt">금액</string>
-    <string name="record_show_store_name_txt">가게 이름</string>
+    <string name="record_show_writer_txt">최초 작성자</string>
+    <string name="record_show_writer_date_txt">최초 추가일</string>
+    <string name="record_show_modifier_name_txt">최근 수정자</string>
+    <string name="record_show_modifier_date_txt">최근 수정일</string>
+    <string name="record_show_bill_check_txt">현재 청구 유무</string>
+    <string name="record_show_memo_txt">메모</string>
     <string name="notice_empty_txt">공지사항이 아직 없어요!</string>
     <string name="record_server_hint">가게 이름을 입력해주세요.</string>
 

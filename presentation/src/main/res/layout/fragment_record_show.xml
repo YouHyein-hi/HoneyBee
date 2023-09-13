@@ -10,21 +10,36 @@
             type="com.example.domain.model.ui.recycler.RecyclerData" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            android:id="@+id/layout_loading_progress"
+            layout="@layout/progressbar_loading"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ScrollView
-            android:background="@drawable/background_honey"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:background="@drawable/background_honey"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".ui.fragment.record.RecordShowFragment"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:context=".ui.fragment.record.RecordShowFragment">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout4"
@@ -81,6 +96,7 @@
                     android:layout_height="300dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
+                    android:layout_marginBottom="-50dp"
                     android:elevation="20dp"
                     app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -89,15 +105,13 @@
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_marginTop="-30dp"
                     android:id="@+id/constraintLayout6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/component_upround_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recore_imageView">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <TextView
                         android:id="@+id/record_date_txt"
@@ -126,12 +140,12 @@
 
 
                     <LinearLayout
+                        android:id="@+id/linearLayout4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="50dp"
-                        android:layout_marginEnd="50dp"
                         android:layout_marginTop="30dp"
-                        android:layout_marginBottom="50dp"
+                        android:layout_marginEnd="50dp"
                         android:gravity="center"
                         android:orientation="vertical"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -162,8 +176,8 @@
                                 android:gravity="right"
                                 android:text="@{data.storeName}"
                                 android:textColor="@color/main_font_black"
-                                android:textStyle="bold"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -183,7 +197,6 @@
                                 android:textSize="14sp" />
 
                             <TextView
-                                android:textStyle="bold"
                                 android:id="@+id/record_amount_txt"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -192,7 +205,8 @@
                                 android:gravity="right"
                                 android:text="@{data.amount+`원`}"
                                 android:textColor="@color/main_font_black"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -337,54 +351,53 @@
                         </LinearLayout>
 
                         <TextView
-                            android:layout_marginTop="20dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="10dp"
                             android:text="@string/record_show_memo_txt"
                             android:textSize="20dp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="30dp"/>
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:padding="20dp"
                             android:id="@+id/record_show_memo"
-                            android:background="@drawable/line_gray_round"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_marginBottom="50dp"/>
+                            android:layout_height="150dp"
+                            android:layout_marginBottom="50dp"
+                            android:background="@drawable/line_gray_round"
+                            android:padding="20dp" />
                     </LinearLayout>
+
+                    <CheckBox
+                        android:scaleX="1.70"
+                        android:scaleY="1.70"
+                        android:id="@+id/bill_check_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginEnd="30dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--                <TextView-->
-<!--                    android:id="@+id/record_empty_txt"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="50dp"-->
-<!--                    android:fontFamily="@font/pretendardsemibold"-->
-<!--                    android:text="@string/record_show_fail_txt"-->
-<!--                    android:textColor="@color/main_font_black"-->
-<!--                    android:textSize="25sp"-->
-<!--                    android:visibility="invisible"-->
-<!--                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent" />-->
-
-                <!--            <include-->
-                <!--                android:id="@+id/layout_loading_progress"-->
-                <!--                layout="@layout/progressbar_loading"-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="0dp"-->
-                <!--                android:visibility="invisible"-->
-                <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                app:layout_constraintStart_toStartOf="parent"-->
-                <!--                app:layout_constraintTop_toTopOf="parent" />-->
-            </LinearLayout>
+                <!--                <TextView-->
+                <!--                    android:id="@+id/record_empty_txt"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="50dp"-->
+                <!--                    android:fontFamily="@font/pretendardsemibold"-->
+                <!--                    android:text="@string/record_show_fail_txt"-->
+                <!--                    android:textColor="@color/main_font_black"-->
+                <!--                    android:textSize="25sp"-->
+                <!--                    android:visibility="invisible"-->
+                <!--                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent" />-->
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

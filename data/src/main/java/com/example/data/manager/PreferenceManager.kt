@@ -27,13 +27,13 @@ class PreferenceManager @Inject constructor(
     fun getPassword(): String? = sharedPreference.getString("sharedPreference_password",null)
     fun removePassword() = sharedPreference.edit().remove("sharedPreference_password").apply()
 
-    fun putAutoEmail(boolean: Boolean) = sharedPreference.edit().putBoolean("sharedPreference_auto_email", boolean).apply()
-    fun getAutoEmail(): Boolean = sharedPreference.getBoolean("sharedPreference_auto_email", false)
-    fun removeAutoEmail() = sharedPreference.edit().remove("sharedPreference_auto_email").apply()
+    fun putAutoEmailCheckBox(boolean: Boolean) = sharedPreference.edit().putBoolean("sharedPreference_auto_email", boolean).apply()
+    fun getAutoEmailCheckBox(): Boolean = sharedPreference.getBoolean("sharedPreference_auto_email", false)
+    fun removeAutoEmailCheckBox() = sharedPreference.edit().remove("sharedPreference_auto_email").apply()
 
-    fun putAutoLogin(boolean: Boolean) = sharedPreference.edit().putBoolean("sharedPreference_auto_login", boolean).apply()
-    fun getAutoLogin(): Boolean = sharedPreference.getBoolean("sharedPreference_auto_login", false)
-    fun removeAutoLogin() = sharedPreference.edit().remove("sharedPreference_auto_login").apply()
+    fun putAutoLoginCheckBox(boolean: Boolean) = sharedPreference.edit().putBoolean("sharedPreference_auto_login", boolean).apply()
+    fun getAutoLoginCheckBox(): Boolean = sharedPreference.getBoolean("sharedPreference_auto_login", false)
+    fun removeAutoLoginCheckBox() = sharedPreference.edit().remove("sharedPreference_auto_login").apply()
 
 
     //Auth Token Control

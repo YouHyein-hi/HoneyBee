@@ -33,11 +33,6 @@ abstract class BaseViewModel(val name: String) : ViewModel(){
         isLoading.postValue(false)
         coroutineContext.job.cancel() // 여기에 coroutineContext를 붙여야 정상 취소되는데 왜그럴까?
         throwable.printStackTrace()
-
-        Log.e("TAG", "base err : ${throwable.message}")
-        Log.e("TAG", "base err : ${throwable.cause}")
-        Log.e("TAG", "base err : ${throwable.localizedMessage}")
-        Log.e("TAG", "base err : ${throwable.stackTrace}")
         when(throwable){
             is SocketException -> _fetchState.value = Pair(throwable, FetchState.BAD_INTERNET)
             is HttpException -> _fetchState.value = Pair(throwable, FetchState.PARSE_ERROR)

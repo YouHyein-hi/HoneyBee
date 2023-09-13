@@ -95,8 +95,8 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         //서버 연결 상태 옵져버
         //TODO 데이터바인딩
         viewModel.loading.observe(viewLifecycleOwner){
-            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
-            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
+//            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
+//            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
         //TODO 데이터 바인딩
@@ -132,10 +132,10 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     private fun checkImageData(){
-        if(binding.recoreImageView.drawable == null)
-            binding.recordEmptyTxt.isVisible = true
-        if(viewModel.picture.value==null)
-            binding.recordEmptyTxt.isVisible = true
+//        if(binding.recoreImageView.drawable == null)
+//            binding.recordEmptyTxt.isVisible = true
+//        if(viewModel.picture.value==null)
+//            binding.recordEmptyTxt.isVisible = true
     }
 
     //수정

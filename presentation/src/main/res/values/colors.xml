@@ -47,6 +47,8 @@
     <color name="sub_font3_orange1">#FFAA2C</color>
     <color name="sub_font4_orange2">#FFA318</color>
     <color name="sub_font5_white">#FFFFFF</color>
+    <color name="sub_font6_gray">#7D7D7D</color>
+    <color name="sub_font7_gray">#9D9D9D</color>
 
     <!-- button color -->
     <color name="main_button_orange">#FFAA2C</color>

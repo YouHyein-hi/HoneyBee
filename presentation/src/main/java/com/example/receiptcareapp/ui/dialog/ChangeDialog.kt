@@ -1,8 +1,24 @@
 package com.example.receiptcareapp.ui.dialog
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import com.example.data.util.UriToBitmapUtil
 import com.example.domain.model.remote.receive.card.CardSpinnerData
 import com.example.domain.model.remote.send.bill.SendBillUpdateData
 import com.example.domain.model.ui.dateTime.DateData
@@ -12,10 +28,12 @@ import com.example.receiptcareapp.databinding.DialogChangeBinding
 import com.example.domain.model.ui.bill.LocalBillData
 import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.domain.util.StringUtil
+import com.example.receiptcareapp.R
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.GalleryViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
@@ -25,6 +43,7 @@ class ChangeDialog(
     private val viewModel: RecordShowViewModel
 ) : BaseDialog<DialogChangeBinding>(DialogChangeBinding::inflate) {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val galleryViewModel : GalleryViewModel by viewModels()
     private lateinit var viewModelData: RecyclerData
     private var cardName = ""
     private var cardId = 0
@@ -65,6 +84,21 @@ class ChangeDialog(
 
     override fun initListener() {
 
+        binding.changeImageImageView.setOnLongClickListener {
+            Log.e("TAG", "initListener: 그림 길게 클릭함!", )
+            //CallGallery()
+            return@setOnLongClickListener(true)
+        }
+
+        binding.changeCardSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedCardData = cardDataList[position]
+                cardId = position
+                cardName = selectedCardData.name
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }
+
         binding.changeOkBtn.setOnClickListener {
             dateData = DateData(
                 year = binding.changeDateDatePicker.year,
@@ -100,7 +134,7 @@ class ChangeDialog(
                                 storeAmount = binding.changePriceEdit.text.toString(),
                                 cardName = cardName,
                                 storeName = binding.changeStoreEdit.text.toString(),
-                                picture = viewModelData.file!!
+                                picture = viewModelData.file!! // 이거 나중에 변경해야됨!
                             )
                         )
                     }
@@ -109,15 +143,6 @@ class ChangeDialog(
             }
         }
         binding.changeCancelBtn.setOnClickListener { dismiss() }
-
-        binding.changeCardSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedCardData = cardDataList[position]
-                cardId = position
-                cardName = selectedCardData.name
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }
 
     }
 
@@ -137,6 +162,46 @@ class ChangeDialog(
             }
             showShortToast(FetchStateHandler(it))
         }
+
+        // 이렇게 말고 show 부분에서 picture bitmap이나 url 가져오면 되는 거 아닌가? (핳)
+        viewModel.picture.observe(viewLifecycleOwner){
+            Glide.with(binding.changeImageImageView)
+                .load(it)
+                .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
+                .into(binding.changeImageImageView)
+//            checkImageData()
+        }
     }
+
+    fun CallGallery() {
+        Log.e("TAG", "CallGallery 실행", )
+        activityResult.launch(galleryViewModel.CallGallery())
+    }
+
+    /* 갤러리 사진 관련 함수 */
+    private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()){
+        if (it.resultCode == Activity.RESULT_OK){
+            Log.e("TAG", "onActivityResult: if 진입", )
+            val imageUri: Uri? = it.data?.data
+            if (imageUri != null) {
+                Log.e("TAG", "data 있음", )
+                val bitmap : Bitmap? = UriToBitmapUtil.uriToBitmap(requireContext(), imageUri)
+                bitmap?.let { it -> viewModel.takePicture(it) }
+            }
+            else{ Log.e("TAG", "data 없음", ) }
+        }
+        else{
+            Log.e("TAG", "RESULT_OK if: else 진입", )
+        }
+    }
+
+
+/*    private fun checkImageData(){
+        if(binding.changeImageImageView.drawable == null)
+            binding.changeEmptyTxt.isVisible = true
+        if(viewModel.picture.value==null)
+            binding.changeEmptyTxt.isVisible = true
+    }*/
 
 }

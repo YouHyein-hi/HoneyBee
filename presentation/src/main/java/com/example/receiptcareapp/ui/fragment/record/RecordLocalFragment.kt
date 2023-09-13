@@ -85,12 +85,7 @@ class RecordLocalFragment(
         })
 
         binding.recordFilterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when(position){
                     //기본순
                     0 -> recordLocalAdapter.dataList = dataList.toMutableList()
@@ -112,10 +107,10 @@ class RecordLocalFragment(
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        binding.recordRefresh.setOnRefreshListener {
+/*        binding.recordRefresh.setOnRefreshListener {
             binding.recordRefresh.isRefreshing = false
             viewModel.getLocalAllData()
-        }
+        }*/
     }
 
     override fun initObserver() {

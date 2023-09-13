@@ -13,210 +13,293 @@
             type="com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/constraintLayout9"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/dialog_background">
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout11"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textView22"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/pretendardextrabold"
-            android:text="@string/dialog_change_title"
-            android:textColor="@color/main_font_black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/view4"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/sub_button3_white_gray"
-            app:layout_constraintTop_toBottomOf="@+id/textView22"
-            tools:layout_editor_absoluteX="0dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout18"
-        android:layout_width="0dp"
+        android:id="@+id/constraintLayout9"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
+        android:background="@drawable/dialog_background">
 
-        <TextView
-            android:id="@+id/textView32"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout11"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendardsemibold"
-            android:text="@string/dialog_change_cardName"
-            android:textColor="@color/sub_font1_gray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Spinner
-            android:id="@+id/change_card_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/spinner_custom"
-            android:fontFamily="@font/pretendardsemibold"
-            android:gravity="center"
-            android:textAlignment="center"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView32" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView34"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/pretendardextrabold"
+                android:text="@string/dialog_change_title"
+                android:textColor="@color/main_font_black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/sub_button3_white_gray"
+                app:layout_constraintTop_toBottomOf="@+id/textView22"
+                tools:layout_editor_absoluteX="0dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="450dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
-            android:fontFamily="@font/pretendardsemibold"
-            android:text="@string/dialog_change_storeName"
-            android:textColor="@color/sub_font1_gray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/change_store_edit"
-            app:layout_constraintTop_toBottomOf="@+id/change_card_spinner" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/change_store_edit"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/btn_edittext"
-            android:fontFamily="@font/pretendardsemibold"
-            android:gravity="center"
-            android:hint="@string/dialog_change_storeName_text"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLength="15"
-            android:textSize="16sp"
-            android:text="@{data.storeName}"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="5dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView34" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
 
-        <TextView
-            android:id="@+id/textView35"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/pretendardsemibold"
-            android:text="@string/dialog_change_price"
-            android:textColor="@color/sub_font1_gray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/change_price_edit"
-            app:layout_constraintTop_toBottomOf="@+id/change_store_edit" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="367dp">
 
-        <EditText
-            android:id="@+id/change_price_edit"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_edittext"
-            android:fontFamily="@font/pretendardsemibold"
-            android:gravity="center"
-            android:hint="@string/dialog_change_price_text"
-            android:inputType="number"
-            android:maxLength="10"
-            android:textSize="16sp"
-            textValue="@={viewModel.textValue}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView35" />
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/dialog_change_image"
+                    android:textColor="@color/sub_font1_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/pretendardsemibold"
-            android:text="@string/dialog_change_date"
-            android:textColor="@color/sub_font1_gray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/change_date_datePicker"
-            app:layout_constraintTop_toBottomOf="@+id/change_price_edit" />
+                <TextView
+                    android:id="@+id/textView29"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/dialog_change_image_text"
+                    android:textColor="@color/sub_font1_gray"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView9"
+                    app:layout_constraintStart_toEndOf="@+id/textView9" />
 
-        <DatePicker
-            android:id="@+id/change_date_datePicker"
+                <ImageView
+                    android:id="@+id/change_image_imageView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+<!--                <TextView
+                    android:id="@+id/change_empty_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/record_show_fail_txt"
+                    android:textColor="@color/main_font_black"
+                    android:textSize="25sp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/change_image_imageView"
+                    app:layout_constraintEnd_toEndOf="@+id/change_image_imageView"
+                    app:layout_constraintStart_toStartOf="@+id/change_image_imageView"
+                    app:layout_constraintTop_toTopOf="@+id/change_image_imageView" />-->
+
+                <TextView
+                    android:id="@+id/textView30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/dialog_change_cardName"
+                    android:textColor="@color/sub_font1_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/change_image_imageView" />
+
+                <Spinner
+                    android:id="@+id/change_card_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/spinner_custom"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView30" />
+
+                <TextView
+                    android:id="@+id/textView33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/dialog_change_storeName"
+                    android:textColor="@color/sub_font1_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@+id/change_card_spinner"
+                    tools:ignore="MissingConstraints" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/change_store_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/btn_edittext"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:gravity="center"
+                    android:hint="@string/dialog_change_storeName_text"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLength="15"
+                    android:text="@{data.storeName}"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
+                <TextView
+                    android:id="@+id/textView37"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/dialog_change_price"
+                    android:textColor="@color/sub_font1_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@+id/change_store_edit"
+                    tools:ignore="MissingConstraints" />
+
+                <EditText
+                    android:id="@+id/change_price_edit"
+                    textValue="@={viewModel.textValue}"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_edittext"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:gravity="center"
+                    android:hint="@string/dialog_change_price_text"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView37" />
+
+                <TextView
+                    android:id="@+id/textView38"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/dialog_change_date"
+                    android:textColor="@color/sub_font1_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@+id/change_price_edit"
+                    tools:ignore="MissingConstraints" />
+
+                <DatePicker
+                    android:id="@+id/change_date_datePicker"
+                    android:layout_width="0dp"
+                    android:layout_height="180dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/btn_edittext"
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView38" />
+
+                <TextView
+                    android:id="@+id/textView39"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/dialog_change_memo"
+                    android:textColor="@color/sub_font1_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@+id/change_date_datePicker"
+                    tools:ignore="MissingConstraints" />
+
+                <EditText
+                    android:id="@+id/change_memo_editText"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/btn_edittext"
+                    android:gravity="center"
+                    android:hint="@string/bottomSheet_sendbill_memo"
+                    android:inputType="textPersonName"
+                    android:maxLength="100"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView39" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/btn_edittext"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView36" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/change_ok_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/btn_white"
+                android:fontFamily="@font/pretendardsemibold"
+                android:stateListAnimator="@null"
+                android:text="@string/complete"
+                android:textColor="@color/sub_font4_orange2"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/change_cancel_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/btn_white"
+                android:elevation="0dp"
+                android:fontFamily="@font/pretendardsemibold"
+                android:stateListAnimator="@null"
+                android:text="@string/cancel"
+                android:textColor="@color/main_font_black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout18">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/change_ok_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/btn_white"
-            android:fontFamily="@font/pretendardsemibold"
-            android:stateListAnimator="@null"
-            android:text="@string/complete"
-            android:textColor="@color/sub_font4_orange2"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/change_cancel_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:background="@drawable/btn_white"
-            android:elevation="0dp"
-            android:fontFamily="@font/pretendardsemibold"
-            android:stateListAnimator="@null"
-            android:text="@string/cancel"
-            android:textColor="@color/main_font_black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

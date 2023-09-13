@@ -85,6 +85,19 @@ object UriToBitmapUtil {
         return result!!
     }
 
+    fun uriToBitmap(context: Context, uri: android.net.Uri): Bitmap? {
+        try {
+            // URI에서 이미지 파일을 읽어옵니다.
+            val inputStream = context.contentResolver.openInputStream(uri)
+
+            // BitmapFactory를 사용하여 Bitmap으로 변환합니다.
+            return BitmapFactory.decodeStream(inputStream)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+    }
+
     //사진 저장
     fun imageExternalSave(context: Context, bitmap: Bitmap?, path: String): Boolean {
         val state = Environment.getExternalStorageState()

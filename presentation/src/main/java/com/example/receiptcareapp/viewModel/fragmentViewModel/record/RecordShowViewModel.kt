@@ -1,6 +1,7 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel.record
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -51,6 +52,7 @@ class RecordShowViewModel @Inject constructor(
     val picture : LiveData<Bitmap?> get(){
         return _picture
     }
+    fun takePicture(img: Bitmap) { _picture.value = img }
 
     var textValue: String? = null
 

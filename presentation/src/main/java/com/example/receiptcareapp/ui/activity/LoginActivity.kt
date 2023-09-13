@@ -17,7 +17,6 @@ import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
@@ -32,30 +31,26 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val ALL_PERMISSIONS_CODE = 123
 
     override fun initData() {
-        if(viewModel.checkAutoLogin())
+        if(viewModel.getAutoLoginCheckBoxState())
             viewModel.checkAccessToken()
 
-        if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) {
+        if (!checkAllPermissionsGranted(ALL_PERMISSIONS))
             permissionDialog()
-        }
-        else{
-            showShortToast("권한 있음")
-        }
+
         permissionHandler = PermissionHandler(this@LoginActivity)
     }
 
     override fun initUI() {
         supportActionBar?.hide()
-        binding.loginEmailEdit.setText("12345@email.com")
-        binding.loginPasswordEdit.setText("qwer1234")
+        binding.loginEmailEdit.setText(viewModel.getId()?:"")
+        binding.loginAutoLoginCheckBox.isChecked = viewModel.getAutoLoginCheckBoxState()
+        binding.loginSavedIdCheckBox.isChecked = viewModel.getIdCheckBoxState()
     }
 
     override fun initListener() {
         binding.loginLoginBtn.setOnClickListener {
-            loginData.id = binding.loginEmailEdit.text.toString()
-            loginData.pw = binding.loginPasswordEdit.text.toString()
-//            if(loginData.id == "dclab@gmail.com" && loginData.pw == "dclab419$!(") nextActivity()
-//            nextActivity()
+            loginData.id = binding.loginEmailEdit.text.toString().replace(" ","")
+            loginData.pw = binding.loginPasswordEdit.text.toString().replace(" ","")
             downKeyBoard()
             with(loginData){
                 if(id.isNullOrEmpty())
@@ -64,7 +59,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
                     showShortToast("비밀번호를 입력해주세요.")
                 else viewModel.requestLogin(
                     loginData.id.toString().replace(" ",""),
-                    loginData.pw.toString().replace(" ","")
+                    loginData.pw.toString().replace(" ",""),
+                    binding.loginAutoLoginCheckBox.isChecked,
+                    binding.loginSavedIdCheckBox.isChecked
                 )
             }
         }
@@ -89,7 +86,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         }
 
         viewModel.fetchState.observe(this) {
-            showShortToast(FetchStateHandler(it))
+            showShortToast("로그인 실패")
         }
     }
 

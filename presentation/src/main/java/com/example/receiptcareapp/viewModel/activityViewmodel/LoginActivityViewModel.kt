@@ -8,9 +8,7 @@ import com.example.domain.model.remote.receive.basic.ServerResponseData
 import com.example.domain.model.remote.send.login.SendLoginData
 import com.example.domain.usecase.login.LoginUseCase
 import com.example.receiptcareapp.base.BaseViewModel
-import com.example.domain.model.ui.login.LoginData
 import com.example.domain.usecase.card.GetCardListUseCase
-import com.example.domain.usecase.notice.GetNoticeListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -37,17 +35,18 @@ class LoginActivityViewModel @Inject constructor(
 
     lateinit var loginData: Pair<String, String>
 
-    fun requestLogin(email: String, password: String) {
+    fun requestLogin(email: String, password: String, autoLoginCheckBox:Boolean, savedIdCheckBoxState:Boolean) {
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 isLoading.postValue(true)
                 delay(1000L)
-                _response.postValue(
-                    loginUseCase.invoke(
-                        SendLoginData(email, password)
-                    )
-                )
-                loginData = Pair(email, password)
+                loginUseCase.invoke(SendLoginData(email, password)).let {response ->
+                    _response.postValue(response)
+                    if(response.status=="200"){
+                        savedAutoLoginCheckBoxState(autoLoginCheckBox)
+                        savedIdAndCheckBokState(savedIdCheckBoxState, email)
+                    }
+                }
                 isLoading.postValue(false)
             } ?: SocketTimeoutException()
         }
@@ -65,8 +64,13 @@ class LoginActivityViewModel @Inject constructor(
         }
     }
 
-//    fun checkAutoLogin(): Boolean = preferenceManager.getAutoLogin()
-    fun checkAutoLogin(): Boolean = true
+    private fun savedAutoLoginCheckBoxState(state:Boolean) = preferenceManager.putAutoLoginCheckBox(state)
+    private fun savedIdAndCheckBokState(state:Boolean, id:String){
+        if(state) preferenceManager.putEmail(id) else preferenceManager.putEmail("")
+        preferenceManager.putAutoEmailCheckBox(state)
+    }
 
-    fun savedEmailData(email: String) = preferenceManager.putEmail(email)
+    fun getAutoLoginCheckBoxState():Boolean = preferenceManager.getAutoLoginCheckBox()
+    fun getId():String? = preferenceManager.getEmail()
+    fun getIdCheckBoxState():Boolean = preferenceManager.getAutoEmailCheckBox()
 }

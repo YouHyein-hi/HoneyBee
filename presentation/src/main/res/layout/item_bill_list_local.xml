@@ -71,9 +71,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/pretendardbold"
-                    android:textColor="@color/sub_font1_gray"
-                    android:textSize="14sp"
-                    android:text="@{stringUtil.changeDate(recyclerData.date), default = `날짜`}" />
+                    android:text="@{stringUtil.changeDate(recyclerData.date), default = `날짜`}"
+                    android:textColor="@color/sub_font6_gray"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/recordItem_card_txt"
@@ -82,9 +82,9 @@
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="center"
-                    android:textColor="@color/sub_font1_gray"
-                    android:textSize="14sp"
-                    android:text="@{recyclerData.cardName, default = `카드 이름`}"/>
+                    android:text="@{recyclerData.cardName, default = `카드 이름`}"
+                    android:textColor="@color/sub_font6_gray"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/recordItem_store_txt"
@@ -94,9 +94,9 @@
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="center"
-                    android:textColor="@color/sub_font1_gray"
-                    android:textSize="14sp"
-                    android:text="@{recyclerData.storeName, default = `가게 이름`}"/>
+                    android:text="@{recyclerData.storeName, default = `가게 이름`}"
+                    android:textColor="@color/sub_font6_gray"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -111,7 +111,7 @@
                     android:fontFamily="@font/pretendardsemibold"
                     android:gravity="right"
                     android:text="작성자 : 유혜인"
-                    android:textColor="@color/sub_font2_gray"
+                    android:textColor="@color/sub_font6_gray"
                     android:textSize="12sp" />
                 <!-- android:text="@{@string/record_user(recyclerData.사용자이름), default = `가게 이름`}" -->
 
@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/pretendardbold"
                         android:gravity="left"
-                        android:textColor="@color/main_font_black"
+                        android:textColor="@color/sub_font7_gray"
                         android:textSize="28sp" />
 
                     <TextView
@@ -138,7 +138,7 @@
                         android:gravity="bottom"
                         android:paddingLeft="5dp"
                         android:text="@string/record__price"
-                        android:textColor="@color/sub_font2_gray"
+                        android:textColor="@color/sub_font6_gray"
                         android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>

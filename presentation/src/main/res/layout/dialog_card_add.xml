@@ -75,18 +75,17 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
+            android:fontFamily="@font/pretendardsemibold"
             android:hint="@string/dialog_cardAdd_name"
             android:gravity="center"
             android:inputType="text"
+            android:textSize="16sp"
             originalHint="@{@string/dialog_cardAdd_name}"
             errorHint="@{@string/dialog_cardAdd_name_err}"
             highlightColor="@{@color/emphasis_yellow}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        <!--
-            android:hint="@string/dialog_cardAdd_name"
-            -->
 
         <EditText
             android:id="@+id/cardAdd_price_edit"
@@ -99,10 +98,12 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
+            android:fontFamily="@font/pretendardsemibold"
             android:gravity="center"
             android:hint="@string/dialog_cardAdd_price"
             android:inputType="number"
             android:maxLength="10"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -112,7 +113,7 @@
             android:id="@+id/textView36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/pretendardsemibold"
             android:text="@string/dialog_cardAdd_billCheckDate"
             android:textColor="@color/sub_font1_gray"

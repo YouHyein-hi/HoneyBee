@@ -1,29 +1,37 @@
 package com.example.receiptcareapp.ui.dialog
 
+import android.util.Log
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.domain.model.remote.receive.card.CardData
 import com.example.domain.model.ui.type.ShowType
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogDeleteBinding
 import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.receiptcareapp.databinding.DialogCardDeleteBinding
 import com.example.receiptcareapp.state.FetchState
+import com.example.receiptcareapp.state.ResponseState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
+import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
+import com.example.receiptcareapp.viewModel.dialogViewModel.CardDeleteViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CardDeleteDialog(
-    private val viewModel:RecordShowViewModel
+    private val cardViewModel: CardViewModel
 ) : BaseDialog<DialogCardDeleteBinding>(DialogCardDeleteBinding::inflate) {
 
-    private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private lateinit var viewModelData: RecyclerData
+    private val viewModel : CardDeleteViewModel by viewModels()
+    private var id : Long = 0
 
     override fun initData() {
-        if (activityViewModel.selectedData.value != null) {
-            viewModelData = activityViewModel.selectedData.value!!
+        if (cardViewModel.cardList.value != null) {
+            id = cardViewModel.id.value!!
+            // 이걸 영수증이 아니라 카드로 바꿔야됨!
         } else {
             showShortToast("데이터가 없습니다!")
             dismiss()
@@ -39,18 +47,24 @@ class CardDeleteDialog(
                 dismiss()
             }
             deleteOkBtn.setOnClickListener{
-                // 카드 삭제 이벤트 여기에 넣기
+                Log.e("TAG", "initListener idid: $id", )
+                cardViewModel.deleteServerCardDate(id) // 여기를 영수ㅡㅇ이 아니라 카드로 바꿔야됨!
             }
         }
     }
 
     override fun initObserver() {
+        viewModel.response.observe(viewLifecycleOwner){
+            when(it){
+                ResponseState.UPDATE_SUCCESS -> {
+                    cardViewModel.getServerCardData()
+                    dismiss()
+                }
+                else->{}
+            }
+        }
         // Err관리
         viewModel.fetchState.observe(this) {
-            when (it.second) {
-                FetchState.SOCKET_TIMEOUT_EXCEPTION -> dismiss()
-                else -> {}
-            }
             showShortToast(FetchStateHandler(it))
         }
     }

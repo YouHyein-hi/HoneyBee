@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.remote.receive.card.ServerCardData
 import com.example.domain.model.remote.receive.basic.ServerResponseData
 import com.example.domain.model.remote.send.card.SendCardData
+import com.example.domain.usecase.card.DeleteCardUseCase
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.card.InsertCardUseCase
 import com.example.receiptcareapp.base.BaseViewModel
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CardViewModel @Inject constructor(
     private val insertCardUseCase: InsertCardUseCase,
-    private val getCardListUseCase: GetCardListUseCase
+    private val getCardListUseCase: GetCardListUseCase,
+    private val deleteCardUseCase: DeleteCardUseCase
 ) : BaseViewModel("CardViewModel") {
 
     val loading: MutableLiveData<Boolean> get() = isLoading
@@ -31,6 +33,13 @@ class CardViewModel @Inject constructor(
 
     private var _response = MutableLiveData<ServerResponseData?>()
     val response: LiveData<ServerResponseData?> get() = _response
+
+    private var _id = MutableLiveData<Long>()
+    val id : LiveData<Long> get() = _id
+
+    fun putId(id : Long){
+        _id.value = id
+    }
 
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
@@ -60,4 +69,18 @@ class CardViewModel @Inject constructor(
             isLoading.postValue(false)
         }
     }
+
+    fun deleteServerCardDate(id: Long){
+        modelScope.launch {
+            isLoading.postValue(true)
+            withTimeoutOrNull(waitTime) {
+                deleteCardUseCase(id)
+                /*_response.postValue(
+                    deleteCardUseCase(id)
+                )*/
+            } ?: throw SocketTimeoutException()
+            isLoading.postValue(false)
+        }
+    }
+
 }

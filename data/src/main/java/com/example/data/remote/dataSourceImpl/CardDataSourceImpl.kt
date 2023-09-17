@@ -33,10 +33,9 @@ class CardDataSourceImpl @Inject constructor(
             ) }
     }
 
-    //아직 안쓰이는 기능
-//    override suspend fun deleteCardDataSource(uid: Long): String {
-//        return retrofit.create(CardDataSource::class.java).deleteCardDataSource(uid)
-//    }
+    override suspend fun deleteCardDataSource(uid: Long): ServerResponse<Int> {
+        return retrofit.create(CardDataSource::class.java).deleteCardDataSource(uid)
+    }
 //
 //    override suspend fun updateCardDataSource(
 //        id: Long,

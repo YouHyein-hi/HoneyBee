@@ -1,11 +1,9 @@
 package com.example.receiptcareapp.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.remote.receive.card.CardData
-import com.example.domain.model.ui.recycler.ServerRecyclerData
 import com.example.receiptcareapp.databinding.ItemCardBinding
 
 /**
@@ -13,7 +11,7 @@ import com.example.receiptcareapp.databinding.ItemCardBinding
  * pureum
  */
 
-class CardAdapter : RecyclerView.Adapter<CardAdapter.MyHolder>(){
+class CardListAdapter : RecyclerView.Adapter<CardListAdapter.MyHolder>(){
 
     lateinit var onCardClick : (CardData)->Unit
     private lateinit var cardBinding: ItemCardBinding

@@ -10,7 +10,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,14 +17,14 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
+import com.example.receiptcareapp.ui.botteomSheet.CardDetailBottomSheet
 import com.example.receiptcareapp.util.PermissionHandler
-import com.example.receiptcareapp.ui.botteomSheet.CardBottomSheet
+import com.example.receiptcareapp.ui.botteomSheet.CardListBottomSheet
 import com.example.receiptcareapp.ui.dialog.AddDialog
 import com.example.receiptcareapp.ui.dialog.ExitDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import com.example.receiptcareapp.ui.dialog.PermissiondCheck_Dialog
-import com.example.receiptcareapp.state.FetchState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -73,12 +72,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) { permissionLauncher.launch(ALL_PERMISSIONS) }
                 else { addDialog() }
             }
-            homeCardListComponent.setOnClickListener { CardBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet") }
+            homeCardListComponent.setOnClickListener { CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet") }
             homeRefresh.setOnRefreshListener {
                 homeRefresh.isRefreshing = false
                 adapter.dataList.clear()
                 viewModel.getServerCardData()
             }
+            adapter.onHomeCardItemClick = { CardDetailBottomSheet(it).show(parentFragmentManager, "homeCardBottomSheet") }
         }
     }
 

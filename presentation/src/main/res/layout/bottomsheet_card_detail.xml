@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="cardDate"
+            type="com.example.domain.model.remote.receive.card.CardData" />
+
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:behavior_hideable="true"
         app:behavior_draggable="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
@@ -27,14 +33,34 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/card_detail_change_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/icon_change"
+            app:layout_constraintEnd_toStartOf="@+id/card_detail_delete_btn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/card_detail_delete_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/icon_trash"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:id="@+id/cardDetail_image"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginTop="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleTxt"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:src="@drawable/icon_card_1" />
 
         <TextView
             android:id="@+id/cardDetail_card_name"
@@ -44,7 +70,7 @@
             android:fontFamily="@font/pretendardsemibold"
             android:textColor="@color/main_font_black"
             android:textSize="30sp"
-            android:text="나라사랑카드"
+            android:text="@{cardDate.cardName, default = `카드 이름`}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardDetail_image" />
@@ -55,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:fontFamily="@font/pretendardmedium"
-            android:text="~~~~원 남았어요."
+            android:text="@{cardDate.cardAmount, default = `카드 잔액`}"
             android:textColor="@color/main_font_black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +94,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginBottom="150dp"
             android:gravity="center"
             android:orientation="vertical"
             android:weightSum="6"
@@ -75,62 +102,63 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardDetail_card_amount">
 
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:fontFamily="@font/pretendardbold"-->
+<!--                    android:gravity="left"-->
+<!--                    android:text="작성자"-->
+<!--                    android:textColor="@color/sub_font2_gray"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/cardDetail_card_user"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:fontFamily="@font/pretendardbold"-->
+<!--                    android:gravity="right"-->
+<!--                    android:text="@{cardDate.}"-->
+<!--                    android:textColor="@color/main_font_black"-->
+<!--                    android:textSize="14sp" />-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:fontFamily="@font/pretendardbold"-->
+<!--                    android:gravity="left"-->
+<!--                    android:text="추가일"-->
+<!--                    android:textColor="@color/sub_font2_gray"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/cardDetail_card_cardExpireDate"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:fontFamily="@font/pretendardbold"-->
+<!--                    android:gravity="right"-->
+<!--                    android:text="~~~~~"-->
+<!--                    android:textColor="@color/main_font_black"-->
+<!--                    android:textSize="14sp" />-->
+<!--            </LinearLayout>-->
+
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/pretendardbold"
-                    android:gravity="left"
-                    android:text="작성자"
-                    android:textColor="@color/sub_font2_gray"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/cardDetail_card_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/pretendardbold"
-                    android:gravity="right"
-                    android:text="~~~"
-                    android:textColor="@color/main_font_black"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/pretendardbold"
-                    android:gravity="left"
-                    android:text="추가일"
-                    android:textColor="@color/sub_font2_gray"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/cardDetail_card_cardExpireDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/pretendardbold"
-                    android:gravity="right"
-                    android:text="~~~~~"
-                    android:textColor="@color/main_font_black"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
+                android:layout_marginBottom="70dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -174,11 +202,20 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="right"
-                    android:text="~~~~~"
+                    android:text="@{cardDate.cardExpireDate}"
                     android:textColor="@color/main_font_black"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
-
+        <include
+            android:id="@+id/layout_loading_progress"
+            layout="@layout/progressbar_loading"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

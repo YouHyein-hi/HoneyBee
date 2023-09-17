@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CardAddDialog(
-    private val homeViewModel: CardViewModel
+    private val cardViewModel: CardViewModel
 ) : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
     private val viewModel : CardAddViewModel by viewModels()
@@ -47,7 +47,7 @@ class CardAddDialog(
                 else{
                     if (price.contains(","))
                         price = price.replace(",", "")
-                    homeViewModel.insertServerCardData(SendCardData(cardAddNameEdit.text.toString(), price.toInt(), cardAddDateDatePicker.toString()))
+                    cardViewModel.insertServerCardData(SendCardData(cardAddNameEdit.text.toString(), price.toInt(), "2023-01-18"))
                     dismiss()
                 }
             }
@@ -63,7 +63,7 @@ class CardAddDialog(
         viewModel.response.observe(viewLifecycleOwner){
             when(it){
                 ResponseState.UPDATE_SUCCESS -> {
-                    homeViewModel.getServerCardData()
+                    cardViewModel.getServerCardData()
                     dismiss()
                 }
                 else->{}

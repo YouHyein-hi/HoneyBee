@@ -50,7 +50,7 @@ class NetworkInterceptor @Inject constructor(
     private fun requestMaker(request: Request): Request {
         Log.e("TAG", "requestMaker: requestMaker", )
         return request.newBuilder()
-            .header("Authorization", preferenceManager.getAccessToken()!!)
+            .header("Authorization", preferenceManager.getAccessToken()?:"")
             .build()
     }
 

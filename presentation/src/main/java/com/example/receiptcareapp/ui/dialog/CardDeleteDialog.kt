@@ -48,7 +48,8 @@ class CardDeleteDialog(
             }
             deleteOkBtn.setOnClickListener{
                 Log.e("TAG", "initListener idid: $id", )
-                cardViewModel.deleteServerCardDate(id) // 여기를 영수ㅡㅇ이 아니라 카드로 바꿔야됨!
+                cardViewModel.deleteServerCardDate(id)
+                dismiss()
             }
         }
     }

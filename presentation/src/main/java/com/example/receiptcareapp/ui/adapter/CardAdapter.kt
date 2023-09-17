@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.remote.receive.card.CardData
+import com.example.domain.model.ui.recycler.ServerRecyclerData
 import com.example.receiptcareapp.databinding.ItemCardBinding
 
 /**
@@ -14,6 +15,7 @@ import com.example.receiptcareapp.databinding.ItemCardBinding
 
 class CardAdapter : RecyclerView.Adapter<CardAdapter.MyHolder>(){
 
+    lateinit var onCardClick : (CardData)->Unit
     private lateinit var cardBinding: ItemCardBinding
     var dataList = mutableListOf<CardData>()
         set(value){
@@ -23,7 +25,7 @@ class CardAdapter : RecyclerView.Adapter<CardAdapter.MyHolder>(){
     inner class MyHolder(private val binding : ItemCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CardData) {
             binding.cardData = item
-            binding.cardLayout.setOnClickListener{  }
+            binding.cardLayout.setOnClickListener{ onCardClick(item) }
         }
     }
 

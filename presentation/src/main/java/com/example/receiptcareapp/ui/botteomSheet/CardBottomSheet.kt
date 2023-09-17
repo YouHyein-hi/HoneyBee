@@ -6,12 +6,14 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.BottomsheetCardBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
 import com.example.receiptcareapp.ui.adapter.CardAdapter
+import com.example.receiptcareapp.ui.dialog.CardDeleteDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
@@ -51,6 +53,11 @@ class CardBottomSheet(
         binding.cardAddBtn.setOnClickListener{
             cardAddDialog()
         }
+        adapter.onCardClick = {
+            Log.e("TAG", "initListener idid: ${it.uid}", )
+            viewModel.putId(it.uid)
+            cardDeleteDialog()
+        }
     }
 
     override fun initObserver() {
@@ -89,5 +96,10 @@ class CardBottomSheet(
     private fun cardAddDialog(){
         val cardAddDialog = CardAddDialog(viewModel)
         cardAddDialog.show(parentFragmentManager, "CardAddDialog")
+    }
+
+    private fun cardDeleteDialog(){
+        val cardDeleteDialog = CardDeleteDialog(viewModel)
+        cardDeleteDialog.show(parentFragmentManager, "cardDeleteDialog")
     }
 }

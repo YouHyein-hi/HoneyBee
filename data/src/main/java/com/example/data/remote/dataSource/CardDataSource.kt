@@ -27,11 +27,10 @@ interface CardDataSource {
     @GET("bill/card/list")
     suspend fun getCardDataSource() : ServerResponse<List<ServerCardResponse>> //바디에 카드
 
-//    //아직 안쓰이는 기능
-//    @DELETE("billCard/delete/{uid}")
-//    suspend fun deleteCardDataSource(
-//        @Path("uid") uid:Long
-//    ): ServerResponse<SimpleResponse>
+    @DELETE("bill/delete/card/{uid}")
+    suspend fun deleteCardDataSource(
+        @Path("uid") uid:Long
+    ): ServerResponse<Int>
 //
 //    //아직 안쓰이는 기능
 //    @FormUrlEncoded

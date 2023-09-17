@@ -4,6 +4,7 @@ import com.example.domain.repo.*
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.card.InsertCardUseCase
 import com.example.domain.usecase.bill.*
+import com.example.domain.usecase.card.DeleteCardUseCase
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.login.LoginUseCase
 import com.example.domain.usecase.notice.AddNoticeUseCase
@@ -42,6 +43,12 @@ object UseCaseModule {
     @Singleton
     fun provideInsertCardUseCase(repo : CardRepository) : InsertCardUseCase{
         return InsertCardUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteCardUseCase(repo: CardRepository) : DeleteCardUseCase{
+        return DeleteCardUseCase(repo)
     }
 
     //카드 업데이트 기능은 아직 미사용

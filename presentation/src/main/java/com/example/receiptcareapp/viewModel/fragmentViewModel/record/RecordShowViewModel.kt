@@ -171,4 +171,9 @@ class RecordShowViewModel @Inject constructor(
             }?:throw SocketTimeoutException()
         }
     }
+
+    fun billCheckComplete(){
+
+    }
+    fun billCheckCancel(){}
 }

@@ -71,4 +71,12 @@ class GeneralDataSourceImpl @Inject constructor(
             amount
         )
     }
+
+    override suspend fun billCheckCompleteDataSource(): ServerResponse<String?> {
+        return retrofit.create(GeneralDataSource::class.java).billCheckCompleteDataSource()
+    }
+
+    override suspend fun billCheckCancelDataSource(): ServerResponse<String?> {
+        return retrofit.create(GeneralDataSource::class.java).billCheckCancelDataSource()
+    }
 }

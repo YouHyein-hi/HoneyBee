@@ -18,6 +18,8 @@
     <string name="delete">삭제</string>
     <string name="login">로 그 인</string>
     <string name="logout">로 그 아 웃</string>
+    <string name="yes">네</string>
+    <string name="no">아니요</string>
 <!--    <string name="permission_ok">권한 있음</string>
     <string name="permission_fail">권한 없음</string>
     <string name="permission_resend">권한 없음</string> -->
@@ -139,6 +141,11 @@
     <!-- Dialog 이미지 download(다운로드) 영수증 상세 페이지 -->
     <string name="dialog_download_title">영수증 다운로드</string>
     <string name="dialog_download_text">해당 영수증 이미지를 다운 받으시겠어요?</string>
+    <!-- Dialog 청구 하기 -->
+    <string name="dialog_bill_check_complete_title_text">청구 완료</string>
+    <string name="dialog_bill_check_cancel_title_text">청구 취소</string>
+    <string name="dialog_bill_check_complete_content_text">청구가 완료되었나요?</string>
+    <string name="dialog_bill_check_cancel_content_text">청구를 취소하시겠어요?</string>
 
     <!-- 공지사항 페이지 -->
     <string name="notice_title">공지사항</string>

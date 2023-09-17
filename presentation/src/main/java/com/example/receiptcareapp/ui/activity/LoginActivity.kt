@@ -31,7 +31,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val ALL_PERMISSIONS_CODE = 123
 
     override fun initData() {
-        nextActivity()
+//        nextActivity()
         if(viewModel.getAutoLoginCheckBoxState())
             viewModel.checkAccessToken()
 

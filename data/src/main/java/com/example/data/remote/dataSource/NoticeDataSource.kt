@@ -17,11 +17,11 @@ import javax.inject.Singleton
 interface NoticeDataSource {
 
     @Streaming
-    @GET("billNotice/list")
+    @GET("bill/notice/list")
     suspend fun getNoticeListDataSource(): ServerResponse<List<ServerNoticeResponse>>
 
     @FormUrlEncoded
-    @POST("billNotice/add")
+    @POST("bill/notice/add")
     suspend fun addNoticeDataSource(
         @Field("billNoticeTitle") title : String,
         @Field("billNoticeDate") date : LocalDateTime,

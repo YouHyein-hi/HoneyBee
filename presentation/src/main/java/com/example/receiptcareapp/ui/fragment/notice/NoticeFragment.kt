@@ -59,6 +59,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
         viewModel.response.observe(viewLifecycleOwner){
             adapter.dataList.clear()
             adapter.dataList = it?.body!!.toMutableList()
+            Log.e("TAG", "initObserver: $it", )
         }
 
         //TODO 프로그레스바 databinding

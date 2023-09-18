@@ -60,7 +60,10 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         // 이미지 다운로드 버튼
         binding.recordDownloadBtn.setOnClickListener{ downloadDialog() }
         //수정 후 재전송 버튼
-        binding.recordChangeBtn.setOnClickListener{ changeDialog() }
+        binding.recordChangeBtn.setOnClickListener{
+            viewModel.picture.value?.let { it -> viewModel.takeChangePicture(it) }
+            changeDialog()
+        }
         //삭제 버튼
         binding.recoreRemoveBtn.setOnClickListener{ deleteDialog() }
         //뒤로가기 버튼
@@ -92,14 +95,11 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
             }
         }
 
-        //서버 연결 상태 옵져버
-        //TODO 데이터바인딩
         viewModel.loading.observe(viewLifecycleOwner){
 //            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
 //            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
-        //TODO 데이터 바인딩
         viewModel.picture.observe(viewLifecycleOwner){
             Glide.with(binding.recoreImageView)
                 .load(it)

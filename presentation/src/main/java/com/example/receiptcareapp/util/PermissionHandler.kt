@@ -20,10 +20,14 @@ class PermissionHandler (private val context: Context) {
                         showToast("카메라 권한이 허용됐습니다!")
                     }
                 }
-                android.Manifest.permission.READ_EXTERNAL_STORAGE -> {
+                android.Manifest.permission.READ_MEDIA_IMAGES -> {
                     if (grantResult == PackageManager.PERMISSION_GRANTED) {
                         Log.e("TAG", "갤러리 권한이 허용됐습니다!")
                         showToast("갤러리 권한이 허용됐습니다!")
+                    }
+                    else{
+                        Log.e("TAG", "갤러리 권한이 없습니다.")
+                        showToast("갤러리 권한이 없습니다.")
                     }
                 }
             }

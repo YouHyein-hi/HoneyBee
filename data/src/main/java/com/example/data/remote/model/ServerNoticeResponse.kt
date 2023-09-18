@@ -8,9 +8,10 @@ import com.example.domain.model.remote.receive.notice.NoticeData
  */
 data class ServerNoticeResponse(
     val billNoticeId: String,
+    val billNoticeUserName: String,
     val billNoticeTitle: String,
     val billNoticeDate: String,
     val billNoticeContent: String,
 )
 
-fun ServerNoticeResponse.toNoticeData(): NoticeData = NoticeData(id = billNoticeId, title =  billNoticeTitle, date = billNoticeDate.toString(), content = billNoticeContent)
+fun ServerNoticeResponse.toNoticeData(): NoticeData = NoticeData(id = billNoticeId, title =  billNoticeTitle, date = billNoticeDate, content = billNoticeContent, uploadName = billNoticeUserName)

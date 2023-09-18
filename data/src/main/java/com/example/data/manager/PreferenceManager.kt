@@ -49,10 +49,15 @@ class PreferenceManager @Inject constructor(
     fun getUserRight(): String? = sharedPreference.getString("right", null)
     fun removeUserRight() = sharedPreference.edit().remove("right").apply()
 
+    fun putAuthTime(time: String) = sharedPreference.edit().putString("auth_time", time).apply()
+    fun getAuthTime(): String? = sharedPreference.getString("auth_time", null)
+    fun removeAuthTime() = sharedPreference.edit().remove("auth_time").apply()
+
     fun removeAuth(){
         sharedPreference.edit().remove("access_token").apply()
         sharedPreference.edit().remove("refresh_token").apply()
         sharedPreference.edit().remove("right").apply()
+        sharedPreference.edit().remove("auth_time").apply()
     }
 
 

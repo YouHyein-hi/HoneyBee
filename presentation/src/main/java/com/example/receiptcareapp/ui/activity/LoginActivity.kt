@@ -9,14 +9,15 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityLoginBinding
 import com.example.domain.model.ui.login.LoginData
 import com.example.receiptcareapp.util.PermissionHandler
 import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
-import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
@@ -31,9 +32,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val ALL_PERMISSIONS_CODE = 123
 
     override fun initData() {
-//        nextActivity()
+        viewModel.loadGetAuthData()
         if(viewModel.getAutoLoginCheckBoxState())
-            viewModel.checkAccessToken()
+            if(viewModel.checkAuthTime())
+                nextActivity()
 
         if (!checkAllPermissionsGranted(ALL_PERMISSIONS))
             permissionDialog()
@@ -80,6 +82,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
             Log.e("TAG", "initObserver: $response")
             when (response.status) {
                 "200" -> {
+                    viewModel.loadGetAuthData()
                     nextActivity()
                 }
                 else -> {showShortToast("로그인 실패")}

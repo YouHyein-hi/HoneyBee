@@ -3,11 +3,13 @@ package com.example.data.util
 import android.util.Log
 import com.example.data.BuildConfig
 import com.example.data.manager.PreferenceManager
+import com.google.gson.JsonObject
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import okhttp3.Headers
+import org.json.JSONObject
 import javax.inject.Inject
 
 /**
@@ -36,11 +38,10 @@ class HeaderManager @Inject constructor(
             //토큰 저장
             clearToken()
             saveToken("Bearer $accessToken", refreshToken)
-
             //엑세스 토큰 까서 아이디 또는 이름 저장하기
-
             true
         } catch (e: Exception) {
+            Log.e("TAG", "err: $e", )
             false
         }
     }
@@ -48,15 +49,14 @@ class HeaderManager @Inject constructor(
     private fun verifyToken(accessToken: String): Boolean {
         return try {
             val decodingKey = Decoders.BASE64.decode(BuildConfig.SECRET_KEY)
-            Log.e("TAG", "decodingKey: $decodingKey", )
             val signingKey = Keys.hmacShaKeyFor(decodingKey)
-            val claims: Claims = Jwts.parserBuilder()
+            Jwts.parserBuilder()
                 .setSigningKey(signingKey)
                 .build()
                 .parseClaimsJws(accessToken)
                 .body
             true
-        } catch (e: Exception) { false }
+        } catch (e: Exception) { throw Exception("로그인 토근 검증 오류") }
     }
 
     private fun clearToken(){
@@ -66,5 +66,9 @@ class HeaderManager @Inject constructor(
     private fun saveToken(accessToken: String, refreshToken: String){
         preferenceManager.putAccessToken(accessToken)
         preferenceManager.putRefreshToken(refreshToken)
+        val payload = accessToken.replace("Bearer ","").split(".")[1]
+        val decodePayload = JSONObject(String(Decoders.BASE64.decode(payload)))
+        preferenceManager.putUserRight(decodePayload["role"].toString())
+        preferenceManager.putAuthTime(decodePayload["exp"].toString())
     }
 }

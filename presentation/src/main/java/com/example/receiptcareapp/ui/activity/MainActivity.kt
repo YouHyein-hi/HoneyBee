@@ -18,7 +18,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
 ) {
     private val activityViewModel: MainActivityViewModel by viewModels()
 
-    override fun initData() {}
+    override fun initData() {
+
+    }
 
     override fun initUI() {
         supportActionBar?.hide()

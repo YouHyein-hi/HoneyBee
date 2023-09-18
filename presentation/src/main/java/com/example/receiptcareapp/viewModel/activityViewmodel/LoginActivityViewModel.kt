@@ -33,8 +33,6 @@ class LoginActivityViewModel @Inject constructor(
     private var _response = MutableLiveData<ServerResponseData>()
     val response: LiveData<ServerResponseData> get() = _response
 
-    lateinit var loginData: Pair<String, String>
-
     fun requestLogin(email: String, password: String, autoLoginCheckBox:Boolean, savedIdCheckBoxState:Boolean) {
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
@@ -52,14 +50,16 @@ class LoginActivityViewModel @Inject constructor(
         }
     }
 
-    fun checkAccessToken() {
-        if(preferenceManager.getAccessToken() != null){
-            modelScope.launch {
-                isLoading.postValue(true)
-                val gap = cardListUseCase.invoke()
-                delay(1000L)
-                _response.postValue(ServerResponseData(gap.status, gap.message, null))
-                isLoading.postValue(false)
+    fun checkAuthTime(): Boolean {
+        return when(val authTime = preferenceManager.getAuthTime()){
+            null -> false
+            else -> {
+                if(authTime.toLong() > (System.currentTimeMillis() / 1000))
+                    true
+                else{
+                    authTimeEnd()
+                    false
+                }
             }
         }
     }
@@ -73,4 +73,17 @@ class LoginActivityViewModel @Inject constructor(
     fun getAutoLoginCheckBoxState():Boolean = preferenceManager.getAutoLoginCheckBox()
     fun getId():String? = preferenceManager.getEmail()
     fun getIdCheckBoxState():Boolean = preferenceManager.getAutoEmailCheckBox()
+
+    fun loadGetAuthData(){
+        Log.e("TAG", "getAccessToken: ${preferenceManager.getAccessToken()}", )
+        Log.e("TAG", "getRefreshToken: ${preferenceManager.getRefreshToken()}", )
+        Log.e("TAG", "getUserRight: ${preferenceManager.getUserRight()}", )
+        Log.e("TAG", "getAuthTime: ${preferenceManager.getAuthTime()}", )
+    }
+
+    fun authTimeEnd(){
+        modelScope.launch {
+            throw Exception("자동로그인 토큰 만료")
+        }
+    }
 }

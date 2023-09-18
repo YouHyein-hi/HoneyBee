@@ -52,7 +52,12 @@ class RecordShowViewModel @Inject constructor(
     val picture : LiveData<Bitmap?> get(){
         return _picture
     }
-    fun takePicture(img: Bitmap) { _picture.value = img }
+
+    private var _changePicture = MutableLiveData<Bitmap?>()
+    val changePicture : LiveData<Bitmap?> get(){
+        return _changePicture
+    }
+    fun takeChangePicture(pic: Bitmap) { _changePicture.value = pic }
 
     var textValue: String? = null
 

@@ -84,9 +84,9 @@ class ChangeDialog(
 
     override fun initListener() {
 
-        binding.changeImageImageView.setOnLongClickListener {
+        binding.changeImage.setOnLongClickListener {
             Log.e("TAG", "initListener: 그림 길게 클릭함!", )
-            //CallGallery()
+            CallGallery()
             return@setOnLongClickListener(true)
         }
 
@@ -124,6 +124,7 @@ class ChangeDialog(
                                 storeAmount = binding.changePriceEdit.text.toString().replace(",", "").toInt(),
                                 cardName = cardName,
                                 storeName = binding.changeStoreEdit.text.toString()
+                                // 이미지 = viewModel.changePicture.value // => 수정에 이미지 추가되어야 함~~
                             )
                         )
                     } else {
@@ -164,11 +165,11 @@ class ChangeDialog(
         }
 
         // 이렇게 말고 show 부분에서 picture bitmap이나 url 가져오면 되는 거 아닌가? (핳)
-        viewModel.picture.observe(viewLifecycleOwner){
-            Glide.with(binding.changeImageImageView)
+        viewModel.changePicture.observe(viewLifecycleOwner){
+            Glide.with(binding.changeImage)
                 .load(it)
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
-                .into(binding.changeImageImageView)
+                .into(binding.changeImage)
 //            checkImageData()
         }
     }
@@ -187,7 +188,8 @@ class ChangeDialog(
             if (imageUri != null) {
                 Log.e("TAG", "data 있음", )
                 val bitmap : Bitmap? = UriToBitmapUtil.uriToBitmap(requireContext(), imageUri)
-                bitmap?.let { it -> viewModel.takePicture(it) }
+                bitmap?.let { it -> viewModel.takeChangePicture(it) }
+                viewModelData.file = imageUri
             }
             else{ Log.e("TAG", "data 없음", ) }
         }

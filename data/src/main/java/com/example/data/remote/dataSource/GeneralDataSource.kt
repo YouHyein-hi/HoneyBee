@@ -64,4 +64,12 @@ interface GeneralDataSource {
         @Field("billSubmitTime") billSubmitTime: LocalDateTime,
         @Field("amount") amount: Int,
     ): ServerResponse<Int>
+
+    @Streaming
+    @GET("bill/")   // 전체 스토어 데이터 요청
+    suspend fun billCheckCompleteDataSource(): ServerResponse<String>
+
+    @Streaming
+    @GET("bill/")   // 전체 스토어 데이터 요청
+    suspend fun billCheckCancelDataSource(): ServerResponse<String>
 }

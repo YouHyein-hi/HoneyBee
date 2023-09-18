@@ -4,12 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.remote.receive.card.CardData
+import com.example.domain.model.ui.recycler.ServerRecyclerData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.ItemHomeCardListBinding
+import com.example.receiptcareapp.ui.botteomSheet.CardListBottomSheet
 
 class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
 
     private lateinit var binding: ItemHomeCardListBinding
+    lateinit var onHomeCardItemClick : (CardData)->Unit
 
     var dataList = mutableListOf<CardData>()
         set(value){
@@ -20,6 +23,7 @@ class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
     inner class MyHolder(private val binding : ItemHomeCardListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CardData, position:Int) {
             binding.cardData = item
+            binding.root.setOnClickListener{ onHomeCardItemClick(item) }
             when(position) {
                 1 -> binding.cardHomeIconImg.setImageResource(R.drawable.icon_card_1)
                 2 -> binding.cardHomeIconImg.setImageResource(R.drawable.icon_card_2)

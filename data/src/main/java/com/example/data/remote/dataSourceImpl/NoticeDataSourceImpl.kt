@@ -22,7 +22,8 @@ class NoticeDataSourceImpl @Inject constructor(
     override suspend fun addNoticeDataSource(
         title: String,
         date: LocalDateTime,
-        content: String
+        content: String,
+        name:String
     ): ServerResponse<String> {
         return retrofit.create(NoticeDataSource::class.java).addNoticeDataSource(
             title = title,

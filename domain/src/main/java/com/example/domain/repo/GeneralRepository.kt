@@ -1,5 +1,6 @@
 package com.example.domain.repo
 
+import com.example.domain.model.remote.receive.basic.ServerResponseData
 import com.example.domain.model.remote.receive.basic.ServerUidData
 import com.example.domain.model.remote.receive.bill.ServerBillData
 import com.example.domain.model.remote.receive.bill.ServerDetailBillData
@@ -20,4 +21,6 @@ interface GeneralRepository {
     suspend fun getPictureDataRepository(id:String): ServerPictureData
     suspend fun insertDataRepository(sendBillData: UiBillData): ServerUidData
     suspend fun updateDataRepository(sendBillUpdateData: SendBillUpdateData): ServerUidData
+    suspend fun billCheckCompleteRepository(): ServerResponseData
+    suspend fun billCheckCancelRepository(): ServerResponseData
 }

@@ -25,6 +25,7 @@ interface NoticeDataSource {
     suspend fun addNoticeDataSource(
         @Field("billNoticeTitle") title : String,
         @Field("billNoticeDate") date : LocalDateTime,
-        @Field("billNoticeContent") content : String
+        @Field("billNoticeContent") content : String,
+        @Field("billNoticeUserName") name : String = "푸름"
     ): ServerResponse<String>
 }

@@ -18,20 +18,19 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.data.util.UriToBitmapUtil
 import com.example.domain.util.StringUtil
 import com.example.domain.model.ui.type.ShowType
-import com.example.receiptcareapp.ui.dialog.ChangeDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.receiptcareapp.R
-import com.example.receiptcareapp.ui.dialog.DeleteDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.state.ResponseState
-import com.example.receiptcareapp.ui.dialog.DownloadDialog
+import com.example.receiptcareapp.ui.dialog.*
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.math.log
 
 
 @AndroidEntryPoint
@@ -68,6 +67,21 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         binding.recoreRemoveBtn.setOnClickListener{ deleteDialog() }
         //뒤로가기 버튼
         binding.recordBackBtn.setOnClickListener{ findNavController().popBackStack() }
+        //청구버튼
+        binding.billCheckBtn.setOnCheckedChangeListener{ _, isChecked ->
+            when(isChecked){
+                false -> {
+                    BillCheckCancelDialog(viewModel)
+                    //binding.billCheckBtn.isChecked = false
+                    //통신 실패할 경우 원래대로 처리해야함
+                }
+                true -> {
+                    BillCheckCompleteDialog(viewModel)
+                    //binding.billCheckBtn.isChecked = true
+                    //통신 실패할 경우 원래대로 처리해야함
+                }
+            }
+        }
     }
 
     override fun initObserver() {
@@ -96,8 +110,8 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         }
 
         viewModel.loading.observe(viewLifecycleOwner){
-//            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
-//            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
+            if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
+            else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
         viewModel.picture.observe(viewLifecycleOwner){
@@ -139,21 +153,18 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     //수정
-    private fun changeDialog(){
-        val changeDialog = ChangeDialog(viewModel)
-        changeDialog.show(parentFragmentManager, "changeDialog")
+    private fun changeDialog() {
+        ChangeDialog(viewModel).show(parentFragmentManager, "changeDialog")
     }
 
     //서버와 로컬 삭제
-    private fun deleteDialog(){
-        val deleteDialog = DeleteDialog(viewModel)
-        deleteDialog.show(parentFragmentManager, "deleteDialog")
+    private fun deleteDialog() {
+        DeleteDialog(viewModel).show(parentFragmentManager, "deleteDialog")
     }
 
     //이미지 다운로드
     private fun downloadDialog(){
-        val downloadDialog = DownloadDialog(viewModel)
-        downloadDialog.show(parentFragmentManager, "downloadDialog")
+        DownloadDialog(viewModel).show(parentFragmentManager, "downloadDialog")
     }
 
     override fun onDestroy() {

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import com.example.data.mapper.ResponseMapper.toServerBillData
 import com.example.data.mapper.ResponseMapper.toServerDetailBillData
+import com.example.data.mapper.ResponseMapper.toServerResponseData
 import com.example.data.mapper.ResponseMapper.toServerStoreData
 import com.example.data.mapper.ResponseMapper.toUidServerResponseData
 import com.example.data.remote.dataSource.GeneralDataSource
@@ -17,6 +18,7 @@ import com.example.domain.model.ui.bill.UiBillData
 import com.example.domain.repo.GeneralRepository
 import com.example.domain.util.StringUtil
 import com.example.data.util.UriToBitmapUtil
+import com.example.domain.model.remote.receive.basic.ServerResponseData
 import com.example.domain.model.remote.receive.bill.ServerDetailBillData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.MultipartBody
@@ -91,5 +93,13 @@ class GeneralRepositoryImpl @Inject constructor(
             billSubmitTime = sendBillUpdateData.date,
             amount = sendBillUpdateData.storeAmount,
         ).toUidServerResponseData()
+    }
+
+    override suspend fun billCheckCompleteRepository(): ServerResponseData {
+        return generalDataSource.billCheckCompleteDataSource().toServerResponseData()
+    }
+
+    override suspend fun billCheckCancelRepository(): ServerResponseData {
+        return generalDataSource.billCheckCancelDataSource().toServerResponseData()
     }
 }

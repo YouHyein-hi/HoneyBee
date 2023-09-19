@@ -41,7 +41,8 @@ class CardRepositoryImpl @Inject constructor(
         return cardDataSource.sendCardDataSource(
             cardName = sendCardData.cardName,
             amount = sendCardData.cardAmount,
-            billCheckDate = sendCardData.billCheckDate
+            expireDate = sendCardData.cardExpireDate,
+            designId = sendCardData.cardDesignId
         ).toServerResponseData()
     }
 

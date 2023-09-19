@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.remote.receive.card.ServerCardData
@@ -56,12 +57,14 @@ class CardViewModel @Inject constructor(
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
+                Log.e("TAG", "insertServerCardData: ${sendData.cardName}, ${sendData.cardAmount}, ${sendData.cardExpireDate}, ${sendData.cardDesignId}", )
                 _response.postValue(
                     insertCardUseCase(
                         SendCardData(
                             cardName = sendData.cardName,
                             cardAmount = sendData.cardAmount,
-                            billCheckDate = sendData.billCheckDate
+                            cardExpireDate = sendData.cardExpireDate,
+                            cardDesignId = sendData.cardDesignId
                         )
                     )
                 )

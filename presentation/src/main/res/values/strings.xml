@@ -96,7 +96,7 @@
     <!-- Dialog CardAdd 카드 목록 페이지 -->
     <string name="dialog_cardAdd_title">카드 추가</string>
     <string name="dialog_cardAdd_text">추가할 카드 이름과 금액, 만료 날짜를 입력해주세요.</string>
-    <string name="dialog_cardAdd_name">카드 이름을 입력해주세요.</string>
+    <string name="dialog_cardAdd_name">카드 이름을 입력해주세요. (ex. 하나카드)</string>
     <string name="dialog_cardAdd_name_err">카드 이름을 꼭 적어주세요!</string>
     <string name="dialog_cardAdd_price">카드 금액을 입력해주세요.</string>
     <string name="dialog_cardAdd_price_err">카드 금액을 꼭 적어주세요!</string>

@@ -5,6 +5,7 @@ import com.example.data.di.DataSourceModule
 import com.example.data.remote.model.ServerCardResponse
 import dagger.Component
 import retrofit2.http.*
+import java.time.LocalDate
 import javax.inject.Singleton
 
 /**
@@ -20,7 +21,8 @@ interface CardDataSource {
     suspend fun sendCardDataSource(
         @Field("cardName") cardName : String,
         @Field("cardAmount") amount : Int,
-        @Field("billCheckDate") billCheckDate : String
+        @Field("cardExpireDate") expireDate : LocalDate,
+        @Field("cardDesignId") designId : Int
     ): ServerResponse<String>
 
     @Streaming

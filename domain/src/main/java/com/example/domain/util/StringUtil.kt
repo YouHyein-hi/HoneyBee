@@ -37,6 +37,10 @@ object StringUtil {
         )
     }
 
+    fun myLocalDateFuntion(myYear : Int, myMonth : Int, myDate : Int) : LocalDate?{
+        return LocalDate.of(myYear, myMonth, myDate)
+    }
+
     fun dateReplace(date : String): List<String> {
         var gap = date
         if(date.contains("T"))

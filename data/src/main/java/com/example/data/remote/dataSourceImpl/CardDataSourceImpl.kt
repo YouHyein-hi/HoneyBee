@@ -7,6 +7,7 @@ import com.example.data.remote.dataSource.CardDataSource
 import com.example.data.remote.dataSource.LoginDataSource
 import com.example.data.remote.model.ServerCardResponse
 import retrofit2.Retrofit
+import java.time.LocalDate
 import javax.inject.Inject
 
 /**
@@ -19,9 +20,10 @@ class CardDataSourceImpl @Inject constructor(
     override suspend fun sendCardDataSource(
         cardName: String,
         amount: Int,
-        billCheckDate: String
+        expireDate: LocalDate,
+        designId: Int
     ): ServerResponse<String> {
-        return retrofit.create(CardDataSource::class.java).sendCardDataSource(cardName = cardName, amount = amount, billCheckDate = billCheckDate)
+        return retrofit.create(CardDataSource::class.java).sendCardDataSource(cardName = cardName, amount = amount, expireDate = expireDate, designId = designId)
     }
 
     override suspend fun getCardDataSource(): ServerResponse<List<ServerCardResponse>> {

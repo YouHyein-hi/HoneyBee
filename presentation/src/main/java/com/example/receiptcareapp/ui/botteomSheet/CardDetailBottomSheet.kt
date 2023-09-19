@@ -62,7 +62,6 @@ class CardDetailBottomSheet(
     }
 
     override fun initObserver() {
-        //TODO databinding으로 옵져버하게 ,, 어떻게 뺄지 고민
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
@@ -91,7 +90,7 @@ class CardDetailBottomSheet(
     }
 
     private fun cardDeleteDialog(){
-        val cardDeleteDialog = CardDeleteDialog(viewModel)
+        val cardDeleteDialog = CardDeleteDialog(viewModel, this)
         cardDeleteDialog.show(parentFragmentManager, "cardDeleteDialog")
     }
 

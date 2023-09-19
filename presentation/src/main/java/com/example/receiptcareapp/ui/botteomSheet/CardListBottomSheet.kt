@@ -12,7 +12,6 @@ import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.BottomsheetCardBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
 import com.example.receiptcareapp.ui.adapter.CardListAdapter
-import com.example.receiptcareapp.ui.dialog.CardDeleteDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel

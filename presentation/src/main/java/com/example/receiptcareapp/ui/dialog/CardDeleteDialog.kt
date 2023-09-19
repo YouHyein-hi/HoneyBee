@@ -12,6 +12,7 @@ import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.receiptcareapp.databinding.DialogCardDeleteBinding
 import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.state.ResponseState
+import com.example.receiptcareapp.ui.botteomSheet.CardDetailBottomSheet
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
@@ -22,7 +23,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CardDeleteDialog(
-    private val cardViewModel: CardViewModel
+    private val cardViewModel: CardViewModel,
+    private val cardDetailBottomSheet: CardDetailBottomSheet
 ) : BaseDialog<DialogCardDeleteBinding>(DialogCardDeleteBinding::inflate) {
 
     private val viewModel : CardDeleteViewModel by viewModels()
@@ -48,6 +50,7 @@ class CardDeleteDialog(
             }
             deleteOkBtn.setOnClickListener{
                 Log.e("TAG", "initListener idid: $id", )
+                cardDetailBottomSheet.dismiss() // CardDetailBottomSheet를 먼저 숨깁니다.
                 cardViewModel.deleteServerCardDate(id)
                 dismiss()
             }

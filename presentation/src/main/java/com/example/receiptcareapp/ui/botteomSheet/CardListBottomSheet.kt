@@ -30,7 +30,7 @@ class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
     private val adapter: CardListAdapter = CardListAdapter()
     private val viewModel: CardViewModel by viewModels()
     private val cardAddDialog: CardAddDialog by lazy { CardAddDialog(viewModel) }
-    private val cardDeleteDialog: CardDeleteDialog by lazy { CardDeleteDialog(viewModel) }
+//    private val cardDeleteDialog: CardDeleteDialog by lazy { CardDeleteDialog(viewModel) }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)

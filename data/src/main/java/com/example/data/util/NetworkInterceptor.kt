@@ -1,14 +1,19 @@
 package com.example.data.util
 
+import android.os.Looper
 import android.util.Log
+import com.example.data.BuildConfig
+import com.example.data.di.RetrofitModule
 import com.example.data.manager.PreferenceManager
 import com.example.data.remote.dataSource.LoginDataSource
-import okhttp3.Headers
-import okhttp3.Interceptor
-import okhttp3.Request
-import okhttp3.Response
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import kotlinx.coroutines.*
+import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -19,29 +24,38 @@ class NetworkInterceptor @Inject constructor(
     private val preferenceManager: PreferenceManager,
 ) : Interceptor {
     init {
-        Log.e("TAG", "NetworkInterceptor 생성", )
+        Log.e("TAG", "NetworkInterceptor: ", )
     }
+    private var gson: Gson = GsonBuilder().setLenient().create()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val firstRequest = requestMaker(request)
-        Log.e("TAG", "firstRequest: $firstRequest", )
 
         //보낸 요청의 반환값
         val response = chain.proceed(firstRequest)
-        Log.e("TAG", "intercept response: $response", )
-        Log.e("TAG", "intercept response: ${response.body}", )
+        Log.e("TAG", "intercept: $response", )
 
-        //토큰이 문제(만료 등)가 있다는 401 에러일 경우 여기서 자동으로 재요청을 하여 토큰을 갈아껴야 함
         if (response.code == 401) {
+            response.close()
 
-            val newAccessToken = requestNewAccessToken()
+            var newAccessToken:String? = ""
+
+            //TODO 이 방법보다 나은 방법이 있을것같음..
+            runBlocking {
+                newAccessToken = requestNewAccessToken()
+            }
+
+
+            Log.e("TAG", "oldAccessToken: ${preferenceManager.getAccessToken()}")
+            Log.e("TAG", "newAccessToken: $newAccessToken", )
 
             if (newAccessToken != null) {
+                preferenceManager.putAccessToken(newAccessToken?:"")
                 val secondRequest = requestMaker(firstRequest)
                 return chain.proceed(secondRequest)
             }else{
-                throw Exception("토큰 재요청 오류 ")
+                return response
             }
         }
         return response
@@ -53,25 +67,36 @@ class NetworkInterceptor @Inject constructor(
             .build()
     }
 
-    private fun requestNewAccessToken(): String? {
-        val response = Retrofit.Builder()
-            .baseUrl("http://210.119.104.158:8080/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(LoginDataSource::class.java).requestNewAccessToken(
-                accessToken = preferenceManager.getAccessToken()!!,
-                refreshToken = preferenceManager.getRefreshToken()!!
-            )
-        Log.e("TAG", "gap: $response")
-        Log.e("TAG", "gap?.headers(): ${response?.headers()}")
-        Log.e("TAG", "Authorization: ${response?.headers()!!["Authorization"]}")
-        Log.e("TAG", "RefreshToken: ${response.headers()["RefreshToken"]}")
-
-        return if(response.isSuccessful){
-            when(response.code()){
-                200 -> response.headers()["Authorization"]
-                else -> null
-            }
-        }else null
+    private suspend fun requestNewAccessToken(): String? {
+            val response = Retrofit.Builder()
+                .baseUrl(BuildConfig.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(okHttpClient)
+                .build()
+                .create(LoginDataSource::class.java).requestNewAccessToken(
+                    accessToken = preferenceManager.getAccessToken(),
+                    refreshToken = preferenceManager.getRefreshToken()
+                )
+            response
+        return response?.headers()?.get("Authorization")
     }
+
+
+
+    //네트워크 통신 과정을 보기 위한 클라이언트
+    private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        })
+        .addInterceptor {
+            val request = it.request()
+                .newBuilder()
+                .build()
+            val response = it.proceed(request)
+            response
+        }
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
+        .build()
 }

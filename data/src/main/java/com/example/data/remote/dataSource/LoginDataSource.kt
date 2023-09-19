@@ -21,8 +21,8 @@ interface LoginDataSource {
     ): Response<ServerResponse<String>>?
 
     @POST("auth/app/reissue")
-    fun requestNewAccessToken(
-        @Header("Authorization") accessToken: String,
-        @Header("RefreshToken") refreshToken: String
+    suspend fun requestNewAccessToken(
+        @Header("Authorization") accessToken: String?,
+        @Header("RefreshToken") refreshToken: String?
     ): Response<ServerResponse<String>>?
 }

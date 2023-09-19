@@ -68,6 +68,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+            android:gravity="right"
             android:orientation="vertical"
             android:id="@+id/constraintLayout"
             android:layout_width="wrap_content"

@@ -12,9 +12,9 @@ data class ServerCardResponse(
     var cardName:String,
     var cardAmount:Int,
     var cardExpireDate: String,
-    var billCheckDate:String?
+    var cardDesignId: Int
 )
 
 fun ServerCardResponse.toCardData() =
-    CardData(uid = billCardId, cardName = cardName, cardAmount = cardAmount.toString(), cardExpireDate= cardExpireDate, billCheckDate = billCheckDate)
+    CardData(uid = billCardId, cardName = cardName, cardAmount = cardAmount.toString(), cardExpireDate= cardExpireDate, cardDesignId = cardDesignId)
 fun ServerCardResponse.toCardSpinnerData() = CardSpinnerData(name = cardName, amount = cardAmount.toString())

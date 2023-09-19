@@ -12,7 +12,6 @@ import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.BottomsheetCardBinding
 import com.example.receiptcareapp.ui.dialog.CardAddDialog
 import com.example.receiptcareapp.ui.adapter.CardListAdapter
-import com.example.receiptcareapp.ui.dialog.CardDeleteDialog
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
@@ -55,7 +54,6 @@ class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
         adapter.onCardClick = {
             Log.e("TAG", "initListener idid: ${it.uid}", )
             viewModel.putId(it.uid)
-            cardDeleteDialog()
         }
     }
 
@@ -95,8 +93,9 @@ class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
     private fun cardAddDialog(){
         cardAddDialog.show(parentFragmentManager, "CardAddDialog")
     }
-
-    private fun cardDeleteDialog(){
-        cardDeleteDialog.show(parentFragmentManager, "cardDeleteDialog")
-    }
+    
+    //TODO 기능 구현하기
+//     private fun cardDeleteDialog(){
+//         cardDeleteDialog.show(parentFragmentManager, "cardDeleteDialog")
+//     }
 }

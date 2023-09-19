@@ -1,5 +1,8 @@
 package com.example.domain.model.remote.send.card
 
+import java.time.LocalDate
+import java.time.LocalDateTime
+
 /**
  * 2023-08-30
  * pureum
@@ -7,5 +10,6 @@ package com.example.domain.model.remote.send.card
 data class SendCardData(
     var cardName: String,
     var cardAmount: Int,
-    var billCheckDate: String
+    var cardExpireDate: LocalDate,
+    var cardDesignId: Int
 )

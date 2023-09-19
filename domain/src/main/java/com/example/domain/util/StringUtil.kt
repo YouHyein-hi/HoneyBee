@@ -41,11 +41,18 @@ object StringUtil {
         return LocalDate.of(myYear, myMonth, myDate)
     }
 
-    fun dateReplace(date : String): List<String> {
+    fun dateReplaceDot(date : String): List<String> {
         var gap = date
         if(date.contains("T"))
             gap = StringUtil.changeDate(gap)
         return gap.split(".","  ")
+    }
+
+    fun dateReplaceLine(date : String): List<String> {
+        var gap = date
+        if(date.contains("T"))
+            gap = StringUtil.changeDate(gap)
+        return gap.split("-","  ")
     }
 
     fun CommaReplaceSpace(text : String): String {

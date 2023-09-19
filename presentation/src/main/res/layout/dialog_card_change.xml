@@ -8,6 +8,12 @@
         <variable
             name="price"
             type="String" />
+        <variable
+            name="data"
+            type="com.example.domain.model.remote.receive.card.CardData" />
+        <variable
+            name="viewModel"
+            type="com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,6 +84,7 @@
             android:background="@drawable/btn_edittext"
             android:fontFamily="@font/pretendardsemibold"
             android:hint="@string/dialog_cardAdd_name"
+            android:text="@{data.cardName}"
             android:gravity="center"
             android:inputType="text"
             android:maxLength="15"
@@ -91,7 +98,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/cardAdd_price_edit"
-            textValue="@={price}"
+            textValue="@={viewModel.textValue}"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"

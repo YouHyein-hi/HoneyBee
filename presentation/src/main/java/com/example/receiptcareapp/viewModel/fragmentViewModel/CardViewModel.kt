@@ -37,10 +37,11 @@ class CardViewModel @Inject constructor(
 
     private var _id = MutableLiveData<Long>()
     val id : LiveData<Long> get() = _id
-
     fun putId(id : Long){
         _id.value = id
     }
+
+    var textValue: String? = null
 
     //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {

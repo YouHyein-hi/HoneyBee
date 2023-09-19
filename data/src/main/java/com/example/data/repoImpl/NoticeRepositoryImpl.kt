@@ -1,5 +1,6 @@
 package com.example.data.repoImpl
 
+import android.util.Log
 import com.example.data.mapper.ResponseMapper.toServerNoticeData
 import com.example.data.mapper.ResponseMapper.toServerResponseData
 import com.example.data.remote.dataSource.NoticeDataSource

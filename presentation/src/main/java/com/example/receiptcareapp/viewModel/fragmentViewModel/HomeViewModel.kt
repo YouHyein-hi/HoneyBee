@@ -3,6 +3,7 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.data.manager.PreferenceManager
 import com.example.domain.model.remote.receive.card.ServerCardData
 import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.notice.GetNoticeListUseCase
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getCardListUseCase: GetCardListUseCase,
     private val getNoticeListUseCase: GetNoticeListUseCase,
+    private val preferenceManager: PreferenceManager
 ) : BaseViewModel("HomeViewModel") {
 
     init {
@@ -60,16 +62,8 @@ class HomeViewModel @Inject constructor(
             }
             isLoading.postValue(false)
         }
-//        modelScope.launch {
-//            isLoading.postValue(true)
-//            withTimeoutOrNull(waitTime) {
-//                val gap = getNoticeListUseCase().body
-//                if (gap?.isEmpty() == true)
-//                    _notice.postValue("Honey Bee 영수증 관리 앱 사용을 환영합니다!")
-//                else
-//                    _notice.postValue(gap?.last()?.title)
-//            }
-//            isLoading.postValue(false)
-//        }
     }
+
+    fun getUserRight() = preferenceManager.getUserRight()
+
 }

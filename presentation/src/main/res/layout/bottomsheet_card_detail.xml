@@ -65,7 +65,6 @@
             android:id="@+id/cardDetail_card_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:fontFamily="@font/pretendardsemibold"
             android:textColor="@color/main_font_black"
             android:textSize="30sp"
@@ -157,6 +156,7 @@
             <!--            </LinearLayout>-->
 
             <LinearLayout
+                android:layout_marginBottom="100dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="15dp"

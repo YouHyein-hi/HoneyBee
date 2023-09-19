@@ -36,9 +36,9 @@ class LoginDataSourceImpl @Inject constructor(
         throw Exception("연결 실패 - Null Err")
     }
 
-    override fun requestNewAccessToken(
-        accessToken: String,
-        refreshToken: String
+    override suspend fun requestNewAccessToken(
+        accessToken: String?,
+        refreshToken: String?
     ): Response<ServerResponse<String>>? {
         return retrofit.create(LoginDataSource::class.java)
             .requestNewAccessToken(accessToken = accessToken, refreshToken = refreshToken)

@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.domain.util.StringUtil
@@ -18,7 +17,6 @@ import com.example.receiptcareapp.ui.activity.LoginActivity
 import com.example.receiptcareapp.util.PushReceiver
 import com.example.receiptcareapp.ui.dialog.PushTimeDialog
 import com.example.receiptcareapp.util.FetchStateHandler
-import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +25,6 @@ import java.util.*
 @AndroidEntryPoint
 class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::inflate, "MenuFragment") {
 
-    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: MenuViewModel by viewModels()
     companion object { const val REQUEST_CODE = 101 }
     private lateinit var pendingIntent: PendingIntent
@@ -78,7 +75,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             }
 
             menuPushTimeBtn.setOnClickListener{
-                PushTimeDialog()
+                showPushTimeDialog()
             }
 
 
@@ -111,7 +108,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
         }
     }
 
-    private fun PushTimeDialog(){
+    private fun showPushTimeDialog(){
         PushTimeDialog(viewModel) {
             if (binding.menuPushSwitch.isChecked) {
                 checkMaxDayOfMonth() // Switch가 켜져있다면 알람 설정

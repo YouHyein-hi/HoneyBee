@@ -23,6 +23,7 @@ import java.io.IOException
  * pureum
  */
 object UriToBitmapUtil {
+
     operator fun invoke(application: Context, uri: Uri): MultipartBody.Part{
         val file = File(absolutelyPath(uri, application))
         val compressFile = compressImageFile(file)
@@ -126,5 +127,4 @@ object UriToBitmapUtil {
         }
         return false
     }
-
 }

@@ -16,7 +16,7 @@ import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowV
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DownloadDialog(
+class DownLoadDialog(
     private val viewModel:RecordShowViewModel
 ) : BaseDialog<DialogDownloadBinding>(DialogDownloadBinding::inflate) {
 

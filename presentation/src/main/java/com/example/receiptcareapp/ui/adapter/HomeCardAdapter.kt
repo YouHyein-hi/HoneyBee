@@ -23,6 +23,7 @@ class HomeCardAdapter : RecyclerView.Adapter<HomeCardAdapter.MyHolder>(){
     inner class MyHolder(private val binding : ItemHomeCardListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CardData, position:Int) {
             binding.cardData = item
+            if(item.cardAmount=="-") binding.cardHomeList
             binding.root.setOnClickListener{ onHomeCardItemClick(item) }
             when(position) {
                 1 -> binding.cardHomeIconImg.setImageResource(R.drawable.icon_card_1)

@@ -27,10 +27,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
-//    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-//        level = HttpLoggingInterceptor.Level.BODY
-//    }
-
     private var gson: Gson = GsonBuilder().setLenient().create()
 
     @Qualifier
@@ -63,7 +59,6 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideOkhttpApi(networkInterceptor: NetworkInterceptor): OkHttpClient {
-        Log.e("TAG", "provideOkhttpApi: api retrofit 인터셉트 사용", )
         return OkHttpClient().newBuilder()
 //            .addInterceptor(loggingInterceptor)
             .addInterceptor(networkInterceptor)
@@ -73,8 +68,7 @@ object RetrofitModule {
     @Singleton
     @Provides
     @Api
-    fun provideApiRetrofit(interceptorClient: OkHttpClient):Retrofit{
-        Log.e("TAG", "provideApiRetrofit: api retrofit 사용", )
+    fun provideApiRetrofit(interceptorClient: OkHttpClient):Retrofit {
         return Retrofit.Builder()
             .baseUrl("http://210.119.104.158:8080/")
             .client(interceptorClient)

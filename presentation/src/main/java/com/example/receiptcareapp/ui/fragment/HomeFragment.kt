@@ -20,26 +20,27 @@ import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.ui.botteomSheet.CardDetailBottomSheet
 import com.example.receiptcareapp.util.PermissionHandler
 import com.example.receiptcareapp.ui.botteomSheet.CardListBottomSheet
-import com.example.receiptcareapp.ui.dialog.AddDialog
+import com.example.receiptcareapp.ui.dialog.ChoiceDialog
 import com.example.receiptcareapp.ui.dialog.ExitDialog
+import com.example.receiptcareapp.ui.dialog.PermissionCheckDialog
+import com.example.receiptcareapp.util.App
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
-import com.example.receiptcareapp.ui.dialog.PermissiondCheck_Dialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate, "HomeFragment") {
     private val viewModel : HomeViewModel by viewModels()
-    private lateinit var callback: OnBackPressedCallback
-    private val adapter: HomeCardAdapter by lazy{HomeCardAdapter()}
-    private val ALL_PERMISSIONS = arrayOf(
-        android.Manifest.permission.CAMERA,
-        android.Manifest.permission.READ_MEDIA_IMAGES
-    )
+    private val adapter: HomeCardAdapter by lazy{ HomeCardAdapter() }
+    private val choiceDialog: ChoiceDialog by lazy { ChoiceDialog() }
+    private val exitDialog: ExitDialog by lazy { ExitDialog() }
+    private val permissionCheckDialog: PermissionCheckDialog by lazy { PermissionCheckDialog() }
+    private val bottomSheet by lazy { CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet") }
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
     private val handler = Handler(Looper.getMainLooper())
-
+    private val ALL_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
+    private lateinit var callback: OnBackPressedCallback
 
     override fun initData() {}
 
@@ -58,7 +59,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 addDialog()
             } else {
                 showShortToast("필수 권한을 허용해주세요!")
-                handler.postDelayed({ permissiondcheckDialog() }, 800)
+                handler.postDelayed({ showPermissionCheckDialog() }, 800)
             }
         }
     }
@@ -72,13 +73,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) { permissionLauncher.launch(ALL_PERMISSIONS) }
                 else { addDialog() }
             }
-            homeCardListComponent.setOnClickListener { CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet") }
+            homeCardListComponent.setOnClickListener {
+                if(viewModel.getUserRight()=="MA")
+                    CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet")
+            }
+
             homeRefresh.setOnRefreshListener {
                 homeRefresh.isRefreshing = false
                 adapter.dataList.clear()
                 viewModel.getServerCardData()
             }
-            adapter.onHomeCardItemClick = { CardDetailBottomSheet(it).show(parentFragmentManager, "homeCardBottomSheet") }
+            adapter.onHomeCardItemClick = {
+                if(viewModel.getUserRight()=="MA")
+                    CardDetailBottomSheet(it).show(parentFragmentManager, "homeCardBottomSheet")
+            }
         }
     }
 
@@ -139,20 +147,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    private fun addDialog(){
-        val addDialog = AddDialog()
-        addDialog.show(parentFragmentManager, "addDialog")
-    }
+    private fun addDialog() = choiceDialog.show(parentFragmentManager, "addDialog")
 
-    private fun permissiondcheckDialog(){
-        val permissiondcheckDialog = PermissiondCheck_Dialog()
-        permissiondcheckDialog.show(parentFragmentManager, "permissiondcheckDialog")
-    }
+    private fun exitDialog() = exitDialog.show(parentFragmentManager, "exitDialog")
 
-    private fun exitDialog(){
-        val exitDialog = ExitDialog()
-        exitDialog.show(parentFragmentManager, "exitDialog")
-    }
+
+    private fun showPermissionCheckDialog() = permissionCheckDialog.show(parentFragmentManager, "PermissionCheckDialog")
+
+
 
 
     private fun checkAllPermissionsGranted(permissions: Array<String>): Boolean {

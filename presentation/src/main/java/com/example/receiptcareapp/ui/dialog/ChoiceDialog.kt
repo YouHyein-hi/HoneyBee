@@ -5,7 +5,7 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogAddBinding
 
-class AddDialog : BaseDialog<DialogAddBinding>(DialogAddBinding::inflate) {
+class ChoiceDialog : BaseDialog<DialogAddBinding>(DialogAddBinding::inflate) {
 
     override fun initData() {
 

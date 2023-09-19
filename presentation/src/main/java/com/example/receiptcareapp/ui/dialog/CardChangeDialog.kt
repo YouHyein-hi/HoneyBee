@@ -78,12 +78,10 @@ class CardChangeDialog(
                         price = price.replace(",", "")
                     cardViewModel.updateServerCardDate(SendUpdateCardData(cardData.uid, cardChangeNameEdit.text.toString(), price.toInt(), myDateTime!!, 1))
                 }
-
-
-                // 업데이트 관련
                 dismiss()
             }
         }
+
     }
 
     override fun initObserver() {

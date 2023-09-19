@@ -3,7 +3,6 @@ package com.example.receiptcareapp.ui.dialog
 import android.util.Log
 import androidx.fragment.app.viewModels
 import com.example.domain.model.remote.send.card.SendCardData
-import com.example.domain.model.ui.dateTime.DateData
 import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog

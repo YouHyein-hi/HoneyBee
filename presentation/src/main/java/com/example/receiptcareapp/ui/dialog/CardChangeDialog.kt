@@ -28,9 +28,7 @@ class CardChangeDialog(
     }
 
     override fun initListener() {
-        with(binding){
 
-        }
     }
 
     override fun initObserver() {

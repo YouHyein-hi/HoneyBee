@@ -43,8 +43,6 @@ class GeneralRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDetailDataRepository(id: String): ServerDetailBillData {
-        //        val newList = result.body?.map { it.copy(billSubmitTime = StringUtil.changeDate(it.billSubmitTime), billAmount = StringUtil.changeAmount(it.billAmount)) }
-//        val newList = result.body?.copy(billSubmitTime = StringUtil.changeDate(billSubmitTime), billAmount = StringUtil.changeAmount(it.billAmount))
         return generalDataSource.getDetailBillData(id).toServerDetailBillData()
     }
 

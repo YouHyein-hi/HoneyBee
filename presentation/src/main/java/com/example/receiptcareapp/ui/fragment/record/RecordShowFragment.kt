@@ -1,10 +1,6 @@
 package com.example.receiptcareapp.ui.fragment.record
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Environment
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -15,22 +11,17 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.data.util.UriToBitmapUtil
 import com.example.domain.util.StringUtil
 import com.example.domain.model.ui.type.ShowType
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.domain.model.ui.recycler.RecyclerData
-import com.example.receiptcareapp.R
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.state.ResponseState
 import com.example.receiptcareapp.ui.dialog.*
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
-import java.io.FileOutputStream
-import kotlin.math.log
 
 
 @AndroidEntryPoint
@@ -39,6 +30,11 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     private val viewModel : RecordShowViewModel by viewModels()
     private lateinit var viewModelData: RecyclerData
     private lateinit var callback:OnBackPressedCallback
+    private val billCheckCancelDialog: BillCheckCancelDialog by lazy { BillCheckCancelDialog(viewModel) }
+    private val billCheckCompleteDialog: BillCheckCompleteDialog by lazy { BillCheckCompleteDialog(viewModel) }
+    private val changeDialog: ChangeDialog by lazy { ChangeDialog(viewModel) }
+    private val deleteDialog: DeleteDialog by lazy { DeleteDialog(viewModel) }
+    private val downLoadDialog: DownLoadDialog by lazy { DownLoadDialog(viewModel) }
 
     init {
         Log.e("TAG", "RecyclerShowFragment RecyclerShowFragment RecyclerShowFragment: ", )
@@ -71,12 +67,12 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         binding.billCheckBtn.setOnCheckedChangeListener{ _, isChecked ->
             when(isChecked){
                 false -> {
-                    BillCheckCancelDialog(viewModel)
+                    showBillCheckCancelDialog()
                     //binding.billCheckBtn.isChecked = false
                     //통신 실패할 경우 원래대로 처리해야함
                 }
                 true -> {
-                    BillCheckCompleteDialog(viewModel)
+                    showBillCheckCompleteDialog()
                     //binding.billCheckBtn.isChecked = true
                     //통신 실패할 경우 원래대로 처리해야함
                 }
@@ -86,7 +82,6 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 
     override fun initObserver() {
         viewModel.response.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: $it", )
             when(it.second?.status){
                 "200" -> {
                     when(it.first){
@@ -154,18 +149,22 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
 
     //수정
     private fun changeDialog() {
-        ChangeDialog(viewModel).show(parentFragmentManager, "changeDialog")
+        changeDialog.show(parentFragmentManager, "changeDialog")
     }
 
     //서버와 로컬 삭제
     private fun deleteDialog() {
-        DeleteDialog(viewModel).show(parentFragmentManager, "deleteDialog")
+        deleteDialog.show(parentFragmentManager, "deleteDialog")
     }
 
     //이미지 다운로드
     private fun downloadDialog(){
-        DownloadDialog(viewModel).show(parentFragmentManager, "downloadDialog")
+        downLoadDialog.show(parentFragmentManager, "downLoadDialog")
     }
+
+    private fun showBillCheckCancelDialog() = billCheckCancelDialog.show(parentFragmentManager,"billCheckCancelDialog")
+
+    private fun showBillCheckCompleteDialog() = billCheckCompleteDialog.show(parentFragmentManager,"billCheckCompleteDialog")
 
     override fun onDestroy() {
         super.onDestroy()

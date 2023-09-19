@@ -8,7 +8,7 @@ import android.util.Log
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogPermissionCheckBinding
 
-class PermissiondCheck_Dialog : BaseDialog<DialogPermissionCheckBinding>(DialogPermissionCheckBinding::inflate)  {
+class PermissionCheckDialog : BaseDialog<DialogPermissionCheckBinding>(DialogPermissionCheckBinding::inflate)  {
 
     override fun initData() {
     }

@@ -1,5 +1,7 @@
 package com.example.data.repoImpl
 
+import android.util.Log
+import com.example.data.manager.PreferenceManager
 import com.example.data.mapper.ResponseMapper.toServerCardData
 import com.example.data.mapper.ResponseMapper.toServerCardSpinnerData
 import com.example.data.mapper.ResponseMapper.toServerResponseData
@@ -19,11 +21,14 @@ import javax.inject.Inject
  * pureum
  */
 class CardRepositoryImpl @Inject constructor(
-    private val cardDataSource: CardDataSource
+    private val cardDataSource: CardDataSource,
+    private val preferenceManager: PreferenceManager
 ): CardRepository {
     override suspend fun getCardListRepository(): ServerCardData {
         val response = cardDataSource.getCardDataSource().toServerCardData()
-        val newList = response.body?.map { it.copy(cardAmount = StringUtil.changeAmount(it.cardAmount)) }
+        var newList = response.body?.map { it.copy(cardAmount = StringUtil.changeAmount(it.cardAmount)) }
+        Log.e("TAG", "getCardListRepository: ${preferenceManager.getUserRight()}", )
+        if(preferenceManager.getUserRight()=="BS") newList = newList?.map { it.copy(cardAmount = "-") }
         return ServerCardData(response.status, response.message, newList)
     }
 

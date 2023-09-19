@@ -9,16 +9,13 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.example.receiptcareapp.base.BaseActivity
 import com.example.receiptcareapp.databinding.ActivityLoginBinding
 import com.example.domain.model.ui.login.LoginData
 import com.example.receiptcareapp.util.PermissionHandler
-import com.example.receiptcareapp.ui.dialog.Permissiond_Dialog
+import com.example.receiptcareapp.ui.dialog.PermissionDialog
 import com.example.receiptcareapp.viewModel.activityViewmodel.LoginActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import java.util.jar.Manifest
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.inflate(it) }, "LoginActivity") {
@@ -31,6 +28,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         android.Manifest.permission.READ_MEDIA_IMAGES
     )
     private val ALL_PERMISSIONS_CODE = 123
+    private val permissionDialog: PermissionDialog by lazy { PermissionDialog() }
 
     override fun initData() {
         viewModel.loadGetAuthData()
@@ -120,17 +118,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
-    //권한 Diattg
-    private fun permissionDialog() {
-        val permissionDialog = Permissiond_Dialog()
-        permissionDialog.setOnDismissListener(object : Permissiond_Dialog.OnDismissListener {
-            override fun onDialogDismissed() {
-                checkPermission(ALL_PERMISSIONS, ALL_PERMISSIONS_CODE)
-            }
-        })
-        permissionDialog.show(supportFragmentManager, "permissiondDialog")
-    }
-
     // 권한 체크
     private fun checkAllPermissionsGranted(permissions: Array<String>): Boolean {
         for (permission in permissions) {
@@ -149,12 +136,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         }
     }
 
+    private fun permissionDialog(){
+        permissionDialog.setOnDismissListener(object : PermissionDialog.OnDismissListener {
+            override fun onDialogDismissed() {
+                checkPermission(ALL_PERMISSIONS, ALL_PERMISSIONS_CODE)
+            }
+        })
+        permissionDialog.show(supportFragmentManager, "permissionDialog")
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         Log.e("TAG", "onRequestPermissionsResult: 에 접근",)
         super.onRequestPermissionsResult(requestCode, permissions, grantResults) // 두 개의 배열 파라미터를 모두 전달합니다.
 
         permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
     }
 
 }

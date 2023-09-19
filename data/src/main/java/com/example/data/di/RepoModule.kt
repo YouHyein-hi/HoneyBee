@@ -2,6 +2,7 @@ package com.example.data.di
 
 import android.content.Context
 import com.example.data.local.LocalDatabase
+import com.example.data.manager.PreferenceManager
 import com.example.data.remote.dataSource.*
 import com.example.data.remote.dataSourceImpl.NoticeDataSourceImpl
 import com.example.data.repoImpl.*
@@ -23,8 +24,8 @@ object RepoModule {
 
     @Provides
     @Singleton
-    fun provideCardRepoData(source : CardDataSource): CardRepository {
-        return CardRepositoryImpl(source)
+    fun provideCardRepoData(source : CardDataSource, preferenceManager: PreferenceManager): CardRepository {
+        return CardRepositoryImpl(source, preferenceManager)
     }
 
     @Provides

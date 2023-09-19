@@ -79,9 +79,10 @@ class SendBillViewModel @Inject constructor(
                             storeName = data.storeName,
                             date = data.date,
                             storeAmount = data.storeAmount.replace(",", ""),
-                            picture = data.picture
+                            picture = data.picture,
+                            memo = data.memo
                         )
-//                            cardName = MultipartBody.Part.createFormData(
+/*//                            cardName = MultipartBody.Part.createFormData(
 //                                "cardName",
 //                                data.cardName
 //                            ),
@@ -117,7 +118,7 @@ class SendBillViewModel @Inject constructor(
 //                                data.storeAmount.replace(",", "")
 //                            ),
 //                            picture = UriToBitmapUtil(application, data.picture)
-//                        )
+//                        )*/
                     )
                 )
             } ?: throw SocketTimeoutException()

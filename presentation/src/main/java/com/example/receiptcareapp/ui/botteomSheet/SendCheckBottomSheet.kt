@@ -45,7 +45,8 @@ class SendCheckBottomSheet(
                     storeAmount = data.storeAmount,
                     cardName = data.cardName,
                     picture = data.picture,
-                    storeName = data.storeName
+                    storeName = data.storeName,
+                    memo = binding.sendMemoEditText.text.toString()
                 )
             )
             dismiss()

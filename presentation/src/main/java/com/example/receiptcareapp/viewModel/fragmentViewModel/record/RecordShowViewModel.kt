@@ -104,7 +104,8 @@ class RecordShowViewModel @Inject constructor(
                                 storeName = sendData.storeName,
                                 date = sendData.date,
                                 storeAmount = sendData.storeAmount.replace(",", ""),
-                                picture = sendData.picture
+                                picture = sendData.picture,
+                                memo = sendData.memo
                             )
                         )
                     )

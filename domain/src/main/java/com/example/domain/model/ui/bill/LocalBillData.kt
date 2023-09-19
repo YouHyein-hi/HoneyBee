@@ -13,4 +13,5 @@ data class LocalBillData(
     val storeName: String,
     var date: String,
     val picture: Uri,
+    val memo: String
 )

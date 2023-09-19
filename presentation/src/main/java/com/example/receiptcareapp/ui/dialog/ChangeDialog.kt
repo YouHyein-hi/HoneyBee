@@ -135,7 +135,8 @@ class ChangeDialog(
                                 storeAmount = binding.changePriceEdit.text.toString(),
                                 cardName = cardName,
                                 storeName = binding.changeStoreEdit.text.toString(),
-                                picture = viewModelData.file!! // 이거 나중에 변경해야됨!
+                                picture = viewModelData.file!!, // 이거 나중에 변경해야됨!
+                                memo = binding.changeMemoEditText.text.toString()
                             )
                         )
                     }

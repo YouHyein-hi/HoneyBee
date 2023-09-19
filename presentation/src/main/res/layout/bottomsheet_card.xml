@@ -5,7 +5,7 @@
     >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:behavior_hideable="true"
         app:behavior_draggable="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
@@ -39,10 +39,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/card_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="500dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

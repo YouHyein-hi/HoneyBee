@@ -73,13 +73,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 if (!checkAllPermissionsGranted(ALL_PERMISSIONS)) { permissionLauncher.launch(ALL_PERMISSIONS) }
                 else { addDialog() }
             }
-            homeCardListComponent.setOnClickListener { CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet") }
+            homeCardListComponent.setOnClickListener {
+                if(viewModel.getUserRight()=="MA")
+                    CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet")
+            }
+
             homeRefresh.setOnRefreshListener {
                 homeRefresh.isRefreshing = false
                 adapter.dataList.clear()
                 viewModel.getServerCardData()
             }
-            adapter.onHomeCardItemClick = { CardDetailBottomSheet(it).show(parentFragmentManager, "homeCardBottomSheet") }
+            adapter.onHomeCardItemClick = {
+                if(viewModel.getUserRight()=="MA")
+                    CardDetailBottomSheet(it).show(parentFragmentManager, "homeCardBottomSheet")
+            }
         }
     }
 

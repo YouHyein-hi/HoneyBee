@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cardHome_list"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="50dp"
             android:background="@drawable/roundsquare_yellow">
 
             <ImageView

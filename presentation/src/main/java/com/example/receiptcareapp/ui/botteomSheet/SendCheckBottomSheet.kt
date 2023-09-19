@@ -32,7 +32,7 @@ class SendCheckBottomSheet(
     override fun initData() {}
 
     override fun initUI() {
-        binding.data = CheckBillData(data.cardName, data.storeAmount,data.cardAmount, data.storeName, StringUtil.changeDate(data.date),data.picture)
+        binding.data = CheckBillData(data.cardAmount, data.cardName,data.storeAmount, data.storeName, StringUtil.changeDate(data.date),data.picture)
     }
 
     override fun initListener() {

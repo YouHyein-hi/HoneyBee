@@ -15,6 +15,6 @@ data class CardData(
     var cardName:String,
     var cardAmount:String,
     var cardExpireDate: String?,
-    var billCheckDate:String?
+    var cardDesignId:Int?
 )
 

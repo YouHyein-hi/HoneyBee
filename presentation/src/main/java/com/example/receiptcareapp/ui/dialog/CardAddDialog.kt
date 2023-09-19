@@ -20,6 +20,7 @@ class CardAddDialog(
 ) : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
     private val viewModel : CardAddViewModel by viewModels()
+    private lateinit var dateData : DateData
 
     override fun initData() {
     }
@@ -34,7 +35,13 @@ class CardAddDialog(
             cardAddOkBtn.setOnClickListener{
                 var price = cardAddPriceEdit.text.toString()
                 var priceZero = price.count { it == '0' }
-                var cardName = cardAddNameEdit.text.toString()
+                dateData = DateData(
+                    binding.cardAddDateDatePicker.year,
+                    binding.cardAddDateDatePicker.month+1,
+                    binding.cardAddDateDatePicker.dayOfMonth
+                )
+                val myDateTime = StringUtil.myLocalDateFuntion(dateData.year, dateData.month, dateData.day)
+
                 if(cardAddNameEdit.text.toString() == ""){
                     showShortToast(getString(R.string.dialog_cardAdd_name))
                 }
@@ -47,7 +54,7 @@ class CardAddDialog(
                 else{
                     if (price.contains(","))
                         price = price.replace(",", "")
-                    cardViewModel.insertServerCardData(SendCardData(cardAddNameEdit.text.toString(), price.toInt(), "2023-01-18"))
+                    cardViewModel.insertServerCardData(SendCardData(cardAddNameEdit.text.toString(), price.toInt(), myDateTime!!, 1))
                     dismiss()
                 }
             }

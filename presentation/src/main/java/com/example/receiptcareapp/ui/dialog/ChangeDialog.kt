@@ -54,7 +54,7 @@ class ChangeDialog(
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
             viewModelData = activityViewModel.selectedData.value!!
-            newDate = StringUtil.dateReplace(viewModelData.date)
+            newDate = StringUtil.dateReplaceDot(viewModelData.date)
         } else {
             showShortToast("데이터가 없습니다!")
             dismiss()

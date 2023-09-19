@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardsemibold"
-                android:text="@{data.storeAmount, default = `금액`}"
+                android:text="@{@string/won(data.storeAmount), default = `금액`}"
                 android:textColor="@color/main_font_black"
                 android:textSize="30sp" />
 
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardmedium"
-                    android:text="@string/bottomSheet_sendbill_cardPriceText"
+                    android:text="@string/bottomSheet_sendbill_cardAmountText"
                     android:textColor="@color/sub_font2_gray" />
 
                 <TextView
@@ -76,7 +76,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardsemibold"
                     android:gravity="right"
-                    android:text="@{data.cardAmount, default=`카드잔액`}"
+                    android:text="@{@string/won(data.cardAmount), default=`잔액`}"
                     android:textColor="@color/main_font_black" />
             </LinearLayout>
 

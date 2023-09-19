@@ -10,6 +10,7 @@ import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.model.remote.receive.basic.ServerResponseData
 import com.example.domain.model.remote.receive.basic.ServerUidData
 import com.example.domain.model.remote.send.card.SendCardData
+import com.example.domain.model.remote.send.card.SendUpdateCardData
 import com.example.domain.repo.CardRepository
 import com.example.domain.util.StringUtil
 import javax.inject.Inject
@@ -41,8 +42,19 @@ class CardRepositoryImpl @Inject constructor(
         return cardDataSource.sendCardDataSource(
             cardName = sendCardData.cardName,
             amount = sendCardData.cardAmount,
-            billCheckDate = sendCardData.billCheckDate
+            expireDate = sendCardData.cardExpireDate,
+            designId = sendCardData.cardDesignId
         ).toServerResponseData()
+    }
+
+    override suspend fun updateCardRepository(sendUpdateCardData: SendUpdateCardData) : ServerUidData {
+        return cardDataSource.updateCardDataSource(
+            id = sendUpdateCardData.id,
+            cardName = sendUpdateCardData.cardName,
+            cardAmount = sendUpdateCardData.cardAmount,
+            cardExpireDate = sendUpdateCardData.cardExpireDate,
+            cardDesignId = sendUpdateCardData.cardDesignId
+        ).toUidServerResponseData()
     }
 
 

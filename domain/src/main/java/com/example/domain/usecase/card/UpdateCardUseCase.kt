@@ -1,14 +1,14 @@
 package com.example.domain.usecase.card
 
-/**
- * 2023-07-23
- * pureum
- */
-//class UpdateCardUseCase(
-//    private val cardRepository: CardRepository
-//) {
-//    suspend operator fun invoke(domainUpdateCardData: DomainUpdateCardData): DomainServerResponse {
-//        return cardRepository.updateCardUseCase(domainUpdateCardData)
-//    }
-//    // 아직 안쓰임
-//}
+import com.example.domain.model.remote.receive.basic.ServerUidData
+import com.example.domain.model.remote.send.card.SendUpdateCardData
+import com.example.domain.repo.CardRepository
+
+
+class UpdateCardUseCase(
+    private val cardRepository: CardRepository
+) {
+    suspend operator fun invoke(sendUpdateCardData: SendUpdateCardData): ServerUidData {
+        return cardRepository.updateCardRepository(sendUpdateCardData)
+    }
+}

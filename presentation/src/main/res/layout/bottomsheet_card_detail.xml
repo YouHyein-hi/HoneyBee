@@ -33,24 +33,23 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/card_detail_change_btn"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="15dp"
+            android:id="@+id/cardDetail_change_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
             android:src="@drawable/icon_change"
-            app:layout_constraintEnd_toStartOf="@+id/card_detail_delete_btn"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/cardDetail_delete_btn"
+            app:layout_constraintEnd_toStartOf="@+id/cardDetail_delete_btn"
+            app:layout_constraintTop_toTopOf="@+id/cardDetail_delete_btn" />
 
         <ImageView
-            android:id="@+id/card_detail_delete_btn"
+            android:id="@+id/cardDetail_delete_btn"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginTop="28dp"
             android:layout_marginEnd="20dp"
             android:src="@drawable/icon_trash"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/titleTxt" />
 
         <ImageView
             android:id="@+id/cardDetail_image"
@@ -81,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:fontFamily="@font/pretendardmedium"
-            android:text="@{cardDate.cardAmount, default = `카드 잔액`}"
+            android:text="@{cardDate.cardAmount + '원', default = `카드 잔액`}"
             android:textColor="@color/main_font_black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -91,77 +90,179 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="150dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:weightSum="6"
+            android:weightSum="3"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardDetail_card_amount">
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="horizontal">-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:orientation="horizontal">-->
 
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:fontFamily="@font/pretendardbold"-->
-<!--                    android:gravity="left"-->
-<!--                    android:text="작성자"-->
-<!--                    android:textColor="@color/sub_font2_gray"-->
-<!--                    android:textSize="14sp" />-->
+            <!--                <TextView-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:fontFamily="@font/pretendardbold"-->
+            <!--                    android:gravity="left"-->
+            <!--                    android:text="작성자"-->
+            <!--                    android:textColor="@color/sub_font2_gray"-->
+            <!--                    android:textSize="14sp" />-->
 
-<!--                <TextView-->
-<!--                    android:id="@+id/cardDetail_card_user"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:fontFamily="@font/pretendardbold"-->
-<!--                    android:gravity="right"-->
-<!--                    android:text="@{cardDate.}"-->
-<!--                    android:textColor="@color/main_font_black"-->
-<!--                    android:textSize="14sp" />-->
-<!--            </LinearLayout>-->
+            <!--                <TextView-->
+            <!--                    android:id="@+id/cardDetail_card_user"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:fontFamily="@font/pretendardbold"-->
+            <!--                    android:gravity="right"-->
+            <!--                    android:text="@{cardDate.}"-->
+            <!--                    android:textColor="@color/main_font_black"-->
+            <!--                    android:textSize="14sp" />-->
+            <!--            </LinearLayout>-->
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:orientation="horizontal">-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="20dp"-->
+            <!--                android:orientation="horizontal">-->
 
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:fontFamily="@font/pretendardbold"-->
-<!--                    android:gravity="left"-->
-<!--                    android:text="추가일"-->
-<!--                    android:textColor="@color/sub_font2_gray"-->
-<!--                    android:textSize="14sp" />-->
+            <!--                <TextView-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:fontFamily="@font/pretendardbold"-->
+            <!--                    android:gravity="left"-->
+            <!--                    android:text="추가일"-->
+            <!--                    android:textColor="@color/sub_font2_gray"-->
+            <!--                    android:textSize="14sp" />-->
 
-<!--                <TextView-->
-<!--                    android:id="@+id/cardDetail_card_cardExpireDate"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:fontFamily="@font/pretendardbold"-->
-<!--                    android:gravity="right"-->
-<!--                    android:text="~~~~~"-->
-<!--                    android:textColor="@color/main_font_black"-->
-<!--                    android:textSize="14sp" />-->
-<!--            </LinearLayout>-->
+            <!--                <TextView-->
+            <!--                    android:id="@+id/cardDetail_card_cardExpireDate"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:fontFamily="@font/pretendardbold"-->
+            <!--                    android:gravity="right"-->
+            <!--                    android:text="~~~~~"-->
+            <!--                    android:textColor="@color/main_font_black"-->
+            <!--                    android:textSize="14sp" />-->
+            <!--            </LinearLayout>-->
 
             <LinearLayout
-                android:layout_marginBottom="70dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <!--                    <TextView-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:fontFamily="@font/pretendardbold"-->
+                <!--                        android:gravity="left"-->
+                <!--                        android:text="@string/recrod_show_bill_check_txt"-->
+                <!--                        android:textColor="@color/sub_font2_gray"-->
+                <!--                        android:textSize="14sp" />-->
+
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/checkData_txt"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:fontFamily="@font/pretendardbold"-->
+                <!--                        android:gravity="right"-->
+                <!--                        android:text="@{data}"-->
+                <!--                        android:textColor="@color/main_font_black"-->
+                <!--                        android:textSize="14sp" />-->
+
+                <TextView
+                    android:id="@+id/textView35"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardbold"
+                    android:gravity="left"
+                    android:text="만료일"
+                    android:textColor="@color/sub_font2_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/cardDetail_card_cardExpireDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardbold"
+                    android:gravity="right"
+                    android:text="@{cardDate.cardExpireDate}"
+                    android:textColor="@color/main_font_black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <!--                    <TextView-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:fontFamily="@font/pretendardbold"-->
+                <!--                        android:gravity="left"-->
+                <!--                        android:text="@string/recrod_show_bill_check_txt"-->
+                <!--                        android:textColor="@color/sub_font2_gray"-->
+                <!--                        android:textSize="14sp" />-->
+
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/checkData_txt"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:fontFamily="@font/pretendardbold"-->
+                <!--                        android:gravity="right"-->
+                <!--                        android:text="@{data}"-->
+                <!--                        android:textColor="@color/main_font_black"-->
+                <!--                        android:textSize="14sp" />-->
+
+                <TextView
+                    android:id="@+id/textView36"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardbold"
+                    android:gravity="left"
+                    android:text="작성자"
+                    android:textColor="@color/sub_font2_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/cardDetail_card_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardbold"
+                    android:gravity="right"
+                    android:text="~~~"
+                    android:textColor="@color/main_font_black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <!--                    <TextView-->
@@ -185,27 +286,130 @@
                 <!--                        android:textColor="@color/main_font_black"-->
                 <!--                        android:textSize="14sp" />-->
                 <TextView
-                    android:id="@+id/textView35"
+                    android:id="@+id/textView37"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="left"
-                    android:text="만료일"
+                    android:text="추가일"
                     android:textColor="@color/sub_font2_gray"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/cardDetail_card_billCheckDate"
+                    android:id="@+id/cardDetail_card_AddDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="right"
-                    android:text="@{cardDate.cardExpireDate}"
+                    android:text="~~~"
                     android:textColor="@color/main_font_black"
                     android:textSize="14sp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <!--                    <TextView-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:fontFamily="@font/pretendardbold"-->
+                <!--                        android:gravity="left"-->
+                <!--                        android:text="@string/recrod_show_bill_check_txt"-->
+                <!--                        android:textColor="@color/sub_font2_gray"-->
+                <!--                        android:textSize="14sp" />-->
+
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/checkData_txt"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:fontFamily="@font/pretendardbold"-->
+                <!--                        android:gravity="right"-->
+                <!--                        android:text="@{data}"-->
+                <!--                        android:textColor="@color/main_font_black"-->
+                <!--                        android:textSize="14sp" />-->
+
+                <TextView
+                    android:id="@+id/textView38"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardbold"
+                    android:gravity="left"
+                    android:text="수정자"
+                    android:textColor="@color/sub_font2_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/cardDetail_card_changeUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardbold"
+                    android:gravity="right"
+                    android:text="~~~"
+                    android:textColor="@color/main_font_black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <!--                    <TextView-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:fontFamily="@font/pretendardbold"-->
+                <!--                        android:gravity="left"-->
+                <!--                        android:text="@string/recrod_show_bill_check_txt"-->
+                <!--                        android:textColor="@color/sub_font2_gray"-->
+                <!--                        android:textSize="14sp" />-->
+
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/checkData_txt"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:fontFamily="@font/pretendardbold"-->
+                <!--                        android:gravity="right"-->
+                <!--                        android:text="@{data}"-->
+                <!--                        android:textColor="@color/main_font_black"-->
+                <!--                        android:textSize="14sp" />-->
+
+                <TextView
+                    android:id="@+id/textView39"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardbold"
+                    android:gravity="left"
+                    android:text="최근 수정일"
+                    android:textColor="@color/sub_font2_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/cardDetail_card_changeDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardbold"
+                    android:gravity="right"
+                    android:text="~~~"
+                    android:textColor="@color/main_font_black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
         </LinearLayout>
         <include
             android:id="@+id/layout_loading_progress"

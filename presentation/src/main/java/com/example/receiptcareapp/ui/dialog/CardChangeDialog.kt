@@ -2,6 +2,7 @@ package com.example.receiptcareapp.ui.dialog
 
 import android.util.Log
 import androidx.fragment.app.viewModels
+import com.example.domain.model.remote.receive.card.CardData
 import com.example.domain.model.remote.send.card.SendCardData
 import com.example.domain.model.ui.dateTime.DateData
 import com.example.domain.util.StringUtil
@@ -16,7 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CardChangeDialog(
-    private val homeViewModel: CardViewModel
+    private val cardViewModel: CardViewModel,
+    private val cardData:CardData
 ) : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
     private val viewModel : CardAddViewModel by viewModels()
@@ -25,11 +27,18 @@ class CardChangeDialog(
     }
 
     override fun initUI() {
+        Log.e("TAG", "initUI: ${cardData}", )
     }
 
     override fun initListener() {
         with(binding){
-
+            cardAddCancelBtn.setOnClickListener{
+                dismiss()
+            }
+            cardAddOkBtn.setOnClickListener{
+                // 업데이트 관련
+                dismiss()
+            }
         }
     }
 
@@ -37,7 +46,7 @@ class CardChangeDialog(
         viewModel.response.observe(viewLifecycleOwner){
             when(it){
                 ResponseState.UPDATE_SUCCESS -> {
-                    homeViewModel.getServerCardData()
+                    cardViewModel.getServerCardData()
                     dismiss()
                 }
                 else->{}

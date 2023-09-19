@@ -53,7 +53,6 @@ class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
         adapter.onCardClick = {
             Log.e("TAG", "initListener idid: ${it.uid}", )
             viewModel.putId(it.uid)
-            cardDeleteDialog()
         }
     }
 
@@ -93,10 +92,5 @@ class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
     private fun cardAddDialog(){
         val cardAddDialog = CardAddDialog(viewModel)
         cardAddDialog.show(parentFragmentManager, "CardAddDialog")
-    }
-
-    private fun cardDeleteDialog(){
-        val cardDeleteDialog = CardDeleteDialog(viewModel)
-        cardDeleteDialog.show(parentFragmentManager, "cardDeleteDialog")
     }
 }

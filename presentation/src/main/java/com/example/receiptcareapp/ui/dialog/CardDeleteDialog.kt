@@ -29,7 +29,7 @@ class CardDeleteDialog(
     private var id : Long = 0
 
     override fun initData() {
-        if (cardViewModel.cardList.value != null) {
+        if (cardViewModel.id.value != null) {
             id = cardViewModel.id.value!!
             // 이걸 영수증이 아니라 카드로 바꿔야됨!
         } else {

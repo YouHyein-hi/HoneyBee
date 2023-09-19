@@ -3,14 +3,12 @@ package com.example.receiptcareapp.ui.dialog
 import android.util.Log
 import androidx.fragment.app.viewModels
 import com.example.domain.model.remote.receive.card.CardData
-import com.example.domain.model.remote.send.card.SendCardData
+import com.example.domain.model.remote.send.card.SendUpdateCardData
 import com.example.domain.model.ui.dateTime.DateData
 import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseDialog
-import com.example.receiptcareapp.databinding.DialogCardAddBinding
 import com.example.receiptcareapp.databinding.DialogCardChangeBinding
-import com.example.receiptcareapp.databinding.DialogChangeBinding
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.state.ResponseState
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
@@ -47,22 +45,40 @@ class CardChangeDialog(
     override fun initUI() {
         Log.e("TAG", "initUI: ${cardData}", )
         binding.data = cardData
-        binding.cardAddPriceEdit.setText(cardViewModel.textValue)
-        binding.cardAddDateDatePicker.init(dateData.year, dateData.month - 1, dateData.day, null)
+        binding.cardChangePriceEdit.setText(cardViewModel.textValue)
+        binding.cardChangeDateDatePicker.init(dateData.year, dateData.month - 1, dateData.day, null)
     }
 
     override fun initListener() {
         with(binding){
-            cardAddCancelBtn.setOnClickListener{
+            cardChangeCancelBtn.setOnClickListener{
                 dismiss()
             }
-            cardAddOkBtn.setOnClickListener{
+            cardChangeOkBtn.setOnClickListener{
                 dateData = DateData(
-                    year = binding.cardAddDateDatePicker.year,
-                    month = binding.cardAddDateDatePicker.month + 1,
-                    day = binding.cardAddDateDatePicker.dayOfMonth
+                    year = binding.cardChangeDateDatePicker.year,
+                    month = binding.cardChangeDateDatePicker.month + 1,
+                    day = binding.cardChangeDateDatePicker.dayOfMonth
                 )
                 val myDateTime = StringUtil.myLocalDateFuntion(dateData.year, dateData.month, dateData.day)
+                var price = cardChangePriceEdit.text.toString()
+                var priceZero = price.count { it == '0' }
+
+                if(cardChangeNameEdit.text.toString() == ""){
+                    showShortToast(getString(R.string.dialog_cardAdd_name))
+                }
+                else if(cardChangePriceEdit.text.toString() == ""){
+                    showShortToast(getString(R.string.dialog_cardAdd_price))
+                }
+                else if(priceZero == price.length){
+                    showShortToast(getString(R.string.dialog_cardAdd_price_zero))
+                }
+                else{
+                    if(price.contains(","))
+                        price = price.replace(",", "")
+                    cardViewModel.updateServerCardDate(SendUpdateCardData(cardData.uid, cardChangeNameEdit.text.toString(), price.toInt(), myDateTime!!, 1))
+                }
+
 
                 // 업데이트 관련
                 dismiss()

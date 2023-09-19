@@ -1,11 +1,8 @@
 package com.example.data.di
 
 import com.example.domain.repo.*
-import com.example.domain.usecase.card.GetCardListUseCase
-import com.example.domain.usecase.card.InsertCardUseCase
 import com.example.domain.usecase.bill.*
-import com.example.domain.usecase.card.DeleteCardUseCase
-import com.example.domain.usecase.card.GetCardSpinnerUseCase
+import com.example.domain.usecase.card.*
 import com.example.domain.usecase.login.LoginUseCase
 import com.example.domain.usecase.notice.AddNoticeUseCase
 import com.example.domain.usecase.notice.GetNoticeListUseCase
@@ -49,6 +46,12 @@ object UseCaseModule {
     @Singleton
     fun provideDeleteCardUseCase(repo: CardRepository) : DeleteCardUseCase{
         return DeleteCardUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateCardUseCase(repo: CardRepository) : UpdateCardUseCase{
+        return UpdateCardUseCase(repo)
     }
 
     //카드 업데이트 기능은 아직 미사용

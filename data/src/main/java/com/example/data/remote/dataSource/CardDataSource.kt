@@ -1,17 +1,9 @@
 package com.example.data.remote.dataSource
 
 import ServerResponse
-import com.example.data.di.DataSourceModule
 import com.example.data.remote.model.ServerCardResponse
-import dagger.Component
 import retrofit2.http.*
 import java.time.LocalDate
-import javax.inject.Singleton
-
-/**
- * 2023-07-23
- * pureum
- */
 
 interface CardDataSource {
 
@@ -33,13 +25,16 @@ interface CardDataSource {
     suspend fun deleteCardDataSource(
         @Path("uid") uid:Long
     ): ServerResponse<Int>
-//
+
 //    //아직 안쓰이는 기능
-//    @FormUrlEncoded
-//    @PUT("billCard/update/{id}")
-//    suspend fun updateCardDataSource(
-//        @Path("id") id: Long,
-//        @Field("cardName") cardName : String,
-//        @Field("cardAmount") cardAmount : Int
-//    ): ServerResponse<SimpleResponse>
+    @FormUrlEncoded
+    @POST("bill/card/update/{id}")
+    suspend fun updateCardDataSource(
+        @Path("id") id: Long,
+        @Field("cardName") cardName : String,
+        @Field("cardAmount") cardAmount : Int,
+        @Field("cardExpireDate") cardExpireDate : LocalDate,
+        @Field("cardDesignId") cardDesignId : Int,
+    ): ServerResponse<Int>
+
 }

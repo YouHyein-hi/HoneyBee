@@ -75,7 +75,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/cardAdd_name_edit"
+            android:id="@+id/cardChange_name_edit"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
@@ -92,12 +92,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        <!--
-            android:hint="@string/dialog_cardAdd_name"
-            -->
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/cardAdd_price_edit"
+            android:id="@+id/cardChange_price_edit"
             textValue="@={viewModel.textValue}"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -114,7 +111,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardAdd_name_edit" />
+            app:layout_constraintTop_toBottomOf="@+id/cardChange_name_edit" />
 
         <TextView
             android:id="@+id/textView36"
@@ -125,11 +122,11 @@
             android:text="@string/dialog_cardAdd_billCheckDate"
             android:textColor="@color/sub_font1_gray"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/cardAdd_date_datePicker"
-            app:layout_constraintTop_toBottomOf="@+id/cardAdd_price_edit" />
+            app:layout_constraintStart_toStartOf="@+id/cardChange_date_datePicker"
+            app:layout_constraintTop_toBottomOf="@+id/cardChange_price_edit" />
 
         <DatePicker
-            android:id="@+id/cardAdd_date_datePicker"
+            android:id="@+id/cardChange_date_datePicker"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -156,7 +153,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout16">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cardAdd_ok_btn"
+            android:id="@+id/cardChange_ok_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
@@ -171,7 +168,7 @@
             tools:ignore="MissingConstraints" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cardAdd_cancel_btn"
+            android:id="@+id/cardChange_cancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"

@@ -24,14 +24,13 @@ class NoticeDataSourceImpl @Inject constructor(
 
     override suspend fun addNoticeDataSource(
         title: String,
-        date: LocalDateTime,
+//        date: LocalDateTime,
         content: String,
-        name:String
+//        name:String
     ): ServerResponse<String> {
-        Log.e("TAG", "addNoticeDataSource: $name", )
         val gap = retrofit.create(NoticeDataSource::class.java).addNoticeDataSource(
             title = title,
-            date = date,
+//            date = date,
             content = content
         )
         Log.e("TAG", "addNoticeDataSource: $gap", )

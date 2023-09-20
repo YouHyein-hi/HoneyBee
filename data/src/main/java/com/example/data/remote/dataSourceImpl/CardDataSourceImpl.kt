@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.data.di.RetrofitModule
 import com.example.data.remote.dataSource.CardDataSource
 import com.example.data.remote.model.ServerCardResponse
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.create
 import java.time.LocalDate
@@ -19,8 +20,18 @@ class CardDataSourceImpl @Inject constructor(
         amount: Int,
         expireDate: LocalDate,
         designId: Int
-    ): ServerResponse<String> {
-        return retrofit.create(CardDataSource::class.java).sendCardDataSource(cardName = cardName, amount = amount, expireDate = expireDate, designId = designId)
+    ): Response<ServerResponse<String>> {
+        retrofit.create(CardDataSource::class.java).sendCardDataSource(cardName = cardName, amount = amount, expireDate = expireDate, designId = designId).let {
+            if(it.isSuccessful)
+                return it
+            else
+                when(it.code()){
+                    400 -> throw Exception("이미 존재하는 카드입니다.")
+                    else -> throw Exception("서버 통신 오류")
+
+                }
+
+        }
     }
 
     override suspend fun getCardDataSource(): ServerResponse<List<ServerCardResponse>> {

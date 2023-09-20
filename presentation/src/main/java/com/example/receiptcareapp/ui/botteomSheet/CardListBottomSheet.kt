@@ -73,6 +73,7 @@ class CardListBottomSheet(private val homeViewModel: HomeViewModel): BaseBottomS
                 "200" -> {
                     showLongToast("카드 추가 완료!")
                     viewModel.getServerCardData()
+                    homeViewModel.getServerCardData()
                 }
                 else -> {showLongToast("카드 추가 실패..")}
             }
@@ -86,7 +87,6 @@ class CardListBottomSheet(private val homeViewModel: HomeViewModel): BaseBottomS
 
     override fun onDestroyView() {
         super.onDestroyView()
-        homeViewModel.getServerCardData()
     }
 
     private fun changeEmptyTxt(state:Boolean){

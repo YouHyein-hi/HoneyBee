@@ -2,6 +2,7 @@ package com.example.data.remote.dataSource
 
 import ServerResponse
 import com.example.data.remote.model.ServerCardResponse
+import retrofit2.Response
 import retrofit2.http.*
 import java.time.LocalDate
 
@@ -15,7 +16,7 @@ interface CardDataSource {
         @Field("cardAmount") amount : Int,
         @Field("cardExpireDate") expireDate : LocalDate,
         @Field("cardDesignId") designId : Int
-    ): ServerResponse<String>
+    ): Response<ServerResponse<String>>
 
     @Streaming
     @GET("bill/card/list")

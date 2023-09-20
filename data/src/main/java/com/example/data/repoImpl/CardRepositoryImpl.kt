@@ -49,7 +49,7 @@ class CardRepositoryImpl @Inject constructor(
             amount = sendCardData.cardAmount,
             expireDate = sendCardData.cardExpireDate,
             designId = sendCardData.cardDesignId
-        ).toServerResponseData()
+        ).body()!!.toServerResponseData()
     }
 
     override suspend fun updateCardRepository(sendUpdateCardData: SendUpdateCardData) : ServerUidData {

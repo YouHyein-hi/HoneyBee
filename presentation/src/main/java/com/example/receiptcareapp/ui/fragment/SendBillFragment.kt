@@ -35,6 +35,7 @@ import com.example.receiptcareapp.ui.adapter.StoreSpinnerAdapter
 import com.example.receiptcareapp.ui.botteomSheet.SendCheckBottomSheet
 import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.util.MyApplication
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.SendBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,17 +59,18 @@ class SendBillFragment :
     private var storeArray = arrayListOf<String>()
 
 
+
     override fun initData() {
         todayDate = StringUtil.dateNow()
         selectedDate = StringUtil.dateNow()
         viewModel.getServerStoreData()
+        viewModel.getServerCardData()
         dateData = DateData(
             year = todayDate!!.year,
             month = todayDate!!.monthValue,
             day = todayDate!!.dayOfMonth
         )
 
-        viewModel.getServerCardData()
     }
 
     override fun initUI() {
@@ -128,8 +130,8 @@ class SendBillFragment :
             /** 완료 Button **/
             sendBillOkBtn.setOnClickListener {
                 Log.e("TAG", "onViewCreated: iinin")
-                var price = sendBillPriceEdit.text.toString()
-                var priceZero = price.count { it == '0' }
+                val price = sendBillPriceEdit.text.toString()
+                val priceZero = price.count { it == '0' }
                 when {
                     cardName == "" -> { showShortToast("카드를 입력하세요.") }
                     sendBillStoreEdit.text!!.isEmpty() -> { showShortToast("가게 이름을 입력하세요.") }
@@ -142,7 +144,7 @@ class SendBillFragment :
                         NavHostFragment.findNavController(this@SendBillFragment).navigate(R.id.action_sendBillFragment_to_homeFragment)
                     }
                     else -> {
-                        if (!StringUtil.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
+                        if (MyApplication.right=="MA" && !StringUtil.amountCheck(sendBillPriceEdit.text.toString(), cardAmount)) {
                             showShortToast("보유금액보다 많은 비용입니다.")
                             return@setOnClickListener
                         }
@@ -165,6 +167,7 @@ class SendBillFragment :
 
             sendBillCancleBtn.setOnClickListener {
                 findNavController().navigate(R.id.action_sendBillFragment_to_homeFragment)
+
             }
         }
 
@@ -242,6 +245,7 @@ class SendBillFragment :
             if (!response?.body.isNullOrEmpty()) {
                 storeArray.clear()
                 response?.body?.map { storeArray.add(it) }
+                Log.e("TAG", "initObserver: $storeArray", )
                 binding.sendBillStoreEdit.setAdapter(StoreSpinnerAdapter(requireContext(), storeArray))
             }
         }

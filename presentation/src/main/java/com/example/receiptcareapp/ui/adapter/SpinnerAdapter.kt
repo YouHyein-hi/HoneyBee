@@ -3,6 +3,7 @@ package com.example.receiptcareapp.ui.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
+import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.PopupWindow

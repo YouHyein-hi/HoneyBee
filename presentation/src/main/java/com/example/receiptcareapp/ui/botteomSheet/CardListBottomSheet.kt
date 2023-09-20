@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * pureum
  */
 @AndroidEntryPoint
-class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
+class CardListBottomSheet(private val homeViewModel: HomeViewModel): BaseBottomSheet<BottomsheetCardBinding>(
     BottomsheetCardBinding::inflate,
     "BottomsheetCardBinding"
 ) {
@@ -51,7 +51,6 @@ class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
             cardAddDialog()
         }
         adapter.onCardClick = {
-            Log.e("TAG", "initListener idid: ${it.uid}", )
             viewModel.putId(it.uid)
         }
     }
@@ -83,6 +82,11 @@ class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
         viewModel.fetchState.observe(this) {
             showShortToast(FetchStateHandler(it))
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        homeViewModel.getServerCardData()
     }
 
     private fun changeEmptyTxt(state:Boolean){

@@ -35,7 +35,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val choiceDialog: ChoiceDialog by lazy { ChoiceDialog() }
     private val exitDialog: ExitDialog by lazy { ExitDialog() }
     private val permissionCheckDialog: PermissionCheckDialog by lazy { PermissionCheckDialog() }
-    private val bottomSheet by lazy { CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet") }
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
     private val handler = Handler(Looper.getMainLooper())
@@ -74,8 +73,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 else { addDialog() }
             }
             homeCardListComponent.setOnClickListener {
-                if(viewModel.getUserRight()=="MA")
-                    CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet")
+                if(viewModel.getUserRight()=="MA"){
+                    val gap = CardListBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet")
+                    Log.e("TAG", "initListener: $gap", )
+                }
+
             }
 
             homeRefresh.setOnRefreshListener {
@@ -153,8 +155,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     private fun showPermissionCheckDialog() = permissionCheckDialog.show(parentFragmentManager, "PermissionCheckDialog")
-
-
 
 
     private fun checkAllPermissionsGranted(permissions: Array<String>): Boolean {

@@ -47,9 +47,12 @@ class ChangeDialog(
     private lateinit var viewModelData: RecyclerData
     private var cardName = ""
     private var cardId = 0
+    private var myCardName = ""
     private lateinit var dateData : DateData
     private var newDate = listOf<String>()
     private var cardDataList: MutableList<CardSpinnerData> = mutableListOf()
+    private var cardArrayList = ArrayList<CardSpinnerData>()
+
 
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
@@ -74,6 +77,7 @@ class ChangeDialog(
         }
 
         viewModel.textValue = viewModelData.amount
+        myCardName = viewModelData.cardName
     }
 
     override fun initUI() {
@@ -151,10 +155,24 @@ class ChangeDialog(
     override fun initObserver() {
 
         viewModel.cardList.observe(viewLifecycleOwner){
-            if(it?.body?.isEmpty()==true) dismiss()
-            it?.body?.forEach { cardDataList.add(it) }
-            val cardArrayList = ArrayList(cardDataList)
-            binding.changeCardSpinner.adapter = SpinnerAdapter(requireContext(), cardArrayList)
+            if (it?.body?.isEmpty() == true) {
+                dismiss()
+            } else {
+                cardDataList.clear()
+                it?.body?.let { it1 -> cardDataList.addAll(it1) }
+                cardArrayList.clear()
+                cardArrayList.addAll(cardDataList)
+                val adapter = SpinnerAdapter(requireContext(), cardArrayList)
+                binding.changeCardSpinner.adapter = adapter
+
+                val position = StringUtil.findPositionByCardName(myCardName, adapter)
+                if (position != -1) {
+                    binding.changeCardSpinner.setSelection(position)
+                } else {
+                    showShortToast("카드 불러오기 실패!")
+                    Log.e("TAG", "initObserver: $position")
+                }
+            }
         }
 
         // Err관리

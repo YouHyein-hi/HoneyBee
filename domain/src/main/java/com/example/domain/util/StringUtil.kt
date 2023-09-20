@@ -2,6 +2,8 @@ package com.example.domain.util
 
 import android.preference.PreferenceManager
 import android.util.Log
+import android.widget.SpinnerAdapter
+import com.example.domain.model.remote.receive.card.CardSpinnerData
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -87,5 +89,15 @@ object StringUtil {
 
     fun amountCheck(price: String, cardAmount: String):Boolean{
         return price.replace(",","").toInt() <= cardAmount.replace(",","").toInt()
+    }
+
+    fun findPositionByCardName(cardName: String, adapter: SpinnerAdapter): Int {
+        for (i in 0 until adapter.count) {
+            val item = adapter.getItem(i) as? CardSpinnerData
+            if (item != null && item.name.startsWith(cardName)) {
+                return i
+            }
+        }
+        return -1
     }
 }

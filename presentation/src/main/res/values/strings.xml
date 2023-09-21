@@ -104,7 +104,8 @@
     <string name="dialog_cardAdd_price">카드 금액을 입력해주세요.</string>
     <string name="dialog_cardAdd_price_err">카드 금액을 꼭 적어주세요!</string>
     <string name="dialog_cardAdd_price_zero">금액에 0원은 입력이 안됩니다.</string>
-    <string name="dialog_cardAdd_billCheckDate">카드 만료일을 입력해주세요.</string>
+    <string name="dialog_cardAdd_cardExpireDate">카드 만료일을 입력해주세요.</string>
+    <string name="dialog_cardAdd_cardDesignId">카드 디자인을 선택해주세요.</string>
     <!-- Dialog CardChange 카드 목록 페이지 -->
     <string name="dialog_cardChange_title">카드 수정</string>
     <string name="dialog_cardChange_text">카드를 수정하시겠어요?</string>
@@ -143,7 +144,7 @@
     <string name="dialog_change_memo_text">메모</string>
     <!-- Dialog 이미지 download(다운로드) 영수증 상세 페이지 -->
     <string name="dialog_download_title">영수증 다운로드</string>
-    <string name="dialog_download_text">해당 영수증 이미지를 다운 받으시겠어요?</string>
+    <string name="dialog_download_text">해당 영수증 이미지를\n다운로드하시겠어요?</string>
     <!-- Dialog 청구 하기 -->
     <string name="dialog_bill_check_complete_title_text">청구 완료</string>
     <string name="dialog_bill_check_cancel_title_text">청구 취소</string>

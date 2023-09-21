@@ -25,7 +25,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     private val loginData = LoginData(null,null)
     private val ALL_PERMISSIONS = arrayOf(
         android.Manifest.permission.CAMERA,
-        android.Manifest.permission.READ_MEDIA_IMAGES
+        android.Manifest.permission.READ_MEDIA_IMAGES,
+        android.Manifest.permission.POST_NOTIFICATIONS
     )
     private val ALL_PERMISSIONS_CODE = 123
     private val permissionDialog: PermissionDialog by lazy { PermissionDialog() }

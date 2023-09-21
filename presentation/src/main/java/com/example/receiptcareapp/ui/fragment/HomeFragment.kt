@@ -39,7 +39,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
     private val handler = Handler(Looper.getMainLooper())
-    private val ALL_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
+    private val ALL_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.READ_MEDIA_IMAGES)
     private lateinit var callback: OnBackPressedCallback
 
     override fun initData() {}

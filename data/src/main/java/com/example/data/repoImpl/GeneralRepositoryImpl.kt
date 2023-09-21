@@ -77,8 +77,8 @@ class GeneralRepositoryImpl @Inject constructor(
             ),
             file = UriToBitmapUtil(context, data.picture),
             billMemo = MultipartBody.Part.createFormData(
-                "billSubmitTime",
-                "data.date"
+                "billMemo",
+                data.memo
             )
         ).toUidServerResponseData()
     }

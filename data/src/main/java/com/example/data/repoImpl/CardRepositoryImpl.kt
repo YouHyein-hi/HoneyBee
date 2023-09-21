@@ -28,14 +28,14 @@ class CardRepositoryImpl @Inject constructor(
     override suspend fun getCardListRepository(): ServerCardData {
         val response = cardDataSource.getCardDataSource().toServerCardData()
         var newList = response.body?.map { it.copy(cardAmount = StringUtil.changeAmount(it.cardAmount)) }
-        Log.e("TAG", "getCardListRepository: ${preferenceManager.getUserRight()}", )
         if(preferenceManager.getUserRight()=="BS") newList = newList?.map { it.copy(cardAmount = "-") }
         return ServerCardData(response.status, response.message, newList)
     }
 
     override suspend fun getCardSpinnerRepository(): ServerCardSpinnerData {
         val response = cardDataSource.getCardDataSource().toServerCardSpinnerData()
-        val newList = response.body?.map { it.copy(amount = StringUtil.changeAmount(it.amount)) }
+        var newList = response.body?.map { it.copy(amount = StringUtil.changeAmount(it.amount)) }
+        if(preferenceManager.getUserRight()=="BS") newList = newList?.map { it.copy(amount = "-") }
         return ServerCardSpinnerData(response.status, response.message, newList)
     }
 
@@ -49,7 +49,7 @@ class CardRepositoryImpl @Inject constructor(
             amount = sendCardData.cardAmount,
             expireDate = sendCardData.cardExpireDate,
             designId = sendCardData.cardDesignId
-        ).toServerResponseData()
+        ).body()!!.toServerResponseData()
     }
 
     override suspend fun updateCardRepository(sendUpdateCardData: SendUpdateCardData) : ServerUidData {

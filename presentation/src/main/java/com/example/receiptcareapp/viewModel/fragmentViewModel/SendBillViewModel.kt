@@ -3,6 +3,7 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.data.manager.PreferenceManager
 import com.example.domain.model.local.RoomData
 import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.model.remote.receive.bill.ServerStoreData
@@ -28,7 +29,7 @@ class SendBillViewModel @Inject constructor(
     private val insertDataUseCase: InsertDataUseCase,
     private val insertRoomDataUseCase: InsertRoomDataUseCase,
     private val getStoreListUseCase: GetStoreListUseCase,
-    private val getCardSpinnerUseCase: GetCardSpinnerUseCase
+    private val getCardSpinnerUseCase: GetCardSpinnerUseCase,
 ) : BaseViewModel("SendBillViewModel") {
 
     val loading: LiveData<Boolean> get() = isLoading
@@ -141,5 +142,4 @@ class SendBillViewModel @Inject constructor(
             )
         }
     }
-
 }

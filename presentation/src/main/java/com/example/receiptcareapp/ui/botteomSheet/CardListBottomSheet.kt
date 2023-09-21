@@ -23,14 +23,13 @@ import dagger.hilt.android.AndroidEntryPoint
  * pureum
  */
 @AndroidEntryPoint
-class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
+class CardListBottomSheet(private val homeViewModel: HomeViewModel): BaseBottomSheet<BottomsheetCardBinding>(
     BottomsheetCardBinding::inflate,
     "BottomsheetCardBinding"
 ) {
     private val adapter: CardListAdapter = CardListAdapter()
     private val viewModel: CardViewModel by viewModels()
     private val cardAddDialog: CardAddDialog by lazy { CardAddDialog(viewModel) }
-//    private val cardDeleteDialog: CardDeleteDialog by lazy { CardDeleteDialog(viewModel) }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
@@ -52,7 +51,6 @@ class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
             cardAddDialog()
         }
         adapter.onCardClick = {
-            Log.e("TAG", "initListener idid: ${it.uid}", )
             viewModel.putId(it.uid)
         }
     }
@@ -75,6 +73,7 @@ class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
                 "200" -> {
                     showLongToast("카드 추가 완료!")
                     viewModel.getServerCardData()
+                    homeViewModel.getServerCardData()
                 }
                 else -> {showLongToast("카드 추가 실패..")}
             }
@@ -84,6 +83,10 @@ class CardListBottomSheet: BaseBottomSheet<BottomsheetCardBinding>(
         viewModel.fetchState.observe(this) {
             showShortToast(FetchStateHandler(it))
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     private fun changeEmptyTxt(state:Boolean){

@@ -23,8 +23,8 @@ import com.example.receiptcareapp.ui.botteomSheet.CardListBottomSheet
 import com.example.receiptcareapp.ui.dialog.ChoiceDialog
 import com.example.receiptcareapp.ui.dialog.ExitDialog
 import com.example.receiptcareapp.ui.dialog.PermissionCheckDialog
-import com.example.receiptcareapp.util.App
 import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.util.MyApplication
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,14 +35,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val choiceDialog: ChoiceDialog by lazy { ChoiceDialog() }
     private val exitDialog: ExitDialog by lazy { ExitDialog() }
     private val permissionCheckDialog: PermissionCheckDialog by lazy { PermissionCheckDialog() }
-    private val bottomSheet by lazy { CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet") }
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
     private val handler = Handler(Looper.getMainLooper())
     private val ALL_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.READ_MEDIA_IMAGES)
     private lateinit var callback: OnBackPressedCallback
 
-    override fun initData() {}
+    override fun initData() {
+        viewModel.settingUserRight()
+    }
 
     override fun initUI() {
         //카드목록, 공지사항 불러오기
@@ -74,8 +75,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 else { addDialog() }
             }
             homeCardListComponent.setOnClickListener {
-                if(viewModel.getUserRight()=="MA")
-                    CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet")
+                if(MyApplication.right=="MA"){
+                    val gap = CardListBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet")
+                    Log.e("TAG", "initListener: $gap", )
+                }
+
             }
 
             homeRefresh.setOnRefreshListener {
@@ -84,7 +88,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 viewModel.getServerCardData()
             }
             adapter.onHomeCardItemClick = {
-                if(viewModel.getUserRight()=="MA")
+                if(MyApplication.right=="MA")
                     CardDetailBottomSheet(it).show(parentFragmentManager, "homeCardBottomSheet")
             }
         }
@@ -153,8 +157,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     private fun showPermissionCheckDialog() = permissionCheckDialog.show(parentFragmentManager, "PermissionCheckDialog")
-
-
 
 
     private fun checkAllPermissionsGranted(permissions: Array<String>): Boolean {

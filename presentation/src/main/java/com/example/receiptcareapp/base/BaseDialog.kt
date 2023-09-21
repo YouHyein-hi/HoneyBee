@@ -50,7 +50,7 @@ abstract class BaseDialog<VB: ViewBinding>(
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
         val width = resources.displayMetrics.widthPixels
-        dialog?.window?.setLayout((width * 0.8).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout((width * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
 
         return binding.root
     }

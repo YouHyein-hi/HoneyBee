@@ -57,6 +57,9 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         //수정 후 재전송 버튼
         binding.recordChangeBtn.setOnClickListener{
             viewModel.picture.value?.let { it -> viewModel.takeChangePicture(it) }
+            viewModelData.file?.let { it -> viewModel.takeImage(it) }
+            Log.e("TAG", "initListener: ${viewModel.picture.value}", )
+            Log.e("TAG", "initListener: ${viewModel.image.value}", )
             changeDialog()
         }
         //삭제 버튼

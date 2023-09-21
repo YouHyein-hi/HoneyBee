@@ -53,6 +53,11 @@ class RecordShowViewModel @Inject constructor(
         return _picture
     }
 
+    private val _image = MutableLiveData<Uri>()
+    val image: LiveData<Uri>
+        get() = _image
+    fun takeImage(img: Uri) { _image.value = img }
+
     private var _changePicture = MutableLiveData<Bitmap?>()
     val changePicture : LiveData<Bitmap?> get(){
         return _changePicture

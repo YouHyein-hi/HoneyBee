@@ -12,32 +12,32 @@
         android:layout_width="match_parent"
         android:layout_height="120dp">
 
-        <LinearLayout
-            android:id="@+id/billCheckLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#74B6B6B6"
-            android:elevation="5dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="@{serverRecyclerData.billCheck ? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/billCheckLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:background="#74B6B6B6"-->
+<!--            android:elevation="5dp"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="vertical"-->
+<!--            android:visibility="@{serverRecyclerData.billCheck ? View.VISIBLE : View.GONE}"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="청구 완료"
-                android:textColor="#B9000000"
-                android:visibility="visible"
-                android:textSize="50sp"
-                android:textStyle="italic|bold" />
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="center"-->
+<!--                android:text="청구 완료"-->
+<!--                android:textColor="#B9000000"-->
+<!--                android:visibility="visible"-->
+<!--                android:textSize="50sp"-->
+<!--                android:textStyle="italic|bold" />-->
+<!--        </LinearLayout>-->
 
         <LinearLayout
             android:gravity="center"

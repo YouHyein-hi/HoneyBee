@@ -26,7 +26,7 @@ class RecordServerAdapter:RecyclerView.Adapter<RecordServerAdapter.MyAdapter>(){
             with(binding){
                 serverRecyclerData = list
                 listLayout.setOnClickListener{ onServerSaveClick(list) }
-                if(list.billCheck) { billCheckLayout.bringToFront() }
+//                if(list.billCheck) { billCheckLayout.bringToFront() }
             }
         }
     }

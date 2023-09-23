@@ -13,10 +13,11 @@ data class RoomData(
     val storeAmount: String,
     val billSubmitTime: String,
     val storeName: String,
+    val memo: String,
     val file: String,
 )
 
-fun RoomData.toRecyclerShowData(): LocalRecyclerData = LocalRecyclerData(uid, cardName, storeAmount, billSubmitTime, storeName, file.toUri())
+fun RoomData.toRecyclerShowData(): LocalRecyclerData = LocalRecyclerData(uid, cardName, storeAmount, billSubmitTime, storeName, memo, file.toUri())
 
 
 

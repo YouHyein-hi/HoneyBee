@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.domain.model.local.RoomData
+import com.example.domain.util.StringUtil
 
 /**
  * 2023-02-15
@@ -24,15 +25,18 @@ data class MyEntity(
     @ColumnInfo
     val pictureName: String,
     @ColumnInfo
+    val memo: String,
+    @ColumnInfo
     val picture: String,
 
 )
 
 fun MyEntity.toDomainEntity(): RoomData = RoomData(
     uid = uid,
-    billSubmitTime = billSubmitTime,
+    billSubmitTime = StringUtil.changeDate(billSubmitTime),
     cardName = cardName,
     storeAmount = amount,
     storeName = pictureName,
+    memo = memo,
     file = picture
 )

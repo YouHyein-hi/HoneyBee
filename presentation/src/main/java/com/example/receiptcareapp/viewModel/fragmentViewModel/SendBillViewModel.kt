@@ -83,43 +83,6 @@ class SendBillViewModel @Inject constructor(
                             picture = data.picture,
                             memo = data.memo
                         )
-/*//                            cardName = MultipartBody.Part.createFormData(
-//                                "cardName",
-//                                data.cardName
-//                            ),
-//                            storeName = MultipartBody.Part.createFormData(
-//                                "storeName",
-//                                data.storeName
-//                            ),
-//                            date = MultipartBody.Part.createFormData(
-//                                "billSubmitTime",
-//                                data.billSubmitTime
-//                            ),
-//                            amount = MultipartBody.Part.createFormData(
-//                                "amount",
-//                                data.storeAmount.replace(",", "")
-//                            ),
-//                            picture = UriToBitmapUtil(application, data.picture)
-//                        )
-//                        SendBillData(
-//                            cardName = MultipartBody.Part.createFormData(
-//                                "cardName",
-//                                data.cardName
-//                            ),
-//                            storeName = MultipartBody.Part.createFormData(
-//                                "storeName",
-//                                data.storeName
-//                            ),
-//                            date = MultipartBody.Part.createFormData(
-//                                "billSubmitTime",
-//                                data.billSubmitTime
-//                            ),
-//                            amount = MultipartBody.Part.createFormData(
-//                                "amount",
-//                                data.storeAmount.replace(",", "")
-//                            ),
-//                            picture = UriToBitmapUtil(application, data.picture)
-//                        )*/
                     )
                 )
             } ?: throw SocketTimeoutException()
@@ -136,6 +99,7 @@ class SendBillViewModel @Inject constructor(
                     storeAmount = savedData.storeAmount,
                     storeName = savedData.storeName,
                     billSubmitTime = savedData.date,
+                    memo = savedData.memo,
                     file = savedData.picture.toString(),
                     uid = response
                 )

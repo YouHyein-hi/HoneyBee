@@ -14,9 +14,12 @@ import java.time.LocalDateTime
  */
 object StringUtil {
     fun changeDate(inputDate: String?): String {
+        Log.e("TAG", "changeDate: $inputDate", )
         return if (inputDate?.contains("T") == true) {
             val gap = inputDate.replace("-", ".").split("T")
+            Log.e("TAG", "changeDate: $gap", )
             val time = gap[1].split(":")
+            Log.e("TAG", "changeDate: $time", )
             "${gap[0]}  ${time[0]}:${time[1]}"
         } else {
             inputDate.toString()

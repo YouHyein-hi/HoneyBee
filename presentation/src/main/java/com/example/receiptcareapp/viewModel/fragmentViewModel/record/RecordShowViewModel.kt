@@ -148,6 +148,7 @@ class RecordShowViewModel @Inject constructor(
                     storeAmount = savedLocalData.storeAmount,
                     billSubmitTime = savedLocalData.date,
                     storeName = savedLocalData.storeName,
+                    memo = savedLocalData.memo,
                     file = savedLocalData.picture.toString()
                 )
             )

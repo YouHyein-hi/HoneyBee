@@ -14,5 +14,6 @@ data class RecyclerData(
     val amount: String,
     var date: String,
     val storeName: String,
+    val memo: String,
     var file: Uri?
 )

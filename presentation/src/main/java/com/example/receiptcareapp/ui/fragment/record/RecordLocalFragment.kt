@@ -68,7 +68,8 @@ class RecordLocalFragment(
                     amount = it.amount,
                     date = it.date,
                     storeName = it.storeName,
-                    file = it.file
+                    file = it.file,
+                    memo = it.memo
                 )
             )
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)

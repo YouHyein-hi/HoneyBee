@@ -6,9 +6,6 @@
         <variable
             name="recyclerData"
             type="com.example.domain.model.ui.recycler.LocalRecyclerData" />
-        <variable
-            name="stringUtil"
-            type="com.example.domain.util.StringUtil" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

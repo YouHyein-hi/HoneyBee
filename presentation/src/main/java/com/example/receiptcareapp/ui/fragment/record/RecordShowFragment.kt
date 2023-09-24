@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.domain.model.remote.receive.bill.DetailBillData
 import com.example.domain.util.StringUtil
 import com.example.domain.model.ui.type.ShowType
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
@@ -41,14 +42,21 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     }
 
     override fun initData() {
-        if(activityViewModel.selectedData.value != null)
-            viewModelData = activityViewModel.selectedData.value!!
-        else
-            findNavController().popBackStack()
+        viewModelData = activityViewModel.selectedData.value!!
     }
 
     override fun initUI() {
-        initView()
+        binding.recoreImageView.clipToOutline = true
+        if (viewModelData.type == ShowType.LOCAL){
+            binding.isServer = false
+            binding.recoreImageView.setImageURI(viewModelData.file)
+            binding.recordDownloadBtn.isVisible = false
+            initContext()
+        }
+        else {
+            binding.isServer = true
+            viewModel.getServerInitData(viewModelData.uid)
+        }
     }
 
     override fun initListener() {
@@ -56,9 +64,9 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         binding.recordDownloadBtn.setOnClickListener{ downloadDialog() }
         //수정 후 재전송 버튼
         binding.recordChangeBtn.setOnClickListener{
-            viewModel.picture.value?.let { it -> viewModel.takeChangePicture(it) }
+            viewModel.serverInitData.value?.let { it -> viewModel.takeChangePicture(it.first!!) }
             viewModelData.file?.let { it -> viewModel.takeImage(it) }
-            Log.e("TAG", "initListener: ${viewModel.picture.value}", )
+            Log.e("TAG", "initListener: ${viewModel.serverInitData.value}", )
             Log.e("TAG", "initListener: ${viewModel.image.value}", )
             changeDialog()
         }
@@ -108,16 +116,19 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         }
 
         viewModel.loading.observe(viewLifecycleOwner){
+            Log.e("TAG", "initObserver: $it", )
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
-        viewModel.picture.observe(viewLifecycleOwner){
+        viewModel.serverInitData.observe(viewLifecycleOwner){
+            Log.e("TAG", "initObserver: $it", )
             Glide.with(binding.recoreImageView)
-                .load(it)
+                .load(it.first)
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                 .into(binding.recoreImageView)
             checkImageData()
+            initContext(it.second)
         }
 
         // Err관리
@@ -126,28 +137,32 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         }
     }
 
-    private fun initView() {
-        Log.e("TAG", "initView: $viewModelData",)
-        if (viewModelData.type == ShowType.LOCAL){
-            binding.recoreImageView.setImageURI(viewModelData.file)
-            binding.recordDownloadBtn.isVisible = false
-        }
-        else
-            viewModel.getServerPictureData(viewModelData.uid)
-
-//        checkImageData()
-        binding.recoreImageView.clipToOutline = true
-        binding.data = RecyclerData(
-            viewModelData.type, viewModelData.uid, viewModelData.cardName, viewModelData.amount,
-            StringUtil.changeDate(viewModelData.date), viewModelData.storeName, viewModelData.file
-        )
-    }
 
     private fun checkImageData(){
 //        if(binding.recoreImageView.drawable == null)
 //            binding.recordEmptyTxt.isVisible = true
 //        if(viewModel.picture.value==null)
 //            binding.recordEmptyTxt.isVisible = true
+    }
+
+    private fun initContext(serverData: DetailBillData? =null){
+        if(serverData != null) {
+            binding.data = serverData
+        }else{
+            binding.data = DetailBillData(
+                billId = "",
+                cardName = viewModelData.cardName,
+                billAmount = viewModelData.amount,
+                billSubmitTime = StringUtil.changeDate(viewModelData.date),
+                storeName = viewModelData.storeName,
+                billCheck = false,
+                billMemo = viewModelData.memo,
+                writerName = "",
+                writeDateTime = "",
+                modifierName = "",
+                modifyDateTime = ""
+            )
+        }
     }
 
     //수정

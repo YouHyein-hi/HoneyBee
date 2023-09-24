@@ -13,15 +13,25 @@ data class ServerDetailBillResponse(
     val billSubmitTime: String,
     val storeName: String,
     var billCheck: Boolean,
+    var billMemo: String,
     var writerName: String,
-    var writerEmail: String,
     var writeDateTime: String,
     var modifierName: String,
-    var modifierEmail: String,
     var modifyDateTime: String
 
 
 )
 
-fun ServerDetailBillResponse.toDetailBillData(): DetailBillData = DetailBillData(billId = billId, cardName = cardName, billAmount = billAmount, billSubmitTime = billSubmitTime, storeName = storeName, billCheck= billCheck,
-writerName = writerName, writerEmail = writerEmail, writeDateTime = writeDateTime, modifierName = modifierName, modifierEmail = modifierEmail, modifyDateTime = modifyDateTime)
+fun ServerDetailBillResponse.toDetailBillData(): DetailBillData = DetailBillData(
+    billId = billId,
+    cardName = cardName,
+    billAmount = billAmount,
+    billSubmitTime = billSubmitTime,
+    storeName = storeName,
+    billCheck = billCheck,
+    billMemo = billMemo,
+    writerName = writerName,
+    writeDateTime = writeDateTime,
+    modifierName = modifierName,
+    modifyDateTime = modifyDateTime
+)

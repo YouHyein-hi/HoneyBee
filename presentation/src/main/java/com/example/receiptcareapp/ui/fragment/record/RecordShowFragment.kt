@@ -113,11 +113,17 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         }
 
         viewModel.picture.observe(viewLifecycleOwner){
-            Glide.with(binding.recoreImageView)
-                .load(it)
-                .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
-                .into(binding.recoreImageView)
-            checkImageData()
+            if (it == null) binding.recordEmptyTxt.visibility = View.VISIBLE
+            else{
+                binding.recordEmptyTxt.visibility =View.INVISIBLE
+                Glide.with(binding.recoreImageView)
+                    .load(it)
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
+                    .into(binding.recoreImageView)
+            }
+
+
+            //checkImageData()
         }
 
         // Err관리

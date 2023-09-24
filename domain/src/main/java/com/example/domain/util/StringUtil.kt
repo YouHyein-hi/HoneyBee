@@ -5,13 +5,12 @@ import android.util.Log
 import android.widget.SpinnerAdapter
 import com.example.domain.model.remote.receive.card.CardSpinnerData
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.*
 
-/**
- * 2023-08-20
- * pureum
- */
+
 object StringUtil {
     fun changeDate(inputDate: String?): String {
         return if (inputDate?.contains("T") == true) {
@@ -99,5 +98,15 @@ object StringUtil {
             }
         }
         return -1
+    }
+
+    fun datetimeToDate(dateTime: String) : String{
+        // 원래 문자열을 Date 객체로 변환
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+        val date = inputFormat.parse(dateTime)
+
+        // 새로운 형식으로 변환
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return outputFormat.format(date)
     }
 }

@@ -8,13 +8,11 @@ import com.example.domain.model.remote.receive.bill.ServerBillData
 import com.example.domain.model.remote.receive.bill.ServerDetailBillData
 import com.example.domain.model.remote.receive.bill.ServerStoreData
 import com.example.domain.model.remote.receive.card.ServerCardData
+import com.example.domain.model.remote.receive.card.ServerCardDetailData
 import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.model.remote.receive.notice.ServerNoticeData
 
-/**
- * 2023-08-30
- * pureum
- */
+
 object ResponseMapper {
 
     fun <T: List<ServerCardResponse>> ServerResponse<T>.toServerCardData() = ServerCardData(status, message, body?.map { it.toCardData() })
@@ -22,6 +20,8 @@ object ResponseMapper {
     fun ServerResponse<String>.toServerResponseData() = ServerResponseData(status, message, body)
 
     fun <T: List<ServerCardResponse>> ServerResponse<T>.toServerCardSpinnerData() = ServerCardSpinnerData(status, message, body?.map { it.toCardSpinnerData() })
+
+    fun ServerResponse<ServerCardDetailResponse>.toServerCardDetailData() = ServerCardDetailData(status, message, body?.toServerCardDetailData())
 
     fun ServerResponse<List<ServerBillResponse>>.toServerBillData(): ServerBillData = ServerBillData(status, message, body?.map { it.toBillData() } )
 

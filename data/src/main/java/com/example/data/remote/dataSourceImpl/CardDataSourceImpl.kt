@@ -4,7 +4,9 @@ import ServerResponse
 import android.util.Log
 import com.example.data.di.RetrofitModule
 import com.example.data.remote.dataSource.CardDataSource
+import com.example.data.remote.model.ServerCardDetailResponse
 import com.example.data.remote.model.ServerCardResponse
+import com.example.data.remote.model.ServerDetailBillResponse
 import retrofit2.Retrofit
 import retrofit2.create
 import java.time.LocalDate
@@ -30,6 +32,12 @@ class CardDataSourceImpl @Inject constructor(
                 "TAG",
                 "getCardDataSource: $it",
             ) }
+    }
+
+    override suspend fun getDetailCardDataSource(id: String): ServerResponse<ServerCardDetailResponse> {
+        return retrofit.create(CardDataSource::class.java).getDetailCardDataSource(id).also {
+            Log.e("TAG", "getDetailCardDataSource: $it", )
+        }
     }
 
     override suspend fun deleteCardDataSource(id: Long): ServerResponse<Int> {

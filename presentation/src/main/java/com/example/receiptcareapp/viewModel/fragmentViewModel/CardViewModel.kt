@@ -5,12 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.remote.receive.card.ServerCardData
 import com.example.domain.model.remote.receive.basic.ServerResponseData
+import com.example.domain.model.remote.receive.card.ServerCardDetailData
 import com.example.domain.model.remote.send.card.SendCardData
 import com.example.domain.model.remote.send.card.SendUpdateCardData
-import com.example.domain.usecase.card.DeleteCardUseCase
-import com.example.domain.usecase.card.GetCardListUseCase
-import com.example.domain.usecase.card.InsertCardUseCase
-import com.example.domain.usecase.card.UpdateCardUseCase
+import com.example.domain.usecase.card.*
 import com.example.receiptcareapp.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,13 +22,17 @@ class CardViewModel @Inject constructor(
     private val insertCardUseCase: InsertCardUseCase,
     private val getCardListUseCase: GetCardListUseCase,
     private val deleteCardUseCase: DeleteCardUseCase,
-    private val updateCardUseCase: UpdateCardUseCase
+    private val updateCardUseCase: UpdateCardUseCase,
+    private val getCardDetailUseCase: GetCardDetailUseCase
 ) : BaseViewModel("CardViewModel") {
 
     val loading: MutableLiveData<Boolean> get() = isLoading
 
     private var _cardList = MutableLiveData<ServerCardData?>()
     val cardList: LiveData<ServerCardData?> get() = _cardList
+
+    private var _cardDetailList = MutableLiveData<ServerCardDetailData?>()
+    val cardDetailList: LiveData<ServerCardDetailData?> get() = _cardDetailList
 
     private var _response = MutableLiveData<ServerResponseData?>()
     val response: LiveData<ServerResponseData?> get() = _response
@@ -49,6 +51,19 @@ class CardViewModel @Inject constructor(
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
                 _cardList.postValue(getCardListUseCase())
+            } ?: throw SocketTimeoutException()
+            isLoading.postValue(false)
+        }
+    }
+
+    fun getServerCardDetilaData(id: String){
+        modelScope.launch {
+            isLoading.postValue(true)
+            withTimeoutOrNull(waitTime) {
+                Log.e("TAG", "getDetailBillData: start", )
+                Log.e("TAG", "getDetailBillData: ${getCardDetailUseCase(id)}", )
+                _cardDetailList.postValue(getCardDetailUseCase(id))
+                Log.e("TAG", "getServerCardDetilaData cardDetailList: ${cardDetailList.value}", )
             } ?: throw SocketTimeoutException()
             isLoading.postValue(false)
         }

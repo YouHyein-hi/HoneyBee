@@ -43,20 +43,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardsemibold"
-                android:text="@{noticeData.title, default = 제목}"
+                android:text="@{noticeData.title, default = `제목`}"
                 android:textSize="30sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardregular"
-                android:text="@{noticeData.date, default = 날짜}"/>
+                android:text="@{noticeData.date, default = `날짜`}"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardregular"
-                android:text="@{noticeData.uploadName, default = 작성자}"/>
+                android:text="@{`작성자 : ` + noticeData.userName, default = `작성자`}"/>
 
             <View
                 android:layout_marginLeft="30dp"

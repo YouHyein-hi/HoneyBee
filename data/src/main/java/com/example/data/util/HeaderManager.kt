@@ -23,8 +23,6 @@ class HeaderManager @Inject constructor(
         return try {
             val accessToken = headers["Authorization"]!!.replace("Bearer ", "")
             val refreshToken = headers["RefreshToken"]!!
-            Log.e("TAG", "accessToken: $accessToken", )
-            Log.e("TAG", "refreshToken: $refreshToken", )
 
             //형식 검증
             if (accessToken.split(".").size != 3 || refreshToken.split(".").size != 3) false

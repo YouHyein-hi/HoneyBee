@@ -49,8 +49,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //카드목록, 공지사항 불러오기
         viewModel.getServerCardData()
         viewModel.getNoticeList()
-        initHomeCardRecycler()
         viewModel.initFetchState()
+        initHomeCardRecycler()
 
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             // 권한이 허용되었는지 확인

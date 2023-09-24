@@ -14,4 +14,4 @@ data class ServerNoticeResponse(
     val billNoticeContent: String,
 )
 
-fun ServerNoticeResponse.toNoticeData(): NoticeData = NoticeData(id = billNoticeId, title =  billNoticeTitle, date = billNoticeDate, content = billNoticeContent, uploadName = billNoticeUserName)
+fun ServerNoticeResponse.toNoticeData(): NoticeData = NoticeData(id = billNoticeId, title =  billNoticeTitle, date = billNoticeDate, content = billNoticeContent, userName = billNoticeUserName)

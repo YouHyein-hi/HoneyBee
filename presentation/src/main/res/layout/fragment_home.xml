@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -10,7 +10,6 @@
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/sub_background3_gray"
@@ -196,17 +195,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-<!--                <TextView-->
-<!--                    android:id="@+id/home_empty_txt"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/home_cardlist_empty"-->
-<!--                    android:textSize="20dp"-->
-<!--                    android:visibility="invisible"-->
-<!--                    app:layout_constraintBottom_toBottomOf="@+id/home_card_recyclerview"-->
-<!--                    app:layout_constraintEnd_toEndOf="@+id/home_card_recyclerview"-->
-<!--                    app:layout_constraintStart_toStartOf="@+id/home_card_recyclerview"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/view5" />-->
+                <TextView
+                    android:id="@+id/home_empty_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_cardlist_empty"
+                    android:textSize="20sp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/view6"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view5" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

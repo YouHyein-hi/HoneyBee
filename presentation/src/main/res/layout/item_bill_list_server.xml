@@ -70,6 +70,8 @@
                     android:gravity="left"
                     android:text="작성자 : 유혜인"
                     android:textColor="@color/sub_font2_gray"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:textSize="12sp" />
                 <!-- android:text="@{@string/record_user(recyclerData.사용자이름), default = `가게 이름`}" -->
 
@@ -88,6 +90,8 @@
                         android:gravity="left"
                         android:text="@{serverRecyclerData.storeAmount, default = ``}"
                         android:textColor="@color/main_font_black"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:textSize="28sp" />
 
                     <TextView
@@ -129,6 +133,8 @@
                         android:fontFamily="@font/pretendardbold"
                         android:textColor="@color/sub_font1_gray"
                         android:text="@{serverRecyclerData.date, default = `날짜`}"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -151,6 +157,8 @@
                         android:fontFamily="@font/pretendardbold"
                         android:gravity="center"
                         android:text="@{serverRecyclerData.cardName, default = `카드 이름`}"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:textColor="@color/sub_font1_gray" />
                 </LinearLayout>
 
@@ -173,6 +181,8 @@
                         android:fontFamily="@font/pretendardbold"
                         android:gravity="center"
                         android:text="@{serverRecyclerData.storeName, default = `가게 이름`}"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:textColor="@color/sub_font1_gray" />
                 </LinearLayout>
             </LinearLayout>

@@ -23,10 +23,6 @@ class HomeViewModel @Inject constructor(
     private val preferenceManager: PreferenceManager
 ) : BaseViewModel("HomeViewModel") {
 
-    init {
-        Log.e("TAG", "HomeCardBottomSheetViewModel")
-    }
-
     val loading: MutableLiveData<Boolean> get() = isLoading
 
     private var _response = MutableLiveData<ResponseState>()

@@ -10,12 +10,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.base.BaseFragment
+import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.ui.botteomSheet.CardDetailBottomSheet
 import com.example.receiptcareapp.util.PermissionHandler
@@ -43,14 +45,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun initData() {
         viewModel.settingUserRight()
+
     }
 
     override fun initUI() {
         //카드목록, 공지사항 불러오기
         viewModel.getServerCardData()
         viewModel.getNoticeList()
-        initHomeCardRecycler()
         viewModel.initFetchState()
+        initHomeCardRecycler()
 
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             // 권한이 허용되었는지 확인
@@ -75,10 +78,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 else { addDialog() }
             }
             homeCardListComponent.setOnClickListener {
-                if(MyApplication.right=="MA"){
-                    val gap = CardListBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet")
-                    Log.e("TAG", "initListener: $gap", )
-                }
+                if(MyApplication.right=="MA")
+                    CardListBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet")
 
             }
 
@@ -117,11 +118,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // Err관리
         viewModel.fetchState.observe(this) {
             when(it.second){
-//                FetchState.SOCKET_TIMEOUT_EXCEPTION -> { emptyTextControl(true, "서버 연결 실패..") }
-//                FetchState.PARSE_ERROR -> {emptyTextControl(true, "서버 연결 실패..")}
+                FetchState.SOCKET_TIMEOUT_EXCEPTION -> {
+                    emptyTextControl(true, "서버 연결 실패..")
+                    adapter.dataList.clear()
+                }
+                FetchState.PARSE_ERROR -> {
+                    adapter.dataList.clear()
+                    emptyTextControl(true, "서버 연결 실패..")
+                }
+                else-> {
+                    adapter.dataList.clear()
+                    emptyTextControl(true, "서버 연결 실패..")
+                }
             }
-            showShortToast(FetchStateHandler(it))
-//            adapter.dataList.clear()
         }
     }
 
@@ -132,8 +141,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun emptyTextControl(state: Boolean, massage: String = "카드를 추가해주세요!"){
-//        binding.homeEmptyTxt.isVisible = state
-//        binding.homeEmptyTxt.text = massage
+        binding.homeEmptyTxt.isVisible = state
+        binding.homeEmptyTxt.text = massage
     }
 
     override fun onDetach() {
@@ -155,9 +164,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun exitDialog() = exitDialog.show(parentFragmentManager, "exitDialog")
 
-
     private fun showPermissionCheckDialog() = permissionCheckDialog.show(parentFragmentManager, "PermissionCheckDialog")
-
 
     private fun checkAllPermissionsGranted(permissions: Array<String>): Boolean {
         for (permission in permissions) {
@@ -168,9 +175,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         return true
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        Log.e("TAG", "onRequestPermissionsResult: 에 접근",)
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) =
         permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
+
 
 }

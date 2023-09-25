@@ -27,7 +27,6 @@ class CardChangeDialog(
 
     override fun initData() {
         cardViewModel.textValue = cardData.cardAmount
-        Log.e("TAG", "initData: ${cardData.cardExpireDate}", )
         newDate = StringUtil.dateReplaceLine(cardData.cardExpireDate.toString())
 
         try {
@@ -43,7 +42,6 @@ class CardChangeDialog(
     }
 
     override fun initUI() {
-        Log.e("TAG", "initUI: ${cardData}", )
         binding.data = cardData
         binding.cardChangePriceEdit.setText(cardViewModel.textValue)
         binding.cardChangeDateDatePicker.init(dateData.year, dateData.month - 1, dateData.day, null)
@@ -94,7 +92,7 @@ class CardChangeDialog(
                 else->{}
             }
         }
-        // Err관리
+
         viewModel.fetchState.observe(this) {
             showShortToast(FetchStateHandler(it))
         }

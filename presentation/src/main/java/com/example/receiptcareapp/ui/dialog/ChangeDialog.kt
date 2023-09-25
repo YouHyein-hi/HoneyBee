@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
@@ -53,10 +52,7 @@ class ChangeDialog(
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
             viewModelData = activityViewModel.selectedData.value!!
-            Log.e("TAG", "initData: ${activityViewModel.selectedData.value}", )
-            Log.e("TAG", "initData: ${viewModelData}", )
             newDate = StringUtil.dateReplaceDot(viewModelData.date)
-            Log.e("TAG", "initData: ${newDate}", )
         } else {
             showShortToast("데이터가 없습니다!")
             dismiss()
@@ -89,7 +85,6 @@ class ChangeDialog(
     override fun initListener() {
 
         binding.changeImage.setOnLongClickListener {
-            Log.e("TAG", "initListener: 그림 길게 클릭함!", )
             CallGallery()
             return@setOnLongClickListener(true)
         }
@@ -171,12 +166,10 @@ class ChangeDialog(
                     binding.changeCardSpinner.setSelection(position)
                 } else {
                     showShortToast("카드 불러오기 실패!")
-                    Log.e("TAG", "initObserver: $position")
                 }
             }
         }
 
-        // Err관리
         viewModel.fetchState.observe(this) {
             when (it.second) {
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> dismiss()
@@ -184,52 +177,35 @@ class ChangeDialog(
             showShortToast(FetchStateHandler(it))
         }
 
-        // 이렇게 말고 show 부분에서 picture bitmap이나 url 가져오면 되는 거 아닌가? (핳)
         viewModel.changePicture.observe(viewLifecycleOwner){
             Glide.with(binding.changeImage)
                 .load(it)
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                 .into(binding.changeImage)
-//            checkImageData()
         }
+
         viewModel.image.observe(viewLifecycleOwner){
             imageUri = it
         }
     }
 
-    fun CallGallery() {
-        Log.e("TAG", "CallGallery 실행", )
+    private fun CallGallery() {
         val galleryIntent = galleryViewModel.CallGallery()
         activityResult.launch(galleryIntent)
     }
 
-    /* 갤러리 사진 관련 함수 */
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { it ->
         if (it.resultCode == Activity.RESULT_OK){
-            val data: Intent? = it.data
-            Log.e("TAG", "onActivityResult: if 진입", )
             imageUri = it.data?.data
             if (imageUri != null) {
-                Log.e("TAG", "data 있음", )
                 val bitmap : Bitmap? = UriToBitmapUtil.uriToBitmap(requireContext(), imageUri!!)
                 val rotatedBitmap = UriToBitmapUtil.rotateImageIfRequiredUri(requireContext(), imageUri!!, bitmap!!)
-                rotatedBitmap?.let { it -> viewModel.takeChangePicture(it) }
+                rotatedBitmap.let { it -> viewModel.takeChangePicture(it) }
                 viewModelData.file = imageUri as Uri
             }
-            else{ Log.e("TAG", "data 없음", ) }
+            else{ }
         }
-        else{
-            Log.e("TAG", "RESULT_OK if: else 진입", )
-        }
+        else{ }
     }
-
-
-/*    private fun checkImageData(){
-        if(binding.changeImageImageView.drawable == null)
-            binding.changeEmptyTxt.isVisible = true
-        if(viewModel.picture.value==null)
-            binding.changeEmptyTxt.isVisible = true
-    }*/
-
 }

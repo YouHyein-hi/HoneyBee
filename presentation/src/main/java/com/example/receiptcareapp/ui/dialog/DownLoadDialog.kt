@@ -29,8 +29,7 @@ class DownLoadDialog(
         }
     }
 
-    override fun initUI() {
-    }
+    override fun initUI() {}
 
     override fun initListener() {
         with(binding){
@@ -45,7 +44,6 @@ class DownLoadDialog(
     }
 
     override fun initObserver() {
-        // Err관리
         viewModel.fetchState.observe(this) {
             when (it.second) {
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> dismiss()
@@ -55,7 +53,6 @@ class DownLoadDialog(
         }
     }
 
-    // 이미지 저장
     private fun handleDownloadClick() {
         if(!UriToBitmapUtil.imageExternalSave(requireContext(), viewModel.serverInitData.value?.first, requireContext().getString(
                 R.string.app_name))){

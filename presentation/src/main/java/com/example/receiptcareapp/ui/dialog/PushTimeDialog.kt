@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.ui.dialog
 
-import android.util.Log
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogPushtimeBinding
 import com.example.receiptcareapp.viewModel.fragmentViewModel.MenuViewModel
@@ -11,14 +10,14 @@ class PushTimeDialog(
     private val viewModel: MenuViewModel,
     private val positiveButtonClickCallback: () -> Unit
     ) : BaseDialog<DialogPushtimeBinding>(DialogPushtimeBinding::inflate) {
-    override fun initData() {
-    }
+
+    override fun initData() {}
 
     override fun initUI() {
        try {
             val time = viewModel.getTime()
-            binding.hour = time.hour ?: 0 // 만약 null이라면 0으로 설정
-            binding.minute = time.minute ?: 0 // 만약 null이라면 0으로 설정
+            binding.hour = time.hour ?: 0
+            binding.minute = time.minute ?: 0
         } catch (e: NullPointerException) {
             dismiss()
             showShortToast("날짜 불러오기를 실패했습니다.")
@@ -36,8 +35,6 @@ class PushTimeDialog(
         }
     }
 
-    override fun initObserver() {
-
-    }
+    override fun initObserver() {}
 
 }

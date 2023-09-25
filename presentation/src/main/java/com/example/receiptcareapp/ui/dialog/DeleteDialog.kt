@@ -51,7 +51,6 @@ class DeleteDialog(
     }
 
     override fun initObserver() {
-        // Err관리
         viewModel.fetchState.observe(this) {
             when (it.second) {
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> dismiss()

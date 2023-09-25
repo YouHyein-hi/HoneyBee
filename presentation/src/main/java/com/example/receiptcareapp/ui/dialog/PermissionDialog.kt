@@ -1,12 +1,5 @@
 package com.example.receiptcareapp.ui.dialog
 
-import android.content.DialogInterface
-import android.content.pm.PackageManager
-import android.os.Build
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import android.view.ViewGroup
 import com.example.receiptcareapp.base.BaseDialog
 import com.example.receiptcareapp.databinding.DialogPermissionBinding
 
@@ -20,11 +13,9 @@ class PermissionDialog : BaseDialog<DialogPermissionBinding>(DialogPermissionBin
         onDismissListener = listener
     }
 
-    override fun initData() {
-    }
+    override fun initData() {}
 
-    override fun initUI() {
-    }
+    override fun initUI() {}
 
     override fun initListener() {
         dialog?.setCancelable(false)
@@ -34,8 +25,6 @@ class PermissionDialog : BaseDialog<DialogPermissionBinding>(DialogPermissionBin
         }
     }
 
-    override fun initObserver() {
-
-    }
+    override fun initObserver() {}
 
 }

@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.ui.dialog
 
-import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.remote.send.card.SendCardData
@@ -21,47 +20,27 @@ class CardAddDialog(
     private val cardViewModel: CardViewModel
 ) : BaseDialog<DialogCardAddBinding>(DialogCardAddBinding::inflate) {
 
-    // TODO 나중에 imageResIds 부분 하드코딩이라 이걸로 수정하자...
-/*    private val imageList: List<CardImageRecyclerData> by lazy {
-        val imageIds = resources.getIntArray(R.array.card_image_array_id)
-        imageIds.map { CardImageRecyclerData(it) }
-    }
-
-    private val adapter: CardImageAdapter by lazy {
-        CardImageAdapter(imageList)
-    }*/
     private val viewModel : CardAddViewModel by viewModels()
     private lateinit var dateData : DateData
     private var cardImage = 1
+    private val imageResIds = listOf( R.drawable.card_image_1, R.drawable.card_image_2, R.drawable.card_image_3)
+    private val adapter by lazy { CardImageAdapter(imageResIds)}
 
-    override fun initData() {
-    }
+    override fun initData() {}
 
     override fun initUI() {
         val date = StringUtil.dateNow()
         binding.cardAddDateDatePicker.init(date.year, date.monthValue-1, date.dayOfMonth, null)
         binding.image = cardImage
+        binding.cardAddImageRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.cardAddImageRecyclerView.adapter = adapter
     }
 
     override fun initListener() {
-
-        val imageResIds = listOf(
-            R.drawable.card_image_1,
-            R.drawable.card_image_2,
-            R.drawable.card_image_3
-        )
-
-        binding.cardAddImageRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val cardImageAdapter = CardImageAdapter(imageResIds)
-        binding.cardAddImageRecyclerView.adapter = cardImageAdapter
-
         with(binding){
-
-            cardAddImageTxt.text = "${cardImage}번 그림을 선택하셨습니다!"
-
             cardAddOkBtn.setOnClickListener{
                 var price = cardAddPriceEdit.text.toString()
-                var priceZero = price.count { it == '0' }
+                val priceZero = price.count { it == '0' }
                 dateData = DateData(
                     binding.cardAddDateDatePicker.year,
                     binding.cardAddDateDatePicker.month+1,
@@ -87,12 +66,10 @@ class CardAddDialog(
             }
 
             cardAddCancelBtn.setOnClickListener{
-                Log.e("TAG", "onResume: 카드 추가 취소", )
                 dismiss()
             }
 
-            cardImageAdapter.onCardImageClick = {
-                Log.e("TAG", "initListener: ${it}", )
+            adapter.onCardImageClick = {
                 cardImage = it
                 image = it
             }
@@ -110,7 +87,7 @@ class CardAddDialog(
                 else->{}
             }
         }
-        // Err관리
+
         viewModel.fetchState.observe(this) {
             showShortToast(FetchStateHandler(it))
         }

@@ -7,13 +7,9 @@ import com.example.receiptcareapp.databinding.DialogAddBinding
 
 class ChoiceDialog : BaseDialog<DialogAddBinding>(DialogAddBinding::inflate) {
 
-    override fun initData() {
+    override fun initData() {}
 
-    }
-
-    override fun initUI() {
-
-    }
+    override fun initUI() {}
 
     override fun initListener() {
         with(binding){
@@ -29,8 +25,6 @@ class ChoiceDialog : BaseDialog<DialogAddBinding>(DialogAddBinding::inflate) {
 
     }
 
-    override fun initObserver() {
-
-    }
+    override fun initObserver() {}
 
 }

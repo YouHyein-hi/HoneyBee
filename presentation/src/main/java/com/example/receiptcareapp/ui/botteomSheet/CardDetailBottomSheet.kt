@@ -2,7 +2,6 @@ package com.example.receiptcareapp.ui.botteomSheet
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.domain.model.remote.receive.card.CardData
@@ -11,8 +10,6 @@ import com.example.domain.util.StringUtil
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseBottomSheet
 import com.example.receiptcareapp.databinding.BottomsheetCardDetailBinding
-import com.example.receiptcareapp.ui.dialog.CardAddDialog
-import com.example.receiptcareapp.ui.adapter.CardListAdapter
 import com.example.receiptcareapp.ui.dialog.CardChangeDialog
 import com.example.receiptcareapp.ui.dialog.CardDeleteDialog
 import com.example.receiptcareapp.util.FetchStateHandler
@@ -38,17 +35,14 @@ class CardDetailBottomSheet(
         viewModel.getServerCardDetilaData(cardData.uid.toString())
     }
 
-    override fun initUI() {
-    }
+    override fun initUI() {}
 
     override fun initListener() {
         binding.cardDetailChangeBtn.setOnClickListener {
-            Log.e("TAG", "initListener idid: ${cardData.uid}", )
             viewModel.putId(cardData.uid)
             cardChangeDialog()
         }
         binding.cardDetailDeleteBtn.setOnClickListener {
-            Log.e("TAG", "initListener idid: ${cardData.uid}", )
             viewModel.putId(cardData.uid)
             cardDeleteDialog()
         }
@@ -57,7 +51,6 @@ class CardDetailBottomSheet(
     }
 
     override fun initObserver() {
-
         viewModel.cardDetailList.observe(viewLifecycleOwner){
             val cardDetail = it?.body
             binding.cardDate = cardDetail?.let { it1 ->
@@ -73,7 +66,6 @@ class CardDetailBottomSheet(
         }
 
         viewModel.response.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: 카드 리턴값 $it", )
             when(it?.status) {
                 "200" -> {
                     viewModel.getServerCardData()

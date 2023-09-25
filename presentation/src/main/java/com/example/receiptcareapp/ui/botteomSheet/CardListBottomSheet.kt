@@ -2,7 +2,6 @@ package com.example.receiptcareapp.ui.botteomSheet
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -36,7 +35,6 @@ class CardListBottomSheet(private val homeViewModel: HomeViewModel): BaseBottomS
     }
 
     override fun initData() {
-        //서버 데이터 불러오기
         adapter.dataList.clear()
         viewModel.getServerCardData()
     }
@@ -56,7 +54,6 @@ class CardListBottomSheet(private val homeViewModel: HomeViewModel): BaseBottomS
     }
 
     override fun initObserver() {
-        //TODO databinding으로 옵져버하게 ,, 어떻게 뺄지 고민
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
@@ -68,7 +65,6 @@ class CardListBottomSheet(private val homeViewModel: HomeViewModel): BaseBottomS
         }
 
         viewModel.response.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: 카드 리턴값 $it", )
             when(it?.status) {
                 "200" -> {
                     showLongToast("카드 추가 완료!")
@@ -85,10 +81,6 @@ class CardListBottomSheet(private val homeViewModel: HomeViewModel): BaseBottomS
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
     private fun changeEmptyTxt(state:Boolean){
         binding.cardEmptyTxt.isVisible = state
     }
@@ -96,9 +88,4 @@ class CardListBottomSheet(private val homeViewModel: HomeViewModel): BaseBottomS
     private fun cardAddDialog(){
         cardAddDialog.show(parentFragmentManager, "CardAddDialog")
     }
-    
-    //TODO 기능 구현하기
-//     private fun cardDeleteDialog(){
-//         cardDeleteDialog.show(parentFragmentManager, "cardDeleteDialog")
-//     }
 }

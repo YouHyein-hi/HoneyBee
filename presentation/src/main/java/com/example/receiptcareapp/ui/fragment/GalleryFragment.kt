@@ -30,7 +30,7 @@ class GalleryFragment : BaseFragment<FragmentGalleryBinding>(FragmentGalleryBind
 
 
     private fun callGallery() {
-        activityResult.launch(galleryViewModel.CallGallery())
+        activityResult.launch(galleryViewModel.callGallery())
     }
 
     private val activityResult: ActivityResultLauncher<Intent> = registerForActivityResult(

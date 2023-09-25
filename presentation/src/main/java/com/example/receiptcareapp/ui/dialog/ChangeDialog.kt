@@ -190,7 +190,7 @@ class ChangeDialog(
     }
 
     private fun CallGallery() {
-        val galleryIntent = galleryViewModel.CallGallery()
+        val galleryIntent = galleryViewModel.callGallery()
         activityResult.launch(galleryIntent)
     }
 

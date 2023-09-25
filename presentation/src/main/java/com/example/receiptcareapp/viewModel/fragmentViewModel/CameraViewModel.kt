@@ -14,8 +14,6 @@ import java.util.*
 
 class CameraViewModel : ViewModel(){
 
-    init { Log.e("TAG", "CameraViewModel", ) }
-
     private val _photoUri = MutableLiveData<Uri>()
     val photoUri: LiveData<Uri> = _photoUri
 

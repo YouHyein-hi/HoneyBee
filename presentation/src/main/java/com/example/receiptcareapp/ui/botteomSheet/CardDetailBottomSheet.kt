@@ -32,7 +32,7 @@ class CardDetailBottomSheet(
     }
 
     override fun initData() {
-        viewModel.getServerCardDetilaData(cardData.uid.toString())
+        viewModel.getServerCardDetailData(cardData.uid.toString())
     }
 
     override fun initUI() {}

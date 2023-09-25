@@ -2,7 +2,6 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel.record
 
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.RoomData
@@ -42,32 +41,22 @@ class RecordShowViewModel @Inject constructor(
     private var _response = MutableLiveData<Pair<ResponseState, ServerUidData?>>()
     val response : LiveData<Pair<ResponseState, ServerUidData?>> get() = _response
 
-    // 서버 카드 전달받은 값 관리
     private var _cardList = MutableLiveData<ServerCardSpinnerData?>()
-    val cardList: LiveData<ServerCardSpinnerData?>
-        get() = _cardList
+    val cardList: LiveData<ServerCardSpinnerData?> get() = _cardList
 
     private var _picture = MutableLiveData<Bitmap?>()
-    val picture : LiveData<Bitmap?> get(){
-        return _picture
-    }
+    val picture : LiveData<Bitmap?> get() = _picture
 
     private val _image = MutableLiveData<Uri>()
-    val image: LiveData<Uri>
-        get() = _image
+    val image: LiveData<Uri> get() = _image
     fun takeImage(img: Uri) { _image.value = img }
 
     private var _changePicture = MutableLiveData<Bitmap?>()
-    val changePicture : LiveData<Bitmap?> get(){
-        return _changePicture
-    }
+    val changePicture : LiveData<Bitmap?> get() = _changePicture
     fun takeChangePicture(pic: Bitmap) { _changePicture.value = pic }
 
     private var _check = MutableLiveData<Boolean>()
-    val check: LiveData<Boolean> get(){
-        return _check
-    }
-    fun takeCheck(check: Boolean){ _check.value = check }
+    val check: LiveData<Boolean> get() = _check
 
     private var _serverInitData = MutableLiveData<Pair<Bitmap?, DetailBillData>>()
     val serverInitData : LiveData<Pair<Bitmap?, DetailBillData>> get() = _serverInitData
@@ -77,9 +66,6 @@ class RecordShowViewModel @Inject constructor(
     private lateinit var savedServerData: SendBillUpdateData
     private lateinit var savedLocalData: LocalBillData
 
-
-    // TODO ChangeDialog에만 들어가는 코드인데 ChangeViewModel에 옮길까
-    //서버 데이터 업데이트
     fun updateServerBillData(sendData: SendBillUpdateData) {
         modelScope.launch {
             isLoading.postValue(true)
@@ -106,7 +92,6 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-    //로컬 데이터 재전송
     fun updateLocalBillData(sendData: LocalBillData) {
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
@@ -183,16 +168,6 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-    fun getServerPictureData(id:String){
-        modelScope.launch {
-            withTimeoutOrNull(waitTime) {
-                loading.postValue(true)
-                _picture.postValue(getPictureDataUseCase(id).picture)
-                loading.postValue(false)
-            }?:throw SocketTimeoutException()
-        }
-    }
-
     fun getServerInitData(id: String) {
         modelScope.launch {
             loading.postValue(true)
@@ -207,18 +182,4 @@ class RecordShowViewModel @Inject constructor(
             loading.postValue(false)
         }
     }
-
-    fun getDetailBillData(id: String){
-        modelScope.launch {
-            withTimeoutOrNull(waitTime) {
-                Log.e("TAG", "getDetailBillData: start", )
-                Log.e("TAG", "getDetailBillData: ${getDetailDataUseCase(id)}", )
-            }?:throw SocketTimeoutException()
-        }
-    }
-
-    fun billCheckComplete(){
-
-    }
-    fun billCheckCancel(){}
 }

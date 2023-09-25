@@ -27,13 +27,11 @@ class RecordViewModel @Inject constructor(
 
     val loading : MutableLiveData<Boolean> get() = isLoading
 
-    //서버에서 받은 데이터 담는 박스
     private val _billList = MutableLiveData<ServerBillData?>()
     val billList: LiveData<ServerBillData?> get() = _billList
 
-    //룸에서 받은 데이터 담는 박스
-    private var _roomData = MutableLiveData<MutableList<RoomData>>()
-    val roomData: LiveData<MutableList<RoomData>> get() = _roomData
+    private var _roomData = MutableLiveData<MutableList<RoomData>?>()
+    val roomData: LiveData<MutableList<RoomData>?> get() = _roomData
 
     fun getLocalAllData() {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {

@@ -17,16 +17,15 @@ class MenuViewModel @Inject constructor(
     val pushTime: LiveData<TimeData>
         get() = _pushTime
 
-    fun putPush(onoff: Boolean) {
-        preferenceManager.putPush(onoff)
+    fun putPush(onOff: Boolean) {
+        preferenceManager.putPush(onOff)
     }
 
-    fun getPush(): Boolean? {
+    fun getPush(): Boolean {
         return preferenceManager.getPush()
     }
 
     fun putTime(hour: Int, minute: Int) {
-        //생성자
         preferenceManager.putHour(hour)
         preferenceManager.putMinute(minute)
         _pushTime.value = TimeData(hour, minute)

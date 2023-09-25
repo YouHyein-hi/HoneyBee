@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.data.manager.PreferenceManager
@@ -28,15 +27,12 @@ class HomeViewModel @Inject constructor(
     private var _response = MutableLiveData<ResponseState>()
     val response: LiveData<ResponseState> get() = _response
 
-    //서버 응답 일관화 이전에 사용할 박스
     private var _cardList = MutableLiveData<ServerCardData?>()
     val cardList: LiveData<ServerCardData?> get() = _cardList
 
-    //서버 응답 일관화 이전에 사용할 박스
     private var _notice = MutableLiveData<String>()
     val notice: LiveData<String> get() = _notice
 
-    //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
         modelScope.launch {
             isLoading.postValue(true)
@@ -60,7 +56,6 @@ class HomeViewModel @Inject constructor(
             isLoading.postValue(false)
         }
     }
-
 
     fun settingUserRight() { MyApplication.right = preferenceManager.getUserRight() ?: "" }
 }

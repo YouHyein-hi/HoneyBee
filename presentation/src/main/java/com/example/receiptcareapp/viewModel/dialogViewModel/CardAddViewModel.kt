@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.viewModel.dialogViewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.receiptcareapp.base.BaseViewModel
@@ -10,10 +9,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CardAddViewModel @Inject constructor() : BaseViewModel("CardAddViewModel") {
-
-    init {
-        Log.e("TAG", "CardAddBottomViewModel")
-    }
 
     val loading : MutableLiveData<Boolean> get() = isLoading
 

@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.viewModel.fragmentViewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.remote.receive.card.ServerCardData
@@ -45,7 +44,6 @@ class CardViewModel @Inject constructor(
 
     var textValue: String? = null
 
-    //여러 Fragment에서 사용되는 함수
     fun getServerCardData() {
         modelScope.launch {
             isLoading.postValue(true)
@@ -56,14 +54,11 @@ class CardViewModel @Inject constructor(
         }
     }
 
-    fun getServerCardDetilaData(id: String){
+    fun getServerCardDetailData(id: String){
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                Log.e("TAG", "getDetailBillData: start", )
-                Log.e("TAG", "getDetailBillData: ${getCardDetailUseCase(id)}", )
                 _cardDetailList.postValue(getCardDetailUseCase(id))
-                Log.e("TAG", "getServerCardDetilaData cardDetailList: ${cardDetailList.value}", )
             } ?: throw SocketTimeoutException()
             isLoading.postValue(false)
         }
@@ -73,7 +68,6 @@ class CardViewModel @Inject constructor(
         modelScope.launch {
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                Log.e("TAG", "insertServerCardData: ${sendData.cardName}, ${sendData.cardAmount}, ${sendData.cardExpireDate}, ${sendData.cardDesignId}", )
                 _response.postValue(
                     insertCardUseCase(
                         SendCardData(
@@ -94,9 +88,6 @@ class CardViewModel @Inject constructor(
             isLoading.postValue(true)
             withTimeoutOrNull(waitTime) {
                 deleteCardUseCase(id)
-                /*_response.postValue(
-                    deleteCardUseCase(id)
-                )*/
             } ?: throw SocketTimeoutException()
             isLoading.postValue(false)
         }

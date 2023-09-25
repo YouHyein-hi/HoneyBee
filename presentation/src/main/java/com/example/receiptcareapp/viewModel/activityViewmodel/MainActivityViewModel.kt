@@ -3,7 +3,6 @@ package com.example.receiptcareapp.viewModel.activityViewmodel
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.data.manager.PreferenceManager
 import com.example.domain.model.remote.receive.notice.NoticeData
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.domain.model.ui.recycler.RecyclerData

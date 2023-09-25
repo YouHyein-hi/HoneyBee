@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.viewModel.activityViewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.data.manager.PreferenceManager
@@ -8,7 +7,6 @@ import com.example.domain.model.remote.receive.basic.ServerResponseData
 import com.example.domain.model.remote.send.login.SendLoginData
 import com.example.domain.usecase.login.LoginUseCase
 import com.example.receiptcareapp.base.BaseViewModel
-import com.example.domain.usecase.card.GetCardListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -24,10 +22,8 @@ import javax.inject.Inject
 class LoginActivityViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val preferenceManager: PreferenceManager,
-    private val cardListUseCase: GetCardListUseCase
     ) : BaseViewModel("LoginActivityViewModel") {
 
-    //서버 연결 유무 관리
     val loading: LiveData<Boolean> get() = isLoading
 
     private var _response = MutableLiveData<ServerResponseData>()
@@ -75,13 +71,13 @@ class LoginActivityViewModel @Inject constructor(
     fun getIdCheckBoxState():Boolean = preferenceManager.getAutoEmailCheckBox()
 
     fun loadGetAuthData(){
-        Log.e("TAG", "getAccessToken: ${preferenceManager.getAccessToken()}", )
-        Log.e("TAG", "getRefreshToken: ${preferenceManager.getRefreshToken()}", )
-        Log.e("TAG", "getUserRight: ${preferenceManager.getUserRight()}", )
-        Log.e("TAG", "getAuthTime: ${preferenceManager.getAuthTime()}", )
+//        Log.e("TAG", "getAccessToken: ${preferenceManager.getAccessToken()}", )
+//        Log.e("TAG", "getRefreshToken: ${preferenceManager.getRefreshToken()}", )
+//        Log.e("TAG", "getUserRight: ${preferenceManager.getUserRight()}", )
+//        Log.e("TAG", "getAuthTime: ${preferenceManager.getAuthTime()}", )
     }
 
-    fun authTimeEnd(){
+    private fun authTimeEnd(){
         modelScope.launch {
             throw Exception("자동로그인 토큰 만료")
         }

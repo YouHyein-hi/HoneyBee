@@ -10,7 +10,6 @@ import com.example.domain.repo.CardRepository
 class GetCardListUseCase(
     private val cardRepository: CardRepository
 ) {
-    suspend operator fun invoke() : ServerCardData {
-        return cardRepository.getCardListRepository()
-    }
+    suspend operator fun invoke() : ServerCardData =
+        cardRepository.getCardListRepository()
 }

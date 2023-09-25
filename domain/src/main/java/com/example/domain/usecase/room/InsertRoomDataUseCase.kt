@@ -10,7 +10,6 @@ import com.example.domain.repo.RoomRepository
 class InsertRoomDataUseCase(
     private val roomRepository: RoomRepository
 ) {
-    suspend operator fun invoke(insertRoomData: RoomData){
+    suspend operator fun invoke(insertRoomData: RoomData) =
         roomRepository.insertData(insertRoomData)
-    }
 }

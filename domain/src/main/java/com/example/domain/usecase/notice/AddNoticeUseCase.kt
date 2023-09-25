@@ -11,7 +11,6 @@ import com.example.domain.repo.NoticeRepository
 class AddNoticeUseCase(
     private val addNoticeUseCase: NoticeRepository
 ) {
-    suspend operator fun invoke(sendNoticeAddData: SendNoticeAddData): ServerResponseData {
-        return addNoticeUseCase.addNoticeRepository(sendNoticeAddData)
-    }
+    suspend operator fun invoke(sendNoticeAddData: SendNoticeAddData): ServerResponseData =
+        addNoticeUseCase.addNoticeRepository(sendNoticeAddData)
 }

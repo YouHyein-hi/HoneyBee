@@ -11,7 +11,6 @@ import com.example.domain.repo.GeneralRepository
 class UpdateDataUseCase(
     private val generalRepository: GeneralRepository
 ) {
-    suspend operator fun invoke(sendBillUpdateData: SendBillUpdateData): ServerUidData {
-        return generalRepository.updateDataRepository(sendBillUpdateData)
-    }
+    suspend operator fun invoke(sendBillUpdateData: SendBillUpdateData): ServerUidData =
+        generalRepository.updateDataRepository(sendBillUpdateData)
 }

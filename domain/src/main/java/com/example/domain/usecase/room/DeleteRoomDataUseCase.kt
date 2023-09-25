@@ -9,7 +9,6 @@ import com.example.domain.repo.RoomRepository
 class DeleteRoomDataUseCase(
     private val roomRepository: RoomRepository
 ) {
-    suspend operator fun invoke(date:String):Int{
-        return roomRepository.deleteData(date)
-    }
+    suspend operator fun invoke(date:String):Int =
+        roomRepository.deleteData(date)
 }

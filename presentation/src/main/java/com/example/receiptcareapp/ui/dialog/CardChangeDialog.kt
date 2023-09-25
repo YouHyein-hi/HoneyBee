@@ -60,7 +60,7 @@ class CardChangeDialog(
                     month = binding.cardChangeDateDatePicker.month + 1,
                     day = binding.cardChangeDateDatePicker.dayOfMonth
                 )
-                val myDateTime = StringUtil.myLocalDateFuntion(dateData.year, dateData.month, dateData.day)
+                val myDateTime = StringUtil.myLocalDateFunction(dateData.year, dateData.month, dateData.day)
                 var price = cardChangePriceEdit.text.toString()
                 var priceZero = price.count { it == '0' }
 

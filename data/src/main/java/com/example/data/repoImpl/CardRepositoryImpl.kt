@@ -39,7 +39,7 @@ class CardRepositoryImpl @Inject constructor(
         return ServerCardSpinnerData(response.status, response.message, newList)
     }
 
-    override suspend fun getCardDetailRespository(id: String): ServerCardDetailData =
+    override suspend fun getCardDetailRepository(id: String): ServerCardDetailData =
         cardDataSource.getDetailCardDataSource(id).toServerCardDetailData()
 
 

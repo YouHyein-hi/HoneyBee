@@ -10,7 +10,6 @@ import com.example.domain.repo.CardRepository
 class GetCardSpinnerUseCase(
     private val cardRepository: CardRepository
 ) {
-    suspend operator fun invoke() : ServerCardSpinnerData {
-        return cardRepository.getCardSpinnerRepository()
-    }
+    suspend operator fun invoke() : ServerCardSpinnerData =
+        cardRepository.getCardSpinnerRepository()
 }

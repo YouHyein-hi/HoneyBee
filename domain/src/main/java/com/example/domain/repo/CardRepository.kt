@@ -15,5 +15,5 @@ interface CardRepository {
     suspend fun getCardSpinnerRepository(): ServerCardSpinnerData
     suspend fun deleteCardRepository(id: Long): ServerUidData
     suspend fun updateCardRepository(sendUpdateCardData: SendUpdateCardData): ServerUidData
-    suspend fun getCardDetailRespository(id: String): ServerCardDetailData
+    suspend fun getCardDetailRepository(id: String): ServerCardDetailData
 }

@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.ui.recycler.CardImageRecyclerData
 import com.example.receiptcareapp.databinding.ItemCardImageBinding
 
 class CardImageAdapter(private val image: List<Int>) :

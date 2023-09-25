@@ -37,7 +37,7 @@ object BindingAdapters {
                 imm.hideSoftInputFromWindow(editText.windowToken, 0)
 
                 if(editText.text != null && editText.text.isNotEmpty()){
-                    editText.setText(StringUtil.PriceFormat(editText.text.toString()))
+                    editText.setText(StringUtil.priceFormat(editText.text.toString()))
                     return@setOnEditorActionListener true
                 }
 
@@ -49,10 +49,10 @@ object BindingAdapters {
         editText.setOnFocusChangeListener { view, hasFocus ->
             if(hasFocus){
                 if (editText.text != null && editText.text.contains(",")) {
-                    editText.setText(StringUtil.CommaReplaceSpace(editText.text.toString()))
+                    editText.setText(StringUtil.commaReplaceSpace(editText.text.toString()))
                     editText.setSelection(editText.text.length)
                 } else {
-                    editText.setText(editText.text?.let { StringUtil.PriceFormat(it.toString()) })
+                    editText.setText(editText.text?.let { StringUtil.priceFormat(it.toString()) })
                 }
             }
         }

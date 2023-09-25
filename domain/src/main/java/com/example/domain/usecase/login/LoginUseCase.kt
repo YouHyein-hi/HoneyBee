@@ -11,7 +11,6 @@ import com.example.domain.repo.LoginRepository
 class LoginUseCase(
     private val loginRepository: LoginRepository
 ) {
-    suspend operator fun invoke(loginData: SendLoginData): ServerResponseData {
-        return loginRepository.requestLogin(loginData)
-    }
+    suspend operator fun invoke(loginData: SendLoginData): ServerResponseData =
+        loginRepository.requestLogin(loginData)
 }

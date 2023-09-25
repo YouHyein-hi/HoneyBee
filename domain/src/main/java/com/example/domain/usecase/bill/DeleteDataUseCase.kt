@@ -10,7 +10,6 @@ import com.example.domain.repo.GeneralRepository
 class DeleteDataUseCase(
     private val generalRepository: GeneralRepository
 ) {
-    suspend operator fun invoke(id:Long): ServerUidData {
-        return generalRepository.deleteDataRepository(id)
-    }
+    suspend operator fun invoke(id:Long): ServerUidData =
+        generalRepository.deleteDataRepository(id)
 }

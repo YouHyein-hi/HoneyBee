@@ -10,7 +10,6 @@ import com.example.domain.repo.GeneralRepository
 class GetPictureDataUseCase(
     private val generalRepository: GeneralRepository
 ) {
-    suspend operator fun invoke(uid:String) : ServerPictureData {
-        return generalRepository.getPictureDataRepository(uid)
-    }
+    suspend operator fun invoke(uid:String) : ServerPictureData =
+        generalRepository.getPictureDataRepository(uid)
 }

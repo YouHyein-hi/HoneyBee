@@ -11,8 +11,6 @@ import com.example.domain.repo.RoomRepository
 class UpdateRoomDataUseCase(
     private val roomRepository: RoomRepository
 ) {
-    suspend operator fun invoke(list: RoomData): Int{
-        Log.e("TAG", "updateData: $list", )
-        return roomRepository.updateData(list)
-    }
+    suspend operator fun invoke(list: RoomData): Int =
+        roomRepository.updateData(list)
 }

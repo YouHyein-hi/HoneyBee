@@ -1,10 +1,8 @@
 package com.example.receiptcareapp.ui.dialog
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import android.view.View
@@ -13,8 +11,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -28,7 +24,6 @@ import com.example.receiptcareapp.databinding.DialogChangeBinding
 import com.example.domain.model.ui.bill.LocalBillData
 import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.domain.util.StringUtil
-import com.example.receiptcareapp.R
 import com.example.receiptcareapp.ui.adapter.SpinnerAdapter
 import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
@@ -115,7 +110,7 @@ class ChangeDialog(
                 day = binding.changeDateDatePicker.dayOfMonth
             )
 
-            val myLocalDateTime = StringUtil.myLocalDateTimeFuntion(dateData.year, dateData.month, dateData.day)
+            val myLocalDateTime = StringUtil.myLocalDateTimeFunction(dateData.year, dateData.month, dateData.day)
             val price = binding.changePriceEdit.text.toString()
             val priceZero = price.count { it == '0' }
             when {

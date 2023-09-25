@@ -10,7 +10,6 @@ import com.example.domain.repo.NoticeRepository
 class GetNoticeListUseCase(
     private val getNoticeUseCase: NoticeRepository
 ) {
-    suspend operator fun invoke(): ServerNoticeData {
-        return getNoticeUseCase.getNoticeListRepository()
-    }
+    suspend operator fun invoke(): ServerNoticeData =
+        getNoticeUseCase.getNoticeListRepository()
 }

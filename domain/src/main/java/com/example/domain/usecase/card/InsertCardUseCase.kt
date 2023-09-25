@@ -11,7 +11,6 @@ import com.example.domain.repo.CardRepository
 class InsertCardUseCase(
     private val cardRepository: CardRepository
 ) {
-    suspend operator fun invoke(sendCardData: SendCardData) : ServerResponseData {
-        return cardRepository.insertCardRepository(sendCardData)
-    }
+    suspend operator fun invoke(sendCardData: SendCardData) : ServerResponseData =
+        cardRepository.insertCardRepository(sendCardData)
 }

@@ -13,9 +13,7 @@ import com.example.receiptcareapp.state.ResponseState
 import com.example.receiptcareapp.viewModel.dialogViewModel.CardAddViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.CardViewModel
 import com.example.domain.model.ui.dateTime.DateData
-import com.example.domain.model.ui.recycler.CardImageRecyclerData
 import com.example.receiptcareapp.ui.adapter.CardImageAdapter
-import com.example.receiptcareapp.ui.adapter.RecordLocalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -69,7 +67,7 @@ class CardAddDialog(
                     binding.cardAddDateDatePicker.month+1,
                     binding.cardAddDateDatePicker.dayOfMonth
                 )
-                val myDateTime = StringUtil.myLocalDateFuntion(dateData.year, dateData.month, dateData.day)
+                val myDateTime = StringUtil.myLocalDateFunction(dateData.year, dateData.month, dateData.day)
 
                 if(cardAddNameEdit.text.toString() == ""){
                     showShortToast(getString(R.string.dialog_cardAdd_name))

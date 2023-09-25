@@ -10,7 +10,6 @@ import com.example.domain.repo.GeneralRepository
 class GetStoreListUseCase(
     private val generalRepository: GeneralRepository
 ) {
-    suspend operator fun invoke(): ServerStoreData {
-        return generalRepository.getStoreListRepository()
-    }
+    suspend operator fun invoke(): ServerStoreData =
+        generalRepository.getStoreListRepository()
 }

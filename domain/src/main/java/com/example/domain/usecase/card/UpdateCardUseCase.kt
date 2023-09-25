@@ -8,7 +8,6 @@ import com.example.domain.repo.CardRepository
 class UpdateCardUseCase(
     private val cardRepository: CardRepository
 ) {
-    suspend operator fun invoke(sendUpdateCardData: SendUpdateCardData): ServerUidData {
-        return cardRepository.updateCardRepository(sendUpdateCardData)
-    }
+    suspend operator fun invoke(sendUpdateCardData: SendUpdateCardData): ServerUidData =
+        cardRepository.updateCardRepository(sendUpdateCardData)
 }

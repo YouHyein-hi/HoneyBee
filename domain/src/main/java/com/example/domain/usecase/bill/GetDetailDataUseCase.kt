@@ -10,7 +10,6 @@ import com.example.domain.repo.GeneralRepository
 class GetDetailDataUseCase(
     private val generalRepository: GeneralRepository
 ) {
-    suspend operator fun invoke(id: String): ServerDetailBillData {
-        return generalRepository.getDetailDataRepository(id)
-    }
+    suspend operator fun invoke(id: String): ServerDetailBillData =
+        generalRepository.getDetailDataRepository(id)
 }

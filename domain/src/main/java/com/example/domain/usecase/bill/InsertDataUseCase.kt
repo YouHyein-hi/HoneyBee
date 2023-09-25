@@ -11,7 +11,6 @@ import com.example.domain.repo.GeneralRepository
 class InsertDataUseCase(
     private val generalRepository: GeneralRepository
 ) {
-    suspend operator fun invoke(sendBillData: UiBillData): ServerUidData {
-        return generalRepository.insertDataRepository(sendBillData)
-    }
+    suspend operator fun invoke(sendBillData: UiBillData): ServerUidData =
+        generalRepository.insertDataRepository(sendBillData)
 }

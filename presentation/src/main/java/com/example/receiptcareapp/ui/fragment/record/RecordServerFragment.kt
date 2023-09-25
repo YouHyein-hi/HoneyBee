@@ -64,11 +64,12 @@ class RecordServerFragment(
                 RecyclerData(
                     type = ShowType.SERVER,
                     uid = it.uid!!,
-                    cardName = it.cardName,
-                    amount = it.storeAmount,
-                    date = it.date,
-                    storeName = it.storeName,
+                    cardName = "",
+                    amount = "",
+                    date = "",
+                    storeName = "",
                     file = null,
+                    memo = ""
                 )
             )
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)

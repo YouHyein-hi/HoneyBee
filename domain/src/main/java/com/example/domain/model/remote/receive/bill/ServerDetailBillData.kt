@@ -14,11 +14,10 @@ data class DetailBillData(
     val billSubmitTime: String,
     val storeName: String,
     var billCheck: Boolean,
+    var billMemo: String,
     var writerName: String,
-    var writerEmail: String,
     var writeDateTime: String,
     var modifierName: String,
-    var modifierEmail: String,
     var modifyDateTime: String
 )
 

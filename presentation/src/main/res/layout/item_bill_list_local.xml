@@ -6,9 +6,6 @@
         <variable
             name="recyclerData"
             type="com.example.domain.model.ui.recycler.LocalRecyclerData" />
-        <variable
-            name="stringUtil"
-            type="com.example.domain.util.StringUtil" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,104 +14,97 @@
         android:layout_height="120dp">
 
         <LinearLayout
-            android:id="@+id/billCheckLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#74B6B6B6"
-            android:elevation="5dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="청구 완료"
-                android:textColor="#B9000000"
-                android:textSize="50sp"
-                android:textStyle="italic|bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:gravity="center"
-            android:paddingLeft="25dp"
-            android:paddingRight="25dp"
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:elevation="4dp"
+            android:gravity="center"
             android:orientation="horizontal"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:weightSum="2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:orientation="vertical"
-                android:paddingRight="15dp">
-
-                <TextView
-                    android:id="@+id/recordItem_date_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/pretendardbold"
-                    android:text="@{stringUtil.changeDate(recyclerData.date), default = `날짜`}"
-                    android:textColor="@color/sub_font6_gray"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/recordItem_card_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/pretendardbold"
-                    android:gravity="center"
-                    android:text="@{recyclerData.cardName, default = `카드 이름`}"
-                    android:textColor="@color/sub_font6_gray"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/recordItem_store_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/pretendardbold"
-                    android:gravity="center"
-                    android:text="@{recyclerData.storeName, default = `가게 이름`}"
-                    android:textColor="@color/sub_font6_gray"
-                    android:textSize="14sp" />
-            </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:orientation="vertical"
+                android:paddingRight="15dp">
 
-                <TextView
-                    android:id="@+id/textView4"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardsemibold"
-                    android:gravity="right"
-                    android:text="작성자 : 유혜인"
-                    android:textColor="@color/sub_font6_gray"
-                    android:textSize="12sp" />
-                <!-- android:text="@{@string/record_user(recyclerData.사용자이름), default = `가게 이름`}" -->
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="날짜 : " />
+
+                    <TextView
+                        android:id="@+id/recordItem_date_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/pretendardbold"
+                        android:text="@{recyclerData.date, default = `날짜`}"
+                        android:textColor="@color/sub_font1_gray"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="카드 : " />
+
+                    <TextView
+                        android:id="@+id/recordItem_card_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/pretendardbold"
+                        android:text="@{recyclerData.cardName, default = `카드 이름`}"
+                        android:textColor="@color/sub_font1_gray"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="가게 이름 : " />
+
+                    <TextView
+                        android:id="@+id/recordItem_store_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/pretendardbold"
+                        android:text="@{recyclerData.storeName, default = `가게 이름`}"
+                        android:textColor="@color/sub_font1_gray"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="right"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -127,7 +117,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/pretendardbold"
                         android:gravity="left"
-                        android:textColor="@color/sub_font7_gray"
+                        android:text="@{recyclerData.amount}"
+                        android:textColor="@color/main_font_black"
                         android:textSize="28sp" />
 
                     <TextView
@@ -144,6 +135,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
@@ -153,7 +145,7 @@
             android:background="@color/sub_font1_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/billCheckLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

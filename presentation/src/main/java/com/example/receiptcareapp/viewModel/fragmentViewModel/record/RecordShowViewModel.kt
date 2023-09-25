@@ -2,12 +2,13 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel.record
 
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.RoomData
 import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.model.remote.receive.basic.ServerUidData
+import com.example.domain.model.remote.receive.bill.DetailBillData
+import com.example.domain.model.remote.receive.bill.ServerDetailBillData
 import com.example.domain.model.remote.send.bill.SendBillUpdateData
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.DeleteRoomDataUseCase
@@ -45,23 +46,18 @@ class RecordShowViewModel @Inject constructor(
 
     // 서버 카드 전달받은 값 관리
     private var _cardList = MutableLiveData<ServerCardSpinnerData?>()
-    val cardList: LiveData<ServerCardSpinnerData?>
-        get() = _cardList
+    val cardList: LiveData<ServerCardSpinnerData?> get() = _cardList
 
-    private var _picture = MutableLiveData<Bitmap?>()
-    val picture : LiveData<Bitmap?> get(){
-        return _picture
-    }
+    private var _serverInitData = MutableLiveData<Pair<Bitmap?, DetailBillData>>()
+    val serverInitData : LiveData<Pair<Bitmap?, DetailBillData>> get() = _serverInitData
+
 
     private val _image = MutableLiveData<Uri>()
-    val image: LiveData<Uri>
-        get() = _image
+    val image: LiveData<Uri> get() = _image
     fun takeImage(img: Uri) { _image.value = img }
 
     private var _changePicture = MutableLiveData<Bitmap?>()
-    val changePicture : LiveData<Bitmap?> get(){
-        return _changePicture
-    }
+    val changePicture : LiveData<Bitmap?> get() = _changePicture
     fun takeChangePicture(pic: Bitmap) { _changePicture.value = pic }
 
     var textValue: String? = null
@@ -148,6 +144,7 @@ class RecordShowViewModel @Inject constructor(
                     storeAmount = savedLocalData.storeAmount,
                     billSubmitTime = savedLocalData.date,
                     storeName = savedLocalData.storeName,
+                    memo = savedLocalData.memo,
                     file = savedLocalData.picture.toString()
                 )
             )
@@ -164,27 +161,41 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-    fun getServerPictureData(id:String){
+//    fun getServerPictureData(id:String){
+//        modelScope.launch {
+//            withTimeoutOrNull(waitTime) {
+//                loading.postValue(true)
+//                _serverInitData.postValue(getPictureDataUseCase(id).picture)
+//                loading.postValue(false)
+//            }?:throw SocketTimeoutException()
+//        }
+//    }
+
+//    fun getDetailBillData(id: String){
+//        modelScope.launch {
+//            withTimeoutOrNull(waitTime) {
+//                loading.postValue(true)
+//                val gap = getDetailDataUseCase(id)
+//                loading.postValue(false)
+//            }?:throw SocketTimeoutException()
+//        }
+//    }
+
+    fun getServerInitData(id: String) {
         modelScope.launch {
+            loading.postValue(true)
             withTimeoutOrNull(waitTime) {
-                loading.postValue(true)
-                _picture.postValue(getPictureDataUseCase(id).picture)
-                loading.postValue(false)
-            }?:throw SocketTimeoutException()
+                _serverInitData.postValue(
+                    Pair(
+                        getPictureDataUseCase(id).picture,
+                        getDetailDataUseCase(id).body!!
+                    )
+                )
+            }
+            loading.postValue(false)
         }
     }
 
-    fun getDetailBillData(id: String){
-        modelScope.launch {
-            withTimeoutOrNull(waitTime) {
-                Log.e("TAG", "getDetailBillData: start", )
-                Log.e("TAG", "getDetailBillData: ${getDetailDataUseCase(id)}", )
-            }?:throw SocketTimeoutException()
-        }
-    }
-
-    fun billCheckComplete(){
-
-    }
+    fun billCheckComplete(){}
     fun billCheckCancel(){}
 }

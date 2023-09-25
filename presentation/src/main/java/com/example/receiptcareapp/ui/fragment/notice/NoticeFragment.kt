@@ -16,6 +16,7 @@ import com.example.receiptcareapp.R
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentMenuBinding
 import com.example.receiptcareapp.databinding.FragmentNoticeBinding
+import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.ui.adapter.NoticeAdapter
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
@@ -59,18 +60,18 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(
         viewModel.response.observe(viewLifecycleOwner){
             adapter.dataList.clear()
             adapter.dataList = it?.body!!.toMutableList()
-            Log.e("TAG", "initObserver: $it", )
+            checkDataList()
         }
 
         //TODO 프로그레스바 databinding
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding. layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
-            checkDataList()
         }
 
         // Err관리
         viewModel.fetchState.observe(this) {
+            checkDataList()
             showShortToast(FetchStateHandler(it))
         }
     }

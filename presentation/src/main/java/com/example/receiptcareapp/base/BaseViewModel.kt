@@ -30,6 +30,13 @@ abstract class BaseViewModel(val name: String) : ViewModel(){
     private val job = SupervisorJob()
 
     protected val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            Log.e("TAG", "@@@@ $throwable", )
+            Log.e("TAG", "@@@@ ${throwable.message}")
+            Log.e("TAG", "@@@@ ${throwable.cause}")
+            Log.e("TAG", "@@@@ ${throwable.suppressedExceptions}")
+            Log.e("TAG", "@@@@ ${throwable.printStackTrace()}")
+            Log.e("TAG", "@@@@ ${throwable.localizedMessage}")
+            Log.e("TAG", "@@@@ ${throwable.suppressed}")
         isLoading.postValue(false)
         coroutineContext.job.cancel() // 여기에 coroutineContext를 붙여야 정상 취소되는데 왜그럴까?
         throwable.printStackTrace()

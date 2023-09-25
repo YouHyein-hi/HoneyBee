@@ -27,7 +27,7 @@ class NoticeRepositoryImpl @Inject constructor(
     override suspend fun addNoticeRepository(sendNoticeAddData: SendNoticeAddData): ServerResponseData {
         return noticeDataSource.addNoticeDataSource(
             title = sendNoticeAddData.title,
-            date = sendNoticeAddData.date,
+//            date = sendNoticeAddData.date,
             content = sendNoticeAddData.content
         ).toServerResponseData()
     }

@@ -1,5 +1,6 @@
 package com.example.receiptcareapp.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ class RecordLocalAdapter: RecyclerView.Adapter<RecordLocalAdapter.MyAdapter>(){
 
     inner class MyAdapter(private val binding: ItemBillListLocalBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list: LocalRecyclerData){
+            Log.e("TAG", "bind: $list", )
             binding.recyclerData = list
             binding.listLayout.setOnClickListener{ onLocalSaveClick(list) }
         }

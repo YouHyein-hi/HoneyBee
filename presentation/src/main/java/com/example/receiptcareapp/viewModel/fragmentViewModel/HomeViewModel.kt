@@ -9,6 +9,7 @@ import com.example.domain.usecase.card.GetCardListUseCase
 import com.example.domain.usecase.notice.GetNoticeListUseCase
 import com.example.receiptcareapp.base.BaseViewModel
 import com.example.receiptcareapp.state.ResponseState
+import com.example.receiptcareapp.util.MyApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
@@ -21,10 +22,6 @@ class HomeViewModel @Inject constructor(
     private val getNoticeListUseCase: GetNoticeListUseCase,
     private val preferenceManager: PreferenceManager
 ) : BaseViewModel("HomeViewModel") {
-
-    init {
-        Log.e("TAG", "HomeCardBottomSheetViewModel")
-    }
 
     val loading: MutableLiveData<Boolean> get() = isLoading
 
@@ -64,6 +61,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getUserRight() = preferenceManager.getUserRight()
 
+    fun settingUserRight() { MyApplication.right = preferenceManager.getUserRight() ?: "" }
 }

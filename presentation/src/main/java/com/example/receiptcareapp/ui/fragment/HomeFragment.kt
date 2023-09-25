@@ -10,12 +10,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.FragmentHomeBinding
 import com.example.receiptcareapp.base.BaseFragment
+import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.ui.adapter.HomeCardAdapter
 import com.example.receiptcareapp.ui.botteomSheet.CardDetailBottomSheet
 import com.example.receiptcareapp.util.PermissionHandler
@@ -23,8 +25,8 @@ import com.example.receiptcareapp.ui.botteomSheet.CardListBottomSheet
 import com.example.receiptcareapp.ui.dialog.ChoiceDialog
 import com.example.receiptcareapp.ui.dialog.ExitDialog
 import com.example.receiptcareapp.ui.dialog.PermissionCheckDialog
-import com.example.receiptcareapp.util.App
 import com.example.receiptcareapp.util.FetchStateHandler
+import com.example.receiptcareapp.util.MyApplication
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,21 +37,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val choiceDialog: ChoiceDialog by lazy { ChoiceDialog() }
     private val exitDialog: ExitDialog by lazy { ExitDialog() }
     private val permissionCheckDialog: PermissionCheckDialog by lazy { PermissionCheckDialog() }
-    private val bottomSheet by lazy { CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet") }
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
     private val handler = Handler(Looper.getMainLooper())
     private val ALL_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.READ_MEDIA_IMAGES)
     private lateinit var callback: OnBackPressedCallback
 
-    override fun initData() {}
+    override fun initData() {
+        viewModel.settingUserRight()
+
+    }
 
     override fun initUI() {
         //카드목록, 공지사항 불러오기
         viewModel.getServerCardData()
         viewModel.getNoticeList()
-        initHomeCardRecycler()
         viewModel.initFetchState()
+        initHomeCardRecycler()
 
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             // 권한이 허용되었는지 확인
@@ -74,8 +78,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 else { addDialog() }
             }
             homeCardListComponent.setOnClickListener {
-                if(viewModel.getUserRight()=="MA")
-                    CardListBottomSheet().show(parentFragmentManager, "homeCardBottomSheet")
+                if(MyApplication.right=="MA")
+                    CardListBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet")
+
             }
 
             homeRefresh.setOnRefreshListener {
@@ -84,7 +89,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 viewModel.getServerCardData()
             }
             adapter.onHomeCardItemClick = {
-                if(viewModel.getUserRight()=="MA")
+                if(MyApplication.right=="MA")
                     CardDetailBottomSheet(it).show(parentFragmentManager, "homeCardBottomSheet")
             }
         }
@@ -113,11 +118,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // Err관리
         viewModel.fetchState.observe(this) {
             when(it.second){
-//                FetchState.SOCKET_TIMEOUT_EXCEPTION -> { emptyTextControl(true, "서버 연결 실패..") }
-//                FetchState.PARSE_ERROR -> {emptyTextControl(true, "서버 연결 실패..")}
+                FetchState.SOCKET_TIMEOUT_EXCEPTION -> {
+                    emptyTextControl(true, "서버 연결 실패..")
+                    adapter.dataList.clear()
+                }
+                FetchState.PARSE_ERROR -> {
+                    adapter.dataList.clear()
+                    emptyTextControl(true, "서버 연결 실패..")
+                }
+                else-> {
+                    adapter.dataList.clear()
+                    emptyTextControl(true, "서버 연결 실패..")
+                }
             }
-            showShortToast(FetchStateHandler(it))
-//            adapter.dataList.clear()
         }
     }
 
@@ -128,8 +141,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun emptyTextControl(state: Boolean, massage: String = "카드를 추가해주세요!"){
-//        binding.homeEmptyTxt.isVisible = state
-//        binding.homeEmptyTxt.text = massage
+        binding.homeEmptyTxt.isVisible = state
+        binding.homeEmptyTxt.text = massage
     }
 
     override fun onDetach() {
@@ -151,11 +164,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun exitDialog() = exitDialog.show(parentFragmentManager, "exitDialog")
 
-
     private fun showPermissionCheckDialog() = permissionCheckDialog.show(parentFragmentManager, "PermissionCheckDialog")
-
-
-
 
     private fun checkAllPermissionsGranted(permissions: Array<String>): Boolean {
         for (permission in permissions) {
@@ -166,9 +175,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         return true
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        Log.e("TAG", "onRequestPermissionsResult: 에 접근",)
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) =
         permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
+
 
 }

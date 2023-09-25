@@ -22,6 +22,7 @@ class RoomRepositoryImpl @Inject constructor(
             amount = list.storeAmount,
             pictureName = list.storeName,
             picture = list.file,
+            memo = list.memo,
             uid = list.uid
         )
         roomDao.insertData(myList)
@@ -43,6 +44,7 @@ class RoomRepositoryImpl @Inject constructor(
                 cardName = list.cardName,
                 amount = list.storeAmount,
                 pictureName = list.storeName,
+                memo = list.memo,
                 picture = list.file
             )
         )

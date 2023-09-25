@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardsemibold"
                     android:textColor="@color/main_font_black"
-                    android:text="@{noticeData.title}"
+                    android:text="@{noticeData.title, default=`제목`}"
                     android:textSize="20dp" />
 
                 <TextView
@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardmedium"
-                    android:text="@{noticeData.date}"
+                    android:text="@{noticeData.date, default=`날짜`}"
                     android:textColor="@color/sub_font2_gray" />
             </LinearLayout>
 

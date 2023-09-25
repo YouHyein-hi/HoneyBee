@@ -15,6 +15,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.system.measureNanoTime
+import kotlin.system.measureTimeMillis
 
 /**
  * 2023-08-29
@@ -23,18 +25,25 @@ import javax.inject.Inject
 class NetworkInterceptor @Inject constructor(
     private val preferenceManager: PreferenceManager,
 ) : Interceptor {
-    init {
-        Log.e("TAG", "NetworkInterceptor: ", )
-    }
+
     private var gson: Gson = GsonBuilder().setLenient().create()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val firstRequest = requestMaker(request)
+        val response : Response
 
-        //보낸 요청의 반환값
-        val response = chain.proceed(firstRequest)
-        Log.e("TAG", "intercept: $response", )
+        //프로그래스 바 UX를 고려해 통신 최소시간 할당
+        val waitingTime = measureTimeMillis {
+            //보낸 요청의 반환값
+            response = chain.proceed(firstRequest)
+        }.let {
+            if(it<300L)
+                runBlocking {
+                    delay(300L-it)
+                }
+        }
+
 
         if (response.code == 401) {
             response.close()

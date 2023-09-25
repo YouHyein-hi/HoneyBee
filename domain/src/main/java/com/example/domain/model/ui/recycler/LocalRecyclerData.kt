@@ -12,5 +12,6 @@ data class LocalRecyclerData(
     val amount: String,
     val date: String,
     val storeName: String,
+    val memo: String,
     val file: Uri
 )

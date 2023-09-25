@@ -1,11 +1,8 @@
 package com.example.receiptcareapp.ui.dialog
 
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.example.data.util.UriToBitmapUtil
-import com.example.domain.model.ui.type.ShowType
 import com.example.receiptcareapp.base.BaseDialog
-import com.example.receiptcareapp.databinding.DialogDeleteBinding
 import com.example.domain.model.ui.recycler.RecyclerData
 import com.example.receiptcareapp.R
 import com.example.receiptcareapp.databinding.DialogDownloadBinding
@@ -60,7 +57,7 @@ class DownLoadDialog(
 
     // 이미지 저장
     private fun handleDownloadClick() {
-        if(!UriToBitmapUtil.imageExternalSave(requireContext(), viewModel.picture.value, requireContext().getString(
+        if(!UriToBitmapUtil.imageExternalSave(requireContext(), viewModel.serverInitData.value?.first, requireContext().getString(
                 R.string.app_name))){
             showShortToast("그림 저장을 실패하였습니다") }
         else { showShortToast("그림이 갤러리에 저장되었습니다") }

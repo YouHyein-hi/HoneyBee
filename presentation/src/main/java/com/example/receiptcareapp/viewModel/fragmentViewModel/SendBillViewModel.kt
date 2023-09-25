@@ -3,6 +3,7 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.data.manager.PreferenceManager
 import com.example.domain.model.local.RoomData
 import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.model.remote.receive.bill.ServerStoreData
@@ -28,7 +29,7 @@ class SendBillViewModel @Inject constructor(
     private val insertDataUseCase: InsertDataUseCase,
     private val insertRoomDataUseCase: InsertRoomDataUseCase,
     private val getStoreListUseCase: GetStoreListUseCase,
-    private val getCardSpinnerUseCase: GetCardSpinnerUseCase
+    private val getCardSpinnerUseCase: GetCardSpinnerUseCase,
 ) : BaseViewModel("SendBillViewModel") {
 
     val loading: LiveData<Boolean> get() = isLoading
@@ -82,43 +83,6 @@ class SendBillViewModel @Inject constructor(
                             picture = data.picture,
                             memo = data.memo
                         )
-/*//                            cardName = MultipartBody.Part.createFormData(
-//                                "cardName",
-//                                data.cardName
-//                            ),
-//                            storeName = MultipartBody.Part.createFormData(
-//                                "storeName",
-//                                data.storeName
-//                            ),
-//                            date = MultipartBody.Part.createFormData(
-//                                "billSubmitTime",
-//                                data.billSubmitTime
-//                            ),
-//                            amount = MultipartBody.Part.createFormData(
-//                                "amount",
-//                                data.storeAmount.replace(",", "")
-//                            ),
-//                            picture = UriToBitmapUtil(application, data.picture)
-//                        )
-//                        SendBillData(
-//                            cardName = MultipartBody.Part.createFormData(
-//                                "cardName",
-//                                data.cardName
-//                            ),
-//                            storeName = MultipartBody.Part.createFormData(
-//                                "storeName",
-//                                data.storeName
-//                            ),
-//                            date = MultipartBody.Part.createFormData(
-//                                "billSubmitTime",
-//                                data.billSubmitTime
-//                            ),
-//                            amount = MultipartBody.Part.createFormData(
-//                                "amount",
-//                                data.storeAmount.replace(",", "")
-//                            ),
-//                            picture = UriToBitmapUtil(application, data.picture)
-//                        )*/
                     )
                 )
             } ?: throw SocketTimeoutException()
@@ -135,11 +99,11 @@ class SendBillViewModel @Inject constructor(
                     storeAmount = savedData.storeAmount,
                     storeName = savedData.storeName,
                     billSubmitTime = savedData.date,
+                    memo = savedData.memo,
                     file = savedData.picture.toString(),
                     uid = response
                 )
             )
         }
     }
-
 }

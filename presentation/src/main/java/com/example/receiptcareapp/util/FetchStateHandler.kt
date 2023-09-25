@@ -15,7 +15,7 @@ object FetchStateHandler {
             FetchState.SQLITE_CONSTRAINT_PRIMARYKEY -> "이미 값이 저장되어있습니다."
             FetchState.SOCKET_TIMEOUT_EXCEPTION -> "연결 시간이 초과되었습니다."
             FetchState.IllegalStateException -> "서버 리턴값 받기 오류"
-            else -> "저장 안된 오류!  ${state.first.message} "
+            else -> "Err : ${state.first.message}"
         }
     }
 }

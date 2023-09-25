@@ -38,8 +38,7 @@ class RecordViewModel @Inject constructor(
     fun getLocalAllData() {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
-            val gap = getRoomDataListUseCase()
-            _roomData.postValue(gap)
+            _roomData.postValue(getRoomDataListUseCase())
             isLoading.postValue(false)
         }
     }

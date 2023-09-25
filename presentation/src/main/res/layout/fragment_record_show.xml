@@ -4,26 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="data"
-            type="com.example.domain.model.ui.recycler.RecyclerData" />
+            type="com.example.domain.model.remote.receive.bill.DetailBillData" />
+        <variable
+            name="isServer"
+            type="Boolean" />
+        <variable
+            name="stringUtil"
+            type="com.example.domain.util.StringUtil" />
+
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/layout_loading_progress"
-            layout="@layout/progressbar_loading"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -132,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="50dp"
                         android:fontFamily="@font/pretendardbold"
-                        android:text="@{data.date, default=`날짜`}"
+                        android:text="@{data.billSubmitTime, default=`날짜`}"
                         android:textColor="@color/main_font_black"
                         android:textSize="15sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -187,7 +183,7 @@
                                 android:layout_weight="1"
                                 android:fontFamily="@font/pretendardbold"
                                 android:gravity="right"
-                                android:text="@{data.storeName}"
+                                android:text="@{data.storeName,default=``}"
                                 android:textColor="@color/main_font_black"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
@@ -216,7 +212,7 @@
                                 android:layout_weight="1"
                                 android:fontFamily="@font/pretendardbold"
                                 android:gravity="right"
-                                android:text="@{data.amount+`원`}"
+                                android:text="@{data.billAmount+`원`}"
                                 android:textColor="@color/main_font_black"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
@@ -226,119 +222,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
-                            android:orientation="horizontal">
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/pretendardbold"
-                                android:gravity="left"
-                                android:text="@string/record_show_writer_txt"
-                                android:textColor="@color/sub_font2_gray"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/record_writer_name_txt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/pretendardbold"
-                                android:gravity="right"
-                                android:text="@{data.amount+`원`}"
-                                android:textColor="@color/main_font_black"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/pretendardbold"
-                                android:gravity="left"
-                                android:text="@string/record_show_writer_date_txt"
-                                android:textColor="@color/sub_font2_gray"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/record_show_writer_date_txt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/pretendardbold"
-                                android:gravity="right"
-                                android:text="@{data.amount+`원`}"
-                                android:textColor="@color/main_font_black"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/pretendardbold"
-                                android:gravity="left"
-                                android:text="@string/record_show_modifier_name_txt"
-                                android:textColor="@color/sub_font2_gray"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/record_show_modifier_name_txt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/pretendardbold"
-                                android:gravity="right"
-                                android:text="@{data.amount+`원`}"
-                                android:textColor="@color/main_font_black"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/pretendardbold"
-                                android:gravity="left"
-                                android:text="@string/record_show_modifier_date_txt"
-                                android:textColor="@color/sub_font2_gray"
-                                android:textSize="14sp" />
-
-
-                            <TextView
-                                android:id="@+id/record_modifier_date_txt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/pretendardbold"
-                                android:gravity="right"
-                                android:text="@{data.amount+`원`}"
-                                android:textColor="@color/main_font_black"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
                             android:orientation="horizontal">
 
                             <TextView
@@ -358,7 +242,124 @@
                                 android:layout_weight="1"
                                 android:fontFamily="@font/pretendardbold"
                                 android:gravity="right"
-                                android:text="@{data.amount+`원`}"
+                                android:text="@{data.billCheck ? `청구완료` : `미청구`,default=``}"
+                                android:textColor="@color/main_font_black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal"
+                            android:visibility="@{isServer ? View.VISIBLE : View.GONE}">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/pretendardbold"
+                                android:gravity="left"
+                                android:text="@string/record_show_writer_txt"
+                                android:textColor="@color/sub_font2_gray"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/record_writer_name_txt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/pretendardbold"
+                                android:gravity="right"
+                                android:text="@{data.writerName}"
+                                android:textColor="@color/main_font_black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal"
+                            android:visibility="@{isServer ? View.VISIBLE : View.GONE}">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/pretendardbold"
+                                android:gravity="left"
+                                android:text="@string/record_show_writer_date_txt"
+                                android:textColor="@color/sub_font2_gray"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/record_show_writer_date_txt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/pretendardbold"
+                                android:gravity="right"
+                                android:text="@{data.writeDateTime}"
+                                android:textColor="@color/main_font_black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal"
+                            android:visibility="@{isServer ? View.VISIBLE : View.GONE}">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/pretendardbold"
+                                android:gravity="left"
+                                android:text="@string/record_show_modifier_name_txt"
+                                android:textColor="@color/sub_font2_gray"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/record_show_modifier_name_txt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/pretendardbold"
+                                android:gravity="right"
+                                android:text="@{data.modifierName}"
+                                android:textColor="@color/main_font_black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal"
+                            android:visibility="@{isServer ? View.VISIBLE : View.GONE}">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/pretendardbold"
+                                android:gravity="left"
+                                android:text="@string/record_show_modifier_date_txt"
+                                android:textColor="@color/sub_font2_gray"
+                                android:textSize="14sp" />
+
+
+                            <TextView
+                                android:id="@+id/record_modifier_date_txt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/pretendardbold"
+                                android:gravity="right"
+                                android:text="@{data.modifyDateTime}"
                                 android:textColor="@color/main_font_black"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -378,17 +379,18 @@
                             android:layout_height="150dp"
                             android:layout_marginBottom="50dp"
                             android:background="@drawable/line_gray_round"
-                            android:padding="20dp" />
+                            android:padding="20dp"
+                            android:text="@{data.billMemo}" />
                     </LinearLayout>
 
                     <CheckBox
-                        android:scaleX="1.70"
-                        android:scaleY="1.70"
                         android:id="@+id/bill_check_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:layout_marginEnd="30dp"
+                        android:scaleX="1.70"
+                        android:scaleY="1.70"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -411,6 +413,18 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
+
+        <include
+            android:id="@+id/layout_loading_progress"
+            layout="@layout/progressbar_loading"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

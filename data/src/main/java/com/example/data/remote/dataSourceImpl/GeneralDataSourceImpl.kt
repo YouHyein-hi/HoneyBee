@@ -61,22 +61,22 @@ class GeneralDataSourceImpl @Inject constructor(
         cardName: String,
         storeName: String,
         billSubmitTime: LocalDateTime,
-        amount: Int
+        amount: Int,
+        billCheck: Boolean,
+        billMemo: String
     ): ServerResponse<Int> {
         return retrofit.create(GeneralDataSource::class.java).updateDataSource(
             id,
             cardName,
             storeName,
             billSubmitTime,
-            amount
+            amount,
+            billCheck,
+            billMemo
         )
     }
 
-    override suspend fun billCheckCompleteDataSource(): ServerResponse<String> {
-        return retrofit.create(GeneralDataSource::class.java).billCheckCompleteDataSource()
-    }
-
-    override suspend fun billCheckCancelDataSource(): ServerResponse<String> {
-        return retrofit.create(GeneralDataSource::class.java).billCheckCancelDataSource()
+    override suspend fun billCheckDataSource(id: Long): ServerResponse<String> {
+        return retrofit.create(GeneralDataSource::class.java).billCheckDataSource(id)
     }
 }

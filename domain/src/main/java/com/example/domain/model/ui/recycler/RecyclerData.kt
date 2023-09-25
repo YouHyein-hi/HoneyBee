@@ -8,8 +8,8 @@ import com.example.domain.model.ui.type.ShowType
  * pureum
  */
 data class RecyclerData(
-    var type : ShowType,
-    val uid : String,
+    var type: ShowType,
+    val uid: String,
     val cardName: String,
     val amount: String,
     var date: String,

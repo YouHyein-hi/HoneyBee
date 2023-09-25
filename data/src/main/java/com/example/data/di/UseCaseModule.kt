@@ -57,12 +57,7 @@ object UseCaseModule {
         return UpdateCardUseCase(repo)
     }
 
-    //카드 업데이트 기능은 아직 미사용
-//    @Provides
-//    @Singleton
-//    fun provideUpdateCardUseCase(repo : CardRepository) : UpdateCardUseCase {
-//        return UpdateCardUseCase(repo)
-//    }
+
 
     @Provides
     @Singleton
@@ -105,6 +100,12 @@ object UseCaseModule {
     @Singleton
     fun provideUpdateDataUseCase(repo : GeneralRepository) : UpdateDataUseCase{
         return UpdateDataUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBillCheckUseCase(repo: GeneralRepository) : BillCheckUseCase{
+        return BillCheckUseCase(repo)
     }
 
     @Provides

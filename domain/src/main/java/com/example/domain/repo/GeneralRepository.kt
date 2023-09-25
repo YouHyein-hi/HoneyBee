@@ -21,6 +21,5 @@ interface GeneralRepository {
     suspend fun getPictureDataRepository(id:String): ServerPictureData
     suspend fun insertDataRepository(sendBillData: UiBillData): ServerUidData
     suspend fun updateDataRepository(sendBillUpdateData: SendBillUpdateData): ServerUidData
-    suspend fun billCheckCompleteRepository(): ServerResponseData
-    suspend fun billCheckCancelRepository(): ServerResponseData
+    suspend fun billCheckRepository(id: Long): ServerResponseData
 }

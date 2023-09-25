@@ -250,7 +250,7 @@
                     android:layout_marginTop="15dp"
                     android:background="@drawable/btn_edittext"
                     android:gravity="center"
-                    android:hint="@string/bottomSheet_sendbill_memo"
+                    android:text="@{data.memo}"
                     android:inputType="textPersonName"
                     android:maxLength="100"
                     android:textSize="14sp"

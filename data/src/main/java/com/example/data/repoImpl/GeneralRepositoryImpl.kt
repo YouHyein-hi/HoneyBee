@@ -96,16 +96,15 @@ class GeneralRepositoryImpl @Inject constructor(
             id = sendBillUpdateData.id,
             cardName = sendBillUpdateData.cardName,
             storeName = sendBillUpdateData.storeName,
-            billSubmitTime = sendBillUpdateData.date,
+            billSubmitTime = sendBillUpdateData.billSubmitTime,
             amount = sendBillUpdateData.storeAmount,
+            billCheck = sendBillUpdateData.billCheck,
+            billMemo = sendBillUpdateData.billMemo
         ).toUidServerResponseData()
     }
 
-    override suspend fun billCheckCompleteRepository(): ServerResponseData {
-        return generalDataSource.billCheckCompleteDataSource().toServerResponseData()
+    override suspend fun billCheckRepository(id: Long): ServerResponseData {
+        return generalDataSource.billCheckDataSource(id).toServerResponseData()
     }
 
-    override suspend fun billCheckCancelRepository(): ServerResponseData {
-        return generalDataSource.billCheckCancelDataSource().toServerResponseData()
-    }
 }

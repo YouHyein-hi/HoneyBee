@@ -58,7 +58,10 @@ class ChangeDialog(
     override fun initData() {
         if (activityViewModel.selectedData.value != null) {
             viewModelData = activityViewModel.selectedData.value!!
+            Log.e("TAG", "initData: ${activityViewModel.selectedData.value}", )
+            Log.e("TAG", "initData: ${viewModelData}", )
             newDate = StringUtil.dateReplaceDot(viewModelData.date)
+            Log.e("TAG", "initData: ${newDate}", )
         } else {
             showShortToast("데이터가 없습니다!")
             dismiss()
@@ -126,11 +129,12 @@ class ChangeDialog(
                         viewModel.updateServerBillData(
                             SendBillUpdateData(
                                 id = viewModelData.uid.toLong(),
-                                date = myLocalDateTime!!,
+                                billSubmitTime = myLocalDateTime!!,
                                 storeAmount = binding.changePriceEdit.text.toString().replace(",", "").toInt(),
                                 cardName = cardName,
-                                storeName = binding.changeStoreEdit.text.toString()
-                                // 이미지 = viewModel.changePicture.value // => 수정에 이미지 추가되어야 함~~
+                                storeName = binding.changeStoreEdit.text.toString(),
+                                billCheck = false,
+                                billMemo = binding.changeMemoEditText.text.toString()
                             )
                         )
                     } else {
@@ -141,7 +145,7 @@ class ChangeDialog(
                                 storeAmount = binding.changePriceEdit.text.toString(),
                                 cardName = cardName,
                                 storeName = binding.changeStoreEdit.text.toString(),
-                                picture = viewModelData.file!!, // 이거 나중에 변경해야되나?
+                                picture = viewModelData.file!!,
                                 memo = binding.changeMemoEditText.text.toString()
                             )
                         )
@@ -216,7 +220,7 @@ class ChangeDialog(
                 val bitmap : Bitmap? = UriToBitmapUtil.uriToBitmap(requireContext(), imageUri!!)
                 val rotatedBitmap = UriToBitmapUtil.rotateImageIfRequiredUri(requireContext(), imageUri!!, bitmap!!)
                 rotatedBitmap?.let { it -> viewModel.takeChangePicture(it) }
-                viewModelData.file = imageUri
+                viewModelData.file = imageUri as Uri
             }
             else{ Log.e("TAG", "data 없음", ) }
         }

@@ -1,6 +1,7 @@
 package com.example.data.remote.dataSource
 
 import ServerResponse
+import android.net.Uri
 import com.example.data.di.DataSourceModule
 import com.example.data.remote.dataSourceImpl.CardDataSourceImpl
 import com.example.data.remote.dataSourceImpl.GeneralDataSourceImpl
@@ -13,10 +14,6 @@ import retrofit2.http.*
 import java.time.LocalDateTime
 import javax.inject.Singleton
 
-/**
- * 2023-07-23
- * pureum
- */
 interface GeneralDataSource {
 
     @Multipart
@@ -56,20 +53,21 @@ interface GeneralDataSource {
     ): ServerResponse<Int>
 
     @FormUrlEncoded
-    @PUT("bill/update/{id}")
+    @POST("bill/update/{id}")
     suspend fun updateDataSource(
         @Path("id") id: Long,
         @Field("cardName") cardName: String,
         @Field("storeName") storeName: String,
         @Field("billSubmitTime") billSubmitTime: LocalDateTime,
         @Field("amount") amount: Int,
+        @Field("billCheck") billCheck : Boolean,
+        @Field("billMemo") billMemo : String
     ): ServerResponse<Int>
 
     @Streaming
-    @GET("bill/")   // 전체 스토어 데이터 요청
-    suspend fun billCheckCompleteDataSource(): ServerResponse<String>
+    @GET("bill/check/{id}")   // 전체 스토어 데이터 요청
+    suspend fun billCheckDataSource(
+        @Path("id") id: Long
+    ): ServerResponse<String>
 
-    @Streaming
-    @GET("bill/")   // 전체 스토어 데이터 요청
-    suspend fun billCheckCancelDataSource(): ServerResponse<String>
 }

@@ -30,4 +30,10 @@ class MainActivityViewModel @Inject constructor() : BaseViewModel("MainActivityV
     fun removeSelectedData(){ _selectedData.value = null }
 
     lateinit var selectedNoticeData : NoticeData
+
+    private var _check = MutableLiveData<Boolean>()
+    val check: LiveData<Boolean> get(){
+        return _check
+    }
+    fun takeCheck(check: Boolean){ _check.value = check }
 }

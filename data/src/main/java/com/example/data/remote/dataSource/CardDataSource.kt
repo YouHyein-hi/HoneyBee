@@ -22,7 +22,7 @@ interface CardDataSource {
 
     @Streaming
     @GET("bill/card/list")
-    suspend fun getCardDataSource() : ServerResponse<List<ServerCardResponse>> //바디에 카드
+    suspend fun getCardDataSource() : ServerResponse<List<ServerCardResponse>>
 
     @Streaming
     @GET("bill/card/detail/{id}")
@@ -35,7 +35,6 @@ interface CardDataSource {
         @Path("uid") uid:Long
     ): ServerResponse<Int>
 
-//    //아직 안쓰이는 기능
     @FormUrlEncoded
     @POST("bill/card/update/{id}")
     suspend fun updateCardDataSource(

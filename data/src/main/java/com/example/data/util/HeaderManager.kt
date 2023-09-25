@@ -39,7 +39,6 @@ class HeaderManager @Inject constructor(
             //엑세스 토큰 까서 아이디 또는 이름 저장하기
             true
         } catch (e: Exception) {
-            Log.e("TAG", "err: $e", )
             false
         }
     }

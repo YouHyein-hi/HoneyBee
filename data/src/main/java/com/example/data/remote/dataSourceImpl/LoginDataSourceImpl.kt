@@ -17,8 +17,11 @@ import javax.inject.Inject
 class LoginDataSourceImpl @Inject constructor(
     @RetrofitModule.Login private val retrofit: Retrofit,
     private val headerManager: HeaderManager
-): LoginDataSource {
-    override suspend fun requestLogin(email: String, password: String): Response<ServerResponse<String>>? {
+) : LoginDataSource {
+    override suspend fun requestLogin(
+        email: String,
+        password: String
+    ): Response<ServerResponse<String>>? {
         retrofit.create(LoginDataSource::class.java).requestLogin(
             email = email,
             password = password
@@ -26,7 +29,7 @@ class LoginDataSourceImpl @Inject constructor(
             if (it.isSuccessful) {
                 val headers = it.headers()
                 val body = it.body()
-                return if(headerManager(headers))
+                return if (headerManager(headers))
                     Response.success(body)
                 else
                     Response.error(401, it.errorBody())
@@ -39,8 +42,7 @@ class LoginDataSourceImpl @Inject constructor(
     override suspend fun requestNewAccessToken(
         accessToken: String?,
         refreshToken: String?
-    ): Response<ServerResponse<String>>? {
-        return retrofit.create(LoginDataSource::class.java)
+    ): Response<ServerResponse<String>>? =
+        retrofit.create(LoginDataSource::class.java)
             .requestNewAccessToken(accessToken = accessToken, refreshToken = refreshToken)
-    }
 }

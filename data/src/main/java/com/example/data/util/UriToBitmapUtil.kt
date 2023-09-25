@@ -24,7 +24,7 @@ import java.io.IOException
  */
 object UriToBitmapUtil {
 
-    operator fun invoke(application: Context, uri: Uri): MultipartBody.Part{
+    operator fun invoke(application: Context, uri: Uri): MultipartBody.Part {
         val file = File(absolutelyPath(uri, application))
         val compressFile = compressImageFile(file)
         val requestFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
@@ -37,7 +37,7 @@ object UriToBitmapUtil {
 
         BitmapFactory.decodeFile(file.absolutePath, options)
 
-        val resize = if(file.length() > 1000000) 5 else 1
+        val resize = if (file.length() > 1000000) 5 else 1
 
         options.inJustDecodeBounds = false
         options.inSampleSize = resize
@@ -60,9 +60,7 @@ object UriToBitmapUtil {
 
     private fun rotateImageIfRequiredBitmap(bitmap: Bitmap, imagePath: String): Bitmap {
         val exif = ExifInterface(imagePath)
-        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-
-        return when (orientation) {
+        return when (exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)) {
             ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90f)
             ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180f)
             ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
@@ -73,9 +71,7 @@ object UriToBitmapUtil {
     fun rotateImageIfRequiredUri(context: Context, uri: Uri, bitmap: Bitmap): Bitmap {
         val input = context.contentResolver.openInputStream(uri)
         val ei = ExifInterface(input!!)
-        val orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-
-        return when (orientation) {
+        return when (ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)) {
             ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90f)
             ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180f)
             ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
@@ -119,11 +115,15 @@ object UriToBitmapUtil {
             val values = ContentValues().apply {
                 put(MediaStore.Images.Media.DISPLAY_NAME, "YourImageName.png")
                 put(MediaStore.Images.Media.MIME_TYPE, "image/png")
-                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/" + path)
+                put(
+                    MediaStore.Images.Media.RELATIVE_PATH,
+                    Environment.DIRECTORY_PICTURES + "/" + path
+                )
             }
 
             val resolver = context.contentResolver
-            val collection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+            val collection =
+                MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
             val imageUri = resolver.insert(collection, values)
 
             try {

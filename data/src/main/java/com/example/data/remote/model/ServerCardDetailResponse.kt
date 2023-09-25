@@ -15,5 +15,14 @@ data class ServerCardDetailResponse(
 )
 
 fun ServerCardDetailResponse.toServerCardDetailData(): CardDetailData =
-    CardDetailData(billCardId = billCardId, cardName = cardName, cardAmount = cardAmount, cardDesignId = cardDesignId,
-        cardExpireDate = cardExpireDate, writerName = writerName, writeDateTime = writeDateTime, modifierName = modifierName, modifyDateTime = modifyDateTime)
+    CardDetailData(
+        billCardId = billCardId,
+        cardName = cardName,
+        cardAmount = cardAmount,
+        cardDesignId = cardDesignId,
+        cardExpireDate = cardExpireDate,
+        writerName = writerName,
+        writeDateTime = writeDateTime,
+        modifierName = modifierName,
+        modifyDateTime = modifyDateTime
+    )

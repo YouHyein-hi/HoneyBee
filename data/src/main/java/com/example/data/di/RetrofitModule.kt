@@ -40,15 +40,12 @@ object RetrofitModule {
     @Singleton
     @Provides
     @Login
-    fun provideLoginRetrofit():Retrofit{
-        return Retrofit.Builder()
+    fun provideLoginRetrofit(): Retrofit =
+        Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-    }
-
-
 
 
     @Singleton
@@ -58,40 +55,36 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideOkhttpApi(networkInterceptor: NetworkInterceptor): OkHttpClient {
-        return OkHttpClient().newBuilder()
-//            .addInterceptor(loggingInterceptor)
+    fun provideOkhttpApi(networkInterceptor: NetworkInterceptor): OkHttpClient =
+        OkHttpClient().newBuilder()
             .addInterceptor(networkInterceptor)
             .build()
-    }
 
     @Singleton
     @Provides
     @Api
-    fun provideApiRetrofit(interceptorClient: OkHttpClient):Retrofit {
-        return Retrofit.Builder()
+    fun provideApiRetrofit(interceptorClient: OkHttpClient): Retrofit =
+        Retrofit.Builder()
             .baseUrl("http://210.119.104.158:8080/")
             .client(interceptorClient)
-//            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-    }
 
 
     //네트워크 통신 과정을 보기 위한 클라이언트
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    })
+            level = HttpLoggingInterceptor.Level.BODY
+        })
         .addInterceptor {
-        val request = it.request()
-            .newBuilder()
-            .build()
-        val response = it.proceed(request)
-        response
-    }
+            val request = it.request()
+                .newBuilder()
+                .build()
+            val response = it.proceed(request)
+            response
+        }
         .connectTimeout(20, TimeUnit.SECONDS)
-        .readTimeout(20,TimeUnit.SECONDS)
-        .writeTimeout(20,TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
         .build()
 }

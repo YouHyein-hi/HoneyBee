@@ -14,7 +14,7 @@ interface MyDao {
     @Query("Select * From MyDataTable")
     fun getAllData(): MutableList<MyEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE) //err
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertData(list: MyEntity)
 
     @Query("Delete from MyDataTable where billSubmitTime = :date")

@@ -20,17 +20,24 @@ import javax.inject.Singleton
 object DataSourceModule {
     @Singleton
     @Provides
-    fun provideCardDataSource(@RetrofitModule.Api retrofit: Retrofit):CardDataSource = CardDataSourceImpl(retrofit)
+    fun provideCardDataSource(@RetrofitModule.Api retrofit: Retrofit): CardDataSource =
+        CardDataSourceImpl(retrofit)
 
     @Singleton
     @Provides
-    fun provideGeneralDataSource(@RetrofitModule.Api retrofit: Retrofit):GeneralDataSource = GeneralDataSourceImpl(retrofit)
+    fun provideGeneralDataSource(@RetrofitModule.Api retrofit: Retrofit): GeneralDataSource =
+        GeneralDataSourceImpl(retrofit)
 
     @Singleton
     @Provides
-    fun provideLoginDataSource(@RetrofitModule.Login retrofit: Retrofit, headerManager: HeaderManager):LoginDataSource = LoginDataSourceImpl(retrofit,headerManager)
+    fun provideLoginDataSource(
+        @RetrofitModule.Login retrofit: Retrofit,
+        headerManager: HeaderManager
+    ): LoginDataSource =
+        LoginDataSourceImpl(retrofit, headerManager)
 
     @Singleton
     @Provides
-    fun provideNoticeDataSource(@RetrofitModule.Api retrofit: Retrofit):NoticeDataSource = NoticeDataSourceImpl(retrofit)
+    fun provideNoticeDataSource(@RetrofitModule.Api retrofit: Retrofit): NoticeDataSource =
+        NoticeDataSourceImpl(retrofit)
 }

@@ -16,7 +16,7 @@ import javax.inject.Inject
  */
 class GeneralDataSourceImpl @Inject constructor(
     @RetrofitModule.Api private val retrofit: Retrofit
-): GeneralDataSource {
+) : GeneralDataSource {
 
     override suspend fun sendDataSource(
         cardName: MultipartBody.Part,
@@ -36,25 +36,25 @@ class GeneralDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun getBillListDataSource(): ServerResponse<List<ServerBillResponse>> {
-        return retrofit.create(GeneralDataSource::class.java).getBillListDataSource()
-    }
+    override suspend fun getBillListDataSource(): ServerResponse<List<ServerBillResponse>> =
+        retrofit.create(GeneralDataSource::class.java).getBillListDataSource()
 
-    override suspend fun getDetailBillData(id: String): ServerResponse<ServerDetailBillResponse> {
-        return retrofit.create(GeneralDataSource::class.java).getDetailBillData(id)
-    }
 
-    override suspend fun getStoreListDataSource(): ServerResponse<List<String>> {
-        return retrofit.create(GeneralDataSource::class.java).getStoreListDataSource()
-    }
+    override suspend fun getDetailBillData(id: String): ServerResponse<ServerDetailBillResponse> =
+        retrofit.create(GeneralDataSource::class.java).getDetailBillData(id)
 
-    override suspend fun getPictureDataSource(uid:String): ServerResponse<String> {
-        return retrofit.create(GeneralDataSource::class.java).getPictureDataSource(uid)
-    }
 
-    override suspend fun deleteServerData(uid:Long): ServerResponse<Int> {
-        return retrofit.create(GeneralDataSource::class.java).deleteServerData(uid)
-    }
+    override suspend fun getStoreListDataSource(): ServerResponse<List<String>> =
+        retrofit.create(GeneralDataSource::class.java).getStoreListDataSource()
+
+
+    override suspend fun getPictureDataSource(uid: String): ServerResponse<String> =
+        retrofit.create(GeneralDataSource::class.java).getPictureDataSource(uid)
+
+
+    override suspend fun deleteServerData(uid: Long): ServerResponse<Int> =
+        retrofit.create(GeneralDataSource::class.java).deleteServerData(uid)
+
 
     override suspend fun updateDataSource(
         id: Long,
@@ -64,8 +64,8 @@ class GeneralDataSourceImpl @Inject constructor(
         amount: Int,
         billCheck: Boolean,
         billMemo: String
-    ): ServerResponse<Int> {
-        return retrofit.create(GeneralDataSource::class.java).updateDataSource(
+    ): ServerResponse<Int> =
+        retrofit.create(GeneralDataSource::class.java).updateDataSource(
             id,
             cardName,
             storeName,
@@ -74,9 +74,9 @@ class GeneralDataSourceImpl @Inject constructor(
             billCheck,
             billMemo
         )
-    }
 
-    override suspend fun billCheckDataSource(id: Long): ServerResponse<String> {
-        return retrofit.create(GeneralDataSource::class.java).billCheckDataSource(id)
-    }
+
+    override suspend fun billCheckDataSource(id: Long): ServerResponse<String> =
+        retrofit.create(GeneralDataSource::class.java).billCheckDataSource(id)
+
 }

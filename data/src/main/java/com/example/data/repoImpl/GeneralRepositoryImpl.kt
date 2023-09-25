@@ -31,14 +31,19 @@ import javax.inject.Inject
 class GeneralRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val generalDataSource: GeneralDataSource
-): GeneralRepository {
-    override suspend fun deleteDataRepository(id: Long): ServerUidData {
-        return generalDataSource.deleteServerData(id).toUidServerResponseData()
-    }
+) : GeneralRepository {
+    override suspend fun deleteDataRepository(id: Long): ServerUidData =
+        generalDataSource.deleteServerData(id).toUidServerResponseData()
+
 
     override suspend fun getDataListRepository(): ServerBillData {
         val result = generalDataSource.getBillListDataSource().toServerBillData()
-        val newList = result.body?.map { it.copy(billSubmitTime = StringUtil.changeDate(it.billSubmitTime), storeAmount = StringUtil.changeAmount(it.storeAmount)) }
+        val newList = result.body?.map {
+            it.copy(
+                billSubmitTime = StringUtil.changeDate(it.billSubmitTime),
+                storeAmount = StringUtil.changeAmount(it.storeAmount)
+            )
+        }
         return ServerBillData(result.status, result.message, newList)
     }
 
@@ -54,19 +59,23 @@ class GeneralRepositoryImpl @Inject constructor(
         return ServerDetailBillData(result.status, result.message, newResult)
     }
 
-    override suspend fun getStoreListRepository(): ServerStoreData {
-        return generalDataSource.getStoreListDataSource().toServerStoreData()
-    }
+    override suspend fun getStoreListRepository(): ServerStoreData =
+        generalDataSource.getStoreListDataSource().toServerStoreData()
+
 
     override suspend fun getPictureDataRepository(id: String): ServerPictureData {
         val response = generalDataSource.getPictureDataSource(id)
         val byteData = response.body
         val decode = Base64.decode(byteData, Base64.DEFAULT)
-        return ServerPictureData(status = response.status, message = response.message, picture = BitmapFactory.decodeByteArray(decode, 0, decode.size))
+        return ServerPictureData(
+            status = response.status,
+            message = response.message,
+            picture = BitmapFactory.decodeByteArray(decode, 0, decode.size)
+        )
     }
 
-    override suspend fun insertDataRepository(data: UiBillData): ServerUidData {
-        return generalDataSource.sendDataSource(
+    override suspend fun insertDataRepository(data: UiBillData): ServerUidData =
+        generalDataSource.sendDataSource(
             cardName = MultipartBody.Part.createFormData(
                 "cardName",
                 data.cardName
@@ -89,10 +98,10 @@ class GeneralRepositoryImpl @Inject constructor(
                 data.memo
             )
         ).toUidServerResponseData()
-    }
 
-    override suspend fun updateDataRepository(sendBillUpdateData: SendBillUpdateData): ServerUidData {
-        return generalDataSource.updateDataSource(
+
+    override suspend fun updateDataRepository(sendBillUpdateData: SendBillUpdateData): ServerUidData =
+        generalDataSource.updateDataSource(
             id = sendBillUpdateData.id,
             cardName = sendBillUpdateData.cardName,
             storeName = sendBillUpdateData.storeName,
@@ -101,10 +110,8 @@ class GeneralRepositoryImpl @Inject constructor(
             billCheck = sendBillUpdateData.billCheck,
             billMemo = sendBillUpdateData.billMemo
         ).toUidServerResponseData()
-    }
 
-    override suspend fun billCheckRepository(id: Long): ServerResponseData {
-        return generalDataSource.billCheckDataSource(id).toServerResponseData()
-    }
 
+    override suspend fun billCheckRepository(id: Long): ServerResponseData =
+        generalDataSource.billCheckDataSource(id).toServerResponseData()
 }

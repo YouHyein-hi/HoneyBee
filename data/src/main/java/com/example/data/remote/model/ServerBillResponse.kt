@@ -17,4 +17,11 @@ data class ServerBillResponse(
     var writerEmail: String
 )
 
-fun ServerBillResponse.toBillData(): BillData = BillData(id = billId, cardName = cardName, storeAmount = billAmount, billSubmitTime = billSubmitTime, storeName = storeName, billCheck= billCheck)
+fun ServerBillResponse.toBillData(): BillData = BillData(
+    id = billId,
+    cardName = cardName,
+    storeAmount = billAmount,
+    billSubmitTime = billSubmitTime,
+    storeName = storeName,
+    billCheck = billCheck
+)

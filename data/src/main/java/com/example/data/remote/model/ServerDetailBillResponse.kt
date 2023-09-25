@@ -18,8 +18,6 @@ data class ServerDetailBillResponse(
     var writeDateTime: String,
     var modifierName: String,
     var modifyDateTime: String
-
-
 )
 
 fun ServerDetailBillResponse.toDetailBillData(): DetailBillData = DetailBillData(

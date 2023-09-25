@@ -14,7 +14,7 @@ import javax.inject.Inject
 class LoginRepositoryImpl @Inject constructor(
     private val loginDataSource: LoginDataSource
 ) : LoginRepository {
-        override suspend fun requestLogin(loginData: SendLoginData): ServerResponseData {
-        return loginDataSource.requestLogin(email = loginData.email, password = loginData.password)!!.body()!!.toServerResponseData()
-    }
+    override suspend fun requestLogin(loginData: SendLoginData): ServerResponseData =
+        loginDataSource.requestLogin(email = loginData.email, password = loginData.password)!!
+            .body()!!.toServerResponseData()
 }

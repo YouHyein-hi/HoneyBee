@@ -13,31 +13,32 @@ import javax.inject.Inject
  */
 class RoomRepositoryImpl @Inject constructor(
     private val roomDao: MyDao
-    ) : RoomRepository {
+) : RoomRepository {
 
     override suspend fun insertData(list: RoomData) {
-        val myList = MyEntity(
-            billSubmitTime = list.billSubmitTime,
-            cardName = list.cardName,
-            amount = list.storeAmount,
-            pictureName = list.storeName,
-            picture = list.file,
-            memo = list.memo,
-            uid = list.uid
+        roomDao.insertData(
+            MyEntity(
+                billSubmitTime = list.billSubmitTime,
+                cardName = list.cardName,
+                amount = list.storeAmount,
+                pictureName = list.storeName,
+                picture = list.file,
+                memo = list.memo,
+                uid = list.uid
+            )
         )
-        roomDao.insertData(myList)
     }
 
-    override suspend fun getAllData(): MutableList<RoomData> {
-        return roomDao.getAllData().map { it.toDomainEntity() }.toMutableList()
-    }
+    override suspend fun getAllData(): MutableList<RoomData> =
+        roomDao.getAllData().map { it.toDomainEntity() }.toMutableList()
 
-    override suspend fun deleteData(date: String): Int {
-        return roomDao.deleteData(date = date)
-    }
 
-    override suspend fun updateData(list: RoomData):Int {
-        return roomDao.updateData(
+    override suspend fun deleteData(date: String): Int =
+        roomDao.deleteData(date = date)
+
+
+    override suspend fun updateData(list: RoomData): Int =
+        roomDao.updateData(
             MyEntity(
                 uid = list.uid,
                 billSubmitTime = list.billSubmitTime,
@@ -48,5 +49,4 @@ class RoomRepositoryImpl @Inject constructor(
                 picture = list.file
             )
         )
-    }
 }

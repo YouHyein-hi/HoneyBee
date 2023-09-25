@@ -16,44 +16,40 @@ import javax.inject.Inject
 
 class CardDataSourceImpl @Inject constructor(
     @RetrofitModule.Api private val retrofit: Retrofit
-): CardDataSource {
+) : CardDataSource {
     override suspend fun sendCardDataSource(
         cardName: String,
         amount: Int,
         expireDate: LocalDate,
         designId: Int
     ): Response<ServerResponse<String>> {
-        retrofit.create(CardDataSource::class.java).sendCardDataSource(cardName = cardName, amount = amount, expireDate = expireDate, designId = designId).let {
-            if(it.isSuccessful)
+        retrofit.create(CardDataSource::class.java).sendCardDataSource(
+            cardName = cardName,
+            amount = amount,
+            expireDate = expireDate,
+            designId = designId
+        ).let {
+            if (it.isSuccessful)
                 return it
             else
-                when(it.code()){
+                when (it.code()) {
                     400 -> throw Exception("이미 존재하는 카드입니다.")
                     else -> throw Exception("서버 통신 오류")
-
                 }
-
         }
     }
 
-    override suspend fun getCardDataSource(): ServerResponse<List<ServerCardResponse>> {
+    override suspend fun getCardDataSource(): ServerResponse<List<ServerCardResponse>> =
+        retrofit.create(CardDataSource::class.java).getCardDataSource()
 
-        return retrofit.create(CardDataSource::class.java).getCardDataSource().also {
-            Log.e(
-                "TAG",
-                "getCardDataSource: $it",
-            ) }
-    }
 
-    override suspend fun getDetailCardDataSource(id: String): ServerResponse<ServerCardDetailResponse> {
-        return retrofit.create(CardDataSource::class.java).getDetailCardDataSource(id).also {
-            Log.e("TAG", "getDetailCardDataSource: $it", )
-        }
-    }
+    override suspend fun getDetailCardDataSource(id: String): ServerResponse<ServerCardDetailResponse> =
+        retrofit.create(CardDataSource::class.java).getDetailCardDataSource(id)
 
-    override suspend fun deleteCardDataSource(id: Long): ServerResponse<Int> {
-        return retrofit.create(CardDataSource::class.java).deleteCardDataSource(id)
-    }
+
+    override suspend fun deleteCardDataSource(id: Long): ServerResponse<Int> =
+        retrofit.create(CardDataSource::class.java).deleteCardDataSource(id)
+
 
     override suspend fun updateCardDataSource(
         id: Long,
@@ -61,9 +57,12 @@ class CardDataSourceImpl @Inject constructor(
         cardAmount: Int,
         cardExpireDate: LocalDate,
         cardDesignId: Int
-    ): ServerResponse<Int> {
-        return retrofit.create(CardDataSource::class.java).updateCardDataSource(
-            id = id, cardName = cardName, cardAmount = cardAmount, cardExpireDate = cardExpireDate, cardDesignId = cardDesignId
+    ): ServerResponse<Int> =
+        retrofit.create(CardDataSource::class.java).updateCardDataSource(
+            id = id,
+            cardName = cardName,
+            cardAmount = cardAmount,
+            cardExpireDate = cardExpireDate,
+            cardDesignId = cardDesignId
         )
-    }
 }

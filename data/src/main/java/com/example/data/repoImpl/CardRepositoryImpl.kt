@@ -39,30 +39,30 @@ class CardRepositoryImpl @Inject constructor(
         return ServerCardSpinnerData(response.status, response.message, newList)
     }
 
-    override suspend fun getCardDetailRespository(id: String): ServerCardDetailData{
-        return cardDataSource.getDetailCardDataSource(id).toServerCardDetailData()
-    }
+    override suspend fun getCardDetailRespository(id: String): ServerCardDetailData =
+        cardDataSource.getDetailCardDataSource(id).toServerCardDetailData()
 
-    override suspend fun deleteCardRepository(id: Long): ServerUidData {
-        return cardDataSource.deleteCardDataSource(id).toUidServerResponseData()
-    }
 
-    override suspend fun insertCardRepository(sendCardData: SendCardData): ServerResponseData {
-        return cardDataSource.sendCardDataSource(
+    override suspend fun deleteCardRepository(id: Long): ServerUidData =
+        cardDataSource.deleteCardDataSource(id).toUidServerResponseData()
+
+
+    override suspend fun insertCardRepository(sendCardData: SendCardData): ServerResponseData =
+        cardDataSource.sendCardDataSource(
             cardName = sendCardData.cardName,
             amount = sendCardData.cardAmount,
             expireDate = sendCardData.cardExpireDate,
             designId = sendCardData.cardDesignId
         ).body()!!.toServerResponseData()
-    }
 
-    override suspend fun updateCardRepository(sendUpdateCardData: SendUpdateCardData) : ServerUidData {
-        return cardDataSource.updateCardDataSource(
+
+    override suspend fun updateCardRepository(sendUpdateCardData: SendUpdateCardData) : ServerUidData =
+         cardDataSource.updateCardDataSource(
             id = sendUpdateCardData.id,
             cardName = sendUpdateCardData.cardName,
             cardAmount = sendUpdateCardData.cardAmount,
             cardExpireDate = sendUpdateCardData.cardExpireDate,
             cardDesignId = sendUpdateCardData.cardDesignId
         ).toUidServerResponseData()
-    }
+
 }

@@ -23,10 +23,6 @@ class PreferenceManager @Inject constructor(
     fun getEmail(): String? = sharedPreference.getString("sharedPreference_id",null)
     fun removeEmail() = sharedPreference.edit().remove("sharedPreference_id").apply()
 
-    fun putPassword(id: String) = sharedPreference.edit().putString("sharedPreference_password", id).apply()
-    fun getPassword(): String? = sharedPreference.getString("sharedPreference_password",null)
-    fun removePassword() = sharedPreference.edit().remove("sharedPreference_password").apply()
-
     fun putAutoEmailCheckBox(boolean: Boolean) = sharedPreference.edit().putBoolean("sharedPreference_auto_email", boolean).apply()
     fun getAutoEmailCheckBox(): Boolean = sharedPreference.getBoolean("sharedPreference_auto_email", false)
     fun removeAutoEmailCheckBox() = sharedPreference.edit().remove("sharedPreference_auto_email").apply()

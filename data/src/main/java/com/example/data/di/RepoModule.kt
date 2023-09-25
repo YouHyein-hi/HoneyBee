@@ -24,32 +24,35 @@ object RepoModule {
 
     @Provides
     @Singleton
-    fun provideCardRepoData(source : CardDataSource, preferenceManager: PreferenceManager): CardRepository {
-        return CardRepositoryImpl(source, preferenceManager)
-    }
+    fun provideCardRepoData(
+        source: CardDataSource,
+        preferenceManager: PreferenceManager
+    ): CardRepository = CardRepositoryImpl(source, preferenceManager)
+
 
     @Provides
     @Singleton
-    fun provideGeneralData(source : GeneralDataSource, @ApplicationContext context: Context): GeneralRepository {
-        return GeneralRepositoryImpl(context, source)
-    }
+    fun provideGeneralData(
+        source: GeneralDataSource,
+        @ApplicationContext context: Context
+    ): GeneralRepository =
+        GeneralRepositoryImpl(context, source)
+
 
     @Provides
     @Singleton
-    fun provideLoginData(source : LoginDataSource): LoginRepository {
-        return LoginRepositoryImpl(source)
-    }
+    fun provideLoginData(source: LoginDataSource): LoginRepository =
+        LoginRepositoryImpl(source)
 
     @Provides
     @Singleton
-    fun provideNoticeData(source : NoticeDataSource): NoticeRepository {
-        return NoticeRepositoryImpl(source)
-    }
+    fun provideNoticeData(source: NoticeDataSource): NoticeRepository =
+        NoticeRepositoryImpl(source)
 
     @Provides
     @Singleton
-    fun provideRepoRoom(source : LocalDatabase): RoomRepository {
-        return RoomRepositoryImpl(source.myDatabase())
-    }
+    fun provideRepoRoom(source: LocalDatabase): RoomRepository =
+        RoomRepositoryImpl(source.myDatabase())
+
 
 }

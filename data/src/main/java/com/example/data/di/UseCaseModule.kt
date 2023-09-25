@@ -23,136 +23,128 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideGetCardListUseCase(repo : CardRepository) : GetCardListUseCase{
-        return GetCardListUseCase(repo)
-    }
+    fun provideGetCardListUseCase(repo : CardRepository) : GetCardListUseCase =
+        GetCardListUseCase(repo)
 
     @Provides
     @Singleton
-    fun provideGetCardSpinnerUseCase(repo: CardRepository) : GetCardSpinnerUseCase{
-        return GetCardSpinnerUseCase(repo)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetCardDetailUseCase(repo: CardRepository) : GetCardDetailUseCase{
-        return GetCardDetailUseCase(repo)
-    }
-
-    @Provides
-    @Singleton
-    fun provideInsertCardUseCase(repo : CardRepository) : InsertCardUseCase{
-        return InsertCardUseCase(repo)
-    }
-
-    @Provides
-    @Singleton
-    fun provideDeleteCardUseCase(repo: CardRepository) : DeleteCardUseCase{
-        return DeleteCardUseCase(repo)
-    }
-
-    @Provides
-    @Singleton
-    fun provideUpdateCardUseCase(repo: CardRepository) : UpdateCardUseCase{
-        return UpdateCardUseCase(repo)
-    }
-
+    fun provideGetCardSpinnerUseCase(repo: CardRepository) : GetCardSpinnerUseCase =
+        GetCardSpinnerUseCase(repo)
 
 
     @Provides
     @Singleton
-    fun provideDeleteDataUseCase(repo : GeneralRepository) : DeleteDataUseCase{
-        return DeleteDataUseCase(repo)
-    }
-
-    @Provides
-    @Singleton
-    fun providePictureDataUseCase(repo : GeneralRepository) : GetPictureDataUseCase{
-        return GetPictureDataUseCase(repo)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetDataListUseCase(repo : GeneralRepository) : GetDataListUseCase{
-        return GetDataListUseCase(repo)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetDetailDataUseCase(repo : GeneralRepository) : GetDetailDataUseCase{
-        return GetDetailDataUseCase(repo)
-    }
+    fun provideGetCardDetailUseCase(repo: CardRepository) : GetCardDetailUseCase =
+        GetCardDetailUseCase(repo)
 
 
     @Provides
     @Singleton
-    fun provideGetStoreListUseCase(repo : GeneralRepository) : GetStoreListUseCase{
-        return GetStoreListUseCase(repo)
-    }
+    fun provideInsertCardUseCase(repo : CardRepository) : InsertCardUseCase =
+        InsertCardUseCase(repo)
+
 
     @Provides
     @Singleton
-    fun provideInsertDataUseCase(repo : GeneralRepository) : InsertDataUseCase{
-        return InsertDataUseCase(repo)
-    }
+    fun provideDeleteCardUseCase(repo: CardRepository) : DeleteCardUseCase =
+        DeleteCardUseCase(repo)
+
 
     @Provides
     @Singleton
-    fun provideUpdateDataUseCase(repo : GeneralRepository) : UpdateDataUseCase{
-        return UpdateDataUseCase(repo)
-    }
+    fun provideUpdateCardUseCase(repo: CardRepository) : UpdateCardUseCase =
+        UpdateCardUseCase(repo)
+
 
     @Provides
     @Singleton
-    fun provideBillCheckUseCase(repo: GeneralRepository) : BillCheckUseCase{
-        return BillCheckUseCase(repo)
-    }
+    fun provideDeleteDataUseCase(repo : GeneralRepository) : DeleteDataUseCase =
+        DeleteDataUseCase(repo)
+
 
     @Provides
     @Singleton
-    fun provideLoginUseCase(repo : LoginRepository) : LoginUseCase{
-        return LoginUseCase(repo)
-    }
+    fun providePictureDataUseCase(repo : GeneralRepository) : GetPictureDataUseCase =
+        GetPictureDataUseCase(repo)
+
+
+    @Provides
+    @Singleton
+    fun provideGetDataListUseCase(repo : GeneralRepository) : GetDataListUseCase =
+        GetDataListUseCase(repo)
+
+
+    @Provides
+    @Singleton
+    fun provideGetDetailDataUseCase(repo : GeneralRepository) : GetDetailDataUseCase =
+        GetDetailDataUseCase(repo)
+
+
+    @Provides
+    @Singleton
+    fun provideGetStoreListUseCase(repo : GeneralRepository) : GetStoreListUseCase =
+        GetStoreListUseCase(repo)
+
+
+    @Provides
+    @Singleton
+    fun provideInsertDataUseCase(repo : GeneralRepository) : InsertDataUseCase =
+        InsertDataUseCase(repo)
+
+
+    @Provides
+    @Singleton
+    fun provideUpdateDataUseCase(repo : GeneralRepository) : UpdateDataUseCase =
+        UpdateDataUseCase(repo)
+
+
+    @Provides
+    @Singleton
+    fun provideBillCheckUseCase(repo: GeneralRepository) : BillCheckUseCase =
+        BillCheckUseCase(repo)
+
+
+    @Provides
+    @Singleton
+    fun provideLoginUseCase(repo : LoginRepository) : LoginUseCase =
+        LoginUseCase(repo)
+
 
     //Notice
     @Provides
     @Singleton
-    fun provideGetNoticeListUseCase(noticeRepo : NoticeRepository) : GetNoticeListUseCase{
-        return GetNoticeListUseCase(noticeRepo)
-    }
+    fun provideGetNoticeListUseCase(noticeRepo : NoticeRepository) : GetNoticeListUseCase =
+        GetNoticeListUseCase(noticeRepo)
+
 
     @Provides
     @Singleton
-    fun provideAddNoticeUseCase(noticeRepo : NoticeRepository) : AddNoticeUseCase{
-        return AddNoticeUseCase(noticeRepo)
-    }
+    fun provideAddNoticeUseCase(noticeRepo : NoticeRepository) : AddNoticeUseCase =
+        AddNoticeUseCase(noticeRepo)
 
 
 
     //ROOM
     @Provides
     @Singleton
-    fun provideDeleteRoomDataUseCase(repo : RoomRepository) : DeleteRoomDataUseCase{
-        return DeleteRoomDataUseCase(repo)
-    }
+    fun provideDeleteRoomDataUseCase(repo : RoomRepository) : DeleteRoomDataUseCase =
+        DeleteRoomDataUseCase(repo)
+
 
     @Provides
     @Singleton
-    fun provideGetRoomDataListUseCase(repo : RoomRepository) : GetRoomDataListUseCase{
-        return GetRoomDataListUseCase(repo)
-    }
+    fun provideGetRoomDataListUseCase(repo : RoomRepository) : GetRoomDataListUseCase =
+        GetRoomDataListUseCase(repo)
+
 
     @Provides
     @Singleton
-    fun provideInsertDataRoomUseCase(repo : RoomRepository) : InsertRoomDataUseCase{
-        return InsertRoomDataUseCase(repo)
-    }
+    fun provideInsertDataRoomUseCase(repo : RoomRepository) : InsertRoomDataUseCase =
+        InsertRoomDataUseCase(repo)
+
 
     @Provides
     @Singleton
-    fun provideUpdateRoomUseCAse(repo : RoomRepository) : UpdateRoomDataUseCase{
-        return UpdateRoomDataUseCase(repo)
-    }
-
-
+    fun provideUpdateRoomUseCAse(repo : RoomRepository) : UpdateRoomDataUseCase =
+        UpdateRoomDataUseCase(repo)
 }

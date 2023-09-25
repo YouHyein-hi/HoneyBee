@@ -21,7 +21,7 @@ object AppDataModule {
 
     @Singleton
     @Provides
-    fun provideHeaderManager(preferenceManager: PreferenceManager): HeaderManager {
-        return HeaderManager(preferenceManager)
-    }
+    fun provideHeaderManager(preferenceManager: PreferenceManager): HeaderManager =
+        HeaderManager(preferenceManager)
+
 }

@@ -31,16 +31,16 @@ class NetworkInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val firstRequest = requestMaker(request)
-        val response : Response
+        val response: Response
 
         //프로그래스 바 UX를 고려해 통신 최소시간 할당
         val waitingTime = measureTimeMillis {
             //보낸 요청의 반환값
             response = chain.proceed(firstRequest)
         }.let {
-            if(it<300L)
+            if (it < 400L)
                 runBlocking {
-                    delay(300L-it)
+                    delay(400L - it)
                 }
         }
 
@@ -48,23 +48,18 @@ class NetworkInterceptor @Inject constructor(
         if (response.code == 401) {
             response.close()
 
-            var newAccessToken:String? = ""
+            var newAccessToken: String? = ""
 
-            //TODO 이 방법보다 나은 방법이 있을것같음..
             runBlocking {
                 newAccessToken = requestNewAccessToken()
             }
 
-
-            Log.e("TAG", "oldAccessToken: ${preferenceManager.getAccessToken()}")
-            Log.e("TAG", "newAccessToken: $newAccessToken", )
-
-            if (newAccessToken != null) {
-                preferenceManager.putAccessToken(newAccessToken?:"")
+            return if (newAccessToken != null) {
+                preferenceManager.putAccessToken(newAccessToken ?: "")
                 val secondRequest = requestMaker(firstRequest)
-                return chain.proceed(secondRequest)
-            }else{
-                return response
+                chain.proceed(secondRequest)
+            } else {
+                response
             }
         }
         return response
@@ -72,24 +67,20 @@ class NetworkInterceptor @Inject constructor(
 
     private fun requestMaker(request: Request): Request {
         return request.newBuilder()
-            .header("Authorization", preferenceManager.getAccessToken()?:"")
+            .header("Authorization", preferenceManager.getAccessToken() ?: "")
             .build()
     }
 
-    private suspend fun requestNewAccessToken(): String? {
-            val response = Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient)
-                .build()
-                .create(LoginDataSource::class.java).requestNewAccessToken(
-                    accessToken = preferenceManager.getAccessToken(),
-                    refreshToken = preferenceManager.getRefreshToken()
-                )
-            response
-        return response?.headers()?.get("Authorization")
-    }
-
+    private suspend fun requestNewAccessToken(): String? =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(okHttpClient)
+            .build()
+            .create(LoginDataSource::class.java).requestNewAccessToken(
+                accessToken = preferenceManager.getAccessToken(),
+                refreshToken = preferenceManager.getRefreshToken()
+            )?.headers()?.get("Authorization")
 
 
     //네트워크 통신 과정을 보기 위한 클라이언트

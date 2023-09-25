@@ -17,18 +17,16 @@ import javax.inject.Inject
  */
 class NoticeRepositoryImpl @Inject constructor(
     private val noticeDataSource: NoticeDataSource
-): NoticeRepository {
+) : NoticeRepository {
     override suspend fun getNoticeListRepository(): ServerNoticeData {
         val result = noticeDataSource.getNoticeListDataSource().toServerNoticeData()
         val newList = result.body?.map { it.copy(date = StringUtil.changeDate(it.date)) }
         return ServerNoticeData(result.status, result.message, newList)
     }
 
-    override suspend fun addNoticeRepository(sendNoticeAddData: SendNoticeAddData): ServerResponseData {
-        return noticeDataSource.addNoticeDataSource(
+    override suspend fun addNoticeRepository(sendNoticeAddData: SendNoticeAddData): ServerResponseData =
+        noticeDataSource.addNoticeDataSource(
             title = sendNoticeAddData.title,
-//            date = sendNoticeAddData.date,
             content = sendNoticeAddData.content
         ).toServerResponseData()
-    }
 }

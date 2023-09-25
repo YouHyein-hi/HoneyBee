@@ -2,13 +2,13 @@ package com.example.receiptcareapp.viewModel.fragmentViewModel.record
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.domain.model.local.RoomData
 import com.example.domain.model.remote.receive.card.ServerCardSpinnerData
 import com.example.domain.model.remote.receive.basic.ServerUidData
 import com.example.domain.model.remote.receive.bill.DetailBillData
-import com.example.domain.model.remote.receive.bill.ServerDetailBillData
 import com.example.domain.model.remote.send.bill.SendBillUpdateData
 import com.example.domain.usecase.card.GetCardSpinnerUseCase
 import com.example.domain.usecase.room.DeleteRoomDataUseCase
@@ -23,10 +23,7 @@ import kotlinx.coroutines.*
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
-/**
- * 2023-06-21
- * pureum
- */
+
 @HiltViewModel
 class RecordShowViewModel @Inject constructor(
     private val getPictureDataUseCase: GetPictureDataUseCase,
@@ -36,8 +33,9 @@ class RecordShowViewModel @Inject constructor(
     private val insertDataUseCase: InsertDataUseCase,
     private val deleteRoomDataUseCase: DeleteRoomDataUseCase,
     private val updateRoomDataUseCase: UpdateRoomDataUseCase,
-    private val getDetailDataUseCase: GetDetailDataUseCase
-    ) : BaseViewModel("RecordShowViewModel") {
+    private val getDetailDataUseCase: GetDetailDataUseCase,
+    private val getBillCheckUseCase: BillCheckUseCase
+) : BaseViewModel("RecordShowViewModel") {
 
     val loading: MutableLiveData<Boolean> get() = isLoading
 
@@ -46,19 +44,33 @@ class RecordShowViewModel @Inject constructor(
 
     // 서버 카드 전달받은 값 관리
     private var _cardList = MutableLiveData<ServerCardSpinnerData?>()
-    val cardList: LiveData<ServerCardSpinnerData?> get() = _cardList
+    val cardList: LiveData<ServerCardSpinnerData?>
+        get() = _cardList
 
-    private var _serverInitData = MutableLiveData<Pair<Bitmap?, DetailBillData>>()
-    val serverInitData : LiveData<Pair<Bitmap?, DetailBillData>> get() = _serverInitData
-
+    private var _picture = MutableLiveData<Bitmap?>()
+    val picture : LiveData<Bitmap?> get(){
+        return _picture
+    }
 
     private val _image = MutableLiveData<Uri>()
-    val image: LiveData<Uri> get() = _image
+    val image: LiveData<Uri>
+        get() = _image
     fun takeImage(img: Uri) { _image.value = img }
 
     private var _changePicture = MutableLiveData<Bitmap?>()
-    val changePicture : LiveData<Bitmap?> get() = _changePicture
+    val changePicture : LiveData<Bitmap?> get(){
+        return _changePicture
+    }
     fun takeChangePicture(pic: Bitmap) { _changePicture.value = pic }
+
+    private var _check = MutableLiveData<Boolean>()
+    val check: LiveData<Boolean> get(){
+        return _check
+    }
+    fun takeCheck(check: Boolean){ _check.value = check }
+
+    private var _serverInitData = MutableLiveData<Pair<Bitmap?, DetailBillData>>()
+    val serverInitData : LiveData<Pair<Bitmap?, DetailBillData>> get() = _serverInitData
 
     var textValue: String? = null
 
@@ -80,9 +92,10 @@ class RecordShowViewModel @Inject constructor(
                                 id = sendData.id,
                                 cardName = sendData.cardName,
                                 storeName = sendData.storeName,
-//                                billSubmitTime = LocalDateTime.parse(sendData.billSubmitTime),
-                                date = sendData.date,
-                                storeAmount = sendData.storeAmount
+                                billSubmitTime = sendData.billSubmitTime,
+                                storeAmount = sendData.storeAmount,
+                                billCheck = sendData.billCheck,
+                                billMemo = sendData.billMemo
                             )
                         )
                     )
@@ -98,18 +111,18 @@ class RecordShowViewModel @Inject constructor(
         modelScope.launch {
             withTimeoutOrNull(waitTime) {
                 _response.postValue(Pair(
-                        ResponseState.LOCAL_UPDATE_SUCCESS,
-                        insertDataUseCase(
-                            UiBillData(
-                                cardName = sendData.cardName,
-                                storeName = sendData.storeName,
-                                date = sendData.date,
-                                storeAmount = sendData.storeAmount.replace(",", ""),
-                                picture = sendData.picture,
-                                memo = sendData.memo
-                            )
+                    ResponseState.LOCAL_UPDATE_SUCCESS,
+                    insertDataUseCase(
+                        UiBillData(
+                            cardName = sendData.cardName,
+                            storeName = sendData.storeName,
+                            date = sendData.date,
+                            storeAmount = sendData.storeAmount.replace(",", ""),
+                            picture = sendData.picture,
+                            memo = sendData.memo
                         )
                     )
+                )
                 )
             } ?: throw SocketTimeoutException()
             savedLocalData = sendData
@@ -126,13 +139,22 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
+    fun BillCheckData(id: Long) {
+        modelScope.launch {
+            isLoading.postValue(true)
+            withTimeoutOrNull(waitTime) {
+                getBillCheckUseCase(id)
+            } ?: throw SocketTimeoutException()
+            isLoading.postValue(false)
+        }
+    }
+
     fun deleteRoomBillData(date: String? = savedLocalData.date) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             isLoading.postValue(true)
             deleteRoomDataUseCase(date!!)
             isLoading.postValue(false)
         }
-
     }
 
     fun upDataRoomData(){
@@ -161,25 +183,15 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-//    fun getServerPictureData(id:String){
-//        modelScope.launch {
-//            withTimeoutOrNull(waitTime) {
-//                loading.postValue(true)
-//                _serverInitData.postValue(getPictureDataUseCase(id).picture)
-//                loading.postValue(false)
-//            }?:throw SocketTimeoutException()
-//        }
-//    }
-
-//    fun getDetailBillData(id: String){
-//        modelScope.launch {
-//            withTimeoutOrNull(waitTime) {
-//                loading.postValue(true)
-//                val gap = getDetailDataUseCase(id)
-//                loading.postValue(false)
-//            }?:throw SocketTimeoutException()
-//        }
-//    }
+    fun getServerPictureData(id:String){
+        modelScope.launch {
+            withTimeoutOrNull(waitTime) {
+                loading.postValue(true)
+                _picture.postValue(getPictureDataUseCase(id).picture)
+                loading.postValue(false)
+            }?:throw SocketTimeoutException()
+        }
+    }
 
     fun getServerInitData(id: String) {
         modelScope.launch {
@@ -196,6 +208,17 @@ class RecordShowViewModel @Inject constructor(
         }
     }
 
-    fun billCheckComplete(){}
+    fun getDetailBillData(id: String){
+        modelScope.launch {
+            withTimeoutOrNull(waitTime) {
+                Log.e("TAG", "getDetailBillData: start", )
+                Log.e("TAG", "getDetailBillData: ${getDetailDataUseCase(id)}", )
+            }?:throw SocketTimeoutException()
+        }
+    }
+
+    fun billCheckComplete(){
+
+    }
     fun billCheckCancel(){}
 }

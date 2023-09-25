@@ -21,6 +21,7 @@ import com.example.receiptcareapp.ui.adapter.RecordServerAdapter
 import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
+import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,15 +65,17 @@ class RecordServerFragment(
                 RecyclerData(
                     type = ShowType.SERVER,
                     uid = it.uid!!,
-                    cardName = "",
-                    amount = "",
-                    date = "",
-                    storeName = "",
+                    cardName = it.cardName,
+                    amount = it.storeAmount,
+                    date = it.date,
+                    storeName = it.storeName,
                     file = null,
                     memo = ""
                 )
             )
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
+            Log.e("TAG", "initListener: ${it.billCheck}", )
+            activityViewModel.takeCheck(it.billCheck)
         }
 
         binding.recordServerSearchTxt.addTextChangedListener(object: TextWatcher{

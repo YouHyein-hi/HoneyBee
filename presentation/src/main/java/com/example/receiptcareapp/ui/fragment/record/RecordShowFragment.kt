@@ -18,6 +18,7 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.domain.model.ui.recycler.RecyclerData
+import com.example.domain.model.ui.recycler.ServerRecyclerData
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.state.ResponseState
 import com.example.receiptcareapp.ui.dialog.*
@@ -30,9 +31,9 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     private val activityViewModel : MainActivityViewModel by activityViewModels()
     private val viewModel : RecordShowViewModel by viewModels()
     private lateinit var viewModelData: RecyclerData
+    private lateinit var data: ServerRecyclerData
     private lateinit var callback:OnBackPressedCallback
-    private val billCheckCancelDialog: BillCheckCancelDialog by lazy { BillCheckCancelDialog(viewModel) }
-    private val billCheckCompleteDialog: BillCheckCompleteDialog by lazy { BillCheckCompleteDialog(viewModel) }
+    private val billCheckDialog: BillCheckDialog by lazy { BillCheckDialog(viewModel, viewModelData.uid) }
     private val changeDialog: ChangeDialog by lazy { ChangeDialog(viewModel) }
     private val deleteDialog: DeleteDialog by lazy { DeleteDialog(viewModel) }
     private val downLoadDialog: DownLoadDialog by lazy { DownLoadDialog(viewModel) }
@@ -56,6 +57,8 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         else {
             binding.isServer = true
             viewModel.getServerInitData(viewModelData.uid)
+            Log.e("TAG", "initUI: ${viewModel.check.value}", )
+            binding.billCheckBtn.isChecked = activityViewModel.check.value!!
         }
     }
 
@@ -66,6 +69,18 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         binding.recordChangeBtn.setOnClickListener{
             viewModel.serverInitData.value?.let { it -> viewModel.takeChangePicture(it.first!!) }
             viewModelData.file?.let { it -> viewModel.takeImage(it) }
+            activityViewModel.changeSelectedData(
+                RecyclerData(
+                    type = ShowType.SERVER,
+                    uid = viewModelData.uid,
+                    cardName = viewModelData.cardName,
+                    amount = viewModelData.amount,
+                    date = viewModelData.date,
+                    storeName = viewModelData.storeName,
+                    file = null,
+                    memo = binding.recordShowMemo.text.toString()
+                )
+            )
             Log.e("TAG", "initListener: ${viewModel.serverInitData.value}", )
             Log.e("TAG", "initListener: ${viewModel.image.value}", )
             changeDialog()
@@ -78,14 +93,12 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         binding.billCheckBtn.setOnCheckedChangeListener{ _, isChecked ->
             when(isChecked){
                 false -> {
-                    showBillCheckCancelDialog()
-                    //binding.billCheckBtn.isChecked = false
-                    //통신 실패할 경우 원래대로 처리해야함
+                    billCheckDialog()
+                    binding.billCheckBtn.isChecked = false
                 }
                 true -> {
-                    showBillCheckCompleteDialog()
-                    //binding.billCheckBtn.isChecked = true
-                    //통신 실패할 경우 원래대로 처리해야함
+                    billCheckDialog()
+                    binding.billCheckBtn.isChecked = true
                 }
             }
         }
@@ -121,14 +134,25 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
-
-        viewModel.picture.observe(viewLifecycleOwner){
+/*        viewModel.picture.observe(viewLifecycleOwner){
             Log.e("TAG", "initObserver: $it", )
             if (it == null) binding.recordEmptyTxt.visibility = View.VISIBLE
             else{
                 binding.recordEmptyTxt.visibility =View.INVISIBLE
                 Glide.with(binding.recoreImageView)
                     .load(it)
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
+                    .into(binding.recoreImageView)
+            }
+            initContext(it.second)
+        }*/
+
+        viewModel.serverInitData.observe(viewLifecycleOwner){
+            Log.e("TAG", "initObserver: $it", )
+            if (it == null) binding.recordEmptyTxt.visibility = View.VISIBLE
+            else{
+                Glide.with(binding.recoreImageView)
+                    .load(it.first)
                     .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                     .into(binding.recoreImageView)
             }
@@ -183,10 +207,7 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     private fun downloadDialog(){
         downLoadDialog.show(parentFragmentManager, "downLoadDialog")
     }
-
-    private fun showBillCheckCancelDialog() = billCheckCancelDialog.show(parentFragmentManager,"billCheckCancelDialog")
-
-    private fun showBillCheckCompleteDialog() = billCheckCompleteDialog.show(parentFragmentManager,"billCheckCompleteDialog")
+    private fun billCheckDialog() = billCheckDialog.show(parentFragmentManager,"billCheckDialog")
 
     override fun onDestroy() {
         super.onDestroy()

@@ -32,7 +32,6 @@ abstract class BaseBottomSheet<VB: ViewBinding>(
     abstract fun initObserver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.e(name, "onCreate: ", )
         super.onCreate(savedInstanceState)
         initData()
     }
@@ -41,26 +40,22 @@ abstract class BaseBottomSheet<VB: ViewBinding>(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.e(name, "onCreateView: ", )
         _binding = inflate.invoke(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.e(name, "onViewCreated: ", )
         initUI()
         super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onResume() {
-        Log.e(name, "onResume: ", )
         super.onResume()
         initListener()
         initObserver()
     }
 
     override fun onDestroyView() {
-        Log.e(name, "onDestroyView: ", )
         super.onDestroyView()
         _binding = null
     }
@@ -76,5 +71,4 @@ abstract class BaseBottomSheet<VB: ViewBinding>(
             Toast.makeText(it, message ?: "", Toast.LENGTH_LONG).show()
         }
     }
-
 }

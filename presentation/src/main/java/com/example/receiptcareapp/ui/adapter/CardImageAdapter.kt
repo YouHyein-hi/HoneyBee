@@ -12,14 +12,14 @@ class CardImageAdapter(private val image: List<Int>) :
     lateinit var onCardImageClick: (position: Int) -> Unit
     private lateinit var binding: ItemCardImageBinding
 
-    inner class MyHolder(private val binding: ItemCardImageBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class MyHolder(private val binding: ItemCardImageBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(image: Int, position: Int) {
             binding.itemCardItem.setImageResource(image)
-            binding.root.setOnClickListener{
-                Log.e("TAG", "bind: ${position+1}", )
-                onCardImageClick(position+1)
+            binding.root.setOnClickListener {
+                onCardImageClick(position + 1)
             }
-            binding.itemCardTxt.text = "${position+1}번 그림입니다."
+            binding.position = position+1
         }
     }
 

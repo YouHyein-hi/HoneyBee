@@ -28,51 +28,29 @@ abstract class BaseFragment<VB: ViewBinding>(
     val binding get() = _binding!!
 
 
-    // lifeCycle 1
-    // 가장 먼저 호출
     override fun onAttach(context: Context) {
-        Log.e(name, "fragment onAttach", )
         super.onAttach(context)
     }
 
-    // fragment가 생성된 단계
-    // 세로, 가로 모드로 변환 시 oncreate 함수가 다시 호출됨
-    // 이때 해당 프래그먼트의 값들은 모두 초기화되기 때문에
-    // 값을 유지하고 싶을 경우 savedInstanceState 를 이용하는게 좋음.
-    // 리소스들을 초기화해주는 단계,
-    // 데이터 관련 친구들여기서 관리
-    //
-    // 추가적으로, 네비게이션 프레그먼트 쓰면서 pop으로 이전 페이지 돌아갔을때
-    // 여기부터 시작함
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.e(name, "fragment onCreate: ", )
         super.onCreate(savedInstanceState)
         initData()
     }
 
-    //레이아웃을 inflate 하는 단계
-    // view 객체를 얻을 수 있어 view와 관련된 초기화 진행 가능.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.e(name, "fragment onCreateView: ", )
         _binding = inflate.invoke(inflater, container, false)
         return binding.root
-        //null 케이즈
     }
 
-    //view 반환을 보장받는 위치
-    // 확정적으로 view 보장받을 수 있는 단계
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.e(name, "fragment onViewCreated: ", )
         initUI()
         super.onViewCreated(view, savedInstanceState)
     }
 
-    // 사용자랑 상호작용하기 직전에 호출단계
     override fun onResume() {
-        Log.e(name, "fragment onResume: ", )
         super.onResume()
         initListener()
         initObserver()
@@ -83,20 +61,17 @@ abstract class BaseFragment<VB: ViewBinding>(
     abstract fun initListener()
     abstract fun initObserver()
 
-    //viewBinding으로 인한 메모리 누수 방지
+    // binding 으로 인한 메모리 누수 방지
     override fun onDestroyView() {
-        Log.e(name, "fragment onDestroyView: ", )
         super.onDestroyView()
         _binding = null
     }
 
     override fun onDestroy() {
-        Log.e(name, "fragment onDestroy: ", )
         super.onDestroy()
     }
 
     override fun onDetach() {
-        Log.e(name, "fragment onDetach: ", )
         super.onDetach()
     }
 

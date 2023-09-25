@@ -71,15 +71,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     }
 
     override fun initObserver() {
-        //TODO databinding으로 옵져버하게 ,, 어떻게 뺄지 고민
         viewModel.loading.observe(this){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
-        //응답 성공 시
         viewModel.response.observe(this) { response ->
-            Log.e("TAG", "initObserver: $response")
             when (response.status) {
                 "200" -> {
                     viewModel.loadGetAuthData()
@@ -119,7 +116,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
-    // 권한 체크
     private fun checkAllPermissionsGranted(permissions: Array<String>): Boolean {
         for (permission in permissions) {
             if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
@@ -129,9 +125,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
         return true
     }
 
-    //권한 관련
     private fun checkPermission(permissions: Array<out String>, requestCode : Int) {
-        // 마시멜로 버전 이후
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, requestCode)
         }
@@ -147,9 +141,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        Log.e("TAG", "onRequestPermissionsResult: 에 접근",)
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults) // 두 개의 배열 파라미터를 모두 전달합니다.
-
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         permissionHandler.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 

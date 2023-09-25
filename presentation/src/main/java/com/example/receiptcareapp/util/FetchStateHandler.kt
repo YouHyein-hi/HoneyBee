@@ -12,9 +12,9 @@ object FetchStateHandler {
             FetchState.BAD_INTERNET -> "인터넷 연결 실패"
             FetchState.PARSE_ERROR -> "입력 오류"
             FetchState.WRONG_CONNECTION -> "WRONG_CONNECTION 오류"
-            FetchState.SQLITE_CONSTRAINT_PRIMARYKEY -> "이미 값이 저장되어있습니다."
+            FetchState.SQLITE_CONSTRAINT_PRIMARY_KEY -> "이미 값이 저장되어있습니다."
             FetchState.SOCKET_TIMEOUT_EXCEPTION -> "연결 시간이 초과되었습니다."
-            FetchState.IllegalStateException -> "서버 리턴값 받기 오류"
+            FetchState.ILLEGAL_STATE_EXCEPTION -> "서버 리턴값 받기 오류"
             else -> "Err : ${state.first.message}"
         }
     }

@@ -22,7 +22,6 @@ abstract class BaseActivity<VB:ViewBinding>(
     val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.e(TAG, "onCreate", )
         super.onCreate(savedInstanceState)
         _binding = inflate(layoutInflater)
         setContentView(binding.root)
@@ -33,32 +32,26 @@ abstract class BaseActivity<VB:ViewBinding>(
     }
 
     override fun onStart() {
-        Log.e(TAG, "onStart", )
         super.onStart()
     }
 
     override fun onResume() {
-        Log.e(TAG, "onResume", )
         super.onResume()
     }
 
     override fun onPause() {
-        Log.e(TAG, "onPause", )
         super.onPause()
     }
 
     override fun onRestart() {
-        Log.e(TAG, "onRestart", )
         super.onRestart()
     }
 
     override fun onStop() {
-        Log.e(TAG, "onStop", )
         super.onStop()
     }
 
     override fun onDestroy() {
-        Log.e(TAG, "onDestroy", )
         super.onDestroy()
     }
 
@@ -67,9 +60,11 @@ abstract class BaseActivity<VB:ViewBinding>(
     abstract fun initListener()
     abstract fun initObserver()
 
-    protected fun showShortToast(message: String?) =
+    protected fun showShortToast(message: String?) {
         Toast.makeText(this, message ?: "", Toast.LENGTH_SHORT).show()
+    }
 
-    protected fun showLongToast(message: String?) =
+    protected fun showLongToast(message: String?) {
         Toast.makeText(this, message ?: "", Toast.LENGTH_LONG).show()
+    }
 }

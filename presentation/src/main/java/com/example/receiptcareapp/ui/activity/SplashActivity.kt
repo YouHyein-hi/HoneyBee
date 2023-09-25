@@ -13,23 +13,24 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SplashActivity : BaseActivity<ActivitySplashBinding>({ActivitySplashBinding.inflate(it)}, "SplashActivity") {
+class SplashActivity :
+    BaseActivity<ActivitySplashBinding>({ ActivitySplashBinding.inflate(it) }, "SplashActivity") {
 
     override fun initData() {}
 
     override fun initUI() {
         supportActionBar?.hide()
 
-        ObjectAnimator.ofFloat(this.binding.title, View.ALPHA, 0f,1f).apply {
+        ObjectAnimator.ofFloat(this.binding.title, View.ALPHA, 0f, 1f).apply {
             duration = 1500
             start()
         }
-        ObjectAnimator.ofFloat(this.binding.background, View.ALPHA, 0f,1f).apply {
+        ObjectAnimator.ofFloat(this.binding.background, View.ALPHA, 0f, 1f).apply {
             duration = 1500
             start()
         }
 
-        lifecycleScope.launch() {
+        lifecycleScope.launch {
             delay(2300L)
             startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             finish()

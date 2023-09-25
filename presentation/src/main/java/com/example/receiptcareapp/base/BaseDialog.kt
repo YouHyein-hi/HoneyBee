@@ -15,20 +15,14 @@ import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
 
 
-abstract class BaseDialog<VB: ViewBinding>(
-    private val inflate:Inflate<VB>
-): DialogFragment() {
-
-    init {
-        Log.e("TAG", "BaseDialog : start", )
-        Log.e("TAG", "BaseDialog : $inflate: ", )
-    }
+abstract class BaseDialog<VB : ViewBinding>(
+    private val inflate: Inflate<VB>
+) : DialogFragment() {
 
     private var _binding: VB? = null
     val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
-        Log.e("TAG", "onAttach: ", )
         super.onAttach(context)
     }
 
@@ -41,17 +35,16 @@ abstract class BaseDialog<VB: ViewBinding>(
         super.onStart()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.e("TAG", "onCreateView: ", )
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = inflate.invoke(inflater, container, false)
-        Log.e("TAG", "BaseDialog : $_binding: ", )
-
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout((width * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
-
         return binding.root
     }
 
@@ -66,7 +59,7 @@ abstract class BaseDialog<VB: ViewBinding>(
         initObserver()
     }
 
-    //viewBinding으로 인한 메모리 누수 방지
+    // binding 으로 인한 메모리 누수 방지
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

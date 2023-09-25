@@ -15,13 +15,11 @@ import com.example.receiptcareapp.databinding.SpinnerCustomStoreItemLayoutBindin
  * pureum
  */
 class StoreSpinnerAdapter(context: Context, items: ArrayList<String>) : ArrayAdapter<String>(context, R.layout.spinner_custom_item_layout, items) {
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         //TODO 여기를 바꾸면 Spinner UI 수정 성공할 수 있지 않을까?
         val binding = SpinnerCustomStoreItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.spinnerItem.height = 35 // 높이를 35dp로 설정합니다.
+        binding.spinnerItem.height = 35
         val item = getItem(position)
-        Log.e("TAG", "getView: $item", )
         binding.data = item
         return binding.root
     }

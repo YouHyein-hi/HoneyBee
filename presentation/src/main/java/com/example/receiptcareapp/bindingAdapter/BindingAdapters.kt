@@ -21,9 +21,9 @@ object BindingAdapters {
 
     @JvmStatic
     @InverseBindingAdapter(attribute = "textValue")
-    fun getTextValue(editText: EditText): String? {
-        return editText.text?.toString()
-    }
+    fun getTextValue(editText: EditText): String? =
+        editText.text?.toString()
+
 
     @BindingAdapter("app:textValueAttrChanged")
     @JvmStatic
@@ -31,8 +31,6 @@ object BindingAdapters {
         editText.setOnEditorActionListener { v, actionId, event ->
 
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                // 키보드를 숨깁니다.
-                Log.e("TAG", "setTextValueListener: 완료 if 진입", )
                 val imm = editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(editText.windowToken, 0)
 
@@ -56,7 +54,6 @@ object BindingAdapters {
                 }
             }
         }
-
     }
 
     @JvmStatic

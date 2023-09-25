@@ -24,7 +24,6 @@ class RecordLocalAdapter: RecyclerView.Adapter<RecordLocalAdapter.MyAdapter>(){
 
     inner class MyAdapter(private val binding: ItemBillListLocalBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(list: LocalRecyclerData){
-            Log.e("TAG", "bind: $list", )
             binding.recyclerData = list
             binding.listLayout.setOnClickListener{ onLocalSaveClick(list) }
         }

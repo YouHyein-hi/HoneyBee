@@ -25,8 +25,6 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
     private val viewModel: RecordViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var callback : OnBackPressedCallback
-//    private val recordLocalFragment: RecordLocalFragment by lazy { RecordLocalFragment(viewModel) }
-//    private val recordServerFragment: RecordServerFragment by lazy { RecordServerFragment(viewModel) }
 
     override fun initData() {}
 
@@ -39,7 +37,6 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
     }
 
     override fun initListener() {
-        // 하단 바텀시트 버튼
         binding.bottomNavigationView.setOnItemSelectedListener{
             parentFragmentManager.beginTransaction()
             when(it.itemId){
@@ -55,21 +52,17 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
             }
         }
 
-        //뒤로가기 버튼
         binding.baseComponent.backBtn.setOnClickListener{
             findNavController().popBackStack()
         }
     }
 
     override fun initObserver() {
-        //프로그래스 바 컨트롤
-        //TODO data binding
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
-        // Err관리
         viewModel.fetchState.observe(this) {
             showShortToast(FetchStateHandler(it))
         }
@@ -85,7 +78,6 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
         callback.remove()
     }
 
-    /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
@@ -94,8 +86,5 @@ class RecordFrameFragment : BaseFragment<FragmentRecordFrameBinding>(FragmentRec
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-    companion object{
-        private const val TAG = "RecyclerFragment"
     }
 }

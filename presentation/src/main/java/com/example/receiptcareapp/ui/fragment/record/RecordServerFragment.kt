@@ -2,7 +2,6 @@ package com.example.receiptcareapp.ui.fragment.record
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -21,7 +20,6 @@ import com.example.receiptcareapp.ui.adapter.RecordServerAdapter
 import com.example.receiptcareapp.state.FetchState
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewModel
-import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordShowViewModel
 import com.example.receiptcareapp.viewModel.fragmentViewModel.record.RecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,7 +45,6 @@ class RecordServerFragment(
         initServerRecyclerView()
         viewModel.getServerAllBillData()
         recordServerAdapter.dataList.clear()
-        binding.recordFilterSpinner.adapter
 
         ArrayAdapter.createFromResource(
             requireContext(),
@@ -59,7 +56,6 @@ class RecordServerFragment(
     }
 
     override fun initListener() {
-        //서버 목록에서 리스트를 누를 경우
         recordServerAdapter.onServerSaveClick = {
             activityViewModel.changeSelectedData(
                 RecyclerData(
@@ -74,13 +70,11 @@ class RecordServerFragment(
                 )
             )
             findNavController().navigate(R.id.action_recyclerFragment_to_recyclerShowFragment)
-            Log.e("TAG", "initListener: ${it.billCheck}", )
             activityViewModel.takeCheck(it.billCheck)
         }
 
         binding.recordServerSearchTxt.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 recordServerAdapter.dataList = dataList.filter { it.storeName.contains(s.toString()) }.toMutableList()
             }
@@ -107,10 +101,7 @@ class RecordServerFragment(
                     4 -> recordServerAdapter.dataList = dataList.sortedBy { it.storeAmount }.toMutableList()
                     //낮은 금액순
                     5 -> recordServerAdapter.dataList = dataList.sortedBy { it.storeAmount }.reversed().toMutableList()
-                    //등록 이름순
-//                    6 -> recordServerAdapter.dataList = dataList.sortedBy { it.storeAmount }.toMutableList()
                 }
-                Log.e("TAG", "onItemSelected position: $position", )
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -122,8 +113,6 @@ class RecordServerFragment(
     }
 
     override fun initObserver() {
-        //서버에서 받아온 데이터 옵져버
-        //TODO 데이터바인딩
         viewModel.billList.observe(viewLifecycleOwner) { it->
             recordServerAdapter.dataList.clear()
             recordServerAdapter.dataList = it?.body?.map { body-> body.toServerRecyclerData() }!!.toMutableList()
@@ -131,7 +120,6 @@ class RecordServerFragment(
             emptyTextControl(recordServerAdapter.dataList.isEmpty(),"데이터가 비었어요!", )
         }
 
-        // Err관리
         viewModel.fetchState.observe(this) {
             when(it.second){
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> {emptyTextControl(true, "서버 연결 실패..")}

@@ -1,7 +1,6 @@
 package com.example.receiptcareapp.ui.fragment.record
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
@@ -18,7 +17,6 @@ import com.example.receiptcareapp.viewModel.activityViewmodel.MainActivityViewMo
 import com.example.receiptcareapp.base.BaseFragment
 import com.example.receiptcareapp.databinding.FragmentRecordShowBinding
 import com.example.domain.model.ui.recycler.RecyclerData
-import com.example.domain.model.ui.recycler.ServerRecyclerData
 import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.state.ResponseState
 import com.example.receiptcareapp.ui.dialog.*
@@ -31,16 +29,11 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
     private val activityViewModel : MainActivityViewModel by activityViewModels()
     private val viewModel : RecordShowViewModel by viewModels()
     private lateinit var viewModelData: RecyclerData
-    private lateinit var data: ServerRecyclerData
     private lateinit var callback:OnBackPressedCallback
     private val billCheckDialog: BillCheckDialog by lazy { BillCheckDialog(viewModel, viewModelData.uid) }
     private val changeDialog: ChangeDialog by lazy { ChangeDialog(viewModel) }
     private val deleteDialog: DeleteDialog by lazy { DeleteDialog(viewModel) }
     private val downLoadDialog: DownLoadDialog by lazy { DownLoadDialog(viewModel) }
-
-    init {
-        Log.e("TAG", "RecyclerShowFragment RecyclerShowFragment RecyclerShowFragment: ", )
-    }
 
     override fun initData() {
         viewModelData = activityViewModel.selectedData.value!!
@@ -57,15 +50,13 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         else {
             binding.isServer = true
             viewModel.getServerInitData(viewModelData.uid)
-            Log.e("TAG", "initUI: ${viewModel.check.value}", )
             binding.billCheckBtn.isChecked = activityViewModel.check.value!!
         }
     }
 
     override fun initListener() {
-        // 이미지 다운로드 버튼
         binding.recordDownloadBtn.setOnClickListener{ downloadDialog() }
-        //수정 후 재전송 버튼
+
         binding.recordChangeBtn.setOnClickListener{
             viewModel.serverInitData.value?.let { it -> viewModel.takeChangePicture(it.first!!) }
             viewModelData.file?.let { it -> viewModel.takeImage(it) }
@@ -81,15 +72,13 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
                     memo = binding.recordShowMemo.text.toString()
                 )
             )
-            Log.e("TAG", "initListener: ${viewModel.serverInitData.value}", )
-            Log.e("TAG", "initListener: ${viewModel.image.value}", )
             changeDialog()
         }
-        //삭제 버튼
+
         binding.recoreRemoveBtn.setOnClickListener{ deleteDialog() }
-        //뒤로가기 버튼
+
         binding.recordBackBtn.setOnClickListener{ findNavController().popBackStack() }
-        //청구버튼
+
         binding.billCheckBtn.setOnCheckedChangeListener{ _, isChecked ->
             when(isChecked){
                 false -> {
@@ -129,26 +118,11 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         }
 
         viewModel.loading.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: $it", )
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
-/*        viewModel.picture.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: $it", )
-            if (it == null) binding.recordEmptyTxt.visibility = View.VISIBLE
-            else{
-                binding.recordEmptyTxt.visibility =View.INVISIBLE
-                Glide.with(binding.recoreImageView)
-                    .load(it)
-                    .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
-                    .into(binding.recoreImageView)
-            }
-            initContext(it.second)
-        }*/
-
         viewModel.serverInitData.observe(viewLifecycleOwner){
-            Log.e("TAG", "initObserver: $it", )
             if (it == null) binding.recordEmptyTxt.visibility = View.VISIBLE
             else{
                 Glide.with(binding.recoreImageView)
@@ -159,18 +133,9 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
             initContext(it.second)
         }
 
-        // Err관리
         viewModel.fetchState.observe(this) {
             showShortToast(FetchStateHandler(it))
         }
-    }
-
-
-    private fun checkImageData(){
-//        if(binding.recoreImageView.drawable == null)
-//            binding.recordEmptyTxt.isVisible = true
-//        if(viewModel.picture.value==null)
-//            binding.recordEmptyTxt.isVisible = true
     }
 
     private fun initContext(serverData: DetailBillData? =null){
@@ -193,28 +158,19 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
         }
     }
 
-    //수정
     private fun changeDialog() {
         changeDialog.show(parentFragmentManager, "changeDialog")
     }
 
-    //서버와 로컬 삭제
     private fun deleteDialog() {
         deleteDialog.show(parentFragmentManager, "deleteDialog")
     }
 
-    //이미지 다운로드
     private fun downloadDialog(){
         downLoadDialog.show(parentFragmentManager, "downLoadDialog")
     }
     private fun billCheckDialog() = billCheckDialog.show(parentFragmentManager,"billCheckDialog")
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e("TAG", "onDestroy: show destroy", )
-    }
-
-    /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {

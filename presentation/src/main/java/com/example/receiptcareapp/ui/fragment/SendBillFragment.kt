@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -55,8 +54,6 @@ class SendBillFragment :
     private lateinit var callback: OnBackPressedCallback
     private var storeArray = arrayListOf<String>()
 
-
-
     override fun initData() {
         todayDate = StringUtil.dateNow()
         selectedDate = StringUtil.dateNow()
@@ -72,7 +69,6 @@ class SendBillFragment :
 
     override fun initUI() {
         with(binding) {
-            //글라이드
             Glide.with(pictureView)
                 .load(activityViewModel.image.value!!)
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
@@ -85,7 +81,6 @@ class SendBillFragment :
 
     override fun initListener() {
         with(binding) {
-            /** Date Button -> DatePickerDialog 생성 **/
             sendBillDateBtn.setOnClickListener {
                 val cal = Calendar.getInstance()
                 val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
@@ -108,7 +103,6 @@ class SendBillFragment :
                     .setTextColor(Color.BLACK)
             }
 
-            //TODO Binding어뎁터에서 토스트 쓸수있다면 넘기는걸로
             sendBillStoreEdit.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int,after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -124,9 +118,7 @@ class SendBillFragment :
                 }
             })
 
-            /** 완료 Button **/
             sendBillOkBtn.setOnClickListener {
-                Log.e("TAG", "onViewCreated: iinin")
                 val price = sendBillPriceEdit.text.toString()
                 val priceZero = price.count { it == '0' }
                 when {
@@ -158,13 +150,11 @@ class SendBillFragment :
                             )
                         ).show(parentFragmentManager, "tag")
                     }
-
                 }
             }
 
             sendBillCancleBtn.setOnClickListener {
                 findNavController().navigate(R.id.action_sendBillFragment_to_homeFragment)
-
             }
         }
 
@@ -182,8 +172,6 @@ class SendBillFragment :
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-        // 키보드 오르락 내리락 감지
-        //TODO 데이터바인딩으로 빼기
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             try {
                 val layoutParams = binding.bottomLayout.layoutParams as ViewGroup.MarginLayoutParams
@@ -192,12 +180,9 @@ class SendBillFragment :
                 val screenHeight = binding.root.height
                 val keypadHeight = screenHeight - rect.bottom
 
-                //키보드 올라옴
                 if (keypadHeight > screenHeight * 0.15) {
                     layoutParams.bottomMargin = 700
                     binding.bottomLayout.layoutParams = layoutParams
-
-                    //키보드 내려옴
                 } else {
                     layoutParams.bottomMargin = 50
                     binding.bottomLayout.layoutParams = layoutParams
@@ -209,7 +194,6 @@ class SendBillFragment :
     }
 
     override fun initObserver() {
-        //TODO 데이터바인딩
         viewModel.loading.observe(viewLifecycleOwner) {
             binding.layoutLoadingProgress.root.isVisible = it
         }
@@ -242,12 +226,10 @@ class SendBillFragment :
             if (!response?.body.isNullOrEmpty()) {
                 storeArray.clear()
                 response?.body?.map { storeArray.add(it) }
-                Log.e("TAG", "initObserver: $storeArray", )
                 binding.sendBillStoreEdit.setAdapter(StoreSpinnerAdapter(requireContext(), storeArray))
             }
         }
 
-        // TODO 통신 실패시도 꺼지게 해야함 에러 예외처리 추가
         viewModel.fetchState.observe(this) {
             when (it.second) {
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> findNavController().popBackStack()
@@ -257,7 +239,6 @@ class SendBillFragment :
         }
     }
 
-    /** Fragment 뒤로가기 **/
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {

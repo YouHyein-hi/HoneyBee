@@ -1,6 +1,5 @@
 package com.example.receiptcareapp.ui.fragment.notice
 
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -26,7 +25,6 @@ class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
         binding.noticeAddAddBtn.setOnClickListener {
             viewModel.insertNotice(
                 SendNoticeAddData(
-                    //TODO 역방향 databinding인데 데이터클래스로 받아올수있을것같음.
                     title = binding.noticeAddTitleEdit.text.toString(),
                     date = LocalDateTime.now(),
                     content = binding.noticeAddContentEdit.text.toString()
@@ -40,7 +38,6 @@ class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
     }
 
     override fun initObserver() {
-        //TODO databinding
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
@@ -56,7 +53,6 @@ class NoticeAddFragment : BaseFragment<FragmentNoticeAddBinding>(
             }
         }
 
-        // Err관리
         viewModel.fetchState.observe(this) {
             showShortToast(FetchStateHandler(it))
         }

@@ -2,7 +2,6 @@ package com.example.receiptcareapp.ui.fragment.record
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -57,9 +56,7 @@ class RecordLocalFragment(
     }
 
     override fun initListener() {
-        //로컬 목록에서 리스트를 누를경우
         recordLocalAdapter.onLocalSaveClick = {
-            //Activity ViewModel 값 저장
             activityViewModel.changeSelectedData(
                 RecyclerData(
                     type = ShowType.LOCAL,
@@ -77,10 +74,8 @@ class RecordLocalFragment(
 
         binding.recordLocalSearchTxt.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 recordLocalAdapter.dataList = dataList.filter { it.storeName.contains(s.toString()) }.toMutableList()
-
             }
             override fun afterTextChanged(s: Editable?) {}
         })
@@ -100,23 +95,18 @@ class RecordLocalFragment(
                     4 -> recordLocalAdapter.dataList = dataList.sortedBy { it.amount }.toMutableList()
                     //낮은 금액순
                     5 -> recordLocalAdapter.dataList = dataList.sortedBy { it.amount }.reversed().toMutableList()
-                    //등록 이름순
-//                    6 -> recordServerAdapter.dataList = dataList.sortedBy { it.storeAmount }.toMutableList()
                 }
-                Log.e("TAG", "onItemSelected position: $position", )
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-/*        binding.recordRefresh.setOnRefreshListener {
+        binding.recordRefresh.setOnRefreshListener {
             binding.recordRefresh.isRefreshing = false
             viewModel.getLocalAllData()
-        }*/
+        }
     }
 
     override fun initObserver() {
-        //룸에서 받아온 데이터 옵져버
-        //TODO 데이터바인딩 -> 데이터바인딩 옵저버할때 데이터가 비었는지 안비었는지 확인해주고 바꿔주기? (희망사항)
         viewModel.roomData.observe(viewLifecycleOwner) {
             recordLocalAdapter.dataList.clear()
             recordLocalAdapter.dataList = it.map { it -> it.toRecyclerShowData() }.toMutableList()
@@ -124,7 +114,6 @@ class RecordLocalFragment(
             setTextAndVisible("데이터가 비었어요!", recordLocalAdapter.dataList.isEmpty())
         }
 
-        // Err관리
         viewModel.fetchState.observe(this) {
             when(it.second){
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> {emptyTextControl(true, "서버 연결 실패..")}

@@ -31,7 +31,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     private lateinit var alarmManager: AlarmManager
 
     override fun initData() {
-        // AlarmManager와 PendingIntent 초기화
         alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), PushReceiver::class.java).apply {
             putExtra("code", REQUEST_CODE)
@@ -46,6 +45,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     }
 
     override fun initUI() {
+        binding.menuPushSwitch.isChecked = viewModel.getPush()!!
         val time = viewModel.getTime()
         binding.menuPushTimeTxt.text = time.let {
             StringUtil.timePickerText(
@@ -55,7 +55,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
         }
     }
 
-    @SuppressLint("MissingPermission", "ResourceAsColor")
     override fun initListener() {
         with(binding){
             menuBackBtn.setOnClickListener { findNavController().popBackStack() }
@@ -78,8 +77,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
                 showPushTimeDialog()
             }
 
-
-            menuPushSwitch.isChecked = viewModel.getPush()!!
             menuPushSwitch.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.putPush(isChecked)
                 if (isChecked) {
@@ -111,7 +108,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
     private fun showPushTimeDialog(){
         PushTimeDialog(viewModel) {
             if (binding.menuPushSwitch.isChecked) {
-                checkMaxDayOfMonth() // Switch가 켜져있다면 알람 설정
+                checkMaxDayOfMonth()
             }
         }.show(parentFragmentManager, "pushTimeDialog")
     }
@@ -123,16 +120,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
 
         val daysBeforeMaxDay = listOf(0,1, 2, 3)
 
-        if (daysBeforeMaxDay.contains(maxDayOfMonth - dayOfMonth)) {
-            Log.e("TAG", "MenuFragment : Alarm set on day $dayOfMonth")
-            setAlarm()
-        } else {
-            Log.d("TAG", "MenuFragment : Alarm not set on day $dayOfMonth")
-//            setAlarm()
-        }
+        if (daysBeforeMaxDay.contains(maxDayOfMonth - dayOfMonth)) { setAlarm() }
     }
 
-    //TODO 이쪽은 알람 메니저 클래스 or Object 클래스를 만들고 알람기능은 그곳에서 담당하는걸로 뺴주자
     private fun setAlarm(){
         val time = viewModel.getTime()
         val targetTime = Calendar.getInstance().apply {
@@ -146,6 +136,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(FragmentMenuBinding::infl
             pendingIntent
         )
     }
+
     private fun cancelAlarm() {
         alarmManager.cancel(pendingIntent)
     }

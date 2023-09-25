@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -25,7 +24,6 @@ import com.example.receiptcareapp.ui.botteomSheet.CardListBottomSheet
 import com.example.receiptcareapp.ui.dialog.ChoiceDialog
 import com.example.receiptcareapp.ui.dialog.ExitDialog
 import com.example.receiptcareapp.ui.dialog.PermissionCheckDialog
-import com.example.receiptcareapp.util.FetchStateHandler
 import com.example.receiptcareapp.util.MyApplication
 import com.example.receiptcareapp.viewModel.fragmentViewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,21 +43,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun initData() {
         viewModel.settingUserRight()
-
     }
 
     override fun initUI() {
-        //카드목록, 공지사항 불러오기
         viewModel.getServerCardData()
         viewModel.getNoticeList()
         viewModel.initFetchState()
         initHomeCardRecycler()
 
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            // 권한이 허용되었는지 확인
             val allPermissionsGranted = permissions.all { it.value }
             if (allPermissionsGranted) {
-                // 권한이 허용되었을 때, 권한이 필요한 작업 수행
                 addDialog()
             } else {
                 showShortToast("필수 권한을 허용해주세요!")
@@ -80,7 +74,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             homeCardListComponent.setOnClickListener {
                 if(MyApplication.right=="MA")
                     CardListBottomSheet(viewModel).show(parentFragmentManager, "homeCardBottomSheet")
-
             }
 
             homeRefresh.setOnRefreshListener {
@@ -96,8 +89,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun initObserver() {
-        //프로그래스 바 컨트롤
-        //TODO databinding
         viewModel.loading.observe(viewLifecycleOwner){
             if(it) binding.layoutLoadingProgress.root.visibility = View.VISIBLE
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
@@ -115,7 +106,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.notice = it
         }
 
-        // Err관리
         viewModel.fetchState.observe(this) {
             when(it.second){
                 FetchState.SOCKET_TIMEOUT_EXCEPTION -> {

@@ -1,7 +1,9 @@
 package com.example.data.remote.dataSource
 
 import ServerResponse
+import com.example.data.remote.model.ServerCardDetailResponse
 import com.example.data.remote.model.ServerCardResponse
+import com.example.data.remote.model.ServerDetailBillResponse
 import retrofit2.Response
 import retrofit2.http.*
 import java.time.LocalDate
@@ -21,6 +23,12 @@ interface CardDataSource {
     @Streaming
     @GET("bill/card/list")
     suspend fun getCardDataSource() : ServerResponse<List<ServerCardResponse>> //바디에 카드
+
+    @Streaming
+    @GET("bill/card/detail/{id}")
+    suspend fun getDetailCardDataSource(
+        @Path("id") id: String,
+    ): ServerResponse<ServerCardDetailResponse>
 
     @DELETE("bill/delete/card/{uid}")
     suspend fun deleteCardDataSource(

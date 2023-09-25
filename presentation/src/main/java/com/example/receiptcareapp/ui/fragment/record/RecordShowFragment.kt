@@ -121,13 +121,17 @@ class RecordShowFragment : BaseFragment<FragmentRecordShowBinding>(FragmentRecor
             else binding.layoutLoadingProgress.root.visibility = View.INVISIBLE
         }
 
-        viewModel.serverInitData.observe(viewLifecycleOwner){
+
+        viewModel.picture.observe(viewLifecycleOwner){
             Log.e("TAG", "initObserver: $it", )
-            Glide.with(binding.recoreImageView)
-                .load(it.first)
-                .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
-                .into(binding.recoreImageView)
-            checkImageData()
+            if (it == null) binding.recordEmptyTxt.visibility = View.VISIBLE
+            else{
+                binding.recordEmptyTxt.visibility =View.INVISIBLE
+                Glide.with(binding.recoreImageView)
+                    .load(it)
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
+                    .into(binding.recoreImageView)
+            }
             initContext(it.second)
         }
 

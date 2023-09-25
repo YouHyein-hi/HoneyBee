@@ -6,7 +6,7 @@
     <data>
         <variable
             name="cardDate"
-            type="com.example.domain.model.remote.receive.card.CardData" />
+            type="com.example.domain.model.remote.receive.card.CardDetailData" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -100,88 +100,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardDetail_card_amount">
 
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:orientation="horizontal">-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="1"-->
-            <!--                    android:fontFamily="@font/pretendardbold"-->
-            <!--                    android:gravity="left"-->
-            <!--                    android:text="작성자"-->
-            <!--                    android:textColor="@color/sub_font2_gray"-->
-            <!--                    android:textSize="14sp" />-->
-
-            <!--                <TextView-->
-            <!--                    android:id="@+id/cardDetail_card_user"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="1"-->
-            <!--                    android:fontFamily="@font/pretendardbold"-->
-            <!--                    android:gravity="right"-->
-            <!--                    android:text="@{cardDate.}"-->
-            <!--                    android:textColor="@color/main_font_black"-->
-            <!--                    android:textSize="14sp" />-->
-            <!--            </LinearLayout>-->
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="20dp"-->
-            <!--                android:orientation="horizontal">-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="1"-->
-            <!--                    android:fontFamily="@font/pretendardbold"-->
-            <!--                    android:gravity="left"-->
-            <!--                    android:text="추가일"-->
-            <!--                    android:textColor="@color/sub_font2_gray"-->
-            <!--                    android:textSize="14sp" />-->
-
-            <!--                <TextView-->
-            <!--                    android:id="@+id/cardDetail_card_cardExpireDate"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="1"-->
-            <!--                    android:fontFamily="@font/pretendardbold"-->
-            <!--                    android:gravity="right"-->
-            <!--                    android:text="~~~~~"-->
-            <!--                    android:textColor="@color/main_font_black"-->
-            <!--                    android:textSize="14sp" />-->
-            <!--            </LinearLayout>-->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="15dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
-
-                <!--                    <TextView-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:fontFamily="@font/pretendardbold"-->
-                <!--                        android:gravity="left"-->
-                <!--                        android:text="@string/recrod_show_bill_check_txt"-->
-                <!--                        android:textColor="@color/sub_font2_gray"-->
-                <!--                        android:textSize="14sp" />-->
-
-                <!--                    <TextView-->
-                <!--                        android:id="@+id/checkData_txt"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:fontFamily="@font/pretendardbold"-->
-                <!--                        android:gravity="right"-->
-                <!--                        android:text="@{data}"-->
-                <!--                        android:textColor="@color/main_font_black"-->
-                <!--                        android:textSize="14sp" />-->
 
                 <TextView
                     android:id="@+id/textView35"
@@ -201,7 +125,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="right"
-                    android:text="@{cardDate.cardExpireDate}"
+                    android:text="@{cardDate.cardExpireDate, default = `만료일`}"
                     android:textColor="@color/main_font_black"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -212,27 +136,6 @@
                 android:layout_marginBottom="15dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
-
-                <!--                    <TextView-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:fontFamily="@font/pretendardbold"-->
-                <!--                        android:gravity="left"-->
-                <!--                        android:text="@string/recrod_show_bill_check_txt"-->
-                <!--                        android:textColor="@color/sub_font2_gray"-->
-                <!--                        android:textSize="14sp" />-->
-
-                <!--                    <TextView-->
-                <!--                        android:id="@+id/checkData_txt"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:fontFamily="@font/pretendardbold"-->
-                <!--                        android:gravity="right"-->
-                <!--                        android:text="@{data}"-->
-                <!--                        android:textColor="@color/main_font_black"-->
-                <!--                        android:textSize="14sp" />-->
 
                 <TextView
                     android:id="@+id/textView36"
@@ -252,7 +155,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="right"
-                    android:text="~~~"
+                    android:text="@{cardDate.writerName, default = `작성자`}"
                     android:textColor="@color/main_font_black"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -264,26 +167,6 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <!--                    <TextView-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:fontFamily="@font/pretendardbold"-->
-                <!--                        android:gravity="left"-->
-                <!--                        android:text="@string/recrod_show_bill_check_txt"-->
-                <!--                        android:textColor="@color/sub_font2_gray"-->
-                <!--                        android:textSize="14sp" />-->
-
-                <!--                    <TextView-->
-                <!--                        android:id="@+id/checkData_txt"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:fontFamily="@font/pretendardbold"-->
-                <!--                        android:gravity="right"-->
-                <!--                        android:text="@{data}"-->
-                <!--                        android:textColor="@color/main_font_black"-->
-                <!--                        android:textSize="14sp" />-->
                 <TextView
                     android:id="@+id/textView37"
                     android:layout_width="match_parent"
@@ -302,7 +185,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="right"
-                    android:text="~~~"
+                    android:text="@{cardDate.writeDateTime, default = `추가일`}"
                     android:textColor="@color/main_font_black"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -313,27 +196,6 @@
                 android:layout_marginBottom="15dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
-
-                <!--                    <TextView-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:fontFamily="@font/pretendardbold"-->
-                <!--                        android:gravity="left"-->
-                <!--                        android:text="@string/recrod_show_bill_check_txt"-->
-                <!--                        android:textColor="@color/sub_font2_gray"-->
-                <!--                        android:textSize="14sp" />-->
-
-                <!--                    <TextView-->
-                <!--                        android:id="@+id/checkData_txt"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:fontFamily="@font/pretendardbold"-->
-                <!--                        android:gravity="right"-->
-                <!--                        android:text="@{data}"-->
-                <!--                        android:textColor="@color/main_font_black"-->
-                <!--                        android:textSize="14sp" />-->
 
                 <TextView
                     android:id="@+id/textView38"
@@ -353,7 +215,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="right"
-                    android:text="~~~"
+                    android:text="@{cardDate.modifierName, default = `수정자`}"
                     android:textColor="@color/main_font_black"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -364,27 +226,6 @@
                 android:layout_marginBottom="30dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
-
-                <!--                    <TextView-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:fontFamily="@font/pretendardbold"-->
-                <!--                        android:gravity="left"-->
-                <!--                        android:text="@string/recrod_show_bill_check_txt"-->
-                <!--                        android:textColor="@color/sub_font2_gray"-->
-                <!--                        android:textSize="14sp" />-->
-
-                <!--                    <TextView-->
-                <!--                        android:id="@+id/checkData_txt"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:fontFamily="@font/pretendardbold"-->
-                <!--                        android:gravity="right"-->
-                <!--                        android:text="@{data}"-->
-                <!--                        android:textColor="@color/main_font_black"-->
-                <!--                        android:textSize="14sp" />-->
 
                 <TextView
                     android:id="@+id/textView39"
@@ -404,7 +245,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/pretendardbold"
                     android:gravity="right"
-                    android:text="~~~"
+                    android:text="@{cardDate.modifyDateTime, default = `최근 수정일`}"
                     android:textColor="@color/main_font_black"
                     android:textSize="14sp" />
             </LinearLayout>

@@ -16,10 +16,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-/**
- * 2023-02-02
- * pureum
- */
+
 @Module
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
@@ -34,6 +31,12 @@ object UseCaseModule {
     @Singleton
     fun provideGetCardSpinnerUseCase(repo: CardRepository) : GetCardSpinnerUseCase{
         return GetCardSpinnerUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCardDetailUseCase(repo: CardRepository) : GetCardDetailUseCase{
+        return GetCardDetailUseCase(repo)
     }
 
     @Provides

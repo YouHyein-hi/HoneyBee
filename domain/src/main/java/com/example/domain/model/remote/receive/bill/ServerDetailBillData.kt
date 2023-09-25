@@ -1,11 +1,5 @@
 package com.example.domain.model.remote.receive.bill
 
-import com.example.domain.model.ui.recycler.ServerRecyclerData
-
-/**
- * 2023-08-20
- * pureum
- */
 data class ServerDetailBillData(
     val status: String,
     val message: String,
